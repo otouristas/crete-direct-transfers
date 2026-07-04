@@ -11,8 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as RoutesIndexRouteImport } from './routes/routes.index'
+import { Route as RegionsIndexRouteImport } from './routes/regions.index'
+import { Route as FleetIndexRouteImport } from './routes/fleet.index'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as RoutesSlugRouteImport } from './routes/routes.$slug'
+import { Route as RegionsSlugRouteImport } from './routes/regions.$slug'
+import { Route as FleetClassRouteImport } from './routes/fleet.$class'
 import { Route as BookSuccessRouteImport } from './routes/book.success'
 
 const BookRoute = BookRouteImport.update({
@@ -25,14 +31,44 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoutesIndexRoute = RoutesIndexRouteImport.update({
   id: '/routes/',
   path: '/routes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegionsIndexRoute = RegionsIndexRouteImport.update({
+  id: '/regions/',
+  path: '/regions/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FleetIndexRoute = FleetIndexRouteImport.update({
+  id: '/fleet/',
+  path: '/fleet/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/services/$slug',
+  path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoutesSlugRoute = RoutesSlugRouteImport.update({
   id: '/routes/$slug',
   path: '/routes/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegionsSlugRoute = RegionsSlugRouteImport.update({
+  id: '/regions/$slug',
+  path: '/regions/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FleetClassRoute = FleetClassRouteImport.update({
+  id: '/fleet/$class',
+  path: '/fleet/$class',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookSuccessRoute = BookSuccessRouteImport.update({
@@ -45,43 +81,95 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/book': typeof BookRouteWithChildren
   '/book/success': typeof BookSuccessRoute
+  '/fleet/$class': typeof FleetClassRoute
+  '/regions/$slug': typeof RegionsSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/fleet/': typeof FleetIndexRoute
+  '/regions/': typeof RegionsIndexRoute
   '/routes/': typeof RoutesIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/book': typeof BookRouteWithChildren
   '/book/success': typeof BookSuccessRoute
+  '/fleet/$class': typeof FleetClassRoute
+  '/regions/$slug': typeof RegionsSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/fleet': typeof FleetIndexRoute
+  '/regions': typeof RegionsIndexRoute
   '/routes': typeof RoutesIndexRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/book': typeof BookRouteWithChildren
   '/book/success': typeof BookSuccessRoute
+  '/fleet/$class': typeof FleetClassRoute
+  '/regions/$slug': typeof RegionsSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/fleet/': typeof FleetIndexRoute
+  '/regions/': typeof RegionsIndexRoute
   '/routes/': typeof RoutesIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/book' | '/book/success' | '/routes/$slug' | '/routes/'
+  fullPaths:
+    | '/'
+    | '/book'
+    | '/book/success'
+    | '/fleet/$class'
+    | '/regions/$slug'
+    | '/routes/$slug'
+    | '/services/$slug'
+    | '/fleet/'
+    | '/regions/'
+    | '/routes/'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/book' | '/book/success' | '/routes/$slug' | '/routes'
+  to:
+    | '/'
+    | '/book'
+    | '/book/success'
+    | '/fleet/$class'
+    | '/regions/$slug'
+    | '/routes/$slug'
+    | '/services/$slug'
+    | '/fleet'
+    | '/regions'
+    | '/routes'
+    | '/services'
   id:
     | '__root__'
     | '/'
     | '/book'
     | '/book/success'
+    | '/fleet/$class'
+    | '/regions/$slug'
     | '/routes/$slug'
+    | '/services/$slug'
+    | '/fleet/'
+    | '/regions/'
     | '/routes/'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BookRoute: typeof BookRouteWithChildren
+  FleetClassRoute: typeof FleetClassRoute
+  RegionsSlugRoute: typeof RegionsSlugRoute
   RoutesSlugRoute: typeof RoutesSlugRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
+  FleetIndexRoute: typeof FleetIndexRoute
+  RegionsIndexRoute: typeof RegionsIndexRoute
   RoutesIndexRoute: typeof RoutesIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -100,6 +188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/routes/': {
       id: '/routes/'
       path: '/routes'
@@ -107,11 +202,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoutesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/regions/': {
+      id: '/regions/'
+      path: '/regions'
+      fullPath: '/regions/'
+      preLoaderRoute: typeof RegionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet/': {
+      id: '/fleet/'
+      path: '/fleet'
+      fullPath: '/fleet/'
+      preLoaderRoute: typeof FleetIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/services/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/routes/$slug': {
       id: '/routes/$slug'
       path: '/routes/$slug'
       fullPath: '/routes/$slug'
       preLoaderRoute: typeof RoutesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regions/$slug': {
+      id: '/regions/$slug'
+      path: '/regions/$slug'
+      fullPath: '/regions/$slug'
+      preLoaderRoute: typeof RegionsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet/$class': {
+      id: '/fleet/$class'
+      path: '/fleet/$class'
+      fullPath: '/fleet/$class'
+      preLoaderRoute: typeof FleetClassRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book/success': {
@@ -137,8 +267,14 @@ const BookRouteWithChildren = BookRoute._addFileChildren(BookRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BookRoute: BookRouteWithChildren,
+  FleetClassRoute: FleetClassRoute,
+  RegionsSlugRoute: RegionsSlugRoute,
   RoutesSlugRoute: RoutesSlugRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
+  FleetIndexRoute: FleetIndexRoute,
+  RegionsIndexRoute: RegionsIndexRoute,
   RoutesIndexRoute: RoutesIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

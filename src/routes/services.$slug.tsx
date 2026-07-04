@@ -91,7 +91,7 @@ function ServicePage() {
             <div className="rounded-2xl bg-card border border-border/60 p-6">
               <h3 className="font-serif text-lg text-primary">Included</h3>
               <ul className="mt-4 space-y-2 text-sm">
-                {service.includes.map((x) => (
+                {service.whatsIncluded.map((x: string) => (
                   <li key={x} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-accent mt-0.5 shrink-0" /> {x}
                   </li>
@@ -101,7 +101,7 @@ function ServicePage() {
             <div className="rounded-2xl bg-card border border-border/60 p-6">
               <h3 className="font-serif text-lg text-primary">Best for</h3>
               <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                {service.bestFor.map((x) => <li key={x}>· {x}</li>)}
+                {service.bestFor.map((x: string) => <li key={x}>· {x}</li>)}
               </ul>
             </div>
           </div>

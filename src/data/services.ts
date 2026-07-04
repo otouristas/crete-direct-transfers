@@ -5,7 +5,7 @@ export type ServiceData = {
   intro: string;
   body: string;
   heroImage: string;
-  includes: string[];
+  whatsIncluded: string[];
   bestFor: string[];
 };
 
