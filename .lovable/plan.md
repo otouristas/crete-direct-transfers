@@ -1,141 +1,177 @@
 
-# CreteTransfers — Phase 1 Build Plan
+# CreteTransfers v2 — Full Redesign & Site Expansion
 
-Brand: **CreteTransfers**. Tagline: *Fixed price. Local drivers. No bidding.*
-Scope: Homepage + routes (hub + 10 route detail pages) + fleet + booking flow with fixed-price engine + Stripe payments. No driver profiles, no B2B pages (per your answer).
+Benchmarked against gettransfer.com and transfeero.com, rebuilt for Crete only. Same fixed-price engine and Lovable Cloud `bookings` table stay — this plan is IA, content depth, SEO surface, and a full visual redesign.
 
-## 1. Design system
+## 1. Visual redesign
 
-Editorial boutique, not rideshare-app.
+Current site is editorial-boutique but flat. Both competitors lead with a full-bleed hero image, a booking widget floating over it, and heavy social-proof scaffolding (badges, review counts, trust logos). We'll take that structural pattern but keep an editorial Crete identity — no rideshare-app blue.
 
-- **Palette** (semantic tokens in `src/styles.css`, oklch):
-  - Background whitewash `#FAF8F3`, deep Aegean `#1B3A4B`, terracotta accent `#C15B3D`, olive secondary `#6B7A4F`, ink `#161616`.
-- **Typography** (via `@fontsource`): **Fraunces** (editorial serif, headlines) + **Inter** (UI/body).
-- Restrained motion: subtle route-line SVG animation on the hero map, hover lifts on cards.
-- Real Crete photography via Unsplash URLs (Chania harbor, Elafonissi, Samaria road, Heraklion).
+Direction: **"Mediterranean editorial"** — full-bleed Crete cinematography, warm whitewash surfaces, deep Aegean primary, terracotta accent, generous serif display type (Fraunces), tight sans body (Inter). Motion: subtle parallax on hero, animated route lines on the map, hover lifts on cards, sticky booking widget on scroll.
 
-## 2. Routes (TanStack Start file-based)
+Redesigned components:
+- Full-bleed hero with layered booking widget (From → To → Date → Pax → Class → Quote button, all in one row on desktop, stacked on mobile), live price preview under it
+- Trust strip (5 pills: Fixed price / Free cancellation / Flight tracked / Licensed drivers / 24-7 support) directly under hero
+- "How it works" as a 3-step horizontal timeline with icons
+- Popular routes as a large 6-card grid with image, price-from, duration, one-line hook
+- Fleet as horizontal scroll cards with real vehicle photography
+- Interactive-feel SVG Crete map with animated route lines connecting the 4 regional hubs
+- Reviews carousel with star rating + source (Google, Tripadvisor placeholders)
+- FAQ accordion (competitor-parity — both have 10+ Qs on homepage)
+- Pre-footer CTA band (Aegean background, terracotta button)
+- Redesigned footer with 4 columns (Routes / Regions / Company / Legal) + language switcher stub
 
+I'll generate 3 design directions for the homepage hero + booking widget and let you pick before implementing.
+
+## 2. Information architecture — full route map
+
+```text
+/                                    Homepage
+/routes                              All routes hub (30 routes, filterable by region)
+/routes/$slug                        Route detail (30 pages, programmatic SEO)
+/regions                             Regions hub
+/regions/$slug                       Region page (Chania / Rethymno / Heraklion / Lasithi)
+/fleet                               Fleet overview
+/fleet/$class                        Vehicle class detail (economy / comfort / minivan / luxury)
+/services                            Services hub
+/services/airport-transfers          Service page
+/services/port-transfers             Service page
+/services/hotel-transfers            Service page
+/services/private-tours              Service page
+/services/long-distance              Service page
+/services/group-transfers            Service page
+/book                                Booking flow (unchanged engine)
+/book/success                        Confirmation
+/about                               About / story
+/how-it-works                        3-step explainer + FAQ
+/faq                                 Full FAQ (20+ Qs)
+/contact                             Contact form + WhatsApp + phone
+/reviews                             Reviews page (seeded)
+/for-hotels                          B2B partnership page
+/for-drivers                         Driver recruitment page
+/legal/terms                         Terms of Service
+/legal/privacy                       Privacy Policy
+/legal/cookies                       Cookie Policy
+/legal/refunds                       Cancellation & Refunds
+/legal/imprint                       Company / Impressum
+/sitemap.xml                         Dynamic sitemap covering all above
+/robots.txt                          Allow all + sitemap ref
 ```
-src/routes/
-  __root.tsx                       (nav + footer + head defaults)
-  index.tsx                        (homepage)
-  routes.index.tsx                 (all routes hub, /routes)
-  routes.$slug.tsx                 (route detail, /routes/heraklion-airport-to-elounda)
-  fleet.tsx                        (fleet classes)
-  book.tsx                         (booking flow: quote → details → payment)
-  book.success.tsx                 (post-payment confirmation)
-  book.cancel.tsx
-  api/public/stripe-webhook.ts     (server route, signature-verified)
-```
 
-Each content route sets its own `head()` (title, description, og:title/description). Canonical + og:url are relative. og:image only on leaf routes with a hero image.
+## 3. SEO route expansion — from 10 to 30 routes
 
-## 3. Seed data — 10 routes (placeholder, editable later)
+Add 20 new plausible transfers to `src/data/routes.ts`. Full new list groups by regional hub:
 
-Stored as a typed TS constant `src/data/routes.ts` (no CMS in phase 1). Fields per route: `slug`, `from`, `to`, `distanceKm`, `durationMin`, `basePriceEur` (per vehicle class), `heroImage`, `blurb`, `notes` (seasonal/road).
+**Heraklion hub (12):** HER Airport → Elounda, Agios Nikolaos, Hersonissos, Malia, Stalis, Rethymno, Chania, Matala, Bali, Anissaras, Analipsi, Ierapetra. Plus Heraklion Port → Matala, Heraklion Port → Chania.
 
-Initial 10 (plausible values):
-1. Heraklion Airport → Elounda
-2. Heraklion Airport → Agios Nikolaos
-3. Heraklion Airport → Hersonissos
-4. Heraklion Airport → Rethymno
-5. Chania Airport → Chania Old Town
-6. Chania Airport → Rethymno
-7. Chania Airport → Kissamos
-8. Souda Port → Chania Old Town
-9. Heraklion Port → Matala
-10. Heraklion Airport → Chania
+**Chania hub (10):** CHQ Airport → Chania Old Town, Rethymno, Kissamos, Platanias, Georgioupoli, Kolymbari, Almyrida, Falasarna, Sougia, Paleochora. Plus Souda Port → Chania.
 
-Fleet classes with multipliers over base: Economy 1.0×, Comfort 1.25×, Minivan 1.6×, Luxury 2.1×.
+**Rethymno hub (4):** Rethymno → Bali, Panormo, Plakias, Agia Galini.
 
-## 4. Fixed-price engine
+**Lasithi hub (4):** Agios Nikolaos → Elounda, Sitia, Ierapetra, Vai.
 
-Pure server-side function `getQuote({ routeSlug, vehicleClass, passengers, extras })` in `src/lib/pricing.functions.ts` (`createServerFn`):
-- Looks up route in seed data, applies class multiplier, adds extras (child seat €10, extra stop €15, meet-and-greet €10), applies night surcharge (22:00–06:00, +15%).
-- Returns `{ priceEur, breakdown, currency: "EUR" }`.
-- Called from the homepage hero (instant estimate) and the booking flow.
+Each route detail page gets:
+- Hero image + fixed-price matrix (all 4 vehicle classes)
+- Distance, duration, drive description
+- What's included / not included
+- Local tips for the destination (2-3 paragraphs)
+- FAQ specific to the route (5 Qs)
+- JSON-LD `TaxiService` + `Offer` + `FAQPage` + `BreadcrumbList`
+- Related routes (3 cards)
+- Sticky booking CTA
 
-## 5. Homepage sections
+## 4. Region pages (4)
 
-1. Hero — search widget (From/To selects populated from seed routes, date/time, passengers) → instant fixed price preview.
-2. Trust bar — 4 pills (Fixed price / Licensed drivers / Free cancellation 24h / Flight-tracked).
-3. Popular routes — 6 cards from seed data with `price from €X`, drive time.
-4. Fleet strip — 4 class cards with photo + capacity + from-price.
-5. Region explainer — static SVG map of Crete's 4 regional units (non-interactive in phase 1, just visual).
-6. How it works — 3 steps (Quote → Book → Meet driver).
-7. Reviews — 6 short quotes (seed).
-8. Footer.
+Each region page = hub for its area:
+- Hero of the region
+- 2-3 paragraphs on the region (what travelers do there, main destinations)
+- All routes serving this region (filtered cards)
+- Popular hotels served (seed list)
+- Local driver knowledge blurb
+- FAQ (5 Qs)
+- JSON-LD `Place` + `BreadcrumbList`
 
-## 6. Booking flow
+## 5. Service pages (6)
 
-`/book?route=<slug>&class=<class>&date=<iso>&pax=<n>`:
-1. **Quote step** — shows fixed price + breakdown, editable class/extras. Zod-validated form.
-2. **Details step** — passenger name, email, phone, flight/ferry number, pickup notes.
-3. **Payment step** — Stripe Checkout redirect (managed_payments where eligible). On return, `/book/success?session_id=…` verifies via server fn and shows confirmation with (mock) driver name + WhatsApp link.
+Airport transfers, port transfers, hotel transfers, private tours, long distance, group transfers. Each: hero, what it is, pricing model, popular routes for this service, fleet recommendations, FAQ, JSON-LD `Service`.
 
-Data persistence: `bookings` table in Lovable Cloud (Supabase) with RLS. Insert on quote confirm, update status on webhook.
+## 6. Fleet detail pages (4)
 
-## 7. Payments
+One per vehicle class (economy, comfort, minivan, luxury): photo gallery, capacity/bags, example models, price-from per popular route, when to pick this class, book CTA.
 
-- Run `payments--recommend_payment_provider` → likely Stripe (service, not physical). Enable with `enable_stripe_payments`. Use **tax calculation & collection only** (`automatic_tax`) since seller is likely Greece (not in full-compliance-supported list).
-- Create one Stripe product per (route × class) lazily via `batch_create_product` OR use `price_data` inline on Checkout Session for a fixed-price transfer (simpler for dynamic route matrix — recommended).
-- Webhook at `/api/public/stripe-webhook` with HMAC signature verification, marks booking `paid`.
+## 7. Legal pages (5)
 
-## 8. Database (Lovable Cloud)
+Terms, Privacy, Cookies, Refunds, Imprint. Real templates tailored to a Greek transfer marketplace — placeholder company name "CreteTransfers Ltd." with a `<!-- REPLACE: legal entity -->` marker. GDPR-appropriate privacy language, EU cancellation rights, standard transfer T&Cs.
 
-Enable Lovable Cloud. One migration:
+## 8. FAQ, About, Contact, Reviews
+
+- `/faq`: 20+ questions grouped (booking, payment, cancellation, luggage, kids, flight delays, meeting point, tipping) with `FAQPage` JSON-LD
+- `/about`: brand story, why fixed price, team blurb
+- `/contact`: form (saves to a new `contact_messages` table with anon insert) + WhatsApp/phone placeholders
+- `/reviews`: 20 seeded reviews with source badges + aggregate rating, `AggregateRating` JSON-LD
+
+## 9. B2B pages
+
+- `/for-hotels`: partnership pitch, commission model placeholder, contact form (reuses `contact_messages` with a `topic` field)
+- `/for-drivers`: driver recruitment, requirements, application form
+
+## 10. Technical / SEO plumbing
+
+- Dynamic `src/routes/sitemap[.]xml.ts` server route enumerating every static + programmatic route
+- `public/robots.txt` allow all
+- Per-route `head()` with unique title/description/og:title/og:description
+- Leaf-only `og:image` using each route's hero
+- JSON-LD per page type (TaxiService, Service, Place, FAQPage, BreadcrumbList, AggregateRating, Organization on root)
+- Relative canonical + og:url (no domain yet)
+
+## 11. Database additions
+
+One new table via migration:
 
 ```sql
-CREATE TABLE public.bookings (
+CREATE TABLE public.contact_messages (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  route_slug text NOT NULL,
-  vehicle_class text NOT NULL,
-  passengers int NOT NULL,
-  pickup_at timestamptz NOT NULL,
-  customer_name text NOT NULL,
-  customer_email text NOT NULL,
-  customer_phone text NOT NULL,
-  flight_number text,
-  notes text,
-  price_cents int NOT NULL,
-  currency text NOT NULL DEFAULT 'EUR',
-  status text NOT NULL DEFAULT 'pending', -- pending|paid|cancelled
-  stripe_session_id text,
+  topic text NOT NULL,           -- 'general' | 'hotel' | 'driver'
+  name text NOT NULL,
+  email text NOT NULL,
+  phone text,
+  company text,
+  message text NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now()
 );
-GRANT SELECT, INSERT, UPDATE ON public.bookings TO authenticated;
-GRANT INSERT ON public.bookings TO anon; -- guest bookings
-GRANT ALL ON public.bookings TO service_role;
-ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
--- Guests can insert; only service_role reads (webhook + future admin)
-CREATE POLICY "anyone can create booking" ON public.bookings FOR INSERT TO anon, authenticated WITH CHECK (true);
+GRANT INSERT ON public.contact_messages TO anon, authenticated;
+GRANT ALL  ON public.contact_messages TO service_role;
+ALTER TABLE public.contact_messages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "anyone can send message" ON public.contact_messages
+  FOR INSERT TO anon, authenticated WITH CHECK (true);
 ```
 
-No auth surface for end users in phase 1 (guest checkout). Admin dashboard is out of scope.
+## 12. Out of scope for this pass
 
-## 9. SEO
+- Real payments (still reserve-then-confirm; Stripe BYOK is one turn away when you want it)
+- Greek-language mirror (`/el/*`) — structure ready, translations later
+- Real driver profiles, dispatch app, admin dashboard
+- Live flight tracking / WhatsApp automation
+- Blog / content marketing pages beyond routes+regions
 
-- Per-route `head()` with real title/description ("Heraklion Airport to Elounda Transfer | Fixed Price €X | CreteTransfers").
-- JSON-LD `TaxiService` on each route detail page.
-- Sitemap.xml + robots.txt (no `Sitemap:` line yet, no domain).
-- Root sets sitewide title/description, `og:site_name = "CreteTransfers"`.
+## 13. Build order
 
-## 10. Out of scope (Phase 2+)
+1. `contact_messages` migration
+2. Expand `src/data/routes.ts` to 30 routes + add regions data + services data
+3. Design directions for hero + booking widget → you pick one
+4. New design system tokens (refined palette, animated map utilities, sticky-widget)
+5. Rebuild `__root.tsx` shell (new header with mega-menu for Routes/Regions, new footer)
+6. Homepage rebuild (all sections above)
+7. Route detail template (upgrade existing `routes.$slug.tsx`) + routes hub
+8. Region hub + region detail
+9. Services hub + 6 service pages
+10. Fleet hub + 4 class pages
+11. About / How-it-works / FAQ / Contact / Reviews
+12. B2B: for-hotels, for-drivers (share contact form component)
+13. Legal: 5 pages
+14. Dynamic sitemap + robots
+15. SEO pass: verify per-route head(), JSON-LD, canonicals
 
-Driver profile pages, /for-hotels, /for-drivers, Greek-language mirror, flight-tracking integration, WhatsApp automation, dispatch/driver app, blog, region hubs beyond map visual, admin dashboard.
+Roughly ~55 new/edited files. I'll batch aggressively.
 
-## Build order
-
-1. Enable Lovable Cloud + create `bookings` table.
-2. Run `recommend_payment_provider` → `enable_stripe_payments`.
-3. Design system tokens + fonts + shared layout (nav/footer in `__root.tsx`).
-4. Seed data + pricing server fn.
-5. Homepage.
-6. Routes hub + dynamic route detail page.
-7. Fleet page.
-8. Booking flow (3 steps) + Stripe Checkout server fn.
-9. Stripe webhook + success/cancel pages.
-10. SEO metadata + JSON-LD + sitemap/robots.
-
-Approve to start, or tell me what to change.
+Approve to start, or tell me what to change (drop scope, swap routes, different visual direction, skip B2B, etc.).

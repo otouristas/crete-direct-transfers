@@ -9,16 +9,64 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as FleetRouteImport } from './routes/fleet'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as ForHotelsRouteImport } from './routes/for-hotels'
+import { Route as ForDriversRouteImport } from './routes/for-drivers'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BookRouteImport } from './routes/book'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as RoutesIndexRouteImport } from './routes/routes.index'
+import { Route as RegionsIndexRouteImport } from './routes/regions.index'
+import { Route as FleetIndexRouteImport } from './routes/fleet.index'
+import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as RoutesSlugRouteImport } from './routes/routes.$slug'
+import { Route as RegionsSlugRouteImport } from './routes/regions.$slug'
+import { Route as LegalTermsRouteImport } from './routes/legal.terms'
+import { Route as LegalRefundsRouteImport } from './routes/legal.refunds'
+import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
+import { Route as LegalImprintRouteImport } from './routes/legal.imprint'
+import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
+import { Route as FleetClassRouteImport } from './routes/fleet.$class'
 import { Route as BookSuccessRouteImport } from './routes/book.success'
 
-const FleetRoute = FleetRouteImport.update({
-  id: '/fleet',
-  path: '/fleet',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForHotelsRoute = ForHotelsRouteImport.update({
+  id: '/for-hotels',
+  path: '/for-hotels',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForDriversRoute = ForDriversRouteImport.update({
+  id: '/for-drivers',
+  path: '/for-drivers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookRoute = BookRouteImport.update({
@@ -26,9 +74,19 @@ const BookRoute = BookRouteImport.update({
   path: '/book',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RoutesIndexRoute = RoutesIndexRouteImport.update({
@@ -36,9 +94,59 @@ const RoutesIndexRoute = RoutesIndexRouteImport.update({
   path: '/routes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegionsIndexRoute = RegionsIndexRouteImport.update({
+  id: '/regions/',
+  path: '/regions/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FleetIndexRoute = FleetIndexRouteImport.update({
+  id: '/fleet/',
+  path: '/fleet/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesSlugRoute = ServicesSlugRouteImport.update({
+  id: '/services/$slug',
+  path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoutesSlugRoute = RoutesSlugRouteImport.update({
   id: '/routes/$slug',
   path: '/routes/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegionsSlugRoute = RegionsSlugRouteImport.update({
+  id: '/regions/$slug',
+  path: '/regions/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalTermsRoute = LegalTermsRouteImport.update({
+  id: '/legal/terms',
+  path: '/legal/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalRefundsRoute = LegalRefundsRouteImport.update({
+  id: '/legal/refunds',
+  path: '/legal/refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
+  id: '/legal/privacy',
+  path: '/legal/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalImprintRoute = LegalImprintRouteImport.update({
+  id: '/legal/imprint',
+  path: '/legal/imprint',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegalCookiesRoute = LegalCookiesRouteImport.update({
+  id: '/legal/cookies',
+  path: '/legal/cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FleetClassRoute = FleetClassRouteImport.update({
+  id: '/fleet/$class',
+  path: '/fleet/$class',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BookSuccessRoute = BookSuccessRouteImport.update({
@@ -49,65 +157,239 @@ const BookSuccessRoute = BookSuccessRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/book': typeof BookRouteWithChildren
-  '/fleet': typeof FleetRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/for-drivers': typeof ForDriversRoute
+  '/for-hotels': typeof ForHotelsRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/reviews': typeof ReviewsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/book/success': typeof BookSuccessRoute
+  '/fleet/$class': typeof FleetClassRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/imprint': typeof LegalImprintRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/refunds': typeof LegalRefundsRoute
+  '/legal/terms': typeof LegalTermsRoute
+  '/regions/$slug': typeof RegionsSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/fleet/': typeof FleetIndexRoute
+  '/regions/': typeof RegionsIndexRoute
   '/routes/': typeof RoutesIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/book': typeof BookRouteWithChildren
-  '/fleet': typeof FleetRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/for-drivers': typeof ForDriversRoute
+  '/for-hotels': typeof ForHotelsRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/reviews': typeof ReviewsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/book/success': typeof BookSuccessRoute
+  '/fleet/$class': typeof FleetClassRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/imprint': typeof LegalImprintRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/refunds': typeof LegalRefundsRoute
+  '/legal/terms': typeof LegalTermsRoute
+  '/regions/$slug': typeof RegionsSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/fleet': typeof FleetIndexRoute
+  '/regions': typeof RegionsIndexRoute
   '/routes': typeof RoutesIndexRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/book': typeof BookRouteWithChildren
-  '/fleet': typeof FleetRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/for-drivers': typeof ForDriversRoute
+  '/for-hotels': typeof ForHotelsRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/reviews': typeof ReviewsRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/book/success': typeof BookSuccessRoute
+  '/fleet/$class': typeof FleetClassRoute
+  '/legal/cookies': typeof LegalCookiesRoute
+  '/legal/imprint': typeof LegalImprintRoute
+  '/legal/privacy': typeof LegalPrivacyRoute
+  '/legal/refunds': typeof LegalRefundsRoute
+  '/legal/terms': typeof LegalTermsRoute
+  '/regions/$slug': typeof RegionsSlugRoute
   '/routes/$slug': typeof RoutesSlugRoute
+  '/services/$slug': typeof ServicesSlugRoute
+  '/fleet/': typeof FleetIndexRoute
+  '/regions/': typeof RegionsIndexRoute
   '/routes/': typeof RoutesIndexRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/book'
-    | '/fleet'
+    | '/contact'
+    | '/faq'
+    | '/for-drivers'
+    | '/for-hotels'
+    | '/how-it-works'
+    | '/reviews'
+    | '/sitemap.xml'
     | '/book/success'
+    | '/fleet/$class'
+    | '/legal/cookies'
+    | '/legal/imprint'
+    | '/legal/privacy'
+    | '/legal/refunds'
+    | '/legal/terms'
+    | '/regions/$slug'
     | '/routes/$slug'
+    | '/services/$slug'
+    | '/fleet/'
+    | '/regions/'
     | '/routes/'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/book' | '/fleet' | '/book/success' | '/routes/$slug' | '/routes'
+  to:
+    | '/'
+    | '/about'
+    | '/book'
+    | '/contact'
+    | '/faq'
+    | '/for-drivers'
+    | '/for-hotels'
+    | '/how-it-works'
+    | '/reviews'
+    | '/sitemap.xml'
+    | '/book/success'
+    | '/fleet/$class'
+    | '/legal/cookies'
+    | '/legal/imprint'
+    | '/legal/privacy'
+    | '/legal/refunds'
+    | '/legal/terms'
+    | '/regions/$slug'
+    | '/routes/$slug'
+    | '/services/$slug'
+    | '/fleet'
+    | '/regions'
+    | '/routes'
+    | '/services'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/book'
-    | '/fleet'
+    | '/contact'
+    | '/faq'
+    | '/for-drivers'
+    | '/for-hotels'
+    | '/how-it-works'
+    | '/reviews'
+    | '/sitemap.xml'
     | '/book/success'
+    | '/fleet/$class'
+    | '/legal/cookies'
+    | '/legal/imprint'
+    | '/legal/privacy'
+    | '/legal/refunds'
+    | '/legal/terms'
+    | '/regions/$slug'
     | '/routes/$slug'
+    | '/services/$slug'
+    | '/fleet/'
+    | '/regions/'
     | '/routes/'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   BookRoute: typeof BookRouteWithChildren
-  FleetRoute: typeof FleetRoute
+  ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
+  ForDriversRoute: typeof ForDriversRoute
+  ForHotelsRoute: typeof ForHotelsRoute
+  HowItWorksRoute: typeof HowItWorksRoute
+  ReviewsRoute: typeof ReviewsRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  FleetClassRoute: typeof FleetClassRoute
+  LegalCookiesRoute: typeof LegalCookiesRoute
+  LegalImprintRoute: typeof LegalImprintRoute
+  LegalPrivacyRoute: typeof LegalPrivacyRoute
+  LegalRefundsRoute: typeof LegalRefundsRoute
+  LegalTermsRoute: typeof LegalTermsRoute
+  RegionsSlugRoute: typeof RegionsSlugRoute
   RoutesSlugRoute: typeof RoutesSlugRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
+  FleetIndexRoute: typeof FleetIndexRoute
+  RegionsIndexRoute: typeof RegionsIndexRoute
   RoutesIndexRoute: typeof RoutesIndexRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/fleet': {
-      id: '/fleet'
-      path: '/fleet'
-      fullPath: '/fleet'
-      preLoaderRoute: typeof FleetRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-hotels': {
+      id: '/for-hotels'
+      path: '/for-hotels'
+      fullPath: '/for-hotels'
+      preLoaderRoute: typeof ForHotelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-drivers': {
+      id: '/for-drivers'
+      path: '/for-drivers'
+      fullPath: '/for-drivers'
+      preLoaderRoute: typeof ForDriversRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book': {
@@ -117,11 +399,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/routes/': {
@@ -131,11 +427,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoutesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/regions/': {
+      id: '/regions/'
+      path: '/regions'
+      fullPath: '/regions/'
+      preLoaderRoute: typeof RegionsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet/': {
+      id: '/fleet/'
+      path: '/fleet'
+      fullPath: '/fleet/'
+      preLoaderRoute: typeof FleetIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/$slug': {
+      id: '/services/$slug'
+      path: '/services/$slug'
+      fullPath: '/services/$slug'
+      preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/routes/$slug': {
       id: '/routes/$slug'
       path: '/routes/$slug'
       fullPath: '/routes/$slug'
       preLoaderRoute: typeof RoutesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regions/$slug': {
+      id: '/regions/$slug'
+      path: '/regions/$slug'
+      fullPath: '/regions/$slug'
+      preLoaderRoute: typeof RegionsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/terms': {
+      id: '/legal/terms'
+      path: '/legal/terms'
+      fullPath: '/legal/terms'
+      preLoaderRoute: typeof LegalTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/refunds': {
+      id: '/legal/refunds'
+      path: '/legal/refunds'
+      fullPath: '/legal/refunds'
+      preLoaderRoute: typeof LegalRefundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/privacy': {
+      id: '/legal/privacy'
+      path: '/legal/privacy'
+      fullPath: '/legal/privacy'
+      preLoaderRoute: typeof LegalPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/imprint': {
+      id: '/legal/imprint'
+      path: '/legal/imprint'
+      fullPath: '/legal/imprint'
+      preLoaderRoute: typeof LegalImprintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legal/cookies': {
+      id: '/legal/cookies'
+      path: '/legal/cookies'
+      fullPath: '/legal/cookies'
+      preLoaderRoute: typeof LegalCookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet/$class': {
+      id: '/fleet/$class'
+      path: '/fleet/$class'
+      fullPath: '/fleet/$class'
+      preLoaderRoute: typeof FleetClassRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/book/success': {
@@ -160,21 +526,29 @@ const BookRouteWithChildren = BookRoute._addFileChildren(BookRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   BookRoute: BookRouteWithChildren,
-  FleetRoute: FleetRoute,
+  ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
+  ForDriversRoute: ForDriversRoute,
+  ForHotelsRoute: ForHotelsRoute,
+  HowItWorksRoute: HowItWorksRoute,
+  ReviewsRoute: ReviewsRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  FleetClassRoute: FleetClassRoute,
+  LegalCookiesRoute: LegalCookiesRoute,
+  LegalImprintRoute: LegalImprintRoute,
+  LegalPrivacyRoute: LegalPrivacyRoute,
+  LegalRefundsRoute: LegalRefundsRoute,
+  LegalTermsRoute: LegalTermsRoute,
+  RegionsSlugRoute: RegionsSlugRoute,
   RoutesSlugRoute: RoutesSlugRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
+  FleetIndexRoute: FleetIndexRoute,
+  RegionsIndexRoute: RegionsIndexRoute,
   RoutesIndexRoute: RoutesIndexRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
