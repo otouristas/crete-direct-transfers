@@ -1,0 +1,21 @@
+// Cloudflare Workers deploy config.
+// `wrangler deploy` runs build.command below; the build (nitro) merges this
+// file into .output/server/wrangler.json and writes a redirect at
+// .wrangler/deploy/config.json which wrangler then follows for the upload.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "crete-direct-transfers",
+  "compatibility_date": "2026-07-10",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": ".output/server/index.mjs",
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".output/public"
+  },
+  "build": {
+    "command": "bun run build"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
