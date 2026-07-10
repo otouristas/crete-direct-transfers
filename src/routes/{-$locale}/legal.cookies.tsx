@@ -9,8 +9,8 @@ export const Route = createFileRoute("/{-$locale}/legal/cookies")({
     return buildHead({
       locale,
       path: "/legal/cookies",
-      title: "Cookie Policy | CreteTransfers",
-      description: "How CreteTransfers uses cookies and similar technologies.",
+      title: "Cookie Policy | TransferAround",
+      description: "How TransferAround uses cookies and similar technologies.",
     });
   },
   component: () => (

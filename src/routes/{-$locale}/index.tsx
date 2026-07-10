@@ -6,7 +6,7 @@ import { REVIEWS, AVG_RATING } from "@/data/reviews";
 import { FAQ_GROUPS } from "@/data/faqs";
 import { BookingWidget } from "@/components/booking-widget";
 import { FaqAccordion } from "@/components/faq-accordion";
-import { CreteMap } from "@/components/crete-map";
+import { CreteMapReal } from "@/components/crete-map-real";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { StatsBand } from "@/components/sections/stats-band";
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/{-$locale}/")({
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "@id": `${SITE_URL}/#business`,
-        name: "CreteTransfers",
+        name: "TransferAround",
         url: SITE_URL,
         description: "Fixed-price private transfers across Crete.",
         areaServed: { "@type": "Place", name: "Crete, Greece" },
@@ -119,7 +119,7 @@ function HomePage() {
       <section className="border-y border-border bg-muted/60">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
           <SectionHeading
-            eyebrow="CreteTransfers"
+            eyebrow="TransferAround"
             title={t.advantages.title}
             subtitle={t.advantages.subtitle}
           />
@@ -213,8 +213,8 @@ function HomePage() {
               ))}
             </div>
           </div>
-          <div className="aspect-[4/3] rounded-2xl bg-card p-6">
-            <CreteMap />
+          <div className="aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-primary-foreground/15">
+            <CreteMapReal />
           </div>
         </div>
       </section>

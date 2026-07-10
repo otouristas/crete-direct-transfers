@@ -9,7 +9,7 @@ export const Route = createFileRoute("/{-$locale}/services/")({
     return buildHead({
       locale,
       path: "/services",
-      title: "Transfer Services in Crete | Airport, Port, Tours · CreteTransfers",
+      title: "Transfer Services in Crete | Airport, Port, Tours · TransferAround",
       description:
         "Airport transfers, port pickups, private day tours, long-distance and group transfers — all fixed-price with licensed Cretan drivers.",
     });

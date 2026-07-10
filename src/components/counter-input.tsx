@@ -14,7 +14,7 @@ export function CounterInput({
   label: string;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-input bg-transparent px-3 py-2">
+    <div className="flex min-h-[46px] items-center justify-between rounded-xl border border-input bg-card px-3.5 py-2.5">
       <span className="text-sm text-foreground/90">{label}</span>
       <div className="flex items-center gap-2">
         <button

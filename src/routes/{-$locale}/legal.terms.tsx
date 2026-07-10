@@ -9,14 +9,14 @@ export const Route = createFileRoute("/{-$locale}/legal/terms")({
     return buildHead({
       locale,
       path: "/legal/terms",
-      title: "Terms of Service | CreteTransfers",
-      description: "Terms and conditions for booking a transfer with CreteTransfers.",
+      title: "Terms of Service | TransferAround",
+      description: "Terms and conditions for booking a transfer with TransferAround.",
     });
   },
   component: () => (
     <LegalPage title="Terms of Service" updated="4 July 2026">
       <p>
-        These terms govern your use of CreteTransfers (the "Service") and any transfer you book
+        These terms govern your use of TransferAround (the "Service") and any transfer you book
         through it.
       </p>
       <h2>1. Booking &amp; contract</h2>

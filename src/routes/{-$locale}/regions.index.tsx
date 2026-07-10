@@ -10,7 +10,7 @@ export const Route = createFileRoute("/{-$locale}/regions/")({
     return buildHead({
       locale,
       path: "/regions",
-      title: "Crete Regions | Chania, Rethymno, Heraklion, Lasithi Transfers · CreteTransfers",
+      title: "Crete Regions | Chania, Rethymno, Heraklion, Lasithi Transfers · TransferAround",
       description:
         "Fixed-price transfers across all four regions of Crete. Explore Chania, Rethymno, Heraklion and Lasithi with a licensed local driver.",
     });

@@ -17,7 +17,7 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
     if (!loaderData) {
       return {
         meta: [
-          { title: "Service not found | CreteTransfers" },
+          { title: "Service not found | TransferAround" },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -26,14 +26,14 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
     return buildHead({
       locale,
       path: `/services/${params.slug}`,
-      title: `${s.name} in Crete | Fixed Price · CreteTransfers`,
+      title: `${s.name} in Crete | Fixed Price · TransferAround`,
       description: s.tagline,
       ogImage: s.heroImage,
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "Service",
         serviceType: s.name,
-        provider: { "@type": "LocalBusiness", name: "CreteTransfers" },
+        provider: { "@type": "LocalBusiness", name: "TransferAround" },
         areaServed: "Crete, Greece",
         description: s.body,
       },

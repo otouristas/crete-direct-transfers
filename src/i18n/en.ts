@@ -142,7 +142,7 @@ export const en = {
     distance: (km: number, min: number) => `${km} km · ${min} min · Fixed price`,
   },
   home: {
-    metaTitle: "CreteTransfers — Fixed-Price Airport & Port Transfers in Crete",
+    metaTitle: "TransferAround — Fixed-Price Airport & Port Transfers in Crete",
     metaDescription:
       "Fixed-price transfers across Crete. Licensed local drivers, flight-tracked pickups, free cancellation. Book Heraklion, Chania and port routes in minutes.",
     heroEyebrow: "Crete's fixed-price transfer network",
@@ -197,12 +197,12 @@ export const en = {
     bookClass: "Book this vehicle",
   },
   about: {
-    metaTitle: "About CreteTransfers | Fixed-Price, Local Drivers, One Island",
+    metaTitle: "About TransferAround | Fixed-Price, Local Drivers, One Island",
     metaDescription:
-      "CreteTransfers was built by locals to fix what's broken about airport transfers: bidding, surge pricing and no accountability. One island, fixed prices, licensed drivers.",
+      "TransferAround was built by locals to fix what's broken about airport transfers: bidding, surge pricing and no accountability. One island, fixed prices, licensed drivers.",
     eyebrow: "About us",
     title: "One island. Fixed prices. Local drivers.",
-    intro: "CreteTransfers exists because the transfer market on our island was broken.",
+    intro: "TransferAround exists because the transfer market on our island was broken.",
     valuesTitle: "What we stand for",
     value1Title: "Punctuality",
     value1Body: "Flight-tracked pickups and drivers who leave early, not on time.",
@@ -215,7 +215,7 @@ export const en = {
     ctaTitle: "See the difference on your next arrival",
   },
   contact: {
-    metaTitle: "Contact CreteTransfers | 24/7 Dispatch, Phone, Email",
+    metaTitle: "Contact TransferAround | 24/7 Dispatch, Phone, Email",
     metaDescription:
       "Get in touch with our 24/7 Crete transfer dispatch. Email, phone or contact form — booking questions, changes, last-minute pickups.",
     eyebrow: "Contact",
@@ -243,6 +243,8 @@ export const en = {
     phoneLabel: "Phone (WhatsApp preferred)",
     pickupAddress: "Pickup address / hotel",
     dropoffAddress: "Drop-off address / hotel",
+    pinOnMap: "Pin on map",
+    pinHint: "Click the map or drag the pin to your exact pickup spot.",
     returnFlightNumber: "Return flight number",
     notes: "Notes for the driver",
     notesPlaceholder: "Landing gate, baby seat position, extra stop address…",
@@ -270,14 +272,14 @@ export const en = {
   howItWorksPage: {
     metaTitle: "How It Works | Book a Crete Transfer in 3 Steps",
     metaDescription:
-      "Pick a fixed-price route, book in two minutes, meet your driver in arrivals. How CreteTransfers works, step by step.",
+      "Pick a fixed-price route, book in two minutes, meet your driver in arrivals. How TransferAround works, step by step.",
     eyebrow: "How it works",
     title: "From runway to resort, without the guesswork.",
   },
   reviewsPage: {
     metaTitle: "Reviews | 4.9-Rated Crete Transfers",
     metaDescription:
-      "Read what travellers say about CreteTransfers — 4.9 average across Google, Tripadvisor and direct reviews.",
+      "Read what travellers say about TransferAround — 4.9 average across Google, Tripadvisor and direct reviews.",
     eyebrow: "Reviews",
     title: "Travellers keep their word. So do we.",
     subtitle: "Every review below is from a completed transfer on Crete.",
@@ -293,7 +295,7 @@ export const en = {
     formTitle: "Partner with us",
   },
   forDrivers: {
-    metaTitle: "For Drivers | Join the CreteTransfers Network",
+    metaTitle: "For Drivers | Join the TransferAround Network",
     metaDescription:
       "Licensed driver on Crete? Join a network with fixed routes, fair pay and no bidding wars. Minimum three years of experience required.",
     eyebrow: "For drivers",
@@ -306,7 +308,7 @@ export const en = {
     eyebrow: "Legal",
     onThisPage: "On this page",
     companyDetails:
-      "Company details: CreteTransfers Ltd., Heraklion, Crete, Greece. VAT / GEMI details to be confirmed.",
+      "Company details: TransferAround Ltd., Heraklion, Crete, Greece. VAT / GEMI details to be confirmed.",
   },
   blog: {
     metaTitle: "Blog | Crete Travel & Transfer Guides",

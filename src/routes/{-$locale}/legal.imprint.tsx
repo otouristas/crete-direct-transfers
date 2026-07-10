@@ -9,19 +9,19 @@ export const Route = createFileRoute("/{-$locale}/legal/imprint")({
     return buildHead({
       locale,
       path: "/legal/imprint",
-      title: "Imprint | CreteTransfers",
-      description: "Company information and legal disclosures for CreteTransfers.",
+      title: "Imprint | TransferAround",
+      description: "Company information and legal disclosures for TransferAround.",
     });
   },
   component: () => (
     <LegalPage title="Imprint" updated="4 July 2026">
       <p>Legal entity operating this website:</p>
       <p>
-        <strong>CreteTransfers Ltd.</strong>
+        <strong>TransferAround Ltd.</strong>
         <br />
         Heraklion, Crete, Greece
         <br />
-        Email: hello@cretetransfers.example
+        Email: hello@transferaround.com
         <br />
         Phone: +30 28 1000 0000
       </p>
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/{-$locale}/legal/imprint")({
       </p>
       <h2>Content responsibility</h2>
       <p>
-        Content on this site is provided by CreteTransfers Ltd. External links are provided for
+        Content on this site is provided by TransferAround Ltd. External links are provided for
         reference; we take no responsibility for external content.
       </p>
       <h2>Dispute resolution</h2>

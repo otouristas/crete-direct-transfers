@@ -85,16 +85,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CreteTransfers — Fixed-Price Airport & Port Transfers in Crete" },
+      { title: "TransferAround — Fixed-Price Airport & Port Transfers in Crete" },
       {
         name: "description",
         content:
           "Fixed-price transfers across Crete. Licensed local drivers, no bidding, flight-tracked pickups. Book Heraklion, Chania and port routes in minutes.",
       },
-      { name: "author", content: "CreteTransfers" },
-      { property: "og:site_name", content: "CreteTransfers" },
+      { name: "author", content: "TransferAround" },
+      { property: "og:site_name", content: "TransferAround" },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "CreteTransfers — Fixed-Price Crete Transfers" },
+      { property: "og:title", content: "TransferAround — Fixed-Price Crete Transfers" },
       {
         property: "og:description",
         content:
@@ -104,6 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),

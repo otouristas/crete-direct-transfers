@@ -9,8 +9,8 @@ export const Route = createFileRoute("/{-$locale}/legal/refunds")({
     return buildHead({
       locale,
       path: "/legal/refunds",
-      title: "Refund Policy | CreteTransfers",
-      description: "Cancellation windows and refund terms for CreteTransfers bookings.",
+      title: "Refund Policy | TransferAround",
+      description: "Cancellation windows and refund terms for TransferAround bookings.",
     });
   },
   component: () => (
@@ -27,8 +27,8 @@ export const Route = createFileRoute("/{-$locale}/legal/refunds")({
       <h2>Cancelled or missed flights</h2>
       <p>
         If your flight is cancelled by the airline, forward the airline notification to{" "}
-        <a href="mailto:hello@cretetransfers.example" className="text-accent underline">
-          hello@cretetransfers.example
+        <a href="mailto:hello@transferaround.com" className="text-accent underline">
+          hello@transferaround.com
         </a>{" "}
         and we'll refund or rebook in full, at your choice.
       </p>

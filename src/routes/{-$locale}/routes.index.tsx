@@ -16,7 +16,7 @@ export const Route = createFileRoute("/{-$locale}/routes/")({
     return buildHead({
       locale,
       path: "/routes",
-      title: `All Crete Transfer Routes | ${ROUTES.length} Fixed-Price Routes · CreteTransfers`,
+      title: `All Crete Transfer Routes | ${ROUTES.length} Fixed-Price Routes · TransferAround`,
       description: `Browse ${ROUTES.length} fixed-price transfer routes across Crete — from Heraklion and Chania airports to every resort, port and villa. ${t.routesPages.indexSubtitle}`,
     });
   },

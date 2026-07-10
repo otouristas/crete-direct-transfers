@@ -89,7 +89,7 @@ export function BookingWidget({
         ))}
       </div>
 
-      <div className="mt-4 space-y-3.5">
+      <div className="mt-4 space-y-4">
         <Field label={t.widget.route}>
           <select
             value={routeSlug}
@@ -104,7 +104,7 @@ export function BookingWidget({
           </select>
         </Field>
 
-        <div className={cn("grid gap-3.5", tripType === "return" && "sm:grid-cols-2")}>
+        <div className={cn("grid gap-4", tripType === "return" && "sm:grid-cols-2")}>
           <Field label={t.widget.pickupDate}>
             <input
               type="datetime-local"
@@ -126,7 +126,7 @@ export function BookingWidget({
           )}
         </div>
 
-        <div className="grid gap-3.5 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <Field label={t.widget.vehicleClass}>
             <select
               value={vehicleClass}
@@ -150,7 +150,7 @@ export function BookingWidget({
           </Field>
         </div>
 
-        <div className="grid gap-2.5 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-3">
           <CounterInput label={t.widget.passengers} value={pax} onChange={setPax} min={1} max={8} />
           <CounterInput
             label={t.widget.checkedBags}
@@ -231,13 +231,23 @@ export function BookingWidget({
       <style>{`
         .widget-input {
           width: 100%;
-          background: transparent;
+          min-height: 46px;
+          background: var(--card);
           border: 1px solid var(--border);
           border-radius: 10px;
-          padding: 10px 12px;
+          padding: 12px 14px;
           font-size: 14px;
+          line-height: 1.3;
           outline: none;
           transition: border-color 0.15s;
+        }
+        select.widget-input {
+          appearance: none;
+          -webkit-appearance: none;
+          padding-right: 36px;
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 14px center;
         }
         .widget-input:focus { border-color: var(--accent); }
       `}</style>
@@ -251,7 +261,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <label className="text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
         {label}
       </label>
-      <div className="mt-1">{children}</div>
+      <div className="mt-1.5">{children}</div>
     </div>
   );
 }

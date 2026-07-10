@@ -12,7 +12,7 @@ export const Route = createFileRoute("/{-$locale}/book/success")({
     return buildHead({
       locale,
       path: "/book/success",
-      title: `${t.bookPage.successTitle} | CreteTransfers`,
+      title: `${t.bookPage.successTitle} | TransferAround`,
       description: t.bookPage.successBody,
       noindex: true,
     });

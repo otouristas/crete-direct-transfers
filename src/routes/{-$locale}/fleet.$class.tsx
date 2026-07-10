@@ -17,13 +17,13 @@ export const Route = createFileRoute("/{-$locale}/fleet/$class")({
     const locale = (params.locale ?? "en") as Locale;
     if (!loaderData)
       return {
-        meta: [{ title: "Not found | CreteTransfers" }, { name: "robots", content: "noindex" }],
+        meta: [{ title: "Not found | TransferAround" }, { name: "robots", content: "noindex" }],
       };
     const v = loaderData.vc;
     return buildHead({
       locale,
       path: `/fleet/${params.class}`,
-      title: `${v.label} Class | Crete Transfer Vehicle · CreteTransfers`,
+      title: `${v.label} Class | Crete Transfer Vehicle · TransferAround`,
       description: `${v.description} ${v.capacity}, ${v.bags}. Fixed-price ${v.label.toLowerCase()} transfers across Crete.`,
       ogImage: v.image,
     });

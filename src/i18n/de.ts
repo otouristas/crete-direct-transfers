@@ -144,7 +144,7 @@ export const de: Dict = {
     distance: (km: number, min: number) => `${km} km · ${min} Min. · Festpreis`,
   },
   home: {
-    metaTitle: "CreteTransfers — Flughafen- & Hafentransfers auf Kreta zum Festpreis",
+    metaTitle: "TransferAround — Flughafen- & Hafentransfers auf Kreta zum Festpreis",
     metaDescription:
       "Transfers zum Festpreis auf ganz Kreta. Lizenzierte lokale Fahrer, Flugverfolgung, kostenlose Stornierung. Heraklion, Chania und Häfen in Minuten buchen.",
     heroEyebrow: "Kretas Festpreis-Transfernetz",
@@ -200,12 +200,12 @@ export const de: Dict = {
     bookClass: "Dieses Fahrzeug buchen",
   },
   about: {
-    metaTitle: "Über CreteTransfers | Festpreise, lokale Fahrer, eine Insel",
+    metaTitle: "Über TransferAround | Festpreise, lokale Fahrer, eine Insel",
     metaDescription:
-      "CreteTransfers wurde von Einheimischen gegründet, um zu reparieren, was bei Transfers kaputt ist: Bieterwettkämpfe, schwankende Preise, fehlende Verantwortung.",
+      "TransferAround wurde von Einheimischen gegründet, um zu reparieren, was bei Transfers kaputt ist: Bieterwettkämpfe, schwankende Preise, fehlende Verantwortung.",
     eyebrow: "Über uns",
     title: "Eine Insel. Festpreise. Lokale Fahrer.",
-    intro: "CreteTransfers existiert, weil der Transfermarkt auf unserer Insel kaputt war.",
+    intro: "TransferAround existiert, weil der Transfermarkt auf unserer Insel kaputt war.",
     valuesTitle: "Wofür wir stehen",
     value1Title: "Pünktlichkeit",
     value1Body: "Flugverfolgung und Fahrer, die früh losfahren — nicht erst pünktlich.",
@@ -218,7 +218,7 @@ export const de: Dict = {
     ctaTitle: "Erleben Sie den Unterschied bei Ihrer nächsten Ankunft",
   },
   contact: {
-    metaTitle: "Kontakt CreteTransfers | Zentrale 24/7, Telefon, E-Mail",
+    metaTitle: "Kontakt TransferAround | Zentrale 24/7, Telefon, E-Mail",
     metaDescription:
       "Kontaktieren Sie unsere 24/7-Transferzentrale auf Kreta. E-Mail, Telefon oder Kontaktformular.",
     eyebrow: "Kontakt",
@@ -246,6 +246,8 @@ export const de: Dict = {
     phoneLabel: "Telefon (bevorzugt WhatsApp)",
     pickupAddress: "Abholadresse / Hotel",
     dropoffAddress: "Zieladresse / Hotel",
+    pinOnMap: "Auf Karte markieren",
+    pinHint: "Klicken Sie auf die Karte oder ziehen Sie den Pin an Ihren genauen Abholpunkt.",
     returnFlightNumber: "Flugnummer Rückflug",
     notes: "Hinweise für den Fahrer",
     notesPlaceholder: "Ankunftsgate, Kindersitz-Position, Adresse für Zwischenstopp…",
@@ -281,7 +283,7 @@ export const de: Dict = {
   reviewsPage: {
     metaTitle: "Bewertungen | Kreta-Transfers mit 4,9 Sternen",
     metaDescription:
-      "Lesen Sie, was Reisende über CreteTransfers sagen — 4,9 im Durchschnitt auf Google, Tripadvisor und direkt.",
+      "Lesen Sie, was Reisende über TransferAround sagen — 4,9 im Durchschnitt auf Google, Tripadvisor und direkt.",
     eyebrow: "Bewertungen",
     title: "Reisende halten Wort. Wir auch.",
     subtitle: "Jede Bewertung unten stammt von einem durchgeführten Transfer auf Kreta.",
@@ -297,7 +299,7 @@ export const de: Dict = {
     formTitle: "Partner werden",
   },
   forDrivers: {
-    metaTitle: "Für Fahrer | Werden Sie Teil des CreteTransfers-Netzwerks",
+    metaTitle: "Für Fahrer | Werden Sie Teil des TransferAround-Netzwerks",
     metaDescription:
       "Lizenzierter Fahrer auf Kreta? Festgelegte Strecken, faire Bezahlung, keine Bieterwettkämpfe. Mindestens drei Jahre Erfahrung erforderlich.",
     eyebrow: "Für Fahrer",
@@ -310,7 +312,7 @@ export const de: Dict = {
     eyebrow: "Rechtliches",
     onThisPage: "Auf dieser Seite",
     companyDetails:
-      "Firmendaten: CreteTransfers Ltd., Heraklion, Kreta, Griechenland. USt-IdNr. / GEMI folgen.",
+      "Firmendaten: TransferAround Ltd., Heraklion, Kreta, Griechenland. USt-IdNr. / GEMI folgen.",
   },
   blog: {
     metaTitle: "Blog | Reise- & Transferguides für Kreta",

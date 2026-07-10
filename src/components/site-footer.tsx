@@ -3,6 +3,7 @@ import { Mail, Phone, Star } from "lucide-react";
 import { useT } from "@/i18n";
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, SITE_NAME } from "@/lib/site";
 import { AVG_RATING } from "@/data/reviews";
+import { Logo } from "@/components/logo";
 
 const TOP_ROUTES = [
   { label: "Heraklion Airport → Elounda", slug: "heraklion-airport-to-elounda" },
@@ -19,11 +20,8 @@ export function SiteFooter() {
     <footer className="bg-primary text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-1">
-          <Link to="/{-$locale}" className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-foreground/10 ring-1 ring-primary-foreground/20">
-              <span className="font-display text-lg leading-none text-accent">C</span>
-            </span>
-            <span className="font-display text-lg">{SITE_NAME}</span>
+          <Link to="/{-$locale}" className="flex items-center">
+            <Logo dark />
           </Link>
           <p className="mt-4 text-sm leading-relaxed text-primary-foreground/70">
             {t.footer.tagline}

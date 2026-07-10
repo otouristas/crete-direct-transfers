@@ -10,7 +10,7 @@ export const Route = createFileRoute("/{-$locale}/fleet/")({
     return buildHead({
       locale,
       path: "/fleet",
-      title: "Our Fleet | Economy to Luxury, All Licensed · CreteTransfers",
+      title: "Our Fleet | Economy to Luxury, All Licensed · TransferAround",
       description:
         "Four vehicle classes — Economy, Comfort, Minivan and Luxury. All under seven years old, licensed and insured, with fixed pricing.",
     });

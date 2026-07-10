@@ -23,6 +23,10 @@ export type Database = {
           notes: string | null;
           passengers: number;
           pickup_at: string;
+          pickup_address: string | null;
+          pickup_point: Json | null;
+          dropoff_address: string | null;
+          dropoff_point: Json | null;
           price_cents: number;
           return_at: string | null;
           return_flight_number: string | null;
@@ -45,6 +49,10 @@ export type Database = {
           notes?: string | null;
           passengers: number;
           pickup_at: string;
+          pickup_address?: string | null;
+          pickup_point?: Json | null;
+          dropoff_address?: string | null;
+          dropoff_point?: Json | null;
           price_cents: number;
           return_at?: string | null;
           return_flight_number?: string | null;
@@ -67,6 +75,10 @@ export type Database = {
           notes?: string | null;
           passengers?: number;
           pickup_at?: string;
+          pickup_address?: string | null;
+          pickup_point?: Json | null;
+          dropoff_address?: string | null;
+          dropoff_point?: Json | null;
           price_cents?: number;
           return_at?: string | null;
           return_flight_number?: string | null;

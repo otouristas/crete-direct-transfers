@@ -5,9 +5,10 @@ import { ROUTES, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { quote, formatEur, bagCapacity, type Extras, type TripType } from "@/lib/pricing";
 import { supabase } from "@/integrations/supabase/client";
 import { CounterInput } from "@/components/counter-input";
+import { LocationPicker, type PickedLocation } from "@/components/location-picker";
 import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
-import { Info } from "lucide-react";
+import { Info, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const searchSchema = z.object({
@@ -63,6 +64,11 @@ function BookPage() {
   const [bagsChecked, setBagsChecked] = useState(search.bagsChecked ?? 2);
   const [bagsCabin, setBagsCabin] = useState(search.bagsCabin ?? 2);
   const [extras, setExtras] = useState<Extras>({});
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [dropoffAddress, setDropoffAddress] = useState("");
+  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(null);
+  const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(null);
+  const [openPicker, setOpenPicker] = useState<"pickup" | "dropoff" | null>(null);
 
   const [details, setDetails] = useState({
     customer_name: "",
@@ -140,6 +146,10 @@ function BookPage() {
       return_flight_number: parsed.data.return_flight_number || null,
       bags_checked: bagsChecked,
       bags_cabin: bagsCabin,
+      pickup_address: pickupAddress.trim() || null,
+      dropoff_address: dropoffAddress.trim() || null,
+      pickup_point: pickupPoint ?? null,
+      dropoff_point: dropoffPoint ?? null,
     };
 
     let { data, error } = await supabase
@@ -215,6 +225,67 @@ function BookPage() {
                     ))}
                   </select>
                 </Field>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  {[
+                    {
+                      key: "pickup" as const,
+                      label: t.bookPage.pickupAddress,
+                      value: pickupAddress,
+                      setValue: setPickupAddress,
+                      point: pickupPoint,
+                      setPoint: setPickupPoint,
+                    },
+                    {
+                      key: "dropoff" as const,
+                      label: t.bookPage.dropoffAddress,
+                      value: dropoffAddress,
+                      setValue: setDropoffAddress,
+                      point: dropoffPoint,
+                      setPoint: setDropoffPoint,
+                    },
+                  ].map((loc) => (
+                    <Field key={loc.key} label={`${loc.label} (${t.common.optional})`}>
+                      <input
+                        className="input"
+                        value={loc.value}
+                        onChange={(e) => loc.setValue(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setOpenPicker(openPicker === loc.key ? null : loc.key)}
+                        className={cn(
+                          "mt-2 inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition",
+                          openPicker === loc.key || loc.point
+                            ? "bg-accent/15 text-accent-deep"
+                            : "bg-muted text-muted-foreground hover:text-foreground",
+                        )}
+                      >
+                        <MapPin className="h-3.5 w-3.5" />
+                        {t.bookPage.pinOnMap}
+                        {loc.point && " ✓"}
+                      </button>
+                    </Field>
+                  ))}
+                </div>
+                {openPicker && (
+                  <div>
+                    <LocationPicker
+                      key={openPicker}
+                      value={openPicker === "pickup" ? pickupPoint : dropoffPoint}
+                      onPick={(point, address) => {
+                        if (openPicker === "pickup") {
+                          setPickupPoint(point);
+                          setPickupAddress(address);
+                        } else {
+                          setDropoffPoint(point);
+                          setDropoffAddress(address);
+                        }
+                      }}
+                    />
+                    <p className="mt-2 text-xs text-muted-foreground">{t.bookPage.pinHint}</p>
+                  </div>
+                )}
 
                 <Field label={t.widget.vehicleClass}>
                   <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
@@ -437,12 +508,19 @@ function BookPage() {
       <style>{`
         .input {
           width: 100%;
-          background: transparent;
+          min-height: 46px;
+          background: var(--card);
           border: 1px solid var(--border);
           border-radius: 10px;
-          padding: 10px 12px;
+          padding: 12px 14px;
           font-size: 15px;
+          line-height: 1.3;
           outline: none;
+        }
+        select.input {
+          appearance: none;
+          -webkit-appearance: none;
+          padding-right: 36px;
         }
         .input:focus { border-color: var(--accent); }
       `}</style>

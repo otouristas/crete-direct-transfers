@@ -17,7 +17,7 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
     if (!loaderData) {
       return {
         meta: [
-          { title: "Post not found | CreteTransfers" },
+          { title: "Post not found | TransferAround" },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
     return buildHead({
       locale,
       path,
-      title: `${p.title} · CreteTransfers Blog`,
+      title: `${p.title} · TransferAround Blog`,
       description: p.description,
       ogImage: p.heroImage,
       jsonLd: {
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
             datePublished: p.publishedAt,
             dateModified: p.updatedAt ?? p.publishedAt,
             author: { "@type": "Person", name: p.author.name },
-            publisher: { "@type": "Organization", name: "CreteTransfers", url: SITE_URL },
+            publisher: { "@type": "Organization", name: "TransferAround", url: SITE_URL },
             mainEntityOfPage: `${SITE_URL}${path}`,
           },
           {

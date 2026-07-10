@@ -20,7 +20,7 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
     if (!loaderData) {
       return {
         meta: [
-          { title: "Route not found | CreteTransfers" },
+          { title: "Route not found | TransferAround" },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -43,7 +43,7 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
     return buildHead({
       locale,
       path,
-      title: `${r.from} to ${r.to} Transfer | Fixed Price ${price} · CreteTransfers`,
+      title: `${r.from} to ${r.to} Transfer | Fixed Price ${price} · TransferAround`,
       description: `Fixed-price transfer from ${r.from} to ${r.to}. ${r.durationMin} min, ${r.distanceKm} km. Licensed local drivers, flight tracked. From ${price}.`,
       ogImage: r.heroImage,
       jsonLd: {
@@ -52,7 +52,7 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
           {
             "@type": "TaxiService",
             name: `${r.from} to ${r.to} Transfer`,
-            provider: { "@type": "LocalBusiness", name: "CreteTransfers" },
+            provider: { "@type": "LocalBusiness", name: "TransferAround" },
             areaServed: "Crete, Greece",
             offers: { "@type": "Offer", price: q?.totalEur, priceCurrency: "EUR" },
           },

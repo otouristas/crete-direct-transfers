@@ -9,8 +9,8 @@ export const Route = createFileRoute("/{-$locale}/legal/privacy")({
     return buildHead({
       locale,
       path: "/legal/privacy",
-      title: "Privacy Policy | CreteTransfers",
-      description: "How CreteTransfers collects, uses and protects your personal data.",
+      title: "Privacy Policy | TransferAround",
+      description: "How TransferAround collects, uses and protects your personal data.",
     });
   },
   component: () => (
@@ -49,8 +49,8 @@ export const Route = createFileRoute("/{-$locale}/legal/privacy")({
       <p>
         Under GDPR you may request access to, correction of, or deletion of your personal data.
         Email{" "}
-        <a href="mailto:hello@cretetransfers.example" className="text-accent underline">
-          hello@cretetransfers.example
+        <a href="mailto:hello@transferaround.com" className="text-accent underline">
+          hello@transferaround.com
         </a>
         .
       </p>

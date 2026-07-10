@@ -17,7 +17,7 @@ export const Route = createFileRoute("/{-$locale}/regions/$slug")({
     if (!loaderData) {
       return {
         meta: [
-          { title: "Region not found | CreteTransfers" },
+          { title: "Region not found | TransferAround" },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/{-$locale}/regions/$slug")({
     return buildHead({
       locale,
       path: `/regions/${params.slug}`,
-      title: `${r.name} Transfers | Fixed-Price Transfers in ${r.name}, Crete · CreteTransfers`,
+      title: `${r.name} Transfers | Fixed-Price Transfers in ${r.name}, Crete · TransferAround`,
       description: `${r.headline} Fixed-price transfers to every hotel and town in ${r.name}. Licensed local drivers.`,
       ogImage: r.heroImage,
       jsonLd: {
