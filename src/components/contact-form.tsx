@@ -21,7 +21,13 @@ export function ContactForm({
   submitLabel?: string;
   placeholder?: string;
 }) {
-  const [values, setValues] = useState({ name: "", email: "", phone: "", company: "", message: "" });
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    message: "",
+  });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -58,7 +64,7 @@ export function ContactForm({
     return (
       <div className="rounded-2xl bg-primary text-primary-foreground p-8">
         <div className="text-xs uppercase tracking-widest text-accent">Message sent</div>
-        <div className="mt-2 font-serif text-2xl">Thank you.</div>
+        <div className="mt-2 font-display text-2xl">Thank you.</div>
         <p className="mt-3 text-primary-foreground/80 text-sm">
           We reply within a few hours during Crete business hours (08:00 – 22:00 EET).
         </p>
@@ -76,19 +82,36 @@ export function ContactForm({
     <form onSubmit={submit} className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Name" error={errors.name}>
-          <input className="cf-input" value={values.name} onChange={(e) => setValues({ ...values, name: e.target.value })} />
+          <input
+            className="cf-input"
+            value={values.name}
+            onChange={(e) => setValues({ ...values, name: e.target.value })}
+          />
         </Field>
         <Field label="Email" error={errors.email}>
-          <input type="email" className="cf-input" value={values.email} onChange={(e) => setValues({ ...values, email: e.target.value })} />
+          <input
+            type="email"
+            className="cf-input"
+            value={values.email}
+            onChange={(e) => setValues({ ...values, email: e.target.value })}
+          />
         </Field>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
         <Field label="Phone (optional)" error={errors.phone}>
-          <input className="cf-input" value={values.phone} onChange={(e) => setValues({ ...values, phone: e.target.value })} />
+          <input
+            className="cf-input"
+            value={values.phone}
+            onChange={(e) => setValues({ ...values, phone: e.target.value })}
+          />
         </Field>
         {showCompany && (
           <Field label="Hotel / company (optional)" error={errors.company}>
-            <input className="cf-input" value={values.company} onChange={(e) => setValues({ ...values, company: e.target.value })} />
+            <input
+              className="cf-input"
+              value={values.company}
+              onChange={(e) => setValues({ ...values, company: e.target.value })}
+            />
           </Field>
         )}
       </div>
@@ -106,7 +129,7 @@ export function ContactForm({
       <button
         type="submit"
         disabled={state === "sending"}
-        className="rounded-full bg-accent px-6 py-3 text-accent-foreground text-sm hover:opacity-90 disabled:opacity-50"
+        className="rounded-xl bg-accent px-6 py-3 text-accent-foreground text-sm hover:opacity-90 disabled:opacity-50"
       >
         {state === "sending" ? "Sending…" : submitLabel}
       </button>
@@ -115,22 +138,32 @@ export function ContactForm({
         .cf-input {
           width: 100%;
           background: transparent;
-          border: 1px solid oklch(0.88 0.01 85);
+          border: 1px solid var(--border);
           border-radius: 10px;
           padding: 11px 13px;
           font-size: 15px;
           outline: none;
         }
-        .cf-input:focus { border-color: oklch(0.58 0.14 42); }
+        .cf-input:focus { border-color: var(--accent); }
       `}</style>
     </form>
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <label className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium">{label}</label>
+      <label className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground font-medium">
+        {label}
+      </label>
       <div className="mt-1">{children}</div>
       {error && <div className="mt-1 text-xs text-destructive">{error}</div>}
     </div>

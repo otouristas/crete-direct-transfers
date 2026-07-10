@@ -10,335 +10,373 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ReviewsRouteImport } from './routes/reviews'
-import { Route as HowItWorksRouteImport } from './routes/how-it-works'
-import { Route as ForHotelsRouteImport } from './routes/for-hotels'
-import { Route as ForDriversRouteImport } from './routes/for-drivers'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as BookRouteImport } from './routes/book'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ServicesIndexRouteImport } from './routes/services.index'
-import { Route as RoutesIndexRouteImport } from './routes/routes.index'
-import { Route as RegionsIndexRouteImport } from './routes/regions.index'
-import { Route as FleetIndexRouteImport } from './routes/fleet.index'
-import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
-import { Route as RoutesSlugRouteImport } from './routes/routes.$slug'
-import { Route as RegionsSlugRouteImport } from './routes/regions.$slug'
-import { Route as LegalTermsRouteImport } from './routes/legal.terms'
-import { Route as LegalRefundsRouteImport } from './routes/legal.refunds'
-import { Route as LegalPrivacyRouteImport } from './routes/legal.privacy'
-import { Route as LegalImprintRouteImport } from './routes/legal.imprint'
-import { Route as LegalCookiesRouteImport } from './routes/legal.cookies'
-import { Route as FleetClassRouteImport } from './routes/fleet.$class'
-import { Route as BookSuccessRouteImport } from './routes/book.success'
+import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
+import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
+import { Route as Char123LocaleChar125ReviewsRouteImport } from './routes/{-$locale}/reviews'
+import { Route as Char123LocaleChar125HowItWorksRouteImport } from './routes/{-$locale}/how-it-works'
+import { Route as Char123LocaleChar125ForHotelsRouteImport } from './routes/{-$locale}/for-hotels'
+import { Route as Char123LocaleChar125ForDriversRouteImport } from './routes/{-$locale}/for-drivers'
+import { Route as Char123LocaleChar125FaqRouteImport } from './routes/{-$locale}/faq'
+import { Route as Char123LocaleChar125ContactRouteImport } from './routes/{-$locale}/contact'
+import { Route as Char123LocaleChar125BookRouteImport } from './routes/{-$locale}/book'
+import { Route as Char123LocaleChar125AboutRouteImport } from './routes/{-$locale}/about'
+import { Route as Char123LocaleChar125ServicesIndexRouteImport } from './routes/{-$locale}/services.index'
+import { Route as Char123LocaleChar125RoutesIndexRouteImport } from './routes/{-$locale}/routes.index'
+import { Route as Char123LocaleChar125RegionsIndexRouteImport } from './routes/{-$locale}/regions.index'
+import { Route as Char123LocaleChar125FleetIndexRouteImport } from './routes/{-$locale}/fleet.index'
+import { Route as Char123LocaleChar125BlogIndexRouteImport } from './routes/{-$locale}/blog.index'
+import { Route as Char123LocaleChar125ServicesSlugRouteImport } from './routes/{-$locale}/services.$slug'
+import { Route as Char123LocaleChar125RoutesSlugRouteImport } from './routes/{-$locale}/routes.$slug'
+import { Route as Char123LocaleChar125RegionsSlugRouteImport } from './routes/{-$locale}/regions.$slug'
+import { Route as Char123LocaleChar125LegalTermsRouteImport } from './routes/{-$locale}/legal.terms'
+import { Route as Char123LocaleChar125LegalRefundsRouteImport } from './routes/{-$locale}/legal.refunds'
+import { Route as Char123LocaleChar125LegalPrivacyRouteImport } from './routes/{-$locale}/legal.privacy'
+import { Route as Char123LocaleChar125LegalImprintRouteImport } from './routes/{-$locale}/legal.imprint'
+import { Route as Char123LocaleChar125LegalCookiesRouteImport } from './routes/{-$locale}/legal.cookies'
+import { Route as Char123LocaleChar125FleetClassRouteImport } from './routes/{-$locale}/fleet.$class'
+import { Route as Char123LocaleChar125BookSuccessRouteImport } from './routes/{-$locale}/book.success'
+import { Route as Char123LocaleChar125BlogSlugRouteImport } from './routes/{-$locale}/blog.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReviewsRoute = ReviewsRouteImport.update({
-  id: '/reviews',
-  path: '/reviews',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HowItWorksRoute = HowItWorksRouteImport.update({
-  id: '/how-it-works',
-  path: '/how-it-works',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForHotelsRoute = ForHotelsRouteImport.update({
-  id: '/for-hotels',
-  path: '/for-hotels',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForDriversRoute = ForDriversRouteImport.update({
-  id: '/for-drivers',
-  path: '/for-drivers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
+const Char123LocaleChar125RouteRoute =
+  Char123LocaleChar125RouteRouteImport.update({
+    id: '/{-$locale}',
+    path: '/{-$locale}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char123LocaleChar125IndexRoute =
+  Char123LocaleChar125IndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ReviewsRoute =
+  Char123LocaleChar125ReviewsRouteImport.update({
+    id: '/reviews',
+    path: '/reviews',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125HowItWorksRoute =
+  Char123LocaleChar125HowItWorksRouteImport.update({
+    id: '/how-it-works',
+    path: '/how-it-works',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ForHotelsRoute =
+  Char123LocaleChar125ForHotelsRouteImport.update({
+    id: '/for-hotels',
+    path: '/for-hotels',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ForDriversRoute =
+  Char123LocaleChar125ForDriversRouteImport.update({
+    id: '/for-drivers',
+    path: '/for-drivers',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125FaqRoute = Char123LocaleChar125FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => Char123LocaleChar125RouteRoute,
 } as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookRoute = BookRouteImport.update({
-  id: '/book',
-  path: '/book',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesIndexRoute = ServicesIndexRouteImport.update({
-  id: '/services/',
-  path: '/services/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RoutesIndexRoute = RoutesIndexRouteImport.update({
-  id: '/routes/',
-  path: '/routes/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegionsIndexRoute = RegionsIndexRouteImport.update({
-  id: '/regions/',
-  path: '/regions/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FleetIndexRoute = FleetIndexRouteImport.update({
-  id: '/fleet/',
-  path: '/fleet/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesSlugRoute = ServicesSlugRouteImport.update({
-  id: '/services/$slug',
-  path: '/services/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RoutesSlugRoute = RoutesSlugRouteImport.update({
-  id: '/routes/$slug',
-  path: '/routes/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RegionsSlugRoute = RegionsSlugRouteImport.update({
-  id: '/regions/$slug',
-  path: '/regions/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalTermsRoute = LegalTermsRouteImport.update({
-  id: '/legal/terms',
-  path: '/legal/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalRefundsRoute = LegalRefundsRouteImport.update({
-  id: '/legal/refunds',
-  path: '/legal/refunds',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalPrivacyRoute = LegalPrivacyRouteImport.update({
-  id: '/legal/privacy',
-  path: '/legal/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalImprintRoute = LegalImprintRouteImport.update({
-  id: '/legal/imprint',
-  path: '/legal/imprint',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LegalCookiesRoute = LegalCookiesRouteImport.update({
-  id: '/legal/cookies',
-  path: '/legal/cookies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FleetClassRoute = FleetClassRouteImport.update({
-  id: '/fleet/$class',
-  path: '/fleet/$class',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BookSuccessRoute = BookSuccessRouteImport.update({
-  id: '/success',
-  path: '/success',
-  getParentRoute: () => BookRoute,
-} as any)
+const Char123LocaleChar125ContactRoute =
+  Char123LocaleChar125ContactRouteImport.update({
+    id: '/contact',
+    path: '/contact',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125BookRoute =
+  Char123LocaleChar125BookRouteImport.update({
+    id: '/book',
+    path: '/book',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125AboutRoute =
+  Char123LocaleChar125AboutRouteImport.update({
+    id: '/about',
+    path: '/about',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ServicesIndexRoute =
+  Char123LocaleChar125ServicesIndexRouteImport.update({
+    id: '/services/',
+    path: '/services/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125RoutesIndexRoute =
+  Char123LocaleChar125RoutesIndexRouteImport.update({
+    id: '/routes/',
+    path: '/routes/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125RegionsIndexRoute =
+  Char123LocaleChar125RegionsIndexRouteImport.update({
+    id: '/regions/',
+    path: '/regions/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125FleetIndexRoute =
+  Char123LocaleChar125FleetIndexRouteImport.update({
+    id: '/fleet/',
+    path: '/fleet/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125BlogIndexRoute =
+  Char123LocaleChar125BlogIndexRouteImport.update({
+    id: '/blog/',
+    path: '/blog/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ServicesSlugRoute =
+  Char123LocaleChar125ServicesSlugRouteImport.update({
+    id: '/services/$slug',
+    path: '/services/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125RoutesSlugRoute =
+  Char123LocaleChar125RoutesSlugRouteImport.update({
+    id: '/routes/$slug',
+    path: '/routes/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125RegionsSlugRoute =
+  Char123LocaleChar125RegionsSlugRouteImport.update({
+    id: '/regions/$slug',
+    path: '/regions/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125LegalTermsRoute =
+  Char123LocaleChar125LegalTermsRouteImport.update({
+    id: '/legal/terms',
+    path: '/legal/terms',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125LegalRefundsRoute =
+  Char123LocaleChar125LegalRefundsRouteImport.update({
+    id: '/legal/refunds',
+    path: '/legal/refunds',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125LegalPrivacyRoute =
+  Char123LocaleChar125LegalPrivacyRouteImport.update({
+    id: '/legal/privacy',
+    path: '/legal/privacy',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125LegalImprintRoute =
+  Char123LocaleChar125LegalImprintRouteImport.update({
+    id: '/legal/imprint',
+    path: '/legal/imprint',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125LegalCookiesRoute =
+  Char123LocaleChar125LegalCookiesRouteImport.update({
+    id: '/legal/cookies',
+    path: '/legal/cookies',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125FleetClassRoute =
+  Char123LocaleChar125FleetClassRouteImport.update({
+    id: '/fleet/$class',
+    path: '/fleet/$class',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125BookSuccessRoute =
+  Char123LocaleChar125BookSuccessRouteImport.update({
+    id: '/success',
+    path: '/success',
+    getParentRoute: () => Char123LocaleChar125BookRoute,
+  } as any)
+const Char123LocaleChar125BlogSlugRoute =
+  Char123LocaleChar125BlogSlugRouteImport.update({
+    id: '/blog/$slug',
+    path: '/blog/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/book': typeof BookRouteWithChildren
-  '/contact': typeof ContactRoute
-  '/faq': typeof FaqRoute
-  '/for-drivers': typeof ForDriversRoute
-  '/for-hotels': typeof ForHotelsRoute
-  '/how-it-works': typeof HowItWorksRoute
-  '/reviews': typeof ReviewsRoute
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/book/success': typeof BookSuccessRoute
-  '/fleet/$class': typeof FleetClassRoute
-  '/legal/cookies': typeof LegalCookiesRoute
-  '/legal/imprint': typeof LegalImprintRoute
-  '/legal/privacy': typeof LegalPrivacyRoute
-  '/legal/refunds': typeof LegalRefundsRoute
-  '/legal/terms': typeof LegalTermsRoute
-  '/regions/$slug': typeof RegionsSlugRoute
-  '/routes/$slug': typeof RoutesSlugRoute
-  '/services/$slug': typeof ServicesSlugRoute
-  '/fleet/': typeof FleetIndexRoute
-  '/regions/': typeof RegionsIndexRoute
-  '/routes/': typeof RoutesIndexRoute
-  '/services/': typeof ServicesIndexRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
+  '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
+  '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
+  '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
+  '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
+  '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
+  '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
+  '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
+  '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
+  '/{-$locale}/legal/privacy': typeof Char123LocaleChar125LegalPrivacyRoute
+  '/{-$locale}/legal/refunds': typeof Char123LocaleChar125LegalRefundsRoute
+  '/{-$locale}/legal/terms': typeof Char123LocaleChar125LegalTermsRoute
+  '/{-$locale}/regions/$slug': typeof Char123LocaleChar125RegionsSlugRoute
+  '/{-$locale}/routes/$slug': typeof Char123LocaleChar125RoutesSlugRoute
+  '/{-$locale}/services/$slug': typeof Char123LocaleChar125ServicesSlugRoute
+  '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
+  '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
+  '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
+  '/{-$locale}/services/': typeof Char123LocaleChar125ServicesIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/book': typeof BookRouteWithChildren
-  '/contact': typeof ContactRoute
-  '/faq': typeof FaqRoute
-  '/for-drivers': typeof ForDriversRoute
-  '/for-hotels': typeof ForHotelsRoute
-  '/how-it-works': typeof HowItWorksRoute
-  '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/book/success': typeof BookSuccessRoute
-  '/fleet/$class': typeof FleetClassRoute
-  '/legal/cookies': typeof LegalCookiesRoute
-  '/legal/imprint': typeof LegalImprintRoute
-  '/legal/privacy': typeof LegalPrivacyRoute
-  '/legal/refunds': typeof LegalRefundsRoute
-  '/legal/terms': typeof LegalTermsRoute
-  '/regions/$slug': typeof RegionsSlugRoute
-  '/routes/$slug': typeof RoutesSlugRoute
-  '/services/$slug': typeof ServicesSlugRoute
-  '/fleet': typeof FleetIndexRoute
-  '/regions': typeof RegionsIndexRoute
-  '/routes': typeof RoutesIndexRoute
-  '/services': typeof ServicesIndexRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
+  '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
+  '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
+  '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
+  '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
+  '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
+  '/{-$locale}': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
+  '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
+  '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
+  '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
+  '/{-$locale}/legal/privacy': typeof Char123LocaleChar125LegalPrivacyRoute
+  '/{-$locale}/legal/refunds': typeof Char123LocaleChar125LegalRefundsRoute
+  '/{-$locale}/legal/terms': typeof Char123LocaleChar125LegalTermsRoute
+  '/{-$locale}/regions/$slug': typeof Char123LocaleChar125RegionsSlugRoute
+  '/{-$locale}/routes/$slug': typeof Char123LocaleChar125RoutesSlugRoute
+  '/{-$locale}/services/$slug': typeof Char123LocaleChar125ServicesSlugRoute
+  '/{-$locale}/blog': typeof Char123LocaleChar125BlogIndexRoute
+  '/{-$locale}/fleet': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/regions': typeof Char123LocaleChar125RegionsIndexRoute
+  '/{-$locale}/routes': typeof Char123LocaleChar125RoutesIndexRoute
+  '/{-$locale}/services': typeof Char123LocaleChar125ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/book': typeof BookRouteWithChildren
-  '/contact': typeof ContactRoute
-  '/faq': typeof FaqRoute
-  '/for-drivers': typeof ForDriversRoute
-  '/for-hotels': typeof ForHotelsRoute
-  '/how-it-works': typeof HowItWorksRoute
-  '/reviews': typeof ReviewsRoute
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/book/success': typeof BookSuccessRoute
-  '/fleet/$class': typeof FleetClassRoute
-  '/legal/cookies': typeof LegalCookiesRoute
-  '/legal/imprint': typeof LegalImprintRoute
-  '/legal/privacy': typeof LegalPrivacyRoute
-  '/legal/refunds': typeof LegalRefundsRoute
-  '/legal/terms': typeof LegalTermsRoute
-  '/regions/$slug': typeof RegionsSlugRoute
-  '/routes/$slug': typeof RoutesSlugRoute
-  '/services/$slug': typeof ServicesSlugRoute
-  '/fleet/': typeof FleetIndexRoute
-  '/regions/': typeof RegionsIndexRoute
-  '/routes/': typeof RoutesIndexRoute
-  '/services/': typeof ServicesIndexRoute
+  '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
+  '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
+  '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
+  '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
+  '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
+  '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
+  '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
+  '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
+  '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
+  '/{-$locale}/legal/privacy': typeof Char123LocaleChar125LegalPrivacyRoute
+  '/{-$locale}/legal/refunds': typeof Char123LocaleChar125LegalRefundsRoute
+  '/{-$locale}/legal/terms': typeof Char123LocaleChar125LegalTermsRoute
+  '/{-$locale}/regions/$slug': typeof Char123LocaleChar125RegionsSlugRoute
+  '/{-$locale}/routes/$slug': typeof Char123LocaleChar125RoutesSlugRoute
+  '/{-$locale}/services/$slug': typeof Char123LocaleChar125ServicesSlugRoute
+  '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
+  '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
+  '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
+  '/{-$locale}/services/': typeof Char123LocaleChar125ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/about'
-    | '/book'
-    | '/contact'
-    | '/faq'
-    | '/for-drivers'
-    | '/for-hotels'
-    | '/how-it-works'
-    | '/reviews'
+    | '/{-$locale}'
     | '/sitemap.xml'
-    | '/book/success'
-    | '/fleet/$class'
-    | '/legal/cookies'
-    | '/legal/imprint'
-    | '/legal/privacy'
-    | '/legal/refunds'
-    | '/legal/terms'
-    | '/regions/$slug'
-    | '/routes/$slug'
-    | '/services/$slug'
-    | '/fleet/'
-    | '/regions/'
-    | '/routes/'
-    | '/services/'
+    | '/{-$locale}/about'
+    | '/{-$locale}/book'
+    | '/{-$locale}/contact'
+    | '/{-$locale}/faq'
+    | '/{-$locale}/for-drivers'
+    | '/{-$locale}/for-hotels'
+    | '/{-$locale}/how-it-works'
+    | '/{-$locale}/reviews'
+    | '/{-$locale}/'
+    | '/{-$locale}/blog/$slug'
+    | '/{-$locale}/book/success'
+    | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/legal/cookies'
+    | '/{-$locale}/legal/imprint'
+    | '/{-$locale}/legal/privacy'
+    | '/{-$locale}/legal/refunds'
+    | '/{-$locale}/legal/terms'
+    | '/{-$locale}/regions/$slug'
+    | '/{-$locale}/routes/$slug'
+    | '/{-$locale}/services/$slug'
+    | '/{-$locale}/blog/'
+    | '/{-$locale}/fleet/'
+    | '/{-$locale}/regions/'
+    | '/{-$locale}/routes/'
+    | '/{-$locale}/services/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/about'
-    | '/book'
-    | '/contact'
-    | '/faq'
-    | '/for-drivers'
-    | '/for-hotels'
-    | '/how-it-works'
-    | '/reviews'
     | '/sitemap.xml'
-    | '/book/success'
-    | '/fleet/$class'
-    | '/legal/cookies'
-    | '/legal/imprint'
-    | '/legal/privacy'
-    | '/legal/refunds'
-    | '/legal/terms'
-    | '/regions/$slug'
-    | '/routes/$slug'
-    | '/services/$slug'
-    | '/fleet'
-    | '/regions'
-    | '/routes'
-    | '/services'
+    | '/{-$locale}/about'
+    | '/{-$locale}/book'
+    | '/{-$locale}/contact'
+    | '/{-$locale}/faq'
+    | '/{-$locale}/for-drivers'
+    | '/{-$locale}/for-hotels'
+    | '/{-$locale}/how-it-works'
+    | '/{-$locale}/reviews'
+    | '/{-$locale}'
+    | '/{-$locale}/blog/$slug'
+    | '/{-$locale}/book/success'
+    | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/legal/cookies'
+    | '/{-$locale}/legal/imprint'
+    | '/{-$locale}/legal/privacy'
+    | '/{-$locale}/legal/refunds'
+    | '/{-$locale}/legal/terms'
+    | '/{-$locale}/regions/$slug'
+    | '/{-$locale}/routes/$slug'
+    | '/{-$locale}/services/$slug'
+    | '/{-$locale}/blog'
+    | '/{-$locale}/fleet'
+    | '/{-$locale}/regions'
+    | '/{-$locale}/routes'
+    | '/{-$locale}/services'
   id:
     | '__root__'
-    | '/'
-    | '/about'
-    | '/book'
-    | '/contact'
-    | '/faq'
-    | '/for-drivers'
-    | '/for-hotels'
-    | '/how-it-works'
-    | '/reviews'
+    | '/{-$locale}'
     | '/sitemap.xml'
-    | '/book/success'
-    | '/fleet/$class'
-    | '/legal/cookies'
-    | '/legal/imprint'
-    | '/legal/privacy'
-    | '/legal/refunds'
-    | '/legal/terms'
-    | '/regions/$slug'
-    | '/routes/$slug'
-    | '/services/$slug'
-    | '/fleet/'
-    | '/regions/'
-    | '/routes/'
-    | '/services/'
+    | '/{-$locale}/about'
+    | '/{-$locale}/book'
+    | '/{-$locale}/contact'
+    | '/{-$locale}/faq'
+    | '/{-$locale}/for-drivers'
+    | '/{-$locale}/for-hotels'
+    | '/{-$locale}/how-it-works'
+    | '/{-$locale}/reviews'
+    | '/{-$locale}/'
+    | '/{-$locale}/blog/$slug'
+    | '/{-$locale}/book/success'
+    | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/legal/cookies'
+    | '/{-$locale}/legal/imprint'
+    | '/{-$locale}/legal/privacy'
+    | '/{-$locale}/legal/refunds'
+    | '/{-$locale}/legal/terms'
+    | '/{-$locale}/regions/$slug'
+    | '/{-$locale}/routes/$slug'
+    | '/{-$locale}/services/$slug'
+    | '/{-$locale}/blog/'
+    | '/{-$locale}/fleet/'
+    | '/{-$locale}/regions/'
+    | '/{-$locale}/routes/'
+    | '/{-$locale}/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  BookRoute: typeof BookRouteWithChildren
-  ContactRoute: typeof ContactRoute
-  FaqRoute: typeof FaqRoute
-  ForDriversRoute: typeof ForDriversRoute
-  ForHotelsRoute: typeof ForHotelsRoute
-  HowItWorksRoute: typeof HowItWorksRoute
-  ReviewsRoute: typeof ReviewsRoute
+  Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  FleetClassRoute: typeof FleetClassRoute
-  LegalCookiesRoute: typeof LegalCookiesRoute
-  LegalImprintRoute: typeof LegalImprintRoute
-  LegalPrivacyRoute: typeof LegalPrivacyRoute
-  LegalRefundsRoute: typeof LegalRefundsRoute
-  LegalTermsRoute: typeof LegalTermsRoute
-  RegionsSlugRoute: typeof RegionsSlugRoute
-  RoutesSlugRoute: typeof RoutesSlugRoute
-  ServicesSlugRoute: typeof ServicesSlugRoute
-  FleetIndexRoute: typeof FleetIndexRoute
-  RegionsIndexRoute: typeof RegionsIndexRoute
-  RoutesIndexRoute: typeof RoutesIndexRoute
-  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -350,205 +388,286 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/reviews': {
-      id: '/reviews'
-      path: '/reviews'
-      fullPath: '/reviews'
-      preLoaderRoute: typeof ReviewsRouteImport
+    '/{-$locale}': {
+      id: '/{-$locale}'
+      path: '/{-$locale}'
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125RouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/how-it-works': {
-      id: '/how-it-works'
-      path: '/how-it-works'
-      fullPath: '/how-it-works'
-      preLoaderRoute: typeof HowItWorksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/for-hotels': {
-      id: '/for-hotels'
-      path: '/for-hotels'
-      fullPath: '/for-hotels'
-      preLoaderRoute: typeof ForHotelsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/for-drivers': {
-      id: '/for-drivers'
-      path: '/for-drivers'
-      fullPath: '/for-drivers'
-      preLoaderRoute: typeof ForDriversRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/book': {
-      id: '/book'
-      path: '/book'
-      fullPath: '/book'
-      preLoaderRoute: typeof BookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/{-$locale}/': {
+      id: '/{-$locale}/'
       path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/'
+      preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/services/': {
-      id: '/services/'
+    '/{-$locale}/reviews': {
+      id: '/{-$locale}/reviews'
+      path: '/reviews'
+      fullPath: '/{-$locale}/reviews'
+      preLoaderRoute: typeof Char123LocaleChar125ReviewsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/how-it-works': {
+      id: '/{-$locale}/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/{-$locale}/how-it-works'
+      preLoaderRoute: typeof Char123LocaleChar125HowItWorksRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/for-hotels': {
+      id: '/{-$locale}/for-hotels'
+      path: '/for-hotels'
+      fullPath: '/{-$locale}/for-hotels'
+      preLoaderRoute: typeof Char123LocaleChar125ForHotelsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/for-drivers': {
+      id: '/{-$locale}/for-drivers'
+      path: '/for-drivers'
+      fullPath: '/{-$locale}/for-drivers'
+      preLoaderRoute: typeof Char123LocaleChar125ForDriversRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/faq': {
+      id: '/{-$locale}/faq'
+      path: '/faq'
+      fullPath: '/{-$locale}/faq'
+      preLoaderRoute: typeof Char123LocaleChar125FaqRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/contact': {
+      id: '/{-$locale}/contact'
+      path: '/contact'
+      fullPath: '/{-$locale}/contact'
+      preLoaderRoute: typeof Char123LocaleChar125ContactRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/book': {
+      id: '/{-$locale}/book'
+      path: '/book'
+      fullPath: '/{-$locale}/book'
+      preLoaderRoute: typeof Char123LocaleChar125BookRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/about': {
+      id: '/{-$locale}/about'
+      path: '/about'
+      fullPath: '/{-$locale}/about'
+      preLoaderRoute: typeof Char123LocaleChar125AboutRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/services/': {
+      id: '/{-$locale}/services/'
       path: '/services'
-      fullPath: '/services/'
-      preLoaderRoute: typeof ServicesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/services/'
+      preLoaderRoute: typeof Char123LocaleChar125ServicesIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/routes/': {
-      id: '/routes/'
+    '/{-$locale}/routes/': {
+      id: '/{-$locale}/routes/'
       path: '/routes'
-      fullPath: '/routes/'
-      preLoaderRoute: typeof RoutesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/routes/'
+      preLoaderRoute: typeof Char123LocaleChar125RoutesIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/regions/': {
-      id: '/regions/'
+    '/{-$locale}/regions/': {
+      id: '/{-$locale}/regions/'
       path: '/regions'
-      fullPath: '/regions/'
-      preLoaderRoute: typeof RegionsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/regions/'
+      preLoaderRoute: typeof Char123LocaleChar125RegionsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/fleet/': {
-      id: '/fleet/'
+    '/{-$locale}/fleet/': {
+      id: '/{-$locale}/fleet/'
       path: '/fleet'
-      fullPath: '/fleet/'
-      preLoaderRoute: typeof FleetIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/fleet/'
+      preLoaderRoute: typeof Char123LocaleChar125FleetIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/services/$slug': {
-      id: '/services/$slug'
+    '/{-$locale}/blog/': {
+      id: '/{-$locale}/blog/'
+      path: '/blog'
+      fullPath: '/{-$locale}/blog/'
+      preLoaderRoute: typeof Char123LocaleChar125BlogIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/services/$slug': {
+      id: '/{-$locale}/services/$slug'
       path: '/services/$slug'
-      fullPath: '/services/$slug'
-      preLoaderRoute: typeof ServicesSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/services/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125ServicesSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/routes/$slug': {
-      id: '/routes/$slug'
+    '/{-$locale}/routes/$slug': {
+      id: '/{-$locale}/routes/$slug'
       path: '/routes/$slug'
-      fullPath: '/routes/$slug'
-      preLoaderRoute: typeof RoutesSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/routes/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125RoutesSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/regions/$slug': {
-      id: '/regions/$slug'
+    '/{-$locale}/regions/$slug': {
+      id: '/{-$locale}/regions/$slug'
       path: '/regions/$slug'
-      fullPath: '/regions/$slug'
-      preLoaderRoute: typeof RegionsSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/regions/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125RegionsSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/legal/terms': {
-      id: '/legal/terms'
+    '/{-$locale}/legal/terms': {
+      id: '/{-$locale}/legal/terms'
       path: '/legal/terms'
-      fullPath: '/legal/terms'
-      preLoaderRoute: typeof LegalTermsRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/legal/terms'
+      preLoaderRoute: typeof Char123LocaleChar125LegalTermsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/legal/refunds': {
-      id: '/legal/refunds'
+    '/{-$locale}/legal/refunds': {
+      id: '/{-$locale}/legal/refunds'
       path: '/legal/refunds'
-      fullPath: '/legal/refunds'
-      preLoaderRoute: typeof LegalRefundsRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/legal/refunds'
+      preLoaderRoute: typeof Char123LocaleChar125LegalRefundsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/legal/privacy': {
-      id: '/legal/privacy'
+    '/{-$locale}/legal/privacy': {
+      id: '/{-$locale}/legal/privacy'
       path: '/legal/privacy'
-      fullPath: '/legal/privacy'
-      preLoaderRoute: typeof LegalPrivacyRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/legal/privacy'
+      preLoaderRoute: typeof Char123LocaleChar125LegalPrivacyRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/legal/imprint': {
-      id: '/legal/imprint'
+    '/{-$locale}/legal/imprint': {
+      id: '/{-$locale}/legal/imprint'
       path: '/legal/imprint'
-      fullPath: '/legal/imprint'
-      preLoaderRoute: typeof LegalImprintRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/legal/imprint'
+      preLoaderRoute: typeof Char123LocaleChar125LegalImprintRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/legal/cookies': {
-      id: '/legal/cookies'
+    '/{-$locale}/legal/cookies': {
+      id: '/{-$locale}/legal/cookies'
       path: '/legal/cookies'
-      fullPath: '/legal/cookies'
-      preLoaderRoute: typeof LegalCookiesRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/legal/cookies'
+      preLoaderRoute: typeof Char123LocaleChar125LegalCookiesRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/fleet/$class': {
-      id: '/fleet/$class'
+    '/{-$locale}/fleet/$class': {
+      id: '/{-$locale}/fleet/$class'
       path: '/fleet/$class'
-      fullPath: '/fleet/$class'
-      preLoaderRoute: typeof FleetClassRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/fleet/$class'
+      preLoaderRoute: typeof Char123LocaleChar125FleetClassRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/book/success': {
-      id: '/book/success'
+    '/{-$locale}/book/success': {
+      id: '/{-$locale}/book/success'
       path: '/success'
-      fullPath: '/book/success'
-      preLoaderRoute: typeof BookSuccessRouteImport
-      parentRoute: typeof BookRoute
+      fullPath: '/{-$locale}/book/success'
+      preLoaderRoute: typeof Char123LocaleChar125BookSuccessRouteImport
+      parentRoute: typeof Char123LocaleChar125BookRoute
+    }
+    '/{-$locale}/blog/$slug': {
+      id: '/{-$locale}/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/{-$locale}/blog/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125BlogSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
   }
 }
 
-interface BookRouteChildren {
-  BookSuccessRoute: typeof BookSuccessRoute
+interface Char123LocaleChar125BookRouteChildren {
+  Char123LocaleChar125BookSuccessRoute: typeof Char123LocaleChar125BookSuccessRoute
 }
 
-const BookRouteChildren: BookRouteChildren = {
-  BookSuccessRoute: BookSuccessRoute,
+const Char123LocaleChar125BookRouteChildren: Char123LocaleChar125BookRouteChildren =
+  {
+    Char123LocaleChar125BookSuccessRoute: Char123LocaleChar125BookSuccessRoute,
+  }
+
+const Char123LocaleChar125BookRouteWithChildren =
+  Char123LocaleChar125BookRoute._addFileChildren(
+    Char123LocaleChar125BookRouteChildren,
+  )
+
+interface Char123LocaleChar125RouteRouteChildren {
+  Char123LocaleChar125AboutRoute: typeof Char123LocaleChar125AboutRoute
+  Char123LocaleChar125BookRoute: typeof Char123LocaleChar125BookRouteWithChildren
+  Char123LocaleChar125ContactRoute: typeof Char123LocaleChar125ContactRoute
+  Char123LocaleChar125FaqRoute: typeof Char123LocaleChar125FaqRoute
+  Char123LocaleChar125ForDriversRoute: typeof Char123LocaleChar125ForDriversRoute
+  Char123LocaleChar125ForHotelsRoute: typeof Char123LocaleChar125ForHotelsRoute
+  Char123LocaleChar125HowItWorksRoute: typeof Char123LocaleChar125HowItWorksRoute
+  Char123LocaleChar125ReviewsRoute: typeof Char123LocaleChar125ReviewsRoute
+  Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
+  Char123LocaleChar125BlogSlugRoute: typeof Char123LocaleChar125BlogSlugRoute
+  Char123LocaleChar125FleetClassRoute: typeof Char123LocaleChar125FleetClassRoute
+  Char123LocaleChar125LegalCookiesRoute: typeof Char123LocaleChar125LegalCookiesRoute
+  Char123LocaleChar125LegalImprintRoute: typeof Char123LocaleChar125LegalImprintRoute
+  Char123LocaleChar125LegalPrivacyRoute: typeof Char123LocaleChar125LegalPrivacyRoute
+  Char123LocaleChar125LegalRefundsRoute: typeof Char123LocaleChar125LegalRefundsRoute
+  Char123LocaleChar125LegalTermsRoute: typeof Char123LocaleChar125LegalTermsRoute
+  Char123LocaleChar125RegionsSlugRoute: typeof Char123LocaleChar125RegionsSlugRoute
+  Char123LocaleChar125RoutesSlugRoute: typeof Char123LocaleChar125RoutesSlugRoute
+  Char123LocaleChar125ServicesSlugRoute: typeof Char123LocaleChar125ServicesSlugRoute
+  Char123LocaleChar125BlogIndexRoute: typeof Char123LocaleChar125BlogIndexRoute
+  Char123LocaleChar125FleetIndexRoute: typeof Char123LocaleChar125FleetIndexRoute
+  Char123LocaleChar125RegionsIndexRoute: typeof Char123LocaleChar125RegionsIndexRoute
+  Char123LocaleChar125RoutesIndexRoute: typeof Char123LocaleChar125RoutesIndexRoute
+  Char123LocaleChar125ServicesIndexRoute: typeof Char123LocaleChar125ServicesIndexRoute
 }
 
-const BookRouteWithChildren = BookRoute._addFileChildren(BookRouteChildren)
+const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
+  {
+    Char123LocaleChar125AboutRoute: Char123LocaleChar125AboutRoute,
+    Char123LocaleChar125BookRoute: Char123LocaleChar125BookRouteWithChildren,
+    Char123LocaleChar125ContactRoute: Char123LocaleChar125ContactRoute,
+    Char123LocaleChar125FaqRoute: Char123LocaleChar125FaqRoute,
+    Char123LocaleChar125ForDriversRoute: Char123LocaleChar125ForDriversRoute,
+    Char123LocaleChar125ForHotelsRoute: Char123LocaleChar125ForHotelsRoute,
+    Char123LocaleChar125HowItWorksRoute: Char123LocaleChar125HowItWorksRoute,
+    Char123LocaleChar125ReviewsRoute: Char123LocaleChar125ReviewsRoute,
+    Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+    Char123LocaleChar125BlogSlugRoute: Char123LocaleChar125BlogSlugRoute,
+    Char123LocaleChar125FleetClassRoute: Char123LocaleChar125FleetClassRoute,
+    Char123LocaleChar125LegalCookiesRoute:
+      Char123LocaleChar125LegalCookiesRoute,
+    Char123LocaleChar125LegalImprintRoute:
+      Char123LocaleChar125LegalImprintRoute,
+    Char123LocaleChar125LegalPrivacyRoute:
+      Char123LocaleChar125LegalPrivacyRoute,
+    Char123LocaleChar125LegalRefundsRoute:
+      Char123LocaleChar125LegalRefundsRoute,
+    Char123LocaleChar125LegalTermsRoute: Char123LocaleChar125LegalTermsRoute,
+    Char123LocaleChar125RegionsSlugRoute: Char123LocaleChar125RegionsSlugRoute,
+    Char123LocaleChar125RoutesSlugRoute: Char123LocaleChar125RoutesSlugRoute,
+    Char123LocaleChar125ServicesSlugRoute:
+      Char123LocaleChar125ServicesSlugRoute,
+    Char123LocaleChar125BlogIndexRoute: Char123LocaleChar125BlogIndexRoute,
+    Char123LocaleChar125FleetIndexRoute: Char123LocaleChar125FleetIndexRoute,
+    Char123LocaleChar125RegionsIndexRoute:
+      Char123LocaleChar125RegionsIndexRoute,
+    Char123LocaleChar125RoutesIndexRoute: Char123LocaleChar125RoutesIndexRoute,
+    Char123LocaleChar125ServicesIndexRoute:
+      Char123LocaleChar125ServicesIndexRoute,
+  }
+
+const Char123LocaleChar125RouteRouteWithChildren =
+  Char123LocaleChar125RouteRoute._addFileChildren(
+    Char123LocaleChar125RouteRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  BookRoute: BookRouteWithChildren,
-  ContactRoute: ContactRoute,
-  FaqRoute: FaqRoute,
-  ForDriversRoute: ForDriversRoute,
-  ForHotelsRoute: ForHotelsRoute,
-  HowItWorksRoute: HowItWorksRoute,
-  ReviewsRoute: ReviewsRoute,
+  Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  FleetClassRoute: FleetClassRoute,
-  LegalCookiesRoute: LegalCookiesRoute,
-  LegalImprintRoute: LegalImprintRoute,
-  LegalPrivacyRoute: LegalPrivacyRoute,
-  LegalRefundsRoute: LegalRefundsRoute,
-  LegalTermsRoute: LegalTermsRoute,
-  RegionsSlugRoute: RegionsSlugRoute,
-  RoutesSlugRoute: RoutesSlugRoute,
-  ServicesSlugRoute: ServicesSlugRoute,
-  FleetIndexRoute: FleetIndexRoute,
-  RegionsIndexRoute: RegionsIndexRoute,
-  RoutesIndexRoute: RoutesIndexRoute,
-  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

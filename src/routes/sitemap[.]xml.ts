@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
-import { ROUTES } from "@/data/routes";
+import { ROUTES, VEHICLE_CLASSES } from "@/data/routes";
 import { REGIONS } from "@/data/regions";
 import { SERVICES } from "@/data/services";
-import { VEHICLE_CLASSES } from "@/data/routes";
-
-// TODO: replace with your project URL once a project name or custom domain is set.
-const BASE_URL = "";
+import { POSTS } from "@/data/posts";
+import { SITE_URL } from "@/lib/site";
+import { LOCALES, localePath } from "@/i18n";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -18,6 +17,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/regions",
           "/services",
           "/fleet",
+          "/blog",
           "/about",
           "/how-it-works",
           "/faq",
@@ -34,16 +34,28 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...REGIONS.map((r) => `/regions/${r.slug}`),
           ...SERVICES.map((s) => `/services/${s.slug}`),
           ...VEHICLE_CLASSES.map((v) => `/fleet/${v.id}`),
+          ...POSTS.map((p) => `/blog/${p.slug}`),
         ];
 
+        const alternates = (path: string) =>
+          [
+            ...LOCALES.map(
+              (l) =>
+                `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE_URL}${localePath(l, path)}"/>`,
+            ),
+            `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${localePath("en", path)}"/>`,
+          ].join("\n");
+
         const urls = paths
-          .map(
-            (p) =>
-              `  <url>\n    <loc>${BASE_URL}${p}</loc>\n    <changefreq>weekly</changefreq>\n  </url>`,
+          .flatMap((path) =>
+            LOCALES.map(
+              (locale) =>
+                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>\n${alternates(path)}\n    <changefreq>weekly</changefreq>\n  </url>`,
+            ),
           )
           .join("\n");
 
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>`;
 
         return new Response(xml, {
           headers: {

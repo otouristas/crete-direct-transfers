@@ -1,4 +1,3 @@
-
 # CreteTransfers v2 — Full Redesign & Site Expansion
 
 Benchmarked against gettransfer.com and transfeero.com, rebuilt for Crete only. Same fixed-price engine and Lovable Cloud `bookings` table stay — this plan is IA, content depth, SEO surface, and a full visual redesign.
@@ -10,6 +9,7 @@ Current site is editorial-boutique but flat. Both competitors lead with a full-b
 Direction: **"Mediterranean editorial"** — full-bleed Crete cinematography, warm whitewash surfaces, deep Aegean primary, terracotta accent, generous serif display type (Fraunces), tight sans body (Inter). Motion: subtle parallax on hero, animated route lines on the map, hover lifts on cards, sticky booking widget on scroll.
 
 Redesigned components:
+
 - Full-bleed hero with layered booking widget (From → To → Date → Pax → Class → Quote button, all in one row on desktop, stacked on mobile), live price preview under it
 - Trust strip (5 pills: Fixed price / Free cancellation / Flight tracked / Licensed drivers / 24-7 support) directly under hero
 - "How it works" as a 3-step horizontal timeline with icons
@@ -71,6 +71,7 @@ Add 20 new plausible transfers to `src/data/routes.ts`. Full new list groups by 
 **Lasithi hub (4):** Agios Nikolaos → Elounda, Sitia, Ierapetra, Vai.
 
 Each route detail page gets:
+
 - Hero image + fixed-price matrix (all 4 vehicle classes)
 - Distance, duration, drive description
 - What's included / not included
@@ -83,6 +84,7 @@ Each route detail page gets:
 ## 4. Region pages (4)
 
 Each region page = hub for its area:
+
 - Hero of the region
 - 2-3 paragraphs on the region (what travelers do there, main destinations)
 - All routes serving this region (filtered cards)

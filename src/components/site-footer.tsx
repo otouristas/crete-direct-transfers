@@ -1,95 +1,247 @@
 import { Link } from "@tanstack/react-router";
-import { ROUTES } from "@/data/routes";
-import { REGIONS } from "@/data/regions";
-import { SERVICES } from "@/data/services";
+import { Mail, Phone, Star } from "lucide-react";
+import { useT } from "@/i18n";
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF, SITE_NAME } from "@/lib/site";
+import { AVG_RATING } from "@/data/reviews";
+
+const TOP_ROUTES = [
+  { label: "Heraklion Airport → Elounda", slug: "heraklion-airport-to-elounda" },
+  { label: "Heraklion Airport → Chania", slug: "heraklion-airport-to-chania" },
+  { label: "Heraklion Airport → Rethymno", slug: "heraklion-airport-to-rethymno" },
+  { label: "Chania Airport → Old Town", slug: "chania-airport-to-chania-old-town" },
+  { label: "Chania Airport → Kissamos", slug: "chania-airport-to-kissamos" },
+  { label: "Souda Port → Chania", slug: "souda-port-to-chania-old-town" },
+];
 
 export function SiteFooter() {
-  const topRoutes = ROUTES.slice(0, 6);
+  const t = useT();
   return (
-    <footer className="mt-24 border-t border-border/60 bg-primary text-primary-foreground">
-      <div className="mx-auto max-w-7xl px-6 py-16 grid gap-10 md:grid-cols-2 lg:grid-cols-5">
-        <div className="lg:col-span-2">
-          <div className="flex items-center gap-2">
-            <span className="w-9 h-9 rounded-full bg-accent flex items-center justify-center">
-              <span className="text-accent-foreground font-serif text-lg leading-none">C</span>
+    <footer className="bg-primary text-primary-foreground">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 md:grid-cols-2 lg:grid-cols-5">
+        <div className="lg:col-span-1">
+          <Link to="/{-$locale}" className="flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-foreground/10 ring-1 ring-primary-foreground/20">
+              <span className="font-display text-lg leading-none text-accent">C</span>
             </span>
-            <span className="font-serif text-2xl tracking-tight">CreteTransfers</span>
-          </div>
-          <p className="mt-4 text-primary-foreground/70 max-w-sm">
-            Fixed-price airport and port transfers across Crete. Local licensed drivers, no bidding, no
-            surprises.
+            <span className="font-display text-lg">{SITE_NAME}</span>
+          </Link>
+          <p className="mt-4 text-sm leading-relaxed text-primary-foreground/70">
+            {t.footer.tagline}
           </p>
-          <div className="mt-6 space-y-2 text-sm text-primary-foreground/80">
-            <div>hello@cretetransfers.example</div>
-            <div>+30 28 1000 0000 · 24/7 dispatch</div>
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1.5 text-xs font-medium">
+            <Star className="h-3.5 w-3.5 fill-highlight text-highlight" />
+            {AVG_RATING} · Google
           </div>
         </div>
 
-        <FooterCol title="Top routes">
-          {topRoutes.map((r) => (
-            <li key={r.slug}>
-              <Link to="/routes/$slug" params={{ slug: r.slug }} className="hover:text-accent">
-                {r.from.replace(" (HER)", "").replace(" (CHQ)", "").replace(" (Ferry)", "")} → {r.to}
+        <nav aria-label={t.footer.routesTitle}>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-primary-foreground/60">
+            {t.footer.routesTitle}
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            {TOP_ROUTES.map((r) => (
+              <li key={r.slug}>
+                <Link
+                  to="/{-$locale}/routes/$slug"
+                  params={{ slug: r.slug }}
+                  className="text-primary-foreground/80 transition hover:text-accent"
+                >
+                  {r.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                to="/{-$locale}/routes"
+                className="font-medium text-accent transition hover:opacity-80"
+              >
+                {t.nav.allRoutes} →
               </Link>
             </li>
-          ))}
-          <li>
-            <Link to="/routes" className="hover:text-accent underline underline-offset-4">
-              All routes →
-            </Link>
-          </li>
-        </FooterCol>
+          </ul>
+        </nav>
 
-        <FooterCol title="Regions & services">
-          {REGIONS.map((r) => (
-            <li key={r.slug}>
-              <Link to="/regions/$slug" params={{ slug: r.slug }} className="hover:text-accent">
-                {r.name}
+        <nav aria-label={t.footer.companyTitle}>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-primary-foreground/60">
+            {t.footer.companyTitle}
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            <li>
+              <Link
+                to="/{-$locale}/about"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.about}
               </Link>
             </li>
-          ))}
-          {SERVICES.slice(0, 3).map((s) => (
-            <li key={s.slug}>
-              <Link to="/services/$slug" params={{ slug: s.slug }} className="hover:text-accent">
-                {s.name}
+            <li>
+              <Link
+                to="/{-$locale}/how-it-works"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.howItWorks}
               </Link>
             </li>
-          ))}
-        </FooterCol>
+            <li>
+              <Link
+                to="/{-$locale}/reviews"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.reviews}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/faq"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.faq}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/blog"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.blog}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/for-hotels"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.forHotels}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/for-drivers"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.forDrivers}
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
-        <FooterCol title="Company">
-          <li><Link to="/about" className="hover:text-accent">About</Link></li>
-          <li><Link to="/how-it-works" className="hover:text-accent">How it works</Link></li>
-          <li><Link to="/fleet" className="hover:text-accent">Our fleet</Link></li>
-          <li><Link to="/reviews" className="hover:text-accent">Reviews</Link></li>
-          <li><Link to="/faq" className="hover:text-accent">FAQ</Link></li>
-          <li><Link to="/contact" className="hover:text-accent">Contact</Link></li>
-          <li><Link to="/for-hotels" className="hover:text-accent">For hotels</Link></li>
-          <li><Link to="/for-drivers" className="hover:text-accent">For drivers</Link></li>
-        </FooterCol>
+        <nav aria-label={t.footer.servicesTitle}>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-primary-foreground/60">
+            {t.footer.servicesTitle}
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            {(
+              [
+                { label: "Airport transfers", slug: "airport-transfers" },
+                { label: "Port transfers", slug: "port-transfers" },
+                { label: "Hotel transfers", slug: "hotel-transfers" },
+                { label: "Private day tours", slug: "private-tours" },
+                { label: "Long distance", slug: "long-distance" },
+                { label: "Group transfers", slug: "group-transfers" },
+              ] as const
+            ).map((s) => (
+              <li key={s.slug}>
+                <Link
+                  to="/{-$locale}/services/$slug"
+                  params={{ slug: s.slug }}
+                  className="text-primary-foreground/80 transition hover:text-accent"
+                >
+                  {s.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                to="/{-$locale}/fleet"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.nav.fleet}
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-primary-foreground/60">
+            {t.footer.contactTitle}
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            <li>
+              <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                className="inline-flex items-center gap-2 text-primary-foreground/80 transition hover:text-accent"
+              >
+                <Mail className="h-4 w-4" />
+                {CONTACT_EMAIL}
+              </a>
+            </li>
+            <li>
+              <a
+                href={CONTACT_PHONE_HREF}
+                className="inline-flex items-center gap-2 text-primary-foreground/80 transition hover:text-accent"
+              >
+                <Phone className="h-4 w-4" />
+                {CONTACT_PHONE}
+              </a>
+            </li>
+            <li className="text-primary-foreground/60">{t.footer.dispatch}</li>
+            <li className="text-primary-foreground/60">{t.footer.office}</li>
+          </ul>
+          <h3 className="mt-6 text-sm font-semibold uppercase tracking-wider text-primary-foreground/60">
+            {t.footer.legalTitle}
+          </h3>
+          <ul className="mt-4 space-y-2.5 text-sm">
+            <li>
+              <Link
+                to="/{-$locale}/legal/terms"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.footer.terms}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/legal/privacy"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.footer.privacy}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/legal/cookies"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.footer.cookies}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/legal/refunds"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.footer.refunds}
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/{-$locale}/legal/imprint"
+                className="text-primary-foreground/80 transition hover:text-accent"
+              >
+                {t.footer.imprint}
+              </Link>
+            </li>
+          </ul>
+        </div>
       </div>
-
       <div className="border-t border-primary-foreground/10">
-        <div className="mx-auto max-w-7xl px-6 py-6 text-xs text-primary-foreground/50 flex flex-wrap justify-between gap-3">
-          <span>© {new Date().getFullYear()} CreteTransfers. Licensed Cretan operators.</span>
-          <div className="flex flex-wrap gap-4">
-            <Link to="/legal/terms" className="hover:text-accent">Terms</Link>
-            <Link to="/legal/privacy" className="hover:text-accent">Privacy</Link>
-            <Link to="/legal/cookies" className="hover:text-accent">Cookies</Link>
-            <Link to="/legal/refunds" className="hover:text-accent">Refunds</Link>
-            <Link to="/legal/imprint" className="hover:text-accent">Imprint</Link>
-          </div>
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 px-6 py-5 text-xs text-primary-foreground/60">
+          <span>
+            © {new Date().getFullYear()} {SITE_NAME}. {t.footer.rights}
+          </span>
+          <span>Heraklion · Chania · Rethymno · Lasithi</span>
         </div>
       </div>
     </footer>
-  );
-}
-
-function FooterCol({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <div className="text-xs uppercase tracking-widest text-primary-foreground/50 mb-4">{title}</div>
-      <ul className="space-y-2 text-sm">{children}</ul>
-    </div>
   );
 }

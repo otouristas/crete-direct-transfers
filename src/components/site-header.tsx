@@ -1,47 +1,93 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
+import { useT } from "@/i18n";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
-const MEGA = {
-  Routes: {
-    href: "/routes",
-    items: [
-      { label: "All Crete routes", to: "/routes" },
-      { label: "From Heraklion Airport", to: "/routes" },
-      { label: "From Chania Airport", to: "/routes" },
-      { label: "From Souda Port", to: "/routes" },
-    ],
-  },
-  Regions: {
-    href: "/regions",
-    items: [
-      { label: "Chania", to: "/regions/chania" },
-      { label: "Rethymno", to: "/regions/rethymno" },
-      { label: "Heraklion", to: "/regions/heraklion" },
-      { label: "Lasithi", to: "/regions/lasithi" },
-    ],
-  },
-  Services: {
-    href: "/services",
-    items: [
-      { label: "Airport transfers", to: "/services/airport-transfers" },
-      { label: "Port transfers", to: "/services/port-transfers" },
-      { label: "Private day tours", to: "/services/private-tours" },
-      { label: "Group transfers", to: "/services/group-transfers" },
-    ],
-  },
-  Fleet: {
-    href: "/fleet",
-    items: [
-      { label: "Economy", to: "/fleet/economy" },
-      { label: "Comfort", to: "/fleet/comfort" },
-      { label: "Minivan", to: "/fleet/minivan" },
-      { label: "Luxury", to: "/fleet/luxury" },
-    ],
-  },
-} as const;
+type MegaItem = { label: string; to: string; params?: Record<string, string> };
+type MegaGroup = { label: string; to: string; items: MegaItem[] };
+
+function useMega(): MegaGroup[] {
+  const t = useT();
+  return [
+    {
+      label: t.nav.routes,
+      to: "/{-$locale}/routes",
+      items: [
+        {
+          label: "Heraklion Airport → Elounda",
+          to: "/{-$locale}/routes/$slug",
+          params: { slug: "heraklion-airport-to-elounda" },
+        },
+        {
+          label: "Heraklion Airport → Chania",
+          to: "/{-$locale}/routes/$slug",
+          params: { slug: "heraklion-airport-to-chania" },
+        },
+        {
+          label: "Chania Airport → Old Town",
+          to: "/{-$locale}/routes/$slug",
+          params: { slug: "chania-airport-to-chania-old-town" },
+        },
+        {
+          label: "Souda Port → Chania",
+          to: "/{-$locale}/routes/$slug",
+          params: { slug: "souda-port-to-chania-old-town" },
+        },
+      ],
+    },
+    {
+      label: t.nav.regions,
+      to: "/{-$locale}/regions",
+      items: [
+        { label: "Chania", to: "/{-$locale}/regions/$slug", params: { slug: "chania" } },
+        { label: "Rethymno", to: "/{-$locale}/regions/$slug", params: { slug: "rethymno" } },
+        { label: "Heraklion", to: "/{-$locale}/regions/$slug", params: { slug: "heraklion" } },
+        { label: "Lasithi", to: "/{-$locale}/regions/$slug", params: { slug: "lasithi" } },
+      ],
+    },
+    {
+      label: t.nav.services,
+      to: "/{-$locale}/services",
+      items: [
+        {
+          label: "Airport transfers",
+          to: "/{-$locale}/services/$slug",
+          params: { slug: "airport-transfers" },
+        },
+        {
+          label: "Port transfers",
+          to: "/{-$locale}/services/$slug",
+          params: { slug: "port-transfers" },
+        },
+        {
+          label: "Private day tours",
+          to: "/{-$locale}/services/$slug",
+          params: { slug: "private-tours" },
+        },
+        {
+          label: "Group transfers",
+          to: "/{-$locale}/services/$slug",
+          params: { slug: "group-transfers" },
+        },
+      ],
+    },
+    {
+      label: t.nav.fleet,
+      to: "/{-$locale}/fleet",
+      items: [
+        { label: "Economy", to: "/{-$locale}/fleet/$class", params: { class: "economy" } },
+        { label: "Comfort", to: "/{-$locale}/fleet/$class", params: { class: "comfort" } },
+        { label: "Minivan", to: "/{-$locale}/fleet/$class", params: { class: "minivan" } },
+        { label: "Luxury", to: "/{-$locale}/fleet/$class", params: { class: "luxury" } },
+      ],
+    },
+  ];
+}
 
 export function SiteHeader() {
+  const t = useT();
+  const mega = useMega();
   const [open, setOpen] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -55,43 +101,45 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-all ${
-        scrolled
-          ? "bg-background/95 backdrop-blur border-b border-border/60"
-          : "bg-background/80 backdrop-blur border-b border-transparent"
+      className={`sticky top-0 z-40 border-b bg-card/95 backdrop-blur transition-shadow ${
+        scrolled ? "border-border shadow-sm" : "border-transparent"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2 shrink-0">
-          <span className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-serif text-lg leading-none">C</span>
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-3.5">
+        <Link to="/{-$locale}" className="flex shrink-0 items-center gap-2">
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
+            <span className="font-display text-lg leading-none text-accent">C</span>
           </span>
-          <span className="font-serif text-xl tracking-tight text-primary">CreteTransfers</span>
+          <span className="font-display text-xl tracking-tight text-primary">CreteTransfers</span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1 text-sm">
-          {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map((key) => (
+        <nav className="hidden items-center gap-0.5 text-sm lg:flex">
+          {mega.map((group) => (
             <div
-              key={key}
+              key={group.label}
               className="relative"
-              onMouseEnter={() => setOpen(key)}
+              onMouseEnter={() => setOpen(group.label)}
               onMouseLeave={() => setOpen(null)}
             >
               <Link
-                to={MEGA[key].href}
-                className="flex items-center gap-1 px-3 py-2 rounded-full hover:bg-muted transition"
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                to={group.to as any}
+                className="flex items-center gap-1 rounded-full px-3 py-2 font-medium transition hover:bg-muted"
               >
-                {key}
-                <ChevronDown className="w-3 h-3 opacity-60" />
+                {group.label}
+                <ChevronDown className="h-3 w-3 opacity-60" />
               </Link>
-              {open === key && (
-                <div className="absolute top-full left-0 pt-2 min-w-52">
-                  <div className="rounded-xl bg-card border border-border/60 shadow-xl p-2">
-                    {MEGA[key].items.map((item) => (
+              {open === group.label && (
+                <div className="absolute left-0 top-full min-w-56 pt-2">
+                  <div className="rounded-xl border border-border bg-card p-2 shadow-xl">
+                    {group.items.map((item) => (
                       <Link
-                        key={item.to}
-                        to={item.to}
-                        className="block px-3 py-2 rounded-lg text-sm hover:bg-muted"
+                        key={item.label}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        to={item.to as any}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        params={item.params as any}
+                        className="block rounded-lg px-3 py-2 text-sm hover:bg-muted"
                       >
                         {item.label}
                       </Link>
@@ -101,47 +149,67 @@ export function SiteHeader() {
               )}
             </div>
           ))}
-          <Link to="/about" className="px-3 py-2 rounded-full hover:bg-muted transition">About</Link>
-          <Link to="/faq" className="px-3 py-2 rounded-full hover:bg-muted transition">FAQ</Link>
-          <Link to="/contact" className="px-3 py-2 rounded-full hover:bg-muted transition">Contact</Link>
+          <Link
+            to="/{-$locale}/blog"
+            className="rounded-full px-3 py-2 font-medium transition hover:bg-muted"
+          >
+            {t.nav.blog}
+          </Link>
+          <Link
+            to="/{-$locale}/about"
+            className="rounded-full px-3 py-2 font-medium transition hover:bg-muted"
+          >
+            {t.nav.about}
+          </Link>
+          <Link
+            to="/{-$locale}/contact"
+            className="rounded-full px-3 py-2 font-medium transition hover:bg-muted"
+          >
+            {t.nav.contact}
+          </Link>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <LanguageSwitcher className="hidden md:inline-flex" />
           <Link
-            to="/book"
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2 text-sm text-accent-foreground hover:opacity-90 transition"
+            to="/{-$locale}/book"
+            className="hidden items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 md:inline-flex"
           >
-            Get a quote
+            {t.common.bookNow}
           </Link>
           <button
-            className="lg:hidden p-2 rounded-full hover:bg-muted"
+            className="rounded-full p-2 hover:bg-muted lg:hidden"
             onClick={() => setMobileOpen((v) => !v)}
-            aria-label="Menu"
+            aria-label={t.nav.menu}
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
       {mobileOpen && (
-        <div className="lg:hidden border-t border-border/60 bg-background">
-          <div className="px-6 py-4 space-y-3">
-            {(Object.keys(MEGA) as (keyof typeof MEGA)[]).map((key) => (
-              <div key={key}>
+        <div className="max-h-[calc(100dvh-64px)] overflow-y-auto border-t border-border bg-card lg:hidden">
+          <div className="space-y-4 px-6 py-5">
+            {mega.map((group) => (
+              <div key={group.label}>
                 <Link
-                  to={MEGA[key].href}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  to={group.to as any}
                   onClick={() => setMobileOpen(false)}
-                  className="font-serif text-lg text-primary block"
+                  className="block font-display text-lg text-primary"
                 >
-                  {key}
+                  {group.label}
                 </Link>
-                <div className="mt-1 ml-3 space-y-1">
-                  {MEGA[key].items.map((item) => (
+                <div className="ml-3 mt-1 space-y-1">
+                  {group.items.map((item) => (
                     <Link
-                      key={item.to}
-                      to={item.to}
+                      key={item.label}
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      to={item.to as any}
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      params={item.params as any}
                       onClick={() => setMobileOpen(false)}
-                      className="block text-sm text-muted-foreground py-1"
+                      className="block py-1 text-sm text-muted-foreground"
                     >
                       {item.label}
                     </Link>
@@ -149,17 +217,45 @@ export function SiteHeader() {
                 </div>
               </div>
             ))}
-            <div className="pt-3 border-t border-border/60 space-y-2">
-              <Link to="/about" onClick={() => setMobileOpen(false)} className="block text-sm">About</Link>
-              <Link to="/faq" onClick={() => setMobileOpen(false)} className="block text-sm">FAQ</Link>
-              <Link to="/contact" onClick={() => setMobileOpen(false)} className="block text-sm">Contact</Link>
+            <div className="space-y-2 border-t border-border pt-4">
               <Link
-                to="/book"
+                to="/{-$locale}/blog"
                 onClick={() => setMobileOpen(false)}
-                className="mt-3 block text-center rounded-full bg-accent px-5 py-3 text-sm text-accent-foreground"
+                className="block text-sm font-medium"
               >
-                Get a quote
+                {t.nav.blog}
               </Link>
+              <Link
+                to="/{-$locale}/about"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm font-medium"
+              >
+                {t.nav.about}
+              </Link>
+              <Link
+                to="/{-$locale}/faq"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm font-medium"
+              >
+                {t.nav.faq}
+              </Link>
+              <Link
+                to="/{-$locale}/contact"
+                onClick={() => setMobileOpen(false)}
+                className="block text-sm font-medium"
+              >
+                {t.nav.contact}
+              </Link>
+              <div className="flex items-center justify-between pt-2">
+                <LanguageSwitcher />
+                <Link
+                  to="/{-$locale}/book"
+                  onClick={() => setMobileOpen(false)}
+                  className="inline-flex items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground"
+                >
+                  {t.common.bookNow}
+                </Link>
+              </div>
             </div>
           </div>
         </div>

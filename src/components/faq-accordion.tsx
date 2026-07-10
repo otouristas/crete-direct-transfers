@@ -8,8 +8,8 @@ export function FaqAccordion({ groups }: { groups: FaqGroup[] }) {
     <div className="space-y-10">
       {groups.map((group) => (
         <div key={group.title}>
-          <h3 className="font-serif text-xl text-primary mb-4">{group.title}</h3>
-          <div className="rounded-2xl border border-border/60 bg-card divide-y divide-border/60 overflow-hidden">
+          <h3 className="font-display text-xl text-primary mb-4">{group.title}</h3>
+          <div className="rounded-2xl border border-border bg-card divide-y divide-border/60 overflow-hidden">
             {group.items.map((item, i) => {
               const id = `${group.title}-${i}`;
               const isOpen = open === id;
