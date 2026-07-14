@@ -3,6 +3,7 @@ import { z } from "zod";
 import { CheckCircle2 } from "lucide-react";
 import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
+import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/{-$locale}/book/success")({
   validateSearch: z.object({ id: z.string().optional() }),
@@ -24,6 +25,7 @@ function SuccessPage() {
   const { id } = Route.useSearch();
   const { locale } = Route.useRouteContext();
   const t = getDict(locale);
+  const { session, ready } = useAuth();
   return (
     <div className="mx-auto max-w-2xl px-6 py-24 text-center">
       <CheckCircle2 className="mx-auto h-14 w-14 text-accent" strokeWidth={1.5} />
@@ -35,6 +37,22 @@ function SuccessPage() {
         </div>
       )}
       <div className="mt-10 flex flex-wrap justify-center gap-3">
+        {ready && !session && (
+          <Link
+            to="/{-$locale}/signup"
+            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
+          >
+            {t.auth.trackCta}
+          </Link>
+        )}
+        {ready && session && (
+          <Link
+            to="/{-$locale}/account"
+            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
+          >
+            {t.auth.viewMyBookings}
+          </Link>
+        )}
         <Link
           to="/{-$locale}"
           className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90"

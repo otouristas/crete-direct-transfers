@@ -1,9 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { ROUTES, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { quote, formatEur, bagCapacity, type Extras, type TripType } from "@/lib/pricing";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { useProfile } from "@/queries/profile";
 import { CounterInput } from "@/components/counter-input";
 import { LocationPicker, type PickedLocation } from "@/components/location-picker";
 import { getDict, type Locale } from "@/i18n";
@@ -82,6 +84,21 @@ function BookPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
+  const { user } = useAuth();
+  const profile = useProfile();
+
+  // Prefill contact fields for signed-in customers — only fields still empty,
+  // so nothing the visitor typed is ever overwritten.
+  useEffect(() => {
+    if (!user) return;
+    setDetails((d) => ({
+      ...d,
+      customer_name: d.customer_name || profile.data?.full_name || "",
+      customer_email: d.customer_email || user.email || "",
+      customer_phone: d.customer_phone || profile.data?.phone || "",
+    }));
+  }, [user, profile.data]);
+
   const currentRoute = ROUTES.find((r) => r.slug === routeSlug)!;
   const q = useMemo(
     () =>
@@ -139,6 +156,7 @@ function BookPage() {
       price_cents: q.totalEur * 100,
       currency: "EUR",
       status: "pending",
+      user_id: user?.id ?? null,
     };
     const v2 = {
       trip_type: tripType,
@@ -158,12 +176,14 @@ function BookPage() {
       .select("id")
       .single();
 
-    // Transition fallback: if the v2 columns haven't been migrated yet on the
-    // backend, keep the booking by folding the new fields into extras jsonb.
-    if (error && /column|schema cache/i.test(error.message)) {
+    // Transition fallback: if the dispatch migration (user_id column) isn't
+    // applied yet, keep the booking rather than losing it.
+    if (error && user && /user_id/i.test(error.message)) {
+      const { user_id: _omit, ...withoutUser } = { ...base, ...v2 };
+      void _omit;
       ({ data, error } = await supabase
         .from("bookings")
-        .insert({ ...base, extras: { ...extras, ...v2 } as never })
+        .insert(withoutUser as never)
         .select("id")
         .single());
     }

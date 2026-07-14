@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { Menu, X, ChevronDown, Phone, Star } from "lucide-react";
 import { useT } from "@/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { AccountMenu, MobileAccountLinks } from "@/components/auth/account-menu";
 import { Logo } from "@/components/logo";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/lib/site";
@@ -183,6 +184,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-1.5">
           <LanguageSwitcher className="hidden md:inline-flex" />
+          <AccountMenu />
           <Link
             to="/{-$locale}/book"
             className="hidden items-center rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 md:inline-flex"
@@ -295,6 +297,7 @@ export function SiteHeader() {
                 >
                   {t.nav.howItWorks}
                 </Link>
+                <MobileAccountLinks onNavigate={close} />
               </div>
 
               <TrustPills dark className="mt-8" />

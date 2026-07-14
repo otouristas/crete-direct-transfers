@@ -23,6 +23,8 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
+import { AuthProvider } from "../hooks/use-auth";
+import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
   const t = useT();
@@ -135,13 +137,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen flex flex-col">
-        <SiteHeader />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <SiteFooter />
-      </div>
+      <AuthProvider>
+        <div className="min-h-screen flex flex-col">
+          <SiteHeader />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <SiteFooter />
+        </div>
+        <Toaster position="top-center" />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

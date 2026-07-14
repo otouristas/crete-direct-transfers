@@ -1,8 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { ContactForm } from "@/components/contact-form";
-import { Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 export const Route = createFileRoute("/{-$locale}/for-drivers")({
   head: (ctx) => {
@@ -25,6 +25,13 @@ export const Route = createFileRoute("/{-$locale}/for-drivers")({
             A fixed-price network built for professional Cretan drivers who care about repeat guests
             and reputation — not bidding wars.
           </p>
+          <Link
+            to="/{-$locale}/driver/apply"
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
+          >
+            Apply to drive
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
       <section className="mx-auto max-w-6xl px-6 py-16 grid gap-12 lg:grid-cols-2 items-start">
@@ -59,7 +66,17 @@ export const Route = createFileRoute("/{-$locale}/for-drivers")({
           </ul>
         </div>
         <div>
-          <h2 className="font-display text-2xl text-primary mb-6">Apply to join</h2>
+          <h2 className="font-display text-2xl text-primary mb-2">Apply to join</h2>
+          <p className="mb-6 text-sm text-muted-foreground">
+            Ready to start?{" "}
+            <Link
+              to="/{-$locale}/driver/apply"
+              className="font-medium text-accent-deep hover:underline"
+            >
+              Create your driver account
+            </Link>{" "}
+            — or send us a message first.
+          </p>
           <ContactForm
             topic="driver"
             submitLabel="Send application"
