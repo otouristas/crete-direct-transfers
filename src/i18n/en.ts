@@ -145,6 +145,12 @@ export const en = {
     payOnBoard: "Pay on arrival — card or cash",
     minivanHint: "Tip: with this much luggage, a Minivan travels more comfortably.",
     distance: (km: number, min: number) => `${km} km · ${min} min · Fixed price`,
+    selectRoute: "Select route",
+    pinOnMap: "Pin on map / GPS",
+    useGps: "Use my location (GPS)",
+    pickupLocation: "Pickup location",
+    dropoffLocation: "Drop-off location",
+    customRouteHint: "Custom pin location. Pickup and drop-off points set on map.",
   },
   home: {
     metaTitle: "TransferAround — Fixed-Price Airport & Port Transfers in Crete",

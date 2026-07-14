@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
 import { divIcon, type LatLngBoundsExpression, type Marker as LeafletMarker } from "leaflet";
+import { Navigation, Loader2 } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import type { PickedLocation } from "./location-picker";
 
@@ -41,6 +42,48 @@ function ClickHandler({ onSelect }: { onSelect: (p: PickedLocation) => void }) {
   return null;
 }
 
+function GpsControl({ onSelect }: { onSelect: (p: PickedLocation) => void }) {
+  const map = useMap();
+  const [loading, setLoading] = useState(false);
+
+  const handleGps = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!navigator.geolocation) return;
+    setLoading(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLoading(false);
+        const p = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        map.flyTo([p.lat, p.lng], 14, { duration: 1 });
+        onSelect(p);
+      },
+      () => {
+        setLoading(false);
+      },
+      { timeout: 10000, enableHighAccuracy: true },
+    );
+  };
+
+  return (
+    <div className="leaflet-top leaflet-right" style={{ pointerEvents: "auto", margin: "10px" }}>
+      <button
+        type="button"
+        onClick={handleGps}
+        disabled={loading}
+        title="Use my location (GPS)"
+        className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-md hover:bg-muted focus:outline-none"
+      >
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin text-accent" />
+        ) : (
+          <Navigation className="h-4 w-4 text-accent fill-accent/20" />
+        )}
+        <span>GPS</span>
+      </button>
+    </div>
+  );
+}
+
 export default function LocationPickerInner({
   value,
   onPick,
@@ -59,7 +102,7 @@ export default function LocationPickerInner({
     <MapContainer
       bounds={CRETE_BOUNDS}
       scrollWheelZoom={true}
-      className="h-64 w-full rounded-xl"
+      className="relative h-64 w-full rounded-xl"
       style={{ minHeight: 256 }}
     >
       <TileLayer
@@ -67,6 +110,7 @@ export default function LocationPickerInner({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
       <ClickHandler onSelect={select} />
+      <GpsControl onSelect={select} />
       {point && (
         <Marker
           position={[point.lat, point.lng]}

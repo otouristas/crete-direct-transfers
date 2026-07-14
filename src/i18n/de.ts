@@ -147,6 +147,12 @@ export const de: Dict = {
     payOnBoard: "Zahlung bei Ankunft — Karte oder bar",
     minivanHint: "Tipp: Mit so viel Gepäck reist ein Minivan deutlich bequemer.",
     distance: (km: number, min: number) => `${km} km · ${min} Min. · Festpreis`,
+    selectRoute: "Strecke wählen",
+    pinOnMap: "Stecknadel auf Karte / GPS",
+    useGps: "Standort verwenden (GPS)",
+    pickupLocation: "Abholort",
+    dropoffLocation: "Zielort",
+    customRouteHint: "Benutzerdefinierte Position. Abhol- und Zielpunkte auf der Karte festgelegt.",
   },
   home: {
     metaTitle: "TransferAround — Flughafen- & Hafentransfers auf Kreta zum Festpreis",

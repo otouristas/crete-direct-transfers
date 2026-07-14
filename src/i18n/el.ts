@@ -146,6 +146,12 @@ export const el: Dict = {
     payOnBoard: "Πληρωμή κατά την άφιξη — κάρτα ή μετρητά",
     minivanHint: "Συμβουλή: με τόσες αποσκευές, ένα μίνι βαν είναι πιο άνετο.",
     distance: (km: number, min: number) => `${km} χλμ · ${min} λεπτά · Σταθερή τιμή`,
+    selectRoute: "Επιλογή διαδρομής",
+    pinOnMap: "Πινέζα στο χάρτη / GPS",
+    useGps: "Χρήση τοποθεσίας μου (GPS)",
+    pickupLocation: "Σημείο παραλαβής",
+    dropoffLocation: "Σημείο αποβίβασης",
+    customRouteHint: "Προσαρμοσμένο σημείο. Τα σημεία παραλαβής και αποβίβασης έχουν οριστεί στο χάρτη.",
   },
   home: {
     metaTitle: "TransferAround — Μεταφορές με Σταθερή Τιμή από Αεροδρόμια & Λιμάνια Κρήτης",

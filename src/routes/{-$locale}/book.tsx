@@ -23,6 +23,12 @@ const searchSchema = z.object({
   flight: z.string().optional(),
   bagsChecked: z.coerce.number().min(0).max(20).optional(),
   bagsCabin: z.coerce.number().min(0).max(20).optional(),
+  pickupAddress: z.string().optional(),
+  dropoffAddress: z.string().optional(),
+  pickupLat: z.coerce.number().optional(),
+  pickupLng: z.coerce.number().optional(),
+  dropoffLat: z.coerce.number().optional(),
+  dropoffLng: z.coerce.number().optional(),
 });
 
 export const Route = createFileRoute("/{-$locale}/book")({
@@ -66,10 +72,18 @@ function BookPage() {
   const [bagsChecked, setBagsChecked] = useState(search.bagsChecked ?? 2);
   const [bagsCabin, setBagsCabin] = useState(search.bagsCabin ?? 2);
   const [extras, setExtras] = useState<Extras>({});
-  const [pickupAddress, setPickupAddress] = useState("");
-  const [dropoffAddress, setDropoffAddress] = useState("");
-  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(null);
-  const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(null);
+  const [pickupAddress, setPickupAddress] = useState(search.pickupAddress ?? "");
+  const [dropoffAddress, setDropoffAddress] = useState(search.dropoffAddress ?? "");
+  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(
+    search.pickupLat != null && search.pickupLng != null
+      ? { lat: search.pickupLat, lng: search.pickupLng }
+      : null
+  );
+  const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(
+    search.dropoffLat != null && search.dropoffLng != null
+      ? { lat: search.dropoffLat, lng: search.dropoffLng }
+      : null
+  );
   const [openPicker, setOpenPicker] = useState<"pickup" | "dropoff" | null>(null);
 
   const [details, setDetails] = useState({

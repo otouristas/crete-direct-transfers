@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowRight, ChevronDown, Info } from "lucide-react";
+import { ArrowRight, ChevronDown, Info, MapPin, ListFilter } from "lucide-react";
 import { ROUTES, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { quote, formatEur, bagCapacity, type TripType } from "@/lib/pricing";
 import { CounterInput } from "@/components/counter-input";
+import { LocationPicker, type PickedLocation } from "@/components/location-picker";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ export function BookingWidget({
   const t = useT();
   const navigate = useNavigate();
   const [tripType, setTripType] = useState<TripType>("oneway");
+  const [routeMode, setRouteMode] = useState<"preset" | "map">("preset");
   const [routeSlug, setRouteSlug] = useState(defaultRoute ?? ROUTES[0].slug);
   const [vehicleClass, setVehicleClass] = useState<VehicleClass>(defaultClass);
   const [date, setDate] = useState("");
@@ -28,6 +30,12 @@ export function BookingWidget({
   const [bagsCabin, setBagsCabin] = useState(2);
   const [flight, setFlight] = useState("");
   const [showBreakdown, setShowBreakdown] = useState(false);
+
+  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(null);
+  const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(null);
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [dropoffAddress, setDropoffAddress] = useState("");
+  const [activePicker, setActivePicker] = useState<"pickup" | "dropoff" | null>(null);
 
   const selected = ROUTES.find((r) => r.slug === routeSlug)!;
   const q = useMemo(
@@ -58,6 +66,12 @@ export function BookingWidget({
         flight: flight || undefined,
         bagsChecked,
         bagsCabin,
+        pickupAddress: routeMode === "map" && pickupAddress ? pickupAddress : undefined,
+        dropoffAddress: routeMode === "map" && dropoffAddress ? dropoffAddress : undefined,
+        pickupLat: routeMode === "map" && pickupPoint ? pickupPoint.lat : undefined,
+        pickupLng: routeMode === "map" && pickupPoint ? pickupPoint.lng : undefined,
+        dropoffLat: routeMode === "map" && dropoffPoint ? dropoffPoint.lat : undefined,
+        dropoffLng: routeMode === "map" && dropoffPoint ? dropoffPoint.lng : undefined,
       },
     });
   };
@@ -90,19 +104,129 @@ export function BookingWidget({
       </div>
 
       <div className="mt-4 space-y-4">
-        <Field label={t.widget.route}>
-          <select
-            value={routeSlug}
-            onChange={(e) => setRouteSlug(e.target.value)}
-            className="widget-input"
-          >
-            {ROUTES.map((r) => (
-              <option key={r.slug} value={r.slug}>
-                {r.from} → {r.to}
-              </option>
-            ))}
-          </select>
-        </Field>
+        <div>
+          <div className="flex items-center justify-between">
+            <label className="text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
+              {t.widget.route}
+            </label>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => setRouteMode("preset")}
+                className={cn(
+                  "flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium transition",
+                  routeMode === "preset"
+                    ? "bg-primary/10 text-primary font-semibold"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <ListFilter className="h-3 w-3" />
+                {t.widget.selectRoute}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setRouteMode("map");
+                  if (!activePicker) setActivePicker("pickup");
+                }}
+                className={cn(
+                  "flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium transition",
+                  routeMode === "map"
+                    ? "bg-accent/15 text-accent-deep font-semibold"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                <MapPin className="h-3 w-3 text-accent" />
+                {t.widget.pinOnMap}
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-1.5">
+            {routeMode === "preset" ? (
+              <select
+                value={routeSlug}
+                onChange={(e) => setRouteSlug(e.target.value)}
+                className="widget-input"
+              >
+                {ROUTES.map((r) => (
+                  <option key={r.slug} value={r.slug}>
+                    {r.from} → {r.to}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div className="space-y-3 rounded-xl border border-border p-3 bg-muted/40">
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <div>
+                    <span className="text-[10px] uppercase font-semibold text-muted-foreground">
+                      {t.widget.pickupLocation}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setActivePicker(activePicker === "pickup" ? null : "pickup")}
+                      className={cn(
+                        "mt-1 flex w-full items-center justify-between rounded-lg border px-3 py-2 text-xs transition text-left",
+                        activePicker === "pickup"
+                          ? "border-accent bg-card text-foreground font-medium"
+                          : "border-border bg-card/80 text-muted-foreground hover:bg-card",
+                      )}
+                    >
+                      <span className="truncate">
+                        {pickupAddress || (pickupPoint ? `${pickupPoint.lat.toFixed(4)}, ${pickupPoint.lng.toFixed(4)}` : t.bookPage.pinOnMap)}
+                      </span>
+                      <MapPin className={cn("h-3.5 w-3.5 shrink-0 ml-1", pickupPoint ? "text-accent" : "text-muted-foreground")} />
+                    </button>
+                  </div>
+                  <div>
+                    <span className="text-[10px] uppercase font-semibold text-muted-foreground">
+                      {t.widget.dropoffLocation}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setActivePicker(activePicker === "dropoff" ? null : "dropoff")}
+                      className={cn(
+                        "mt-1 flex w-full items-center justify-between rounded-lg border px-3 py-2 text-xs transition text-left",
+                        activePicker === "dropoff"
+                          ? "border-accent bg-card text-foreground font-medium"
+                          : "border-border bg-card/80 text-muted-foreground hover:bg-card",
+                      )}
+                    >
+                      <span className="truncate">
+                        {dropoffAddress || (dropoffPoint ? `${dropoffPoint.lat.toFixed(4)}, ${dropoffPoint.lng.toFixed(4)}` : t.bookPage.pinOnMap)}
+                      </span>
+                      <MapPin className={cn("h-3.5 w-3.5 shrink-0 ml-1", dropoffPoint ? "text-accent" : "text-muted-foreground")} />
+                    </button>
+                  </div>
+                </div>
+
+                {activePicker && (
+                  <div className="space-y-1.5 pt-1">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>
+                        {activePicker === "pickup" ? t.widget.pickupLocation : t.widget.dropoffLocation}
+                      </span>
+                      <span>{t.bookPage.pinHint}</span>
+                    </div>
+                    <LocationPicker
+                      key={activePicker}
+                      value={activePicker === "pickup" ? pickupPoint : dropoffPoint}
+                      onPick={(point, address) => {
+                        if (activePicker === "pickup") {
+                          setPickupPoint(point);
+                          setPickupAddress(address);
+                        } else {
+                          setDropoffPoint(point);
+                          setDropoffAddress(address);
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className={cn("grid gap-4", tripType === "return" && "sm:grid-cols-2")}>
           <Field label={t.widget.pickupDate}>
