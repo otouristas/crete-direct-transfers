@@ -64,11 +64,16 @@ function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-2xl border border-border bg-card p-8">
-        <h2 className="font-display text-lg text-primary">{t.account.profileTitle}</h2>
+    <div className="mx-auto max-w-2xl space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold text-primary">{t.account.tabProfile}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t.account.profileTitle}</p>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+        <h2 className="text-lg font-semibold text-foreground">{t.account.profileTitle}</h2>
         <form
-          className="mt-6 max-w-md space-y-4"
+          className="mt-6 space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
             saveProfile.mutate();
@@ -97,17 +102,17 @@ function ProfilePage() {
           <button
             type="submit"
             disabled={saveProfile.isPending}
-            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
+            className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
           >
             {t.account.saveChanges}
           </button>
         </form>
       </div>
 
-      <div className="rounded-2xl border border-border bg-card p-8">
-        <h2 className="font-display text-lg text-primary">{t.account.changePasswordTitle}</h2>
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+        <h2 className="text-lg font-semibold text-foreground">{t.account.changePasswordTitle}</h2>
         <form
-          className="mt-6 max-w-md space-y-4"
+          className="mt-6 space-y-4"
           onSubmit={(e) => {
             e.preventDefault();
             if (newPassword.length < 8) {
@@ -130,7 +135,7 @@ function ProfilePage() {
           <button
             type="submit"
             disabled={savePassword.isPending}
-            className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
+            className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
           >
             {t.auth.updatePassword}
           </button>

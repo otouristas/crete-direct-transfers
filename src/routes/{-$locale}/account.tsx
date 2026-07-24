@@ -25,6 +25,7 @@ function AccountLayout() {
   return (
     <RequireAuth>
       <DashboardShell
+        variant="account"
         title={t.account.title}
         tabs={[
           { label: t.account.tabBookings, to: "/account" },
