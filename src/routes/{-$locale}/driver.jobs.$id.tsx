@@ -4,7 +4,7 @@ import { ArrowLeft, MessageCircle, Navigation, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { getDict } from "@/i18n";
 import { bookingQuery } from "@/queries/bookings";
-import { updateJobStatus } from "@/queries/driver";
+import { reportUnableToComplete, updateJobStatus } from "@/queries/driver";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -53,6 +53,21 @@ function DriverJobDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["booking", id] });
       queryClient.invalidateQueries({ queryKey: ["driver-jobs"] });
       toast.success(t.driver.statusUpdated);
+    },
+    onError: (err) => {
+      if (err instanceof Error && err.message === "wait_not_elapsed") {
+        toast.error(t.driver.waitNotElapsed);
+        return;
+      }
+      toast.error(t.driver.updateFailed);
+    },
+  });
+
+  const unable = useMutation({
+    mutationFn: () => reportUnableToComplete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["booking", id] });
+      toast.success(t.driver.unableReported);
     },
     onError: () => toast.error(t.driver.updateFailed),
   });
@@ -236,6 +251,13 @@ function DriverJobDetailPage() {
                 />
               </>
             )}
+            <ConfirmAction
+              trigger={t.driver.unableToComplete}
+              title={t.driver.confirmUnable}
+              confirmLabel={t.driver.unableToComplete}
+              cancelLabel={t.account.cancelKeep}
+              onConfirm={() => unable.mutate()}
+            />
           </div>
         </div>
       )}

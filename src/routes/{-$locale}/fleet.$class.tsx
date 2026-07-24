@@ -1,29 +1,32 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { VEHICLE_CLASSES, ROUTES, type VehicleClass } from "@/data/routes";
+import { VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { quote, formatEur } from "@/lib/pricing";
 import { Check } from "lucide-react";
-import type { Locale } from "@/i18n";
+import { getDict, useLocale, type Locale } from "@/i18n";
+import { getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 
 const VALID = VEHICLE_CLASSES.map((v) => v.id);
 
 export const Route = createFileRoute("/{-$locale}/fleet/$class")({
   loader: ({ params }) => {
+    const locale = (params.locale ?? "en") as Locale;
     if (!VALID.includes(params.class as VehicleClass)) throw notFound();
-    const vc = VEHICLE_CLASSES.find((v) => v.id === (params.class as VehicleClass))!;
+    const vc = getLocalizedVehicles(locale).find((v) => v.id === (params.class as VehicleClass))!;
     return { vc };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData)
       return {
-        meta: [{ title: "Not found | TransferAround" }, { name: "robots", content: "noindex" }],
+        meta: [{ title: t.seo.notFound("Vehicle") }, { name: "robots", content: "noindex" }],
       };
     const v = loaderData.vc;
     return buildHead({
       locale,
       path: `/fleet/${params.class}`,
-      title: `${v.label} Class | Crete Transfer Vehicle · TransferAround`,
+      title: t.seo.fleetTitle(v.label),
       description: `${v.description} ${v.capacity}, ${v.bags}. Fixed-price ${v.label.toLowerCase()} transfers across Crete.`,
       ogImage: v.image,
     });
@@ -44,8 +47,9 @@ export const Route = createFileRoute("/{-$locale}/fleet/$class")({
 
 function FleetDetail() {
   const { vc } = Route.useLoaderData();
-  const others = VEHICLE_CLASSES.filter((v) => v.id !== vc.id);
-  const popular = ROUTES.slice(0, 6);
+  const locale = useLocale();
+  const others = getLocalizedVehicles(locale).filter((v) => v.id !== vc.id);
+  const popular = getLocalizedRoutes(locale).slice(0, 6);
   return (
     <>
       <section className="relative">

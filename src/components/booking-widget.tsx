@@ -12,7 +12,7 @@ import {
   Plus,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
-import { getRoute, ROUTES, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
+import { getRoute, ROUTES, type VehicleClass } from "@/data/routes";
 import { getIataAirport } from "@/data/iata-airports";
 import { quote, formatEur, bagCapacity, type TripType } from "@/lib/pricing";
 import { matchRouteSlug, type PlaceResult } from "@/lib/place-search";
@@ -21,7 +21,8 @@ import { LocationPicker, type PickedLocation } from "@/components/location-picke
 import { PlaceCombobox } from "@/components/place-combobox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { useT } from "@/i18n";
+import { useLocale, useT } from "@/i18n";
+import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
 
 type ServiceMode = "transfer" | "hourly";
@@ -549,6 +550,7 @@ function BookingWidgetCard({
 }) {
   const t = useT();
   const navigate = useNavigate();
+  const vehicles = getLocalizedVehicles(useLocale());
   const routeDefaults = defaultsFromRoute(defaultRoute);
   const initialFrom = placeFromIata(defaultIata) ?? routeDefaults.from;
   const initialTo = routeDefaults.to;
@@ -777,14 +779,14 @@ function BookingWidgetCard({
           )}
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 sm:items-end">
           <Field label={t.widget.vehicleClass}>
             <select
               value={vehicleClass}
               onChange={(e) => setVehicleClass(e.target.value as VehicleClass)}
               className="widget-input"
             >
-              {VEHICLE_CLASSES.map((v) => (
+              {vehicles.map((v) => (
                 <option key={v.id} value={v.id}>
                   {v.label} · {v.capacity}
                 </option>
@@ -801,7 +803,7 @@ function BookingWidgetCard({
           </Field>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className={cn("grid sm:grid-cols-3", compact ? "gap-2" : "gap-3")}>
           <CounterInput label={t.widget.passengers} value={pax} onChange={setPax} min={1} max={16} />
           <CounterInput
             label={t.widget.checkedBags}
@@ -887,6 +889,8 @@ function BookingWidgetCard({
       <style>{`
         .widget-input {
           width: 100%;
+          min-width: 0;
+          box-sizing: border-box;
           min-height: 48px;
           background: var(--card);
           border: 1px solid var(--border);
@@ -916,8 +920,8 @@ function BookingWidgetCard({
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div>
-      <label className="text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
+    <div className="min-w-0">
+      <label className="line-clamp-1 text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
         {label}
       </label>
       <div className="mt-1.5">{children}</div>

@@ -11,9 +11,10 @@ import {
 } from "lucide-react";
 import type { AirportData } from "@/data/airports";
 import type { AirportRouteData } from "@/data/airport-routes";
-import { AIRPORTS } from "@/data/airports";
+import { relatedAirportsByCountry } from "@/lib/airport-resolve";
 import { formatEur } from "@/lib/pricing";
 import { BookingWidget } from "@/components/booking-widget";
+import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
@@ -56,6 +57,11 @@ export function AirportHero({
         <p className="mt-4 text-sm text-primary-foreground/65">
           Fixed price · Free cancellation · Flight monitoring
         </p>
+        <div className="mt-5">
+          <AskTouristasInline
+            prompt={`Transfer from ${airport.name} (${airport.iata}) tomorrow for 2 passengers`}
+          />
+        </div>
         <div className="mt-8" id="react-picker">
           {bookingSlot}
         </div>
@@ -537,14 +543,20 @@ export function AirportPopularRoutes({
   );
 }
 
-export function OtherAirportsInGreece({ currentSlug }: { currentSlug: string }) {
-  const others = AIRPORTS.filter((a) => a.slug !== currentSlug).slice(0, 12);
+export function OtherAirportsInGreece({ airport }: { airport: AirportData }) {
+  // Country-aware: show other airports in the same country (curated slug where a
+  // rich page exists, generated slug otherwise). Falls back to nothing if none.
+  const others = relatedAirportsByCountry(airport.iata, 9);
+  if (others.length === 0) return null;
+  const country = airport.country;
   return (
     <section className="bg-secondary/40 py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-2xl font-display text-primary sm:text-3xl">Other airports in Greece</h2>
+        <h2 className="text-2xl font-display text-primary sm:text-3xl">
+          Other airports in {country}
+        </h2>
         <p className="mt-2 text-muted-foreground">
-          Discover more airport transfer options across Greece.
+          Discover more airport transfer options across {country}.
         </p>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {others.map((a) => (
@@ -566,7 +578,7 @@ export function OtherAirportsInGreece({ currentSlug }: { currentSlug: string }) 
           to="/{-$locale}/airports"
           className="mt-6 inline-flex text-sm font-semibold text-accent-deep hover:underline"
         >
-          View all Greek airports →
+          View all airports →
         </Link>
       </div>
     </section>

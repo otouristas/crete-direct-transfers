@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ROUTES, type Region } from "@/data/routes";
-import { REGIONS } from "@/data/regions";
+import type { Region } from "@/data/routes";
 import { RouteCard } from "@/components/sections/route-card";
 import { PageHero } from "@/components/sections/page-hero";
 import { CtaBand } from "@/components/sections/cta-band";
 import { TrustPills } from "@/components/sections/trust-pills";
-import { getDict, useT, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import { getLocalizedRegions, getLocalizedRoutes } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/{-$locale}/routes/")({
@@ -16,8 +16,8 @@ export const Route = createFileRoute("/{-$locale}/routes/")({
     return buildHead({
       locale,
       path: "/routes",
-      title: `All Crete Transfer Routes | ${ROUTES.length} Fixed-Price Routes · TransferAround`,
-      description: `Browse ${ROUTES.length} fixed-price transfer routes across Crete — from Heraklion and Chania airports to every resort, port and villa. ${t.routesPages.indexSubtitle}`,
+      title: t.seo.routesIndexTitle,
+      description: t.seo.routesIndexDescription,
     });
   },
   component: RoutesHub,
@@ -25,8 +25,11 @@ export const Route = createFileRoute("/{-$locale}/routes/")({
 
 function RoutesHub() {
   const t = useT();
+  const locale = useLocale();
+  const routes = getLocalizedRoutes(locale);
+  const regions = getLocalizedRegions(locale);
   const [filter, setFilter] = useState<"All" | Region>("All");
-  const filtered = filter === "All" ? ROUTES : ROUTES.filter((r) => r.region === filter);
+  const filtered = filter === "All" ? routes : routes.filter((r) => r.region === filter);
 
   return (
     <>
@@ -38,7 +41,7 @@ function RoutesHub() {
       >
         <TrustPills className="mt-6" />
         <div className="mt-8 flex flex-wrap gap-2">
-          {(["All", ...REGIONS.map((r) => r.name)] as const).map((r) => (
+          {(["All", ...regions.map((r) => r.name)] as const).map((r) => (
             <button
               key={r}
               onClick={() => setFilter(r)}
@@ -51,7 +54,7 @@ function RoutesHub() {
               {r}
               {r !== "All" && (
                 <span className="ml-1.5 opacity-60">
-                  {ROUTES.filter((route) => route.region === r).length}
+                  {routes.filter((route) => route.region === r).length}
                 </span>
               )}
             </button>

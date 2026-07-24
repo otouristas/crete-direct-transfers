@@ -12,6 +12,10 @@ export type DriverProfile = {
   id_document_number: string | null;
   vehicle_registration_number: string | null;
   approval_status: string;
+  is_online: boolean;
+  partner_id: string | null;
+  primary_zone_id: string | null;
+  online_at: string | null;
 };
 
 export type Profile = {

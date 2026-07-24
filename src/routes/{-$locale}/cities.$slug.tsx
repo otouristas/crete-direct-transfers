@@ -1,11 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { getDestination, DESTINATIONS } from "@/data/destinations";
-import { AIRPORTS } from "@/data/airports";
-import { AIRPORT_ROUTES } from "@/data/airport-routes";
 import { formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
-import { useT, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import { getLocalizedAirports, getLocalizedAirportRoutes } from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
+import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
+import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 
 export const Route = createFileRoute("/{-$locale}/cities/$slug")({
   loader: ({ params }) => {
@@ -20,10 +21,11 @@ export const Route = createFileRoute("/{-$locale}/cities/$slug")({
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
       return {
         meta: [
-          { title: "City not found | TransferAround" },
+          { title: t.seo.notFound("City") },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -32,7 +34,7 @@ export const Route = createFileRoute("/{-$locale}/cities/$slug")({
     return buildHead({
       locale,
       path: `/cities/${city.slug}`,
-      title: `Private Transfers in ${city.name} | TransferAround`,
+      title: t.seo.cityTitle(city.name),
       description: `Book private chauffeur and airport transfers in ${city.name}, Greece. Fixed prices, licensed local drivers, meet & greet.`,
     });
   },
@@ -57,8 +59,9 @@ function CityNotFound() {
 
 function CityPage() {
   const { city } = Route.useLoaderData();
-  const airports = AIRPORTS.filter((a) => a.citySlug === city.slug);
-  const routesTo = AIRPORT_ROUTES.filter((r) => r.toSlug === city.slug);
+  const locale = useLocale();
+  const airports = getLocalizedAirports(locale).filter((a) => a.citySlug === city.slug);
+  const routesTo = getLocalizedAirportRoutes(locale).filter((r) => r.toSlug === city.slug);
   const nearbyCities = DESTINATIONS.filter(
     (d) =>
       d.slug !== city.slug &&
@@ -89,8 +92,13 @@ function CityPage() {
             {city.island ? `, ${city.island}` : ""}
             {city.region && !city.island ? `, ${city.region}` : ""}.
           </p>
+          <div className="mt-6">
+            <AskTouristasInline prompt={`Airport transfer to ${city.name} tomorrow for 2 passengers`} />
+          </div>
         </div>
       </section>
+
+      <AskTouristasBand pageType="city" entityLabel={city.name} />
 
       <section className="mx-auto max-w-7xl px-6 py-14">
         <p className="max-w-3xl text-lg leading-relaxed text-foreground/90">

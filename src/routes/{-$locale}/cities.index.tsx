@@ -1,26 +1,28 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { listCityDestinations } from "@/data/destinations";
-import { AIRPORTS } from "@/data/airports";
 import { buildHead } from "@/lib/seo";
-import { type Locale } from "@/i18n";
+import { getDict, useLocale, type Locale } from "@/i18n";
+import { getLocalizedAirports } from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
 
 export const Route = createFileRoute("/{-$locale}/cities/")({
   head: ({ params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     return buildHead({
       locale,
       path: "/cities",
-      title: "Cities in Greece | Private Transfers · TransferAround",
-      description:
-        "Private chauffeur and airport transfers for Greek cities and island towns — Athens, Heraklion, Mykonos, Santorini and more.",
+      title: t.seo.citiesIndexTitle,
+      description: t.seo.citiesIndexDescription,
     });
   },
   component: CitiesIndexPage,
 });
 
 function CitiesIndexPage() {
+  const locale = useLocale();
   const cities = listCityDestinations();
+  const airports = getLocalizedAirports(locale);
 
   return (
     <>
@@ -37,7 +39,7 @@ function CitiesIndexPage() {
       <section className="mx-auto max-w-7xl px-6 py-14">
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {cities.map((c) => {
-            const airport = AIRPORTS.find((a) => a.citySlug === c.slug);
+            const airport = airports.find((a) => a.citySlug === c.slug);
             return (
               <li key={c.slug}>
                 <Link

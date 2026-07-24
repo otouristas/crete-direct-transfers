@@ -13,7 +13,7 @@ import {
   type TripType,
 } from "@/lib/pricing";
 import { fetchTripRoute, type TripGeometry } from "@/lib/trip-route";
-import { matchRouteSlug, searchLocalPlaces, type PlaceResult } from "@/lib/place-search";
+import { matchRouteSlug, placeCountry, searchLocalPlaces, type PlaceResult } from "@/lib/place-search";
 import { getIataAirport } from "@/data/iata-airports";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -34,22 +34,34 @@ import {
 import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { ArrowLeftRight, ChevronUp, Info } from "lucide-react";
+import { createAndPersistQuote } from "@/lib/quote-engine";
+import { bookingCreatedEmail, sendTransactionalEmail } from "@/functions/email";
+import { createCheckoutSession } from "@/functions/stripe";
+import { attachReferral } from "@/lib/referrals";
 import { cn } from "@/lib/utils";
+import { marketFromCountryCode } from "@/lib/dispatch";
+import { dispatchNewBooking } from "@/functions/dispatch";
+
+const vehicleClassEnum = z.enum([
+  "economy",
+  "comfort",
+  "luxury",
+  "suv",
+  "minivan",
+  "van-first",
+  "minibus-12",
+  "minibus-16",
+]);
+
+/** Duplicate ?class=a&class=b becomes an array in the router; take the last value. */
+const vehicleClassParam = z.preprocess((v) => {
+  if (Array.isArray(v)) return v[v.length - 1];
+  return v;
+}, vehicleClassEnum.optional());
 
 const searchSchema = z.object({
   route: z.string().optional(),
-  class: z
-    .enum([
-      "economy",
-      "comfort",
-      "luxury",
-      "suv",
-      "minivan",
-      "van-first",
-      "minibus-12",
-      "minibus-16",
-    ])
-    .optional(),
+  class: vehicleClassParam,
   date: z.string().optional(),
   pax: z.coerce.number().optional(),
   trip: z.enum(["oneway", "return"]).optional(),
@@ -63,6 +75,9 @@ const searchSchema = z.object({
   pickupLng: z.coerce.number().optional(),
   dropoffLat: z.coerce.number().optional(),
   dropoffLng: z.coerce.number().optional(),
+  ref: z.string().optional(),
+  from: z.string().optional(),
+  to: z.string().optional(),
   service: z.enum(["transfer", "hourly"]).optional(),
   hours: z.coerce.number().min(2).max(12).optional(),
 });
@@ -432,10 +447,41 @@ function BookPage() {
       ? `Hourly chauffeur · ${hours}h${parsed.data.notes ? ` · ${parsed.data.notes}` : ""}`
       : parsed.data.notes || null;
 
+    const routeSlug = isHourly
+      ? `hourly-${hours}h`
+      : routeInfo?.routeSlug || search.route || `distance-${Math.round(routeInfo?.distanceKm ?? 0)}km`;
+
+    let quoteId: string | null = null;
+    let lockedPriceCents = q.totalEur * 100;
+    let bookableMode: "instant" | "quote" = "instant";
+    const countryCode = placeCountry(fromPlace) ?? placeCountry(toPlace);
+    const market = marketFromCountryCode(countryCode);
+    try {
+      const persisted = await createAndPersistQuote({
+        service: isHourly ? "hourly" : "transfer",
+        routeSlug,
+        vehicleClass,
+        tripType: isHourly ? "oneway" : tripType,
+        extras,
+        pickupAt: new Date(pickupAt).toISOString(),
+        returnAt:
+          !isHourly && tripType === "return" && returnAt
+            ? new Date(returnAt).toISOString()
+            : null,
+        distanceKm: routeInfo?.distanceKm ?? null,
+        durationMin: routeInfo?.durationMin ?? null,
+        hours: isHourly ? hours : null,
+        market,
+      });
+      quoteId = persisted.quoteId;
+      lockedPriceCents = persisted.priceCents;
+      bookableMode = persisted.bookableMode;
+    } catch {
+      // Quote persistence optional until migration is applied; fall back to client price.
+    }
+
     const base = {
-      route_slug: isHourly
-        ? `hourly-${hours}h`
-        : routeInfo?.routeSlug || search.route || `distance-${Math.round(routeInfo?.distanceKm ?? 0)}km`,
+      route_slug: routeSlug,
       vehicle_class: vehicleClass,
       passengers,
       pickup_at: new Date(pickupAt).toISOString(),
@@ -445,10 +491,13 @@ function BookPage() {
       flight_number: parsed.data.flight_number || null,
       notes: hourlyNote,
       extras: extras as never,
-      price_cents: q.totalEur * 100,
+      price_cents: lockedPriceCents,
       currency: "EUR",
       status: "pending",
       user_id: user?.id ?? null,
+      quote_id: quoteId,
+      payment_status: "unpaid" as const,
+      market,
     };
     const v2 = {
       trip_type: isHourly ? "oneway" : tripType,
@@ -484,6 +533,74 @@ function BookPage() {
       setSubmitError(error?.message ?? "Something went wrong. Please try again.");
       return;
     }
+
+    try {
+      await attachReferral(data.id, search.ref);
+    } catch {
+      /* referral is best-effort */
+    }
+
+    try {
+      await dispatchNewBooking({
+        data: {
+          bookingId: data.id,
+          market,
+          countryCode: countryCode ?? null,
+          lat: fromCoords?.lat ?? fromPlace?.lat ?? null,
+          lng: fromCoords?.lng ?? fromPlace?.lng ?? null,
+          locale,
+        },
+      });
+    } catch (err) {
+      console.error("[book] dispatch failed", err);
+    }
+
+    const routeLabel = isHourly
+      ? `Hourly · ${hours}h`
+      : `${fromQuery.trim() || fromPlace?.label || "Pickup"} → ${toQuery.trim() || toPlace?.label || "Drop-off"}`;
+
+    try {
+      await sendTransactionalEmail({
+        data: bookingCreatedEmail({
+          to: parsed.data.customer_email,
+          name: parsed.data.customer_name,
+          bookingId: data.id,
+          routeLabel,
+          pickupAt: new Date(pickupAt).toLocaleString(),
+          priceLabel: formatEur(lockedPriceCents / 100),
+          locale,
+        }),
+      });
+    } catch {
+      // Email is best-effort
+    }
+
+    if (bookableMode === "instant") {
+      try {
+        const checkout = await createCheckoutSession({
+          data: {
+            bookingId: data.id,
+            priceCents: lockedPriceCents,
+            customerEmail: parsed.data.customer_email,
+            description: routeLabel,
+            locale,
+          },
+        });
+        if (!checkout.skipped && checkout.url) {
+          if (checkout.paymentIntentId) {
+            await supabase
+              .from("bookings")
+              .update({ stripe_payment_intent_id: checkout.paymentIntentId } as never)
+              .eq("id", data.id);
+          }
+          window.location.href = checkout.url;
+          return;
+        }
+      } catch {
+        // Fall through to success without prepaid checkout
+      }
+    }
+
     navigate({ to: "/{-$locale}/book/success", search: { id: data.id } });
   };
 

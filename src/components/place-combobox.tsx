@@ -193,10 +193,10 @@ export function PlaceCombobox({
     return (
       <div ref={wrapRef} className={cn("relative min-w-0", cellClassName)}>
         <label className="mb-1.5 block text-sm font-medium text-foreground">{label}</label>
-        <div className="relative">
+        <div className="relative min-w-0">
           <MapPin className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
-            className="w-full rounded-xl border border-border bg-card py-3 pl-10 pr-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+            className="w-full min-w-0 truncate rounded-xl border border-border bg-card py-3 pl-10 pr-3 text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
             role="combobox"
             aria-expanded={open}
             aria-controls={listId}

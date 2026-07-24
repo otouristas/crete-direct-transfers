@@ -17,7 +17,7 @@ export function TrustPills({ dark = false, className }: { dark?: boolean; classN
         <span
           key={label}
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium",
+            "inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium",
             dark
               ? "bg-primary-foreground/10 text-primary-foreground ring-1 ring-primary-foreground/15"
               : "bg-card text-foreground ring-1 ring-border",

@@ -1,9 +1,20 @@
+import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, CarFront, Phone } from "lucide-react";
+import { ArrowLeft, CarFront, Flag, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { getDict } from "@/i18n";
-import { bookingDriverQuery, bookingQuery, cancelBooking } from "@/queries/bookings";
+import {
+  bookingDriverQuery,
+  bookingIncidentsQuery,
+  bookingQuery,
+  hoursUntilPickup,
+  openIncident,
+  previewCancelRefund,
+  requestCancellation,
+  type CancellationReason,
+  type IncidentType,
+} from "@/queries/bookings";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -17,9 +28,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { getRoute, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
-import { CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/lib/site";
+import { lookupFlight } from "@/lib/flight-tracking";
+import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_WHATSAPP_HREF } from "@/lib/site";
 
 export const Route = createFileRoute("/{-$locale}/account/bookings/$id")({
   component: BookingDetailPage,
@@ -27,6 +48,23 @@ export const Route = createFileRoute("/{-$locale}/account/bookings/$id")({
 
 const CANCELLABLE = new Set(["pending", "claimed"]);
 const HAS_DRIVER = new Set(["claimed", "en_route", "completed"]);
+const CAN_REPORT = new Set(["pending", "claimed", "en_route", "completed", "no_show"]);
+
+const CANCEL_REASONS: CancellationReason[] = [
+  "customer_plans_changed",
+  "customer_booked_wrong",
+  "flight_cancelled_airline",
+  "other",
+];
+
+const INCIDENT_TYPES: Exclude<IncidentType, "unable_to_complete">[] = [
+  "driver_no_show",
+  "driver_late",
+  "wrong_vehicle",
+  "safety",
+  "missed_each_other",
+  "other",
+];
 
 function BookingDetailPage() {
   const { locale } = Route.useRouteContext();
@@ -34,21 +72,102 @@ function BookingDetailPage() {
   const { id } = Route.useParams();
   const queryClient = useQueryClient();
 
+  const [cancelReason, setCancelReason] = useState<CancellationReason>("customer_plans_changed");
+  const [cancelNote, setCancelNote] = useState("");
+  const [preferCredit, setPreferCredit] = useState(true);
+  const [incidentType, setIncidentType] =
+    useState<Exclude<IncidentType, "unable_to_complete">>("driver_no_show");
+  const [incidentNote, setIncidentNote] = useState("");
+
   const booking = useQuery(bookingQuery(id));
   const b = booking.data;
   const driver = useQuery({
     ...bookingDriverQuery(id),
     enabled: !!b && HAS_DRIVER.has(b.status),
   });
+  const incidents = useQuery({
+    ...bookingIncidentsQuery(id),
+    enabled: !!b,
+  });
 
   const cancel = useMutation({
-    mutationFn: () => cancelBooking(id),
-    onSuccess: () => {
+    mutationFn: () =>
+      requestCancellation({
+        id,
+        reason: cancelReason,
+        note: cancelNote || undefined,
+        preferCredit,
+      }),
+    onSuccess: async (updated) => {
       queryClient.invalidateQueries({ queryKey: ["booking", id] });
       queryClient.invalidateQueries({ queryKey: ["my-bookings"] });
       toast.success(t.account.cancelled);
+      try {
+        const { bookingCancelledEmail, sendTransactionalEmail } = await import("@/functions/email");
+        const summary =
+          updated.refund_status === "credit_issued"
+            ? "A 100% booking credit has been issued."
+            : updated.refund_percent === 100
+              ? "A full refund was approved."
+              : updated.refund_percent === 50
+                ? "A 50% refund is pending review / processing."
+                : "No prepaid refund applies.";
+        await sendTransactionalEmail({
+          data: bookingCancelledEmail({
+            to: updated.customer_email,
+            name: updated.customer_name,
+            bookingId: updated.id,
+            refundSummary: summary,
+          }),
+        });
+      } catch {
+        /* best-effort */
+      }
     },
     onError: () => toast.error(t.account.cancelFailed),
+  });
+
+  const report = useMutation({
+    mutationFn: () =>
+      openIncident({
+        bookingId: id,
+        type: incidentType,
+        note: incidentNote || undefined,
+        claimedWaitUntil:
+          incidentType === "driver_no_show" || incidentType === "driver_late"
+            ? new Date().toISOString()
+            : undefined,
+      }),
+    onSuccess: async () => {
+      queryClient.invalidateQueries({ queryKey: ["booking", id] });
+      queryClient.invalidateQueries({ queryKey: ["booking-incidents", id] });
+      setIncidentNote("");
+      toast.success(t.account.incidentOpened);
+      if (b) {
+        try {
+          const { incidentOpenedEmail, opsNotifyEmail, sendTransactionalEmail } = await import(
+            "@/functions/email"
+          );
+          await sendTransactionalEmail({
+            data: incidentOpenedEmail({
+              to: b.customer_email,
+              name: b.customer_name,
+              bookingId: b.id,
+              typeLabel: t.account.incidentTypes[incidentType],
+            }),
+          });
+          await sendTransactionalEmail({
+            data: opsNotifyEmail({
+              subject: `Incident ${incidentType} · ${b.id.slice(0, 8)}`,
+              body: `${incidentType}\n${incidentNote}\nBooking ${b.id}`,
+            }),
+          });
+        } catch {
+          /* best-effort */
+        }
+      }
+    },
+    onError: () => toast.error(t.account.incidentFailed),
   });
 
   if (booking.isPending) {
@@ -81,8 +200,11 @@ function BookingDetailPage() {
     extras.extraStop && t.bookPage.extraStop,
     extras.meetAndGreet && t.bookPage.meetGreet,
   ].filter(Boolean) as string[];
-  const canCancel =
-    CANCELLABLE.has(b.status) && new Date(b.pickup_at).getTime() > Date.now() + 24 * 60 * 60 * 1000;
+
+  const hoursLeft = hoursUntilPickup(b.pickup_at);
+  const canCancel = CANCELLABLE.has(b.status) && hoursLeft > 0;
+  const preview = previewCancelRefund(b.pickup_at, cancelReason);
+  const canReport = CAN_REPORT.has(b.status);
 
   return (
     <div className="space-y-6">
@@ -104,7 +226,15 @@ function BookingDetailPage() {
               {t.account.bookingRef}: <span className="font-mono">{b.id.slice(0, 8)}</span>
             </p>
           </div>
-          <StatusBadge status={b.status} />
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge status={b.status} />
+            {b.refund_status !== "none" && b.refund_status !== "n_a" && (
+              <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                {t.account.refundStatus[b.refund_status as keyof typeof t.account.refundStatus] ??
+                  b.refund_status}
+              </span>
+            )}
+          </div>
         </div>
 
         <dl className="mt-6 grid gap-x-8 gap-y-4 text-sm sm:grid-cols-2">
@@ -119,6 +249,9 @@ function BookingDetailPage() {
             value={`${b.bags_checked} ${t.widget.checkedBags.toLowerCase()} · ${b.bags_cabin} ${t.widget.cabinBags.toLowerCase()}`}
           />
           {b.flight_number && <Item label={t.widget.flightNumber} value={b.flight_number} />}
+          {b.flight_number && (
+            <FlightStatusRow flightNumber={b.flight_number} />
+          )}
           {b.return_flight_number && (
             <Item label={t.bookPage.returnFlightNumber} value={b.return_flight_number} />
           )}
@@ -130,6 +263,16 @@ function BookingDetailPage() {
             <Item label={t.bookPage.extrasTitle} value={extrasLabels.join(", ")} />
           )}
           {b.notes && <Item label={t.bookPage.notes} value={b.notes} />}
+          {b.cancellation_reason && (
+            <Item
+              label={t.account.cancelReasonLabel}
+              value={
+                t.account.cancelReasons[
+                  b.cancellation_reason as keyof typeof t.account.cancelReasons
+                ] ?? b.cancellation_reason
+              }
+            />
+          )}
         </dl>
 
         <div className="mt-6 flex items-baseline justify-between border-t border-border pt-4">
@@ -140,8 +283,23 @@ function BookingDetailPage() {
             {formatEur(b.price_cents / 100)}
           </span>
         </div>
-        <p className="mt-1 text-xs text-muted-foreground">{t.widget.payOnBoard}</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {b.payment_status === "paid" || b.payment_status === "deposit_paid"
+            ? t.account.paidOnline
+            : t.widget.payOnBoard}
+        </p>
+        <p className="mt-3 text-xs text-muted-foreground">{t.account.policyBlurb}</p>
       </div>
+
+      {b.status === "pending" && !b.driver_id && (
+        <div className="rounded-2xl border border-border bg-card p-8">
+          <h3 className="flex items-center gap-2 font-display text-lg text-primary">
+            <CarFront className="h-5 w-5 text-accent" />
+            {t.account.findingDriverTitle}
+          </h3>
+          <p className="mt-3 text-sm text-muted-foreground">{t.account.findingDriverBody}</p>
+        </div>
+      )}
 
       {HAS_DRIVER.has(b.status) && (
         <div className="rounded-2xl border border-border bg-card p-8">
@@ -182,6 +340,32 @@ function BookingDetailPage() {
         </div>
       )}
 
+      {incidents.data && incidents.data.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-8">
+          <h3 className="font-display text-lg text-primary">{t.account.incidentsTitle}</h3>
+          <ul className="mt-4 space-y-3">
+            {incidents.data.map((inc) => (
+              <li
+                key={inc.id}
+                className="rounded-xl border border-border px-4 py-3 text-sm"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-medium">
+                    {t.account.incidentTypes[inc.type as keyof typeof t.account.incidentTypes] ??
+                      inc.type}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {t.account.incidentStatus[inc.status as keyof typeof t.account.incidentStatus] ??
+                      inc.status}
+                  </span>
+                </div>
+                {inc.note && <p className="mt-1 text-muted-foreground">{inc.note}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center gap-3">
         {route && (
           <Link
@@ -196,16 +380,63 @@ function BookingDetailPage() {
             {t.account.bookAgain}
           </Link>
         )}
-        {canCancel ? (
+
+        {canCancel && (
           <AlertDialog>
             <AlertDialogTrigger className="rounded-xl border border-destructive/40 px-5 py-2.5 text-sm font-medium text-destructive transition hover:bg-destructive/10">
               {t.account.cancelBooking}
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className="max-w-md">
               <AlertDialogHeader>
                 <AlertDialogTitle>{t.account.cancelTitle}</AlertDialogTitle>
                 <AlertDialogDescription>{t.account.cancelBody}</AlertDialogDescription>
               </AlertDialogHeader>
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label>{t.account.cancelReasonLabel}</Label>
+                  <Select
+                    value={cancelReason}
+                    onValueChange={(v) => setCancelReason(v as CancellationReason)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CANCEL_REASONS.map((r) => (
+                        <SelectItem key={r} value={r}>
+                          {t.account.cancelReasons[r]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>{t.account.cancelNoteLabel}</Label>
+                  <Textarea
+                    value={cancelNote}
+                    onChange={(e) => setCancelNote(e.target.value)}
+                    placeholder={t.account.cancelNotePlaceholder}
+                    rows={3}
+                  />
+                </div>
+                {preview.refundPercent === 100 && b.payment_status !== "unpaid" && (
+                  <label className="flex items-start gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      className="mt-1"
+                      checked={preferCredit}
+                      onChange={(e) => setPreferCredit(e.target.checked)}
+                    />
+                    <span>{t.account.preferCreditHint}</span>
+                  </label>
+                )}
+                <p className="rounded-lg bg-muted px-3 py-2 text-sm text-foreground">
+                  {preview.refundPercent === 100
+                    ? t.account.cancelFeeFull
+                    : t.account.cancelFeeHalf}
+                  {preview.needsReview ? ` ${t.account.cancelNeedsReview}` : ""}
+                </p>
+              </div>
               <AlertDialogFooter>
                 <AlertDialogCancel>{t.account.cancelKeep}</AlertDialogCancel>
                 <AlertDialogAction
@@ -217,17 +448,75 @@ function BookingDetailPage() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-        ) : (
-          CANCELLABLE.has(b.status) && (
-            <a
-              href={CONTACT_PHONE_HREF}
-              className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
-            >
-              <Phone className="h-4 w-4" />
-              {t.account.tooLateToCancel(CONTACT_PHONE)}
-            </a>
-          )
         )}
+
+        {canReport && (
+          <AlertDialog>
+            <AlertDialogTrigger className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted">
+              <Flag className="h-4 w-4" />
+              {t.account.reportProblem}
+            </AlertDialogTrigger>
+            <AlertDialogContent className="max-w-md">
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t.account.reportProblemTitle}</AlertDialogTitle>
+                <AlertDialogDescription>{t.account.reportProblemBody}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <div className="space-y-4 py-2">
+                <div className="space-y-2">
+                  <Label>{t.account.incidentTypeLabel}</Label>
+                  <Select
+                    value={incidentType}
+                    onValueChange={(v) =>
+                      setIncidentType(v as Exclude<IncidentType, "unable_to_complete">)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {INCIDENT_TYPES.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {t.account.incidentTypes[type]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label>{t.account.incidentNoteLabel}</Label>
+                  <Textarea
+                    value={incidentNote}
+                    onChange={(e) => setIncidentNote(e.target.value)}
+                    placeholder={t.account.incidentNotePlaceholder}
+                    rows={3}
+                  />
+                </div>
+              </div>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t.account.cancelKeep}</AlertDialogCancel>
+                <AlertDialogAction onClick={() => report.mutate()}>
+                  {t.account.reportProblemConfirm}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
+
+        <a
+          href={CONTACT_WHATSAPP_HREF}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
+        >
+          {t.account.needHelpWhatsapp}
+        </a>
+        <a
+          href={CONTACT_PHONE_HREF}
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
+        >
+          <Phone className="h-4 w-4" />
+          {CONTACT_PHONE}
+        </a>
       </div>
     </div>
   );
@@ -240,4 +529,26 @@ function Item({ label, value }: { label: string; value: string }) {
       <dd className="mt-1 text-foreground">{value}</dd>
     </div>
   );
+}
+
+function FlightStatusRow({ flightNumber }: { flightNumber: string }) {
+  const [label, setLabel] = useState("Checking flight…");
+  useEffect(() => {
+    let cancelled = false;
+    void lookupFlight(flightNumber).then((f) => {
+      if (cancelled) return;
+      const eta = f.estimatedArrival
+        ? new Date(f.estimatedArrival).toLocaleString()
+        : "—";
+      setLabel(
+        f.source === "live"
+          ? `${f.status} · ETA ${eta}`
+          : `Tracking ready (${f.flightNumber}) — connect flight API for live ETA`,
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [flightNumber]);
+  return <Item label="Flight status" value={label} />;
 }

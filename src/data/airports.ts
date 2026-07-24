@@ -21,7 +21,8 @@ export type AirportData = {
   citySlug: string;
   cityName: string;
   zip: string;
-  country: "Greece";
+  /** Country display name — "Greece" for curated airports, any country for global IATA airports. */
+  country: string;
   island?: string;
   region?: string;
   heroImage: string;

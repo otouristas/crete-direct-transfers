@@ -4,7 +4,13 @@ import type { Tables } from "@/integrations/supabase/types";
 import type { Booking } from "./bookings";
 
 /** Row from the PII-masked open_jobs view (no customer name/phone/flight). */
-export type OpenJob = Tables<"open_jobs">;
+export type OpenJob = Tables<"open_jobs"> & {
+  urgency?: string | null;
+  asap_expires_at?: string | null;
+  eta_minutes?: number | null;
+};
+export type MyJobOffer = Tables<"my_job_offers">;
+export type DriverProfileRow = Tables<"driver_profiles">;
 
 export const openJobsQuery = queryOptions({
   queryKey: ["open-jobs"],
@@ -14,11 +20,30 @@ export const openJobsQuery = queryOptions({
       .select("*")
       .order("pickup_at", { ascending: true });
     if (error) throw error;
-    return data as OpenJob[];
+    const rows = (data ?? []) as OpenJob[];
+    return rows.sort((a, b) => {
+      const aAsap = a.urgency === "asap" ? 0 : 1;
+      const bAsap = b.urgency === "asap" ? 0 : 1;
+      if (aAsap !== bAsap) return aAsap - bAsap;
+      return String(a.pickup_at ?? "").localeCompare(String(b.pickup_at ?? ""));
+    });
   },
-  // Realtime can't stream an RLS-gated view, so the pool polls; at a few
-  // bookings a day this is indistinguishable from a subscription.
-  refetchInterval: 30_000,
+  refetchInterval: 15_000,
+});
+
+export const myJobOffersQuery = queryOptions({
+  queryKey: ["my-job-offers"],
+  queryFn: async (): Promise<MyJobOffer[]> => {
+    // Expire / cascade before reading so drivers see fresh offers.
+    await supabase.rpc("expire_job_offers");
+    const { data, error } = await supabase
+      .from("my_job_offers")
+      .select("*")
+      .order("expires_at", { ascending: true });
+    if (error) throw error;
+    return data as MyJobOffer[];
+  },
+  refetchInterval: 15_000,
 });
 
 export const driverJobsQuery = (driverId: string) =>
@@ -43,17 +68,44 @@ export async function claimJob(bookingId: string): Promise<Booking> {
   return data as unknown as Booking;
 }
 
-/** Lifecycle move for the driver's own job; RLS decides legality — zero rows
- *  back means it refused. */
+export async function respondToOffer(offerId: string, accept: boolean): Promise<Booking | null> {
+  const { data, error } = await supabase.rpc("respond_to_offer", {
+    p_offer_id: offerId,
+    p_accept: accept,
+  });
+  if (error) throw error;
+  return (data as unknown as Booking) ?? null;
+}
+
+export async function setDriverOnline(online: boolean): Promise<DriverProfileRow> {
+  const { data, error } = await supabase.rpc("set_driver_online", { p_online: online });
+  if (error) throw error;
+  return data as unknown as DriverProfileRow;
+}
+
+/** Lifecycle move for the driver's own job via update_job_status RPC
+ *  (enforces waiting-time window for traveler no-show). */
 export async function updateJobStatus(
   id: string,
   status: "en_route" | "completed" | "no_show",
 ): Promise<void> {
-  const { data, error } = await supabase
-    .from("bookings")
-    .update({ status })
-    .eq("id", id)
-    .select("id");
+  const { error } = await supabase.rpc("update_job_status", {
+    p_booking_id: id,
+    p_status: status,
+  });
+  if (error) {
+    if (error.message?.includes("wait_not_elapsed")) throw new Error("wait_not_elapsed");
+    throw error;
+  }
+}
+
+export async function reportUnableToComplete(bookingId: string, note?: string): Promise<void> {
+  const { error } = await supabase.rpc("open_incident", {
+    p_booking_id: bookingId,
+    p_type: "unable_to_complete",
+    p_note: note ?? null,
+    p_claimed_wait_until: null,
+    p_evidence_urls: [],
+  });
   if (error) throw error;
-  if (!data || data.length === 0) throw new Error("update_refused");
 }

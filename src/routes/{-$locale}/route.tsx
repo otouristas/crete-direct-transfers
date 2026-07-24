@@ -1,5 +1,7 @@
-import { createFileRoute, notFound, Outlet } from "@tanstack/react-router";
+import { createFileRoute, notFound, Outlet, useRouterState } from "@tanstack/react-router";
 import { PREFIX_LOCALES, type Locale } from "@/i18n";
+import { TouristasAiPanel } from "@/components/touristas-ai/panel";
+import { TouristasAiProvider } from "@/components/touristas-ai/provider";
 
 // Locale layout: EN at the root (param omitted), /el/* and /de/* prefixed.
 // Unknown prefixes like /xx/about would otherwise match with locale="xx".
@@ -10,5 +12,18 @@ export const Route = createFileRoute("/{-$locale}")({
     }
     return { locale: (params.locale ?? "en") as Locale };
   },
-  component: Outlet,
+  component: LocaleLayout,
 });
+
+function LocaleLayout() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const hideAssistant =
+    /\/(account|driver|login|signup|forgot-password|reset-password|ops)(\/|$)/.test(pathname);
+
+  return (
+    <TouristasAiProvider>
+      <Outlet />
+      {!hideAssistant && <TouristasAiPanel />}
+    </TouristasAiProvider>
+  );
+}

@@ -8,9 +8,11 @@ export const CONTACT_PHONE_HREF = "tel:+302810000000";
 /** WhatsApp deep link derived from the public dispatch number. */
 export const CONTACT_WHATSAPP_HREF = "https://wa.me/302810000000";
 
-/** App store URLs — set when the apps go live; footer shows badges either way. */
-export const APP_STORE_URL: string | undefined = undefined;
-export const PLAY_STORE_URL: string | undefined = undefined;
+/** App store URLs — override with VITE_APP_STORE_URL / VITE_PLAY_STORE_URL when published. */
+export const APP_STORE_URL: string | undefined =
+  import.meta.env.VITE_APP_STORE_URL || "https://transferaround.com/apps";
+export const PLAY_STORE_URL: string | undefined =
+  import.meta.env.VITE_PLAY_STORE_URL || "https://transferaround.com/apps";
 
 /** Social profile URLs — set when accounts exist; footer shows icons either way. */
 export const SOCIAL_FACEBOOK: string | undefined = undefined;

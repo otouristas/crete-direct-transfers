@@ -1,0 +1,29 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@transferaround/mobile-shared": [
+        "../../packages/mobile-shared/src/index.ts"
+      ],
+      "@transferaround/mobile-shared/ui": [
+        "../../packages/mobile-shared/src/ui/index.ts"
+      ],
+      "@transferaround/mobile-shared/*": [
+        "../../packages/mobile-shared/src/*"
+      ],
+      "react-native": ["./node_modules/react-native"],
+      "react-native-svg": ["./node_modules/react-native-svg"],
+      "react-native-webview": ["./node_modules/react-native-webview"],
+      "react-native-safe-area-context": ["./node_modules/react-native-safe-area-context"],
+      "expo-font": ["./node_modules/expo-font"],
+      "@expo/vector-icons": ["./node_modules/@expo/vector-icons"],
+      "@expo-google-fonts/plus-jakarta-sans": ["./node_modules/@expo-google-fonts/plus-jakarta-sans"],
+      "@expo-google-fonts/inter": ["./node_modules/@expo-google-fonts/inter"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}

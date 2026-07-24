@@ -7,6 +7,7 @@ import { POSTS } from "@/data/posts";
 import { AIRPORTS } from "@/data/airports";
 import { AIRPORT_ROUTES } from "@/data/airport-routes";
 import { listCityDestinations } from "@/data/destinations";
+import { listLiveMarkets } from "@/data/markets";
 import { SITE_URL } from "@/lib/site";
 import { LOCALES, localePath } from "@/i18n";
 
@@ -16,7 +17,8 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         const paths: string[] = [
           "/",
-          "/greece",
+          "/touristas-ai",
+          ...listLiveMarkets().map((m) => `/${m.slug}`),
           "/airports",
           "/cities",
           "/routes",
@@ -36,6 +38,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/legal/cookies",
           "/legal/refunds",
           "/legal/imprint",
+          "/legal/driver-partnership",
+          "/legal/kyc",
           ...ROUTES.map((r) => `/routes/${r.slug}`),
           ...REGIONS.map((r) => `/regions/${r.slug}`),
           ...SERVICES.map((s) => `/services/${s.slug}`),

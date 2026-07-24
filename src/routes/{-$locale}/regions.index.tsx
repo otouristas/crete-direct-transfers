@@ -1,42 +1,45 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import { getLocalizedRegions, getLocalizedRoutes } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
-import { REGIONS } from "@/data/regions";
-import { ROUTES } from "@/data/routes";
 
 export const Route = createFileRoute("/{-$locale}/regions/")({
   head: (ctx) => {
     const locale = (ctx.params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     return buildHead({
       locale,
       path: "/regions",
-      title: "Crete Regions | Chania, Rethymno, Heraklion, Lasithi Transfers · TransferAround",
-      description:
-        "Fixed-price transfers across all four regions of Crete. Explore Chania, Rethymno, Heraklion and Lasithi with a licensed local driver.",
+      title: t.seo.regionsIndexTitle,
+      description: t.seo.regionsIndexDescription,
     });
   },
   component: RegionsHub,
 });
 
 function RegionsHub() {
+  const t = useT();
+  const locale = useLocale();
+  const regions = getLocalizedRegions(locale);
+  const routes = getLocalizedRoutes(locale);
+
   return (
     <>
       <section className="border-b border-border bg-muted">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <div className="text-xs uppercase tracking-[0.2em] text-accent">Regions</div>
+          <div className="text-xs uppercase tracking-[0.2em] text-accent">{t.nav.regions}</div>
           <h1 className="mt-3 text-4xl md:text-6xl font-display text-primary">
-            The four regions of Crete.
+            {t.regionsPages.indexTitle}
           </h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
-            From the Venetian west to the palm-fringed east — pick your region to see the routes,
-            hotels and gateways we serve.
+            {t.regionsPages.indexSubtitle}
           </p>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-16 grid gap-6 md:grid-cols-2">
-        {REGIONS.map((r) => {
-          const count = ROUTES.filter((route) => route.region === r.name).length;
+        {regions.map((r) => {
+          const count = routes.filter((route) => route.region === r.name).length;
           return (
             <Link
               key={r.slug}
@@ -55,7 +58,7 @@ function RegionsHub() {
                 <div className="mt-2 font-display text-3xl text-primary">{r.name}</div>
                 <p className="mt-3 text-muted-foreground line-clamp-2">{r.intro}</p>
                 <div className="mt-4 text-sm text-accent group-hover:underline">
-                  {count} routes covered →
+                  {count} {t.nav.routes.toLowerCase()} →
                 </div>
               </div>
             </Link>

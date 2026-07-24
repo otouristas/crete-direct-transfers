@@ -43,6 +43,9 @@ export function haversineEstimate(
 /**
  * Fetch driving route. Returns cached result when available.
  * Falls back to haversine if OSRM fails.
+ *
+ * Production: set VITE_OSRM_URL to a self-hosted or paid OSRM endpoint
+ * (same /route/v1/driving/... path). Defaults to the public demo server.
  */
 export async function fetchTripRoute(
   from: { lat: number; lng: number },
@@ -52,9 +55,12 @@ export async function fetchTripRoute(
   const hit = cache.get(key);
   if (hit) return hit;
 
+  const osrmBase = (import.meta.env.VITE_OSRM_URL as string | undefined)?.replace(/\/$/, "")
+    ?? "https://router.project-osrm.org";
+
   try {
     const url =
-      `https://router.project-osrm.org/route/v1/driving/` +
+      `${osrmBase}/route/v1/driving/` +
       `${from.lng},${from.lat};${to.lng},${to.lat}` +
       `?overview=full&geometries=geojson`;
 

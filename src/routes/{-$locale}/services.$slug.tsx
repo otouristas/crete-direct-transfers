@@ -1,23 +1,25 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getService, SERVICES } from "@/data/services";
 import { ROUTES, routesByService } from "@/data/routes";
 import { quote, formatEur } from "@/lib/pricing";
 import { Check } from "lucide-react";
-import type { Locale } from "@/i18n";
+import { getDict, useLocale, type Locale } from "@/i18n";
+import { getLocalizedService, getLocalizedServices } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/{-$locale}/services/$slug")({
   loader: ({ params }) => {
-    const service = getService(params.slug);
+    const locale = (params.locale ?? "en") as Locale;
+    const service = getLocalizedService(locale, params.slug);
     if (!service) throw notFound();
     return { service };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
       return {
         meta: [
-          { title: "Service not found | TransferAround" },
+          { title: t.seo.notFound("Service") },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -26,7 +28,7 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
     return buildHead({
       locale,
       path: `/services/${params.slug}`,
-      title: `${s.name} in Crete | Fixed Price · TransferAround`,
+      title: t.seo.serviceTitle(s.name),
       description: s.tagline,
       ogImage: s.heroImage,
       jsonLd: {
@@ -55,6 +57,7 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
 
 function ServicePage() {
   const { service } = Route.useLoaderData();
+  const locale = useLocale();
   const routes =
     service.slug === "airport-transfers"
       ? routesByService("airport")
@@ -66,7 +69,7 @@ function ServicePage() {
             ? routesByService("hotel")
             : ROUTES.slice(0, 6);
 
-  const others = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3);
+  const others = getLocalizedServices(locale).filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (
     <>

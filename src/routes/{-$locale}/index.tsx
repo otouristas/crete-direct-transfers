@@ -1,6 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { VEHICLE_CLASSES, ROUTES } from "@/data/routes";
-import { REGIONS } from "@/data/regions";
 import { REVIEWS, AVG_RATING } from "@/data/reviews";
 import { BookingWidget } from "@/components/booking-widget";
 import { TrustPills } from "@/components/sections/trust-pills";
@@ -10,10 +8,17 @@ import { FleetCard } from "@/components/sections/fleet-card";
 import { RoutesChapter } from "@/components/sections/routes-chapter";
 import { InpageNav } from "@/components/inpage-nav";
 import { Reveal } from "@/components/reveal";
-import { getDict, useT, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import {
+  getLocalizedRegions,
+  getLocalizedRoutes,
+  getLocalizedVehicles,
+} from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF } from "@/lib/site";
 import { Phone } from "lucide-react";
+import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
+import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=2400&q=80";
@@ -53,6 +58,10 @@ export const Route = createFileRoute("/{-$locale}/")({
 
 function HomePage() {
   const t = useT();
+  const locale = useLocale();
+  const vehicles = getLocalizedVehicles(locale);
+  const regions = getLocalizedRegions(locale);
+  const routes = getLocalizedRoutes(locale);
 
   const navItems = [
     { id: "book", label: t.inpageNav.bookNow, cta: true },
@@ -85,6 +94,9 @@ function HomePage() {
               <span className="font-accent text-[1.08em] text-accent">{t.home.heroTitleAccent}</span>
             </h1>
             <p className="mt-6 max-w-md text-lg text-primary-foreground/80">{t.home.heroSubtitle}</p>
+            <div className="mt-6">
+              <AskTouristasInline prompt="HER to Elounda tomorrow at 3pm" />
+            </div>
             <TrustPills dark className="mt-8" />
           </div>
           <div id="book" className="relative z-[35] mt-10 w-full scroll-mt-32">
@@ -92,6 +104,8 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      <AskTouristasBand pageType="home" />
 
       <InpageNav items={navItems} />
 
@@ -151,7 +165,7 @@ function HomePage() {
             <p className="mt-4 max-w-xl text-muted-foreground">{t.home.fleetSubtitle}</p>
           </Reveal>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {VEHICLE_CLASSES.map((v) => (
+            {vehicles.map((v) => (
               <FleetCard key={v.id} vehicle={v} />
             ))}
           </div>
@@ -196,7 +210,7 @@ function HomePage() {
             <p className="mt-4 max-w-lg text-primary-foreground/70">{t.home.regionsSubtitle}</p>
           </Reveal>
           <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {REGIONS.map((r) => (
+            {regions.map((r) => (
               <Link
                 key={r.slug}
                 to="/{-$locale}/regions/$slug"
@@ -205,7 +219,7 @@ function HomePage() {
               >
                 <div className="font-display text-xl">{r.name}</div>
                 <div className="mt-1 text-xs text-primary-foreground/55">
-                  {ROUTES.filter((route) => route.region === r.name).length}{" "}
+                  {routes.filter((route) => route.region === r.name).length}{" "}
                   {t.nav.routes.toLowerCase()} · {r.gateway}
                 </div>
               </Link>

@@ -1,20 +1,18 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import {
   Briefcase,
   Building2,
   Car,
   ChevronDown,
   Menu,
-  Phone,
   X,
 } from "lucide-react";
 import { PREFIX_LOCALES, useT } from "@/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import { AccountMenu, MobileAccountLinks } from "@/components/auth/account-menu";
+import { AccountMenu } from "@/components/auth/account-menu";
 import { Logo } from "@/components/logo";
-import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_WHATSAPP_HREF } from "@/lib/site";
+import { MobileMenu } from "@/components/mobile-menu";
 import { cn } from "@/lib/utils";
 
 const HEADER_H = "h-16";
@@ -59,14 +57,6 @@ export function SiteHeader() {
     { label: t.nav.forDrivers, to: "/{-$locale}/for-drivers" },
   ];
 
-  const secondaryLinks: NavLink[] = [
-    { label: t.nav.about, to: "/{-$locale}/about" },
-    { label: t.nav.contact, to: "/{-$locale}/contact" },
-    { label: t.nav.blog, to: "/{-$locale}/blog" },
-    { label: t.nav.howItWorks, to: "/{-$locale}/how-it-works" },
-    { label: t.nav.reviews, to: "/{-$locale}/reviews" },
-  ];
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -98,8 +88,6 @@ export function SiteHeader() {
       document.removeEventListener("keydown", onKey);
     };
   }, [partnersOpen]);
-
-  const close = () => setMobileOpen(false);
 
   const navLinkClass = cn(
     "rounded-full px-3 py-2 text-sm font-medium transition",
@@ -231,115 +219,7 @@ export function SiteHeader() {
         </div>
       </header>
 
-      {/* Mobile sheet — portaled so backdrop-blur header isn't the containing block */}
-      {mobileOpen &&
-        typeof document !== "undefined" &&
-        createPortal(
-          <div className="fixed inset-0 z-50 flex flex-col bg-primary text-primary-foreground lg:hidden">
-            <div className={cn("flex items-center justify-between px-5", HEADER_H)}>
-              <Link to="/{-$locale}" onClick={close}>
-                <Logo dark />
-              </Link>
-              <button
-                type="button"
-                onClick={close}
-                aria-label={t.nav.menu}
-                className="flex h-11 w-11 items-center justify-center rounded-full bg-primary-foreground/10 transition hover:bg-primary-foreground/20"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto px-6 pb-6">
-              <nav className="space-y-1">
-                {primaryLinks.map((item) => (
-                  <Link
-                    key={item.label}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    to={item.to as any}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    params={item.params as any}
-                    onClick={close}
-                    className="block font-display text-3xl leading-tight transition hover:text-accent"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-
-              <div className="mt-8">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/50">
-                  {t.nav.partners}
-                </p>
-                <div className="mt-3 space-y-2">
-                  {partnerLinks.map((item) => (
-                    <Link
-                      key={item.label}
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                      to={item.to as any}
-                      onClick={close}
-                      className="flex items-center gap-2.5 text-lg font-medium transition hover:text-accent"
-                    >
-                      {item.to.includes("hotels") ? (
-                        <Building2 className="h-4 w-4 text-accent" aria-hidden />
-                      ) : (
-                        <Briefcase className="h-4 w-4 text-accent" aria-hidden />
-                      )}
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-primary-foreground/15 pt-6 text-base font-medium">
-                {secondaryLinks.map((item) => (
-                  <Link
-                    key={item.label}
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    to={item.to as any}
-                    onClick={close}
-                    className="transition hover:text-accent"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-                <MobileAccountLinks onNavigate={close} />
-              </div>
-            </div>
-
-            <div className="border-t border-primary-foreground/15 bg-primary px-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4">
-              <Link
-                to="/{-$locale}/book"
-                onClick={close}
-                className="flex w-full items-center justify-center rounded-xl bg-accent px-5 py-4 text-base font-semibold text-accent-foreground transition hover:opacity-90"
-              >
-                {t.common.getPrice}
-              </Link>
-              <div className="mt-3 flex items-center justify-between gap-3">
-                <a
-                  href={CONTACT_WHATSAPP_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-primary-foreground/25 px-4 py-3 text-sm font-semibold transition hover:bg-primary-foreground/10"
-                >
-                  <Phone className="h-4 w-4" />
-                  WhatsApp
-                </a>
-                <a
-                  href={CONTACT_PHONE_HREF}
-                  className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-primary-foreground/25 px-4 py-3 text-sm font-semibold transition hover:bg-primary-foreground/10"
-                >
-                  {CONTACT_PHONE}
-                </a>
-                <LanguageSwitcher
-                  onDark
-                  className="text-primary-foreground hover:bg-primary-foreground/10"
-                />
-              </div>
-            </div>
-          </div>,
-          document.body,
-        )}
+      <MobileMenu open={mobileOpen} onClose={() => setMobileOpen(false)} />
     </>
   );
 }

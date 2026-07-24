@@ -1,20 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import type { Locale } from "@/i18n";
-import { useT } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import { getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
-import { VEHICLE_CLASSES, ROUTES } from "@/data/routes";
 import { quote, formatEur } from "@/lib/pricing";
 import { Reveal } from "@/components/reveal";
 
 export const Route = createFileRoute("/{-$locale}/fleet/")({
   head: (ctx) => {
     const locale = (ctx.params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     return buildHead({
       locale,
       path: "/fleet",
-      title: "Our Fleet | Economy to Minibus, All Licensed · TransferAround",
-      description:
-        "Eight vehicle classes — Economy, Standard, First Class, SUV, vans and minibuses. All licensed and insured, with fixed pricing.",
+      title: t.seo.fleetIndexTitle,
+      description: t.seo.fleetIndexDescription,
     });
   },
   component: FleetHub,
@@ -22,6 +21,10 @@ export const Route = createFileRoute("/{-$locale}/fleet/")({
 
 function FleetHub() {
   const t = useT();
+  const locale = useLocale();
+  const vehicles = getLocalizedVehicles(locale);
+  const sampleRoute = getLocalizedRoutes(locale)[0];
+
   return (
     <>
       <section className="border-b border-border bg-background">
@@ -41,8 +44,10 @@ function FleetHub() {
       </section>
 
       <section className="mx-auto max-w-7xl space-y-16 px-6 py-16 md:space-y-24 md:py-20">
-        {VEHICLE_CLASSES.map((v, i) => {
-          const price = quote({ routeSlug: ROUTES[0].slug, vehicleClass: v.id });
+        {vehicles.map((v, i) => {
+          const price = sampleRoute
+            ? quote({ routeSlug: sampleRoute.slug, vehicleClass: v.id })
+            : null;
           const reverse = i % 2 === 1;
           return (
             <Reveal key={v.id}>

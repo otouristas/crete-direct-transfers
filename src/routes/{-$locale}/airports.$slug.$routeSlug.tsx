@@ -1,11 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getAirport } from "@/data/airports";
-import { getAirportRoute, getAirportRoutes } from "@/data/airport-routes";
 import { vehicleFromPrices, formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
-import { useT, type Locale } from "@/i18n";
+import { getDict, useT, type Locale } from "@/i18n";
+import {
+  getLocalizedAirport,
+  getLocalizedAirportRoute,
+  getLocalizedAirportRoutes,
+} from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
+import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
+import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 import {
   AirportBookingSlot,
   AirportFaqs,
@@ -15,21 +20,23 @@ import {
 
 export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
   loader: ({ params }) => {
-    const airport = getAirport(params.slug);
+    const locale = (params.locale ?? "en") as Locale;
+    const airport = getLocalizedAirport(locale, params.slug);
     if (!airport) throw notFound();
-    const route = getAirportRoute(airport.slug, params.routeSlug);
+    const route = getLocalizedAirportRoute(locale, airport.slug, params.routeSlug);
     if (!route) throw notFound();
-    const siblings = getAirportRoutes(airport.slug).filter(
-      (r) => r.routeSlug !== route.routeSlug,
+    const siblings = getLocalizedAirportRoutes(locale).filter(
+      (r) => r.airportSlug === airport.slug && r.routeSlug !== route.routeSlug,
     );
     return { airport, route, siblings };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
       return {
         meta: [
-          { title: "Route not found | TransferAround" },
+          { title: t.seo.notFound("Route") },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -41,7 +48,7 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
     return buildHead({
       locale,
       path,
-      title: `Transfer from ${route.fromName} to ${route.toName} | From ${price} · TransferAround`,
+      title: t.seo.airportRouteTitle(route.fromName, route.toName),
       description: `Private transfer from ${route.fromName} to ${route.toName}. ${route.distanceKm} km in about ${route.durationMin} min. Fixed prices, flight tracking, free cancellation. From ${price}.`,
       ogImage: airport.heroImage,
       jsonLd: {
@@ -152,6 +159,11 @@ function AirportRoutePage() {
             {route.distanceKm} km · about {route.durationMin} min · from{" "}
             {formatEur(route.basePriceEur)}
           </p>
+          <div className="mt-6">
+            <AskTouristasInline
+              prompt={`Book ${route.fromName} to ${route.toName} tomorrow for 2 passengers`}
+            />
+          </div>
           <div className="mt-8" id="react-picker">
             <AirportBookingSlot
               airport={{ ...airport, bookable: route.bookable, fromPriceEur: route.basePriceEur }}
@@ -160,6 +172,12 @@ function AirportRoutePage() {
           </div>
         </div>
       </section>
+
+      <AskTouristasBand
+        pageType="corridor"
+        entityLabel={`${airport.name} (${airport.iata})`}
+        secondaryLabel={route.toName}
+      />
 
       <AirportTrustStrip />
 

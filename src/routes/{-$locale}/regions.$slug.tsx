@@ -1,24 +1,29 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getRegion, REGIONS } from "@/data/regions";
-import { ROUTES } from "@/data/routes";
 import { RouteCard } from "@/components/sections/route-card";
 import { CtaBand } from "@/components/sections/cta-band";
 import { InpageNav } from "@/components/inpage-nav";
-import { getDict, useT, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import {
+  getLocalizedRegion,
+  getLocalizedRegions,
+  getLocalizedRoutes,
+} from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/{-$locale}/regions/$slug")({
   loader: ({ params }) => {
-    const region = getRegion(params.slug);
+    const locale = (params.locale ?? "en") as Locale;
+    const region = getLocalizedRegion(locale, params.slug);
     if (!region) throw notFound();
     return { region };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
       return {
         meta: [
-          { title: "Region not found | TransferAround" },
+          { title: t.seo.notFound("Region") },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -27,7 +32,7 @@ export const Route = createFileRoute("/{-$locale}/regions/$slug")({
     return buildHead({
       locale,
       path: `/regions/${params.slug}`,
-      title: `${r.name} Transfers | Fixed-Price Transfers in ${r.name}, Crete · TransferAround`,
+      title: t.seo.regionTitle(r.name),
       description: `${r.headline} Fixed-price transfers to every hotel and town in ${r.name}. Licensed local drivers.`,
       ogImage: r.heroImage,
       jsonLd: {
@@ -61,8 +66,9 @@ function RegionNotFound() {
 function RegionPage() {
   const { region } = Route.useLoaderData();
   const t = useT();
-  const routes = ROUTES.filter((r) => r.region === region.name);
-  const other = REGIONS.filter((r) => r.slug !== region.slug);
+  const locale = useLocale();
+  const routes = getLocalizedRoutes(locale).filter((r) => r.region === region.name);
+  const other = getLocalizedRegions(locale).filter((r) => r.slug !== region.slug);
 
   const navItems = [
     { id: "book", label: t.inpageNav.bookNow, cta: true },

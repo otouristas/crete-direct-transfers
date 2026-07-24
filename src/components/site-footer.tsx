@@ -274,6 +274,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/{-$locale}/touristas-ai" className={linkClass}>
+                {t.touristasAi.title}
+              </Link>
+            </li>
+            <li>
               <Link to="/{-$locale}/blog" className={linkClass}>
                 {t.nav.blog}
               </Link>
@@ -306,6 +311,16 @@ export function SiteFooter() {
             <li>
               <Link to="/{-$locale}/legal/imprint" className={linkClass}>
                 {t.footer.imprint}
+              </Link>
+            </li>
+            <li>
+              <Link to="/{-$locale}/legal/driver-partnership" className={linkClass}>
+                {t.footer.driverPartnership}
+              </Link>
+            </li>
+            <li>
+              <Link to="/{-$locale}/legal/kyc" className={linkClass}>
+                {t.footer.kyc}
               </Link>
             </li>
           </ul>

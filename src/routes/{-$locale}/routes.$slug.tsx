@@ -1,11 +1,17 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getRoute, VEHICLE_CLASSES, ROUTES, type RouteData } from "@/data/routes";
+import type { RouteData } from "@/data/routes";
 import { quote, formatEur } from "@/lib/pricing";
 import { BookingWidget } from "@/components/booking-widget";
 import { RouteCard } from "@/components/sections/route-card";
 import { CtaBand } from "@/components/sections/cta-band";
+import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
 import { InpageNav } from "@/components/inpage-nav";
-import { getDict, useT, type Locale, type Dict } from "@/i18n";
+import { getDict, useLocale, useT, type Locale, type Dict } from "@/i18n";
+import {
+  getLocalizedRoute,
+  getLocalizedRoutes,
+  getLocalizedVehicles,
+} from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 import { Check, Clock, MapPin, Plane, Radar } from "lucide-react";
@@ -25,16 +31,18 @@ function localInfoCopy(route: RouteData, t: Dict): string {
 
 export const Route = createFileRoute("/{-$locale}/routes/$slug")({
   loader: ({ params }) => {
-    const route = getRoute(params.slug);
+    const locale = (params.locale ?? "en") as Locale;
+    const route = getLocalizedRoute(locale, params.slug);
     if (!route) throw notFound();
     return { route };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
       return {
         meta: [
-          { title: "Route not found | TransferAround" },
+          { title: t.seo.notFound("Route") },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -57,7 +65,7 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
     return buildHead({
       locale,
       path,
-      title: `${r.from} to ${r.to} Transfer | Fixed Price ${price} · TransferAround`,
+      title: t.seo.routeTitle(r.from, r.to),
       description: `Fixed-price transfer from ${r.from} to ${r.to}. ${r.durationMin} min, ${r.distanceKm} km. Licensed local drivers, flight tracked. From ${price}.`,
       ogImage: r.heroImage,
       jsonLd: {
@@ -118,12 +126,13 @@ function RouteNotFound() {
 function RoutePage() {
   const { route } = Route.useLoaderData();
   const t = useT();
+  const locale = useLocale();
+  const vehicles = getLocalizedVehicles(locale);
   const q = quote({ routeSlug: route.slug, vehicleClass: "economy" })!;
   const vanQ = quote({ routeSlug: route.slug, vehicleClass: "minivan" });
-  const others = ROUTES.filter((r) => r.slug !== route.slug && r.region === route.region).slice(
-    0,
-    3,
-  );
+  const others = getLocalizedRoutes(locale)
+    .filter((r) => r.slug !== route.slug && r.region === route.region)
+    .slice(0, 3);
 
   const navItems = [
     { id: "book", label: t.inpageNav.bookNow, cta: true },
@@ -202,6 +211,13 @@ function RoutePage() {
           </div>
         </div>
       </section>
+
+      <AskTouristasBand
+        pageType="routes"
+        entityLabel={`${route.from} to ${route.to}`}
+        entitySlug={route.slug}
+        secondaryLabel={route.to}
+      />
 
       <InpageNav items={navItems} />
 
@@ -302,7 +318,7 @@ function RoutePage() {
             <h2 className="text-2xl font-display text-primary">{t.routesPages.priceTableTitle}</h2>
             <p className="mt-2 text-sm text-muted-foreground">{t.routesPages.priceTableSubtitle}</p>
             <div className="mt-6 space-y-3">
-              {VEHICLE_CLASSES.map((v) => {
+              {vehicles.map((v) => {
                 const price = quote({ routeSlug: route.slug, vehicleClass: v.id });
                 return (
                   <Link

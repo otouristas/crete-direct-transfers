@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Clock } from "lucide-react";
-import { POSTS } from "@/data/posts";
-import { getDict, useT, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import { getLocalizedPosts } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 import { PageHero } from "@/components/sections/page-hero";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -22,7 +22,10 @@ export const Route = createFileRoute("/{-$locale}/blog/")({
 
 function BlogIndex() {
   const t = useT();
-  const posts = [...POSTS].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  const locale = useLocale();
+  const posts = [...getLocalizedPosts(locale)].sort((a, b) =>
+    b.publishedAt.localeCompare(a.publishedAt),
+  );
   return (
     <>
       <PageHero

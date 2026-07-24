@@ -1,6 +1,105 @@
 import type { ReactNode } from "react";
-import { useT } from "@/i18n";
+import { useLocale, useT, localePath, type Locale } from "@/i18n";
+import type { LegalDoc } from "@/i18n/legal/types";
 import { CONTACT_EMAIL } from "@/lib/site";
+
+const LEGAL_EMAILS = {
+  support: "support@transferaround.com",
+  privacy: "privacy@transferaround.com",
+  compliance: "compliance@transferaround.com",
+  hello: CONTACT_EMAIL,
+} as const;
+
+const LEGAL_PATHS = {
+  terms: "/legal/terms",
+  privacy: "/legal/privacy",
+  cookies: "/legal/cookies",
+  refunds: "/legal/refunds",
+  imprint: "/legal/imprint",
+  driverPartnership: "/legal/driver-partnership",
+  kyc: "/legal/kyc",
+} as const;
+
+const EXTERNAL_URLS = {
+  odr: "https://ec.europa.eu/consumers/odr",
+} as const;
+
+const TOKEN_RE = /\{(email|link|url):([a-zA-Z]+)\}/g;
+
+function linkLabel(key: string, t: ReturnType<typeof useT>): string {
+  switch (key) {
+    case "terms":
+      return t.footer.terms;
+    case "privacy":
+      return t.footer.privacy;
+    case "cookies":
+      return t.footer.cookies;
+    case "refunds":
+      return t.footer.refunds;
+    case "imprint":
+      return t.footer.imprint;
+    case "driverPartnership":
+      return t.footer.driverPartnership;
+    case "kyc":
+      return t.footer.kyc;
+    case "odr":
+      return "ec.europa.eu/consumers/odr";
+    default:
+      return key;
+  }
+}
+
+function renderRichText(text: string, locale: Locale, t: ReturnType<typeof useT>): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  const re = new RegExp(TOKEN_RE.source, "g");
+  let key = 0;
+
+  while ((match = re.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+    const [, kind, token] = match;
+    if (kind === "email") {
+      const email = LEGAL_EMAILS[token as keyof typeof LEGAL_EMAILS] ?? `${token}@transferaround.com`;
+      nodes.push(
+        <a key={key++} href={`mailto:${email}`}>
+          {email}
+        </a>,
+      );
+    } else if (kind === "link") {
+      const path = LEGAL_PATHS[token as keyof typeof LEGAL_PATHS];
+      if (path) {
+        nodes.push(
+          <a key={key++} href={localePath(locale, path)}>
+            {linkLabel(token, t)}
+          </a>,
+        );
+      } else {
+        nodes.push(linkLabel(token, t));
+      }
+    } else if (kind === "url") {
+      const href = EXTERNAL_URLS[token as keyof typeof EXTERNAL_URLS];
+      if (href) {
+        nodes.push(
+          <a key={key++} href={href} rel="noopener noreferrer" target="_blank">
+            {linkLabel(token, t)}
+          </a>,
+        );
+      } else {
+        nodes.push(token);
+      }
+    }
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+
+  return nodes.length > 0 ? nodes : [text];
+}
 
 export function LegalPage({
   title,
@@ -31,6 +130,33 @@ export function LegalPage({
           {t.legal.companyDetails} {t.footer.contactTitle}: {CONTACT_EMAIL}.
         </p>
       </article>
+    </>
+  );
+}
+
+/** Renders a structured legal document from i18n (intro + titled sections). */
+export function LegalDocument({ doc }: { doc: LegalDoc }) {
+  const t = useT();
+  const locale = useLocale();
+
+  return (
+    <>
+      {doc.intro ? <p>{renderRichText(doc.intro, locale, t)}</p> : null}
+      {doc.sections.map((section) => (
+        <section key={section.title}>
+          <h2>{section.title}</h2>
+          {section.paragraphs?.map((paragraph, i) => (
+            <p key={`${section.title}-p-${i}`}>{renderRichText(paragraph, locale, t)}</p>
+          ))}
+          {section.items && section.items.length > 0 ? (
+            <ul>
+              {section.items.map((item, i) => (
+                <li key={`${section.title}-i-${i}`}>{renderRichText(item, locale, t)}</li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
+      ))}
     </>
   );
 }

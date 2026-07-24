@@ -1,6 +1,8 @@
 import { Users, Briefcase } from "lucide-react";
-import { VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
+import type { VehicleClass } from "@/data/routes";
 import { formatEur, type TripQuote } from "@/lib/pricing";
+import { useLocale } from "@/i18n";
+import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
 
 const BADGES: Partial<Record<VehicleClass, { label: string; className: string }>> = {
@@ -39,6 +41,7 @@ export function BookingVehicleList({
     topClass: string;
   };
 }) {
+  const vehicles = getLocalizedVehicles(useLocale());
   const badgeLabel = (id: VehicleClass) => {
     if (id === "economy") return labels.bestValue;
     if (id === "comfort") return labels.mostPopular;
@@ -49,7 +52,7 @@ export function BookingVehicleList({
   return (
     <fieldset className="w-full space-y-2.5">
       <legend className="sr-only">Vehicle class</legend>
-      {VEHICLE_CLASSES.map((vc) => {
+      {vehicles.map((vc) => {
         const row = quotes.find((q) => q.vehicleClass === vc.id);
         const price = row?.quote.totalEur;
         const badge = BADGES[vc.id];

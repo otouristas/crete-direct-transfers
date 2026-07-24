@@ -23,7 +23,7 @@ export const ORGANIZATION_JSONLD = {
   "@type": "Organization",
   "@id": ORGANIZATION_ID,
   name: SITE_NAME,
-  legalName: "TransferAround Ltd.",
+  legalName: "TransferAround Travel Services P.C.",
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",
@@ -36,7 +36,9 @@ export const ORGANIZATION_JSONLD = {
   telephone: CONTACT_PHONE,
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Heraklion",
+    streetAddress: "Οδός Ρεθύμνου 12",
+    addressLocality: "Rethymno",
+    postalCode: "74100",
     addressRegion: "Crete",
     addressCountry: "GR",
   },

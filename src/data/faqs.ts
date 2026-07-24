@@ -41,7 +41,15 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: "What's your cancellation policy?",
-        a: "Free cancellation up to 24 hours before your pickup time. Inside 24 hours, a 50% fee applies. No-shows are charged in full.",
+        a: "Free cancellation up to 24 hours before pickup (full refund or 100% booking credit if prepaid). Inside 24 hours, a 50% fee applies. Traveler no-shows after free waiting are charged in full. Confirmed driver no-shows get a full make-good plus a €25 goodwill credit when applicable.",
+      },
+      {
+        q: "How long will the driver wait?",
+        a: "60 minutes free at airports and ports with flight/ferry tracking; 30 minutes at hotels and addresses. After that, without contact, the trip may be marked a traveler no-show.",
+      },
+      {
+        q: "What if the driver doesn’t show up?",
+        a: "Open Report a problem on your booking and choose Driver didn’t show up. We’ll review and refund or rebook in full when confirmed — this is not an automatic cancel.",
       },
       {
         q: "Can I change my pickup time?",
@@ -49,7 +57,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: "What if my flight is cancelled?",
-        a: "Send us the airline notification and we'll rebook or refund in full, whichever you prefer.",
+        a: "Send us the airline notification (or select that reason when cancelling) and we'll rebook or refund in full, whichever you prefer.",
       },
     ],
   },

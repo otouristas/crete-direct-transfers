@@ -17,12 +17,14 @@ Key facts:
 - Vehicle classes: Economy, Comfort, Minivan (up to 7), Luxury, minibuses.
 - Coverage today: instant booking across Crete; airport landing pages and quote booking for major Greek airports (ATH, SKG, JMK, JTR, CFU, RHO, ZTH, KLX and more).
 - Languages: English, Greek (Ελληνικά), German (Deutsch), French, Italian, Dutch, Spanish.
-- Payment: card or pay-on-board depending on route.
+- Payment: card (Stripe Checkout on instant routes) or pay-on-board depending on route.
+- In-product assistant: Touristas AI (Help me book) quotes places with tool calling and deep-links into /book. Prices only come from TransferAround quote tools.
 
 ## Core pages
 - [Home](https://transferaround.com/): overview, booking widget, popular routes.
 - [Greece](https://transferaround.com/greece): country hub for airports and cities.
-- [Airports](https://transferaround.com/airports): all Greek airport transfer hubs (Transfeero-style landing pages).
+- [Spain](https://transferaround.com/spain) and [Italy](https://transferaround.com/italy): country hubs (quote / expanding coverage).
+- [Airports](https://transferaround.com/airports): airport transfer hubs (Transfeero-style landing pages).
 - [Cities](https://transferaround.com/cities): city and resort transfer hubs.
 - [Routes](https://transferaround.com/routes): Crete fixed-price transfer corridors.
 - [Regions](https://transferaround.com/regions): Crete coverage by prefecture.
@@ -32,6 +34,7 @@ Key facts:
 - [FAQ](https://transferaround.com/faq): pricing, luggage, child seats, cancellations.
 - [Reviews](https://transferaround.com/reviews): verified customer ratings.
 - [Contact](https://transferaround.com/contact): support and quote requests.
+- [Refunds](https://transferaround.com/legal/refunds): cancellation windows, waiting times, driver-fault make-good.
 
 ## For partners
 - [For hotels](https://transferaround.com/for-hotels): partner transfers for accommodation providers.

@@ -1,11 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { getAirport } from "@/data/airports";
-import { getAirportRoutes } from "@/data/airport-routes";
 import { vehicleFromPrices, formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
-import { useT, type Locale } from "@/i18n";
+import { getDict, useT, type Locale } from "@/i18n";
+import { getLocalizedAirport, getLocalizedAirportRoutes } from "@/i18n/content";
+import { getIataAirport } from "@/data/iata-airports";
 import { CtaBand } from "@/components/sections/cta-band";
+import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
 import {
   AirportHero,
   AirportInPageNav,
@@ -23,17 +24,19 @@ import {
 
 export const Route = createFileRoute("/{-$locale}/airports/$slug")({
   loader: ({ params }) => {
-    const airport = getAirport(params.slug);
+    const locale = (params.locale ?? "en") as Locale;
+    const airport = getLocalizedAirport(locale, params.slug);
     if (!airport) throw notFound();
-    const routes = getAirportRoutes(airport.slug);
+    const routes = getLocalizedAirportRoutes(locale).filter((r) => r.airportSlug === airport.slug);
     return { airport, routes };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
       return {
         meta: [
-          { title: "Airport not found | TransferAround" },
+          { title: t.seo.notFound("Airport") },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -45,7 +48,7 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
     return buildHead({
       locale,
       path,
-      title: `${airport.name} Transfers (${airport.iata}) | From ${price} · TransferAround`,
+      title: t.seo.airportTitle(airport.name, airport.iata),
       description: `Book fixed-price airport transfers from ${airport.name} (${airport.iata}). Free cancellation, flight tracking, meet & greet. From ${price}.`,
       ogImage: airport.heroImage,
       jsonLd: {
@@ -70,7 +73,7 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
               address: {
                 "@type": "PostalAddress",
                 addressLocality: airport.cityName,
-                addressCountry: "GR",
+                addressCountry: getIataAirport(airport.iata)?.countryCode ?? "GR",
               },
             },
             offers: {
@@ -152,6 +155,10 @@ function AirportHubPage() {
           <AirportBookingSlot airport={airport} defaultRouteSlug={defaultLegacy} />
         }
       />
+      <AskTouristasBand
+        pageType="airport"
+        entityLabel={`${airport.name} (${airport.iata})`}
+      />
       <AirportInPageNav />
       <AirportFacts airport={airport} />
       <AirportTrustStrip />
@@ -165,7 +172,7 @@ function AirportHubPage() {
         faqs={airport.faqs}
       />
       <AirportPopularRoutes airport={airport} routes={routes} />
-      <OtherAirportsInGreece currentSlug={airport.slug} />
+      <OtherAirportsInGreece airport={airport} />
       <CtaBand
         title="Ready to book?"
         subtitle="Reserve your private transfer — fixed price, professional local drivers and real-time flight tracking."

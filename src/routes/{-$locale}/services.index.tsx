@@ -1,21 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import type { Locale } from "@/i18n";
-import { useT } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import { getLocalizedServices } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
-import { SERVICES } from "@/data/services";
 import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/{-$locale}/services/")({
   head: (ctx) => {
     const locale = (ctx.params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     return buildHead({
       locale,
       path: "/services",
-      title: "Transfer Services in Crete | Airport, Port, Tours · TransferAround",
-      description:
-        "Airport transfers, port pickups, private day tours, long-distance and group transfers — all fixed-price with licensed Cretan drivers.",
+      title: t.seo.servicesIndexTitle,
+      description: t.seo.servicesIndexDescription,
     });
   },
   component: ServicesHub,
@@ -23,8 +22,10 @@ export const Route = createFileRoute("/{-$locale}/services/")({
 
 function ServicesHub() {
   const t = useT();
-  const [active, setActive] = useState(SERVICES[0]?.slug ?? "");
-  const current = SERVICES.find((s) => s.slug === active) ?? SERVICES[0];
+  const locale = useLocale();
+  const services = getLocalizedServices(locale);
+  const [active, setActive] = useState(services[0]?.slug ?? "");
+  const current = services.find((s) => s.slug === active) ?? services[0];
 
   return (
     <>
@@ -58,7 +59,7 @@ function ServicesHub() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
                 <div className="absolute bottom-0 left-0 p-6 text-primary-foreground">
                   <div className="font-mono text-xs text-primary-foreground/70">
-                    {String(SERVICES.findIndex((s) => s.slug === current.slug) + 1).padStart(2, "0")}
+                    {String(services.findIndex((s) => s.slug === current.slug) + 1).padStart(2, "0")}
                   </div>
                   <div className="mt-1 font-display text-2xl">{current.name}</div>
                 </div>
@@ -67,7 +68,7 @@ function ServicesHub() {
           </Reveal>
 
           <ol className="divide-y divide-border">
-            {SERVICES.map((s, i) => {
+            {services.map((s, i) => {
               const isActive = s.slug === active;
               return (
                 <li key={s.slug}>

@@ -1,23 +1,25 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Clock } from "lucide-react";
-import { getPost, POSTS } from "@/data/posts";
-import { getDict, useT, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
+import { getLocalizedPost } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 import { CtaBand } from "@/components/sections/cta-band";
 
 export const Route = createFileRoute("/{-$locale}/blog/$slug")({
   loader: ({ params }) => {
-    const post = getPost(params.slug);
+    const locale = (params.locale ?? "en") as Locale;
+    const post = getLocalizedPost(locale, params.slug);
     if (!post) throw notFound();
     return { post };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
       return {
         meta: [
-          { title: "Post not found | TransferAround" },
+          { title: t.seo.notFound("Post") },
           { name: "robots", content: "noindex" },
         ],
       };
@@ -27,7 +29,7 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
     return buildHead({
       locale,
       path,
-      title: `${p.title} · TransferAround Blog`,
+      title: t.seo.postTitle(p.title),
       description: p.description,
       ogImage: p.heroImage,
       jsonLd: {
@@ -90,8 +92,9 @@ function PostNotFound() {
 function BlogPost() {
   const { post } = Route.useLoaderData();
   const t = useT();
+  const locale = useLocale();
   const related = post.related
-    .map((slug) => POSTS.find((p) => p.slug === slug))
+    .map((slug) => getLocalizedPost(locale, slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
 
   return (
