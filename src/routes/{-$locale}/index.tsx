@@ -1,25 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ROUTES, VEHICLE_CLASSES } from "@/data/routes";
+import { VEHICLE_CLASSES, ROUTES } from "@/data/routes";
 import { REGIONS } from "@/data/regions";
-import { SERVICES } from "@/data/services";
 import { REVIEWS, AVG_RATING } from "@/data/reviews";
-import { FAQ_GROUPS } from "@/data/faqs";
 import { BookingWidget } from "@/components/booking-widget";
-import { FaqAccordion } from "@/components/faq-accordion";
-import { CreteMapReal } from "@/components/crete-map-real";
-import { SectionHeading } from "@/components/sections/section-heading";
 import { TrustPills } from "@/components/sections/trust-pills";
-import { StatsBand } from "@/components/sections/stats-band";
-import { AdvantageGrid } from "@/components/sections/advantage-grid";
 import { Steps } from "@/components/sections/steps";
 import { ReviewsGrid } from "@/components/sections/review-card";
-import { RouteCard } from "@/components/sections/route-card";
 import { FleetCard } from "@/components/sections/fleet-card";
-import { CtaBand } from "@/components/sections/cta-band";
+import { RoutesChapter } from "@/components/sections/routes-chapter";
+import { InpageNav } from "@/components/inpage-nav";
+import { Reveal } from "@/components/reveal";
 import { getDict, useT, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
-import { SITE_URL, CONTACT_PHONE } from "@/lib/site";
-import { Star } from "lucide-react";
+import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF } from "@/lib/site";
+import { Phone } from "lucide-react";
+
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=2400&q=80";
+const MANIFESTO_IMAGE =
+  "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1600&q=75";
 
 export const Route = createFileRoute("/{-$locale}/")({
   head: (ctx) => {
@@ -30,8 +29,7 @@ export const Route = createFileRoute("/{-$locale}/")({
       path: "/",
       title: t.home.metaTitle,
       description: t.home.metaDescription,
-      ogImage:
-        "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=1600&q=70",
+      ogImage: HERO_IMAGE.replace("w=2400", "w=1600").replace("q=80", "q=70"),
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
@@ -55,108 +53,101 @@ export const Route = createFileRoute("/{-$locale}/")({
 
 function HomePage() {
   const t = useT();
-  const popular = ROUTES.slice(0, 6);
+
+  const navItems = [
+    { id: "book", label: t.inpageNav.bookNow, cta: true },
+    { id: "manifesto", label: t.inpageNav.howItWorks },
+    { id: "routes", label: t.inpageNav.routes },
+    { id: "fleet", label: t.inpageNav.fleet },
+    { id: "reviews", label: t.inpageNav.reviews },
+    { id: "regions", label: t.inpageNav.regions },
+  ];
 
   return (
     <>
-      {/* Hero: copy left, booking widget right */}
-      <section className="relative overflow-hidden bg-primary">
+      {/* 1. Hero — brand + horizontal booking bar; -mt-16 pulls under sticky transparent header */}
+      <section className="relative -mt-16 overflow-hidden bg-primary pt-16">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-25"
-          style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=2400&q=80)",
-          }}
+          className="media-grade absolute inset-0 bg-cover bg-center opacity-40"
+          style={{ backgroundImage: `url(${HERO_IMAGE})` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/85 to-primary/70" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 pb-16 pt-14 md:pb-20 md:pt-20 lg:grid-cols-[1.1fr_420px]">
-          <div className="text-primary-foreground">
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.18em] ring-1 ring-primary-foreground/15">
-              <Star className="h-3 w-3 fill-highlight text-highlight" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/88 to-primary/65" />
+        <div className="relative mx-auto max-w-[1280px] px-6 pb-14 pt-14 md:pb-16 md:pt-16">
+          <div className="max-w-2xl text-primary-foreground">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/70">
               {t.home.heroEyebrow}
-            </div>
-            <h1 className="mt-6 text-4xl font-display leading-[1.05] md:text-5xl lg:text-6xl">
+            </p>
+            <h1 className="mt-5 text-4xl font-display leading-[1.05] md:text-5xl lg:text-6xl">
               {t.home.heroTitle1}
               <br />
-              <span className="text-accent">{t.home.heroTitle2}</span>
+              <span className="font-accent text-[1.08em] text-accent">{t.home.heroTitleAccent}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-primary-foreground/80">
-              {t.home.heroSubtitle}
-            </p>
+            <p className="mt-6 max-w-md text-lg text-primary-foreground/80">{t.home.heroSubtitle}</p>
             <TrustPills dark className="mt-8" />
           </div>
-          <div className="w-full">
-            <BookingWidget />
+          <div id="book" className="mt-10 w-full scroll-mt-32">
+            <BookingWidget variant="hbar" />
           </div>
         </div>
       </section>
 
-      <StatsBand />
+      <InpageNav items={navItems} />
 
-      {/* Popular routes */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <SectionHeading
-          eyebrow={t.nav.routes}
-          title={t.home.popularTitle}
-          subtitle={t.home.popularSubtitle}
-        />
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {popular.map((r) => (
-            <RouteCard key={r.slug} route={r} />
-          ))}
-        </div>
-        <div className="mt-10 text-center">
-          <Link
-            to="/{-$locale}/routes"
-            className="inline-flex items-center rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-primary transition hover:border-accent"
-          >
-            {t.common.seeAllRoutes} →
-          </Link>
-        </div>
-      </section>
-
-      {/* Why us */}
-      <section className="border-y border-border bg-muted/60">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-          <SectionHeading
-            eyebrow="TransferAround"
-            title={t.advantages.title}
-            subtitle={t.advantages.subtitle}
-          />
-          <div className="mt-12">
-            <AdvantageGrid />
+      {/* 2. Manifesto */}
+      <section id="manifesto" className="scroll-mt-32 bg-background">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-28">
+          <Reveal>
+            <h2 className="max-w-3xl text-3xl font-display leading-tight text-primary md:text-5xl lg:text-[3.25rem]">
+              {t.home.manifestoLead}{" "}
+              <span className="font-accent text-accent">{t.home.manifestoAccent}</span>
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid items-end gap-10 lg:grid-cols-[1fr_1.15fr]">
+            <Reveal delay={1}>
+              <p className="max-w-md text-base leading-relaxed text-muted-foreground md:text-lg">
+                {t.home.manifestoBody}
+              </p>
+              <p className="mt-6 font-display text-xl text-primary md:text-2xl">
+                {t.home.manifestoClose}
+              </p>
+              <div className="mt-10 max-w-md">
+                <Steps />
+              </div>
+              <Link
+                to="/{-$locale}/how-it-works"
+                className="mt-6 inline-flex text-sm font-semibold text-accent-deep hover:underline"
+              >
+                {t.common.learnMore} →
+              </Link>
+            </Reveal>
+            <Reveal delay={2} className="overflow-hidden rounded-2xl">
+              <div className="aspect-[4/3] overflow-hidden md:aspect-[5/4]">
+                <img
+                  src={MANIFESTO_IMAGE}
+                  alt=""
+                  className="media-grade h-full w-full object-cover"
+                />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <SectionHeading
-          eyebrow={t.nav.howItWorks}
-          title={t.steps.title}
-          subtitle={t.steps.subtitle}
-        />
-        <div className="mx-auto mt-12 max-w-4xl">
-          <Steps />
-        </div>
-        <div className="mt-10 text-center">
-          <Link
-            to="/{-$locale}/how-it-works"
-            className="text-sm font-semibold text-accent-deep hover:underline"
-          >
-            {t.common.learnMore} →
-          </Link>
-        </div>
-      </section>
+      {/* 3. Routes chapter — sticky image + priced list */}
+      <RoutesChapter id="routes" />
 
-      {/* Fleet */}
-      <section className="border-y border-border bg-muted/60">
+      {/* 4. Fleet strip */}
+      <section id="fleet" className="scroll-mt-32 border-b border-border bg-muted/50">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-          <SectionHeading
-            eyebrow={t.nav.fleet}
-            title={t.home.fleetTitle}
-            subtitle={t.home.fleetSubtitle}
-          />
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              {t.nav.fleet}
+            </p>
+            <h2 className="mt-3 text-3xl font-display text-primary md:text-5xl">
+              {t.home.fleetTitle}
+            </h2>
+            <p className="mt-4 max-w-xl text-muted-foreground">{t.home.fleetSubtitle}</p>
+          </Reveal>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {VEHICLE_CLASSES.map((v) => (
               <FleetCard key={v.id} vehicle={v} />
@@ -165,99 +156,24 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Reviews */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <SectionHeading
-          eyebrow={t.nav.reviews}
-          title={t.home.reviewsTitle}
-          subtitle={t.home.reviewsSubtitle}
-        />
-        <div className="mt-12">
-          <ReviewsGrid reviews={REVIEWS.slice(0, 6)} />
-        </div>
-        <div className="mt-10 text-center">
-          <Link
-            to="/{-$locale}/reviews"
-            className="text-sm font-semibold text-accent-deep hover:underline"
-          >
-            {t.common.viewAll} →
-          </Link>
-        </div>
-      </section>
-
-      {/* Regions + map */}
-      <section className="bg-primary text-primary-foreground">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:py-24 lg:grid-cols-2">
-          <div>
-            <SectionHeading
-              eyebrow={t.nav.regions}
-              title={t.home.regionsTitle}
-              subtitle={t.home.regionsSubtitle}
-              align="left"
-              dark
-            />
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
-              {REGIONS.map((r) => (
-                <Link
-                  key={r.slug}
-                  to="/{-$locale}/regions/$slug"
-                  params={{ slug: r.slug }}
-                  className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-4 transition hover:border-accent hover:bg-primary-foreground/10"
-                >
-                  <div className="font-display text-xl">{r.name}</div>
-                  <div className="mt-1 text-xs text-primary-foreground/60">
-                    {ROUTES.filter((route) => route.region === r.name).length}{" "}
-                    {t.nav.routes.toLowerCase()} · {r.gateway}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-primary-foreground/15">
-            <CreteMapReal />
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-        <SectionHeading
-          eyebrow={t.nav.services}
-          title={t.servicesPages.indexTitle}
-          subtitle={t.servicesPages.indexSubtitle}
-        />
-        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {SERVICES.map((s) => (
-            <Link
-              key={s.slug}
-              to="/{-$locale}/services/$slug"
-              params={{ slug: s.slug }}
-              className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="font-display text-xl text-primary">{s.name}</div>
-              <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{s.tagline}</p>
-              <div className="mt-5 text-sm font-semibold text-accent-deep group-hover:underline">
-                {t.common.learnMore} →
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ preview */}
-      <section className="border-t border-border bg-muted/60">
-        <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-          <SectionHeading
-            eyebrow={t.nav.faq}
-            title={t.home.faqTitle}
-            subtitle={t.home.faqSubtitle}
-          />
+      {/* 5. Proof — reviews + region ribbon */}
+      <section id="reviews" className="scroll-mt-32 bg-background">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              {t.nav.reviews}
+            </p>
+            <h2 className="mt-3 text-3xl font-display text-primary md:text-5xl">
+              {t.home.proofTitle}
+            </h2>
+            <p className="mt-4 max-w-xl text-muted-foreground">{t.home.proofSubtitle}</p>
+          </Reveal>
           <div className="mt-12">
-            <FaqAccordion groups={FAQ_GROUPS.slice(0, 2)} />
+            <ReviewsGrid reviews={REVIEWS.slice(0, 3)} />
           </div>
-          <div className="mt-10 text-center">
+          <div className="mt-8 text-center">
             <Link
-              to="/{-$locale}/faq"
+              to="/{-$locale}/reviews"
               className="text-sm font-semibold text-accent-deep hover:underline"
             >
               {t.common.viewAll} →
@@ -266,7 +182,75 @@ function HomePage() {
         </div>
       </section>
 
-      <CtaBand />
+      <section id="regions" className="scroll-mt-32 bg-primary text-primary-foreground">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/55">
+              {t.nav.regions}
+            </p>
+            <h2 className="mt-3 max-w-xl text-3xl font-display md:text-4xl">
+              {t.home.regionsTitle}
+            </h2>
+            <p className="mt-4 max-w-lg text-primary-foreground/70">{t.home.regionsSubtitle}</p>
+          </Reveal>
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {REGIONS.map((r) => (
+              <Link
+                key={r.slug}
+                to="/{-$locale}/regions/$slug"
+                params={{ slug: r.slug }}
+                className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-5 transition hover:border-accent hover:bg-primary-foreground/10"
+              >
+                <div className="font-display text-xl">{r.name}</div>
+                <div className="mt-1 text-xs text-primary-foreground/55">
+                  {ROUTES.filter((route) => route.region === r.name).length}{" "}
+                  {t.nav.routes.toLowerCase()} · {r.gateway}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Closing CTA */}
+      <section className="relative overflow-hidden bg-primary">
+        <div
+          className="media-grade absolute inset-0 bg-cover bg-center opacity-30"
+          style={{
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=2000&q=70)",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/90 to-primary/70" />
+        <div className="relative mx-auto max-w-3xl px-6 py-20 text-center md:py-28">
+          <Reveal>
+            <h2 className="text-4xl font-display text-primary-foreground md:text-5xl">
+              {t.home.closingTitle}{" "}
+              <span className="font-accent text-accent">{t.home.closingAccent}</span>
+            </h2>
+            <p className="mx-auto mt-5 max-w-md text-lg text-primary-foreground/75">
+              {t.home.closingSubtitle}
+            </p>
+            <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                to="/{-$locale}/book"
+                className="inline-flex items-center rounded-xl bg-accent px-7 py-3.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
+              >
+                {t.common.getPrice}
+              </Link>
+              <a
+                href={CONTACT_WHATSAPP_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-primary-foreground/25 px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
+              >
+                <Phone className="h-4 w-4" />
+                {t.common.whatsapp}
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </>
   );
 }

@@ -17,7 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { getRoute, VEHICLE_CLASSES } from "@/data/routes";
+import { getRoute, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
 import { CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/lib/site";
 
@@ -188,7 +188,7 @@ function BookingDetailPage() {
             to="/{-$locale}/book"
             search={{
               route: b.route_slug,
-              class: b.vehicle_class as "economy" | "comfort" | "minivan" | "luxury",
+              class: b.vehicle_class as VehicleClass,
               pax: b.passengers,
             }}
             className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90"

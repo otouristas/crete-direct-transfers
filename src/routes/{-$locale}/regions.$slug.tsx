@@ -3,6 +3,7 @@ import { getRegion, REGIONS } from "@/data/regions";
 import { ROUTES } from "@/data/routes";
 import { RouteCard } from "@/components/sections/route-card";
 import { CtaBand } from "@/components/sections/cta-band";
+import { InpageNav } from "@/components/inpage-nav";
 import { getDict, useT, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 
@@ -63,6 +64,13 @@ function RegionPage() {
   const routes = ROUTES.filter((r) => r.region === region.name);
   const other = REGIONS.filter((r) => r.slug !== region.slug);
 
+  const navItems = [
+    { id: "book", label: t.inpageNav.bookNow, cta: true },
+    { id: "routes", label: t.inpageNav.regionRoutes },
+    { id: "hotels", label: t.inpageNav.hotels },
+    ...(other.length > 0 ? [{ id: "other-regions", label: t.inpageNav.otherRegions }] : []),
+  ];
+
   return (
     <>
       <section className="relative">
@@ -91,12 +99,14 @@ function RegionPage() {
         </div>
       </section>
 
+      <InpageNav items={navItems} />
+
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-14 lg:grid-cols-[1fr_320px]">
         <div>
           <p className="max-w-2xl text-lg leading-relaxed text-foreground/90">{region.intro}</p>
           <p className="mt-6 max-w-2xl leading-relaxed text-muted-foreground">{region.body}</p>
 
-          <div className="mt-12">
+          <div id="routes" className="mt-12 scroll-mt-32">
             <h2 className="text-2xl font-display text-primary">
               {t.regionsPages.routesIn} — {region.name}
             </h2>
@@ -107,7 +117,7 @@ function RegionPage() {
             </div>
           </div>
 
-          <div className="mt-12">
+          <div id="hotels" className="mt-12 scroll-mt-32">
             <h2 className="text-2xl font-display text-primary">
               {t.regionsPages.hotelsTitle} — {region.name}
             </h2>
@@ -122,19 +132,19 @@ function RegionPage() {
               ))}
             </div>
             <p className="mt-4 text-sm text-muted-foreground">
-              Not on the list? We serve every hotel and villa in {region.name} — enter your address
-              at booking.
+              {t.regionsPages.hotelsNote.replace("{name}", region.name)}
             </p>
           </div>
         </div>
 
-        <aside className="h-fit rounded-2xl bg-primary p-6 text-primary-foreground lg:sticky lg:top-24">
+        <aside
+          id="book"
+          className="h-fit scroll-mt-32 rounded-2xl bg-primary p-6 text-primary-foreground lg:sticky lg:top-36"
+        >
           <div className="text-xs uppercase tracking-widest text-accent">
             {t.common.bookTransfer} — {region.name}
           </div>
-          <p className="mt-3 text-sm text-primary-foreground/80">
-            Local drivers who live here — not shipped in from elsewhere on the island.
-          </p>
+          <p className="mt-3 text-sm text-primary-foreground/80">{t.regionsPages.bookAsideBody}</p>
           <Link
             to="/{-$locale}/book"
             className="mt-5 block rounded-xl bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground transition hover:opacity-90"
@@ -144,22 +154,24 @@ function RegionPage() {
         </aside>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-20">
-        <h2 className="mb-6 text-2xl font-display text-primary">{t.nav.regions}</h2>
-        <div className="grid gap-4 md:grid-cols-3">
-          {other.map((r) => (
-            <Link
-              key={r.slug}
-              to="/{-$locale}/regions/$slug"
-              params={{ slug: r.slug }}
-              className="rounded-xl border border-border bg-card p-5 transition hover:border-accent hover:shadow-md"
-            >
-              <div className="font-display text-lg text-primary">{r.name}</div>
-              <div className="mt-1 text-sm text-muted-foreground">{r.gateway}</div>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {other.length > 0 && (
+        <section id="other-regions" className="mx-auto max-w-7xl scroll-mt-32 px-6 pb-20">
+          <h2 className="mb-6 text-2xl font-display text-primary">{t.nav.regions}</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            {other.map((r) => (
+              <Link
+                key={r.slug}
+                to="/{-$locale}/regions/$slug"
+                params={{ slug: r.slug }}
+                className="rounded-xl border border-border bg-card p-5 transition hover:border-accent hover:shadow-md"
+              >
+                <div className="font-display text-lg text-primary">{r.name}</div>
+                <div className="mt-1 text-sm text-muted-foreground">{r.gateway}</div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <CtaBand />
     </>

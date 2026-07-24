@@ -2,22 +2,30 @@ import { useParams } from "@tanstack/react-router";
 import { en, type Dict } from "./en";
 import { el } from "./el";
 import { de } from "./de";
+import { fr } from "./fr";
+import { it } from "./it";
+import { nl } from "./nl";
+import { es } from "./es";
 
 export type { Dict };
 
-export const LOCALES = ["en", "el", "de"] as const;
+export const LOCALES = ["en", "el", "de", "fr", "it", "nl", "es"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 /** Locales that appear as a URL prefix — English lives at the root. */
-export const PREFIX_LOCALES = ["el", "de"] as const;
+export const PREFIX_LOCALES = ["el", "de", "fr", "it", "nl", "es"] as const;
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   en: "English",
   el: "Ελληνικά",
   de: "Deutsch",
+  fr: "Français",
+  it: "Italiano",
+  nl: "Nederlands",
+  es: "Español",
 };
 
-const dicts: Record<Locale, Dict> = { en, el, de };
+const dicts: Record<Locale, Dict> = { en, el, de, fr, it, nl, es };
 
 export function isLocale(value: string): value is Locale {
   return (LOCALES as readonly string[]).includes(value);

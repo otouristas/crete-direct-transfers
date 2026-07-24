@@ -1,7 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import type { Locale } from "@/i18n";
+import { useT } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { SERVICES } from "@/data/services";
+import { Reveal } from "@/components/reveal";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/{-$locale}/services/")({
   head: (ctx) => {
@@ -18,41 +22,88 @@ export const Route = createFileRoute("/{-$locale}/services/")({
 });
 
 function ServicesHub() {
+  const t = useT();
+  const [active, setActive] = useState(SERVICES[0]?.slug ?? "");
+  const current = SERVICES.find((s) => s.slug === active) ?? SERVICES[0];
+
   return (
     <>
-      <section className="border-b border-border bg-muted">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <div className="text-xs uppercase tracking-[0.2em] text-accent">Services</div>
-          <h1 className="mt-3 text-4xl md:text-6xl font-display text-primary">
-            More than an airport run.
-          </h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
-            Six ways we move you across Crete — all fixed-price, all licensed local drivers.
-          </p>
+      <section className="border-b border-border bg-background">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              {t.nav.services}
+            </p>
+            <h1 className="mt-4 max-w-2xl text-4xl font-display leading-tight text-primary md:text-6xl">
+              {t.servicesPages.indexTitle}
+            </h1>
+            <p className="mt-5 max-w-xl text-lg text-muted-foreground">
+              {t.servicesPages.indexSubtitle}
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {SERVICES.map((s) => (
-          <Link
-            key={s.slug}
-            to="/{-$locale}/services/$slug"
-            params={{ slug: s.slug }}
-            className="group rounded-2xl overflow-hidden bg-card border border-border hover:border-accent transition"
-          >
-            <div className="aspect-[16/10] overflow-hidden">
-              <div
-                className="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
-                style={{ backgroundImage: `url(${s.heroImage})` }}
-              />
-            </div>
-            <div className="p-6">
-              <div className="font-display text-2xl text-primary">{s.name}</div>
-              <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{s.tagline}</p>
-              <div className="mt-4 text-sm text-accent group-hover:underline">Learn more →</div>
-            </div>
-          </Link>
-        ))}
+      <section className="mx-auto max-w-7xl px-6 py-12 md:py-20">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+          <Reveal className="relative hidden overflow-hidden rounded-2xl lg:block lg:sticky lg:top-28">
+            {current && (
+              <div className="aspect-[4/5] overflow-hidden">
+                <img
+                  key={current.slug}
+                  src={current.heroImage}
+                  alt=""
+                  className="media-grade h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 p-6 text-primary-foreground">
+                  <div className="font-mono text-xs text-primary-foreground/70">
+                    {String(SERVICES.findIndex((s) => s.slug === current.slug) + 1).padStart(2, "0")}
+                  </div>
+                  <div className="mt-1 font-display text-2xl">{current.name}</div>
+                </div>
+              </div>
+            )}
+          </Reveal>
+
+          <ol className="divide-y divide-border">
+            {SERVICES.map((s, i) => {
+              const isActive = s.slug === active;
+              return (
+                <li key={s.slug}>
+                  <Link
+                    to="/{-$locale}/services/$slug"
+                    params={{ slug: s.slug }}
+                    onMouseEnter={() => setActive(s.slug)}
+                    onFocus={() => setActive(s.slug)}
+                    className={cn(
+                      "group flex gap-5 py-6 transition",
+                      isActive ? "opacity-100" : "opacity-65 hover:opacity-100",
+                    )}
+                  >
+                    <span
+                      className={cn(
+                        "mt-1 font-mono text-xs tabular-nums",
+                        isActive ? "text-accent-deep" : "text-muted-foreground",
+                      )}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-display text-2xl text-primary md:text-3xl">{s.name}</div>
+                      <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
+                        {s.tagline}
+                      </p>
+                      <span className="mt-3 inline-block text-sm font-semibold text-accent-deep group-hover:underline">
+                        {t.common.learnMore} →
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </section>
     </>
   );

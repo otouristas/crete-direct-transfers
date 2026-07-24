@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Globe } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
 import { LOCALES, LOCALE_LABELS, useLocale, type Locale } from "@/i18n";
 import {
   DropdownMenu,
@@ -9,7 +9,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-export function LanguageSwitcher({ className }: { className?: string }) {
+export function LanguageSwitcher({
+  className,
+  onDark = false,
+}: {
+  className?: string;
+  /** Soft hover for navy / transparent header chrome. */
+  onDark?: boolean;
+}) {
   const locale = useLocale();
   const navigate = useNavigate();
 
@@ -29,13 +36,17 @@ export function LanguageSwitcher({ className }: { className?: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted",
+          "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+          onDark
+            ? "text-primary-foreground hover:bg-primary-foreground/10"
+            : "hover:bg-muted",
           className,
         )}
         aria-label="Change language"
       >
         <Globe className="h-4 w-4" />
         <span className="uppercase">{locale}</span>
+        <ChevronDown className="h-3 w-3 opacity-70" aria-hidden />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-36">
         {LOCALES.map((l) => (
@@ -44,7 +55,7 @@ export function LanguageSwitcher({ className }: { className?: string }) {
             onClick={() => switchTo(l)}
             className={cn("cursor-pointer", l === locale && "font-semibold text-primary")}
           >
-            <span className="w-7 uppercase text-xs text-muted-foreground">{l}</span>
+            <span className="w-7 text-xs uppercase text-muted-foreground">{l}</span>
             {LOCALE_LABELS[l]}
           </DropdownMenuItem>
         ))}

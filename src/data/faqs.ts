@@ -75,7 +75,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: "How much luggage can I bring?",
-        a: "Economy and Comfort vehicles fit 3 standard suitcases plus hand luggage for 3 passengers. Minivans fit 7 suitcases for 7 passengers. Extra bags, surfboards or bikes — just tell us in the notes.",
+        a: "Economy and Standard Class fit 3 standard suitcases for 3 passengers. Vans and SUVs take 6–7 bags; minibuses up to 12 or 16. Extra bags, surfboards or bikes — just tell us in the notes.",
       },
       {
         q: "Can I bring a child seat?",
@@ -83,7 +83,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: "Are all vehicles air-conditioned?",
-        a: "Every vehicle in the fleet has climate control, and every driver runs it. Water bottles come standard on Comfort, Minivan and Luxury.",
+        a: "Every vehicle in the fleet has climate control, and every driver runs it. Water bottles come standard on Standard Class and above.",
       },
     ],
   },

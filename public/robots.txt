@@ -1,2 +1,47 @@
+# TransferAround — https://transferaround.com
+# Search + AI answer engines are welcome. Private/transactional areas are blocked.
+# Patterns cover the root and every locale prefix (e.g. /book and /el/book).
+
 User-agent: *
 Allow: /
+Disallow: /book
+Disallow: /*/book
+Disallow: /account
+Disallow: /*/account
+Disallow: /driver
+Disallow: /*/driver
+Disallow: /login
+Disallow: /*/login
+Disallow: /signup
+Disallow: /*/signup
+Disallow: /forgot-password
+Disallow: /*/forgot-password
+Disallow: /reset-password
+Disallow: /*/reset-password
+
+# AI answer engines (GEO) — explicitly allowed so we can be cited.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://transferaround.com/sitemap.xml

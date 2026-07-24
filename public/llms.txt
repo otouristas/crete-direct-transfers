@@ -1,0 +1,42 @@
+# TransferAround
+
+> Fixed-price private airport, port, and city-to-city transfers. Licensed local
+> drivers, flight-tracked pickups, no bidding, and a price agreed before you
+> book. Instant fixed-price booking across Crete (HER, CHQ, ports). Quote-based
+> transfers for other Greek airports and destinations, confirmed by our team.
+
+TransferAround is a private transfer booking service. Travellers select a
+pickup and drop-off point (airport, port, hotel, town, or any address) and get a
+fixed, all-inclusive price with a licensed local driver. Where we have driver
+supply the price is instant and bookable online; elsewhere travellers request a
+quote that is confirmed by our team.
+
+Key facts:
+- Model: private (not shared) door-to-door transfers, fixed price agreed up front, no surge, no bidding.
+- Included: meet & greet, flight tracking, waiting time, taxes and tolls, luggage.
+- Vehicle classes: Economy, Comfort, Minivan (up to 7), Luxury, minibuses.
+- Coverage today: instant booking across Crete; airport landing pages and quote booking for major Greek airports (ATH, SKG, JMK, JTR, CFU, RHO, ZTH, KLX and more).
+- Languages: English, Greek (Ελληνικά), German (Deutsch), French, Italian, Dutch, Spanish.
+- Payment: card or pay-on-board depending on route.
+
+## Core pages
+- [Home](https://transferaround.com/): overview, booking widget, popular routes.
+- [Greece](https://transferaround.com/greece): country hub for airports and cities.
+- [Airports](https://transferaround.com/airports): all Greek airport transfer hubs (Transfeero-style landing pages).
+- [Cities](https://transferaround.com/cities): city and resort transfer hubs.
+- [Routes](https://transferaround.com/routes): Crete fixed-price transfer corridors.
+- [Regions](https://transferaround.com/regions): Crete coverage by prefecture.
+- [Services](https://transferaround.com/services): airport, port, cross-island, hotel transfers.
+- [Fleet](https://transferaround.com/fleet): vehicle classes and capacities.
+- [How it works](https://transferaround.com/how-it-works): booking and pickup process.
+- [FAQ](https://transferaround.com/faq): pricing, luggage, child seats, cancellations.
+- [Reviews](https://transferaround.com/reviews): verified customer ratings.
+- [Contact](https://transferaround.com/contact): support and quote requests.
+
+## For partners
+- [For hotels](https://transferaround.com/for-hotels): partner transfers for accommodation providers.
+- [For drivers](https://transferaround.com/for-drivers): become a licensed partner driver.
+
+## Machine-readable
+- Sitemap: https://transferaround.com/sitemap.xml
+- Structured data: schema.org LocalBusiness, TaxiService, Service, Airport, Offer, FAQPage, BreadcrumbList, ItemList, Article on the relevant pages.

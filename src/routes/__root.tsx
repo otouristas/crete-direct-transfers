@@ -5,6 +5,8 @@ import "@fontsource/plus-jakarta-sans/800.css";
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
+import "@fontsource/instrument-serif/400.css";
+import "@fontsource/instrument-serif/400-italic.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -18,11 +20,14 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { isLocale, useT } from "@/i18n";
+import { OG_DEFAULT_IMAGE } from "@/lib/site";
+import { SITE_JSONLD_SCRIPTS } from "@/lib/structured-data";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
+import { LanguageSuggestionBanner } from "../components/language-suggestion-banner";
 import { AuthProvider } from "../hooks/use-auth";
 import { Toaster } from "../components/ui/sonner";
 
@@ -103,11 +108,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Licensed local drivers. Fixed prices. No bidding. Book your Crete transfer in minutes.",
       },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: OG_DEFAULT_IMAGE },
+      { name: "twitter:image", content: OG_DEFAULT_IMAGE },
+      { name: "theme-color", content: "#0B2545" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: "/favicon.svg" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+    ],
+    scripts: [
+      // Site-wide Organization + WebSite entities (schema.org) — brand identity
+      // for search + AI answer engines. Per-page schema references these by @id.
+      ...SITE_JSONLD_SCRIPTS,
+      // Privacy-friendly analytics — only injected when VITE_PLAUSIBLE_DOMAIN is
+      // configured; nothing ships by default so no tracking without opt-in.
+      ...(import.meta.env.VITE_PLAUSIBLE_DOMAIN
+        ? [
+            {
+              src: "https://plausible.io/js/script.js",
+              defer: true,
+              "data-domain": import.meta.env.VITE_PLAUSIBLE_DOMAIN as string,
+            },
+          ]
+        : []),
     ],
   }),
   shellComponent: RootShell,
@@ -139,6 +164,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <div className="min-h-screen flex flex-col">
+          <LanguageSuggestionBanner />
           <SiteHeader />
           <main className="flex-1">
             <Outlet />

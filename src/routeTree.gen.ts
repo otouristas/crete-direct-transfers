@@ -17,6 +17,7 @@ import { Route as Char123LocaleChar125ReviewsRouteImport } from './routes/{-$loc
 import { Route as Char123LocaleChar125ResetPasswordRouteImport } from './routes/{-$locale}/reset-password'
 import { Route as Char123LocaleChar125LoginRouteImport } from './routes/{-$locale}/login'
 import { Route as Char123LocaleChar125HowItWorksRouteImport } from './routes/{-$locale}/how-it-works'
+import { Route as Char123LocaleChar125GreeceRouteImport } from './routes/{-$locale}/greece'
 import { Route as Char123LocaleChar125ForgotPasswordRouteImport } from './routes/{-$locale}/forgot-password'
 import { Route as Char123LocaleChar125ForHotelsRouteImport } from './routes/{-$locale}/for-hotels'
 import { Route as Char123LocaleChar125ForDriversRouteImport } from './routes/{-$locale}/for-drivers'
@@ -31,7 +32,9 @@ import { Route as Char123LocaleChar125RoutesIndexRouteImport } from './routes/{-
 import { Route as Char123LocaleChar125RegionsIndexRouteImport } from './routes/{-$locale}/regions.index'
 import { Route as Char123LocaleChar125FleetIndexRouteImport } from './routes/{-$locale}/fleet.index'
 import { Route as Char123LocaleChar125DriverIndexRouteImport } from './routes/{-$locale}/driver.index'
+import { Route as Char123LocaleChar125CitiesIndexRouteImport } from './routes/{-$locale}/cities.index'
 import { Route as Char123LocaleChar125BlogIndexRouteImport } from './routes/{-$locale}/blog.index'
+import { Route as Char123LocaleChar125AirportsIndexRouteImport } from './routes/{-$locale}/airports.index'
 import { Route as Char123LocaleChar125AccountIndexRouteImport } from './routes/{-$locale}/account.index'
 import { Route as Char123LocaleChar125ServicesSlugRouteImport } from './routes/{-$locale}/services.$slug'
 import { Route as Char123LocaleChar125RoutesSlugRouteImport } from './routes/{-$locale}/routes.$slug'
@@ -44,11 +47,14 @@ import { Route as Char123LocaleChar125LegalCookiesRouteImport } from './routes/{
 import { Route as Char123LocaleChar125FleetClassRouteImport } from './routes/{-$locale}/fleet.$class'
 import { Route as Char123LocaleChar125DriverApplyRouteImport } from './routes/{-$locale}/driver_.apply'
 import { Route as Char123LocaleChar125DriverEarningsRouteImport } from './routes/{-$locale}/driver.earnings'
+import { Route as Char123LocaleChar125CitiesSlugRouteImport } from './routes/{-$locale}/cities.$slug'
 import { Route as Char123LocaleChar125BookSuccessRouteImport } from './routes/{-$locale}/book.success'
 import { Route as Char123LocaleChar125BlogSlugRouteImport } from './routes/{-$locale}/blog.$slug'
+import { Route as Char123LocaleChar125AirportsSlugRouteImport } from './routes/{-$locale}/airports.$slug'
 import { Route as Char123LocaleChar125AccountProfileRouteImport } from './routes/{-$locale}/account.profile'
 import { Route as Char123LocaleChar125DriverJobsIndexRouteImport } from './routes/{-$locale}/driver.jobs.index'
 import { Route as Char123LocaleChar125DriverJobsIdRouteImport } from './routes/{-$locale}/driver.jobs.$id'
+import { Route as Char123LocaleChar125AirportsSlugRouteSlugRouteImport } from './routes/{-$locale}/airports.$slug.$routeSlug'
 import { Route as Char123LocaleChar125AccountBookingsIdRouteImport } from './routes/{-$locale}/account.bookings.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -96,6 +102,12 @@ const Char123LocaleChar125HowItWorksRoute =
   Char123LocaleChar125HowItWorksRouteImport.update({
     id: '/how-it-works',
     path: '/how-it-works',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125GreeceRoute =
+  Char123LocaleChar125GreeceRouteImport.update({
+    id: '/greece',
+    path: '/greece',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125ForgotPasswordRoute =
@@ -181,10 +193,22 @@ const Char123LocaleChar125DriverIndexRoute =
     path: '/',
     getParentRoute: () => Char123LocaleChar125DriverRoute,
   } as any)
+const Char123LocaleChar125CitiesIndexRoute =
+  Char123LocaleChar125CitiesIndexRouteImport.update({
+    id: '/cities/',
+    path: '/cities/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125BlogIndexRoute =
   Char123LocaleChar125BlogIndexRouteImport.update({
     id: '/blog/',
     path: '/blog/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125AirportsIndexRoute =
+  Char123LocaleChar125AirportsIndexRouteImport.update({
+    id: '/airports/',
+    path: '/airports/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125AccountIndexRoute =
@@ -259,6 +283,12 @@ const Char123LocaleChar125DriverEarningsRoute =
     path: '/earnings',
     getParentRoute: () => Char123LocaleChar125DriverRoute,
   } as any)
+const Char123LocaleChar125CitiesSlugRoute =
+  Char123LocaleChar125CitiesSlugRouteImport.update({
+    id: '/cities/$slug',
+    path: '/cities/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125BookSuccessRoute =
   Char123LocaleChar125BookSuccessRouteImport.update({
     id: '/success',
@@ -269,6 +299,12 @@ const Char123LocaleChar125BlogSlugRoute =
   Char123LocaleChar125BlogSlugRouteImport.update({
     id: '/blog/$slug',
     path: '/blog/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125AirportsSlugRoute =
+  Char123LocaleChar125AirportsSlugRouteImport.update({
+    id: '/airports/$slug',
+    path: '/airports/$slug',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125AccountProfileRoute =
@@ -289,6 +325,12 @@ const Char123LocaleChar125DriverJobsIdRoute =
     path: '/jobs/$id',
     getParentRoute: () => Char123LocaleChar125DriverRoute,
   } as any)
+const Char123LocaleChar125AirportsSlugRouteSlugRoute =
+  Char123LocaleChar125AirportsSlugRouteSlugRouteImport.update({
+    id: '/$routeSlug',
+    path: '/$routeSlug',
+    getParentRoute: () => Char123LocaleChar125AirportsSlugRoute,
+  } as any)
 const Char123LocaleChar125AccountBookingsIdRoute =
   Char123LocaleChar125AccountBookingsIdRouteImport.update({
     id: '/bookings/$id',
@@ -308,6 +350,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
+  '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
   '/{-$locale}/login': typeof Char123LocaleChar125LoginRoute
   '/{-$locale}/reset-password': typeof Char123LocaleChar125ResetPasswordRoute
@@ -315,8 +358,10 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
+  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRouteWithChildren
   '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
   '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
+  '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
@@ -329,13 +374,16 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/routes/$slug': typeof Char123LocaleChar125RoutesSlugRoute
   '/{-$locale}/services/$slug': typeof Char123LocaleChar125ServicesSlugRoute
   '/{-$locale}/account/': typeof Char123LocaleChar125AccountIndexRoute
+  '/{-$locale}/airports/': typeof Char123LocaleChar125AirportsIndexRoute
   '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
+  '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
   '/{-$locale}/services/': typeof Char123LocaleChar125ServicesIndexRoute
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
+  '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
   '/{-$locale}/driver/jobs/': typeof Char123LocaleChar125DriverJobsIndexRoute
 }
@@ -348,6 +396,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
+  '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
   '/{-$locale}/login': typeof Char123LocaleChar125LoginRoute
   '/{-$locale}/reset-password': typeof Char123LocaleChar125ResetPasswordRoute
@@ -355,8 +404,10 @@ export interface FileRoutesByTo {
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
+  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRouteWithChildren
   '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
   '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
+  '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
@@ -369,13 +420,16 @@ export interface FileRoutesByTo {
   '/{-$locale}/routes/$slug': typeof Char123LocaleChar125RoutesSlugRoute
   '/{-$locale}/services/$slug': typeof Char123LocaleChar125ServicesSlugRoute
   '/{-$locale}/account': typeof Char123LocaleChar125AccountIndexRoute
+  '/{-$locale}/airports': typeof Char123LocaleChar125AirportsIndexRoute
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogIndexRoute
+  '/{-$locale}/cities': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/fleet': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/regions': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes': typeof Char123LocaleChar125RoutesIndexRoute
   '/{-$locale}/services': typeof Char123LocaleChar125ServicesIndexRoute
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
+  '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
   '/{-$locale}/driver/jobs': typeof Char123LocaleChar125DriverJobsIndexRoute
 }
@@ -392,6 +446,7 @@ export interface FileRoutesById {
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
+  '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
   '/{-$locale}/login': typeof Char123LocaleChar125LoginRoute
   '/{-$locale}/reset-password': typeof Char123LocaleChar125ResetPasswordRoute
@@ -399,8 +454,10 @@ export interface FileRoutesById {
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
+  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRouteWithChildren
   '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
   '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
+  '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver_/apply': typeof Char123LocaleChar125DriverApplyRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
@@ -413,13 +470,16 @@ export interface FileRoutesById {
   '/{-$locale}/routes/$slug': typeof Char123LocaleChar125RoutesSlugRoute
   '/{-$locale}/services/$slug': typeof Char123LocaleChar125ServicesSlugRoute
   '/{-$locale}/account/': typeof Char123LocaleChar125AccountIndexRoute
+  '/{-$locale}/airports/': typeof Char123LocaleChar125AirportsIndexRoute
   '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
+  '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
   '/{-$locale}/services/': typeof Char123LocaleChar125ServicesIndexRoute
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
+  '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
   '/{-$locale}/driver/jobs/': typeof Char123LocaleChar125DriverJobsIndexRoute
 }
@@ -437,6 +497,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
     | '/{-$locale}/forgot-password'
+    | '/{-$locale}/greece'
     | '/{-$locale}/how-it-works'
     | '/{-$locale}/login'
     | '/{-$locale}/reset-password'
@@ -444,8 +505,10 @@ export interface FileRouteTypes {
     | '/{-$locale}/signup'
     | '/{-$locale}/'
     | '/{-$locale}/account/profile'
+    | '/{-$locale}/airports/$slug'
     | '/{-$locale}/blog/$slug'
     | '/{-$locale}/book/success'
+    | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
     | '/{-$locale}/fleet/$class'
@@ -458,13 +521,16 @@ export interface FileRouteTypes {
     | '/{-$locale}/routes/$slug'
     | '/{-$locale}/services/$slug'
     | '/{-$locale}/account/'
+    | '/{-$locale}/airports/'
     | '/{-$locale}/blog/'
+    | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
     | '/{-$locale}/fleet/'
     | '/{-$locale}/regions/'
     | '/{-$locale}/routes/'
     | '/{-$locale}/services/'
     | '/{-$locale}/account/bookings/$id'
+    | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
     | '/{-$locale}/driver/jobs/'
   fileRoutesByTo: FileRoutesByTo
@@ -477,6 +543,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
     | '/{-$locale}/forgot-password'
+    | '/{-$locale}/greece'
     | '/{-$locale}/how-it-works'
     | '/{-$locale}/login'
     | '/{-$locale}/reset-password'
@@ -484,8 +551,10 @@ export interface FileRouteTypes {
     | '/{-$locale}/signup'
     | '/{-$locale}'
     | '/{-$locale}/account/profile'
+    | '/{-$locale}/airports/$slug'
     | '/{-$locale}/blog/$slug'
     | '/{-$locale}/book/success'
+    | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
     | '/{-$locale}/fleet/$class'
@@ -498,13 +567,16 @@ export interface FileRouteTypes {
     | '/{-$locale}/routes/$slug'
     | '/{-$locale}/services/$slug'
     | '/{-$locale}/account'
+    | '/{-$locale}/airports'
     | '/{-$locale}/blog'
+    | '/{-$locale}/cities'
     | '/{-$locale}/driver'
     | '/{-$locale}/fleet'
     | '/{-$locale}/regions'
     | '/{-$locale}/routes'
     | '/{-$locale}/services'
     | '/{-$locale}/account/bookings/$id'
+    | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
     | '/{-$locale}/driver/jobs'
   id:
@@ -520,6 +592,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
     | '/{-$locale}/forgot-password'
+    | '/{-$locale}/greece'
     | '/{-$locale}/how-it-works'
     | '/{-$locale}/login'
     | '/{-$locale}/reset-password'
@@ -527,8 +600,10 @@ export interface FileRouteTypes {
     | '/{-$locale}/signup'
     | '/{-$locale}/'
     | '/{-$locale}/account/profile'
+    | '/{-$locale}/airports/$slug'
     | '/{-$locale}/blog/$slug'
     | '/{-$locale}/book/success'
+    | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver_/apply'
     | '/{-$locale}/fleet/$class'
@@ -541,13 +616,16 @@ export interface FileRouteTypes {
     | '/{-$locale}/routes/$slug'
     | '/{-$locale}/services/$slug'
     | '/{-$locale}/account/'
+    | '/{-$locale}/airports/'
     | '/{-$locale}/blog/'
+    | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
     | '/{-$locale}/fleet/'
     | '/{-$locale}/regions/'
     | '/{-$locale}/routes/'
     | '/{-$locale}/services/'
     | '/{-$locale}/account/bookings/$id'
+    | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
     | '/{-$locale}/driver/jobs/'
   fileRoutesById: FileRoutesById
@@ -613,6 +691,13 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/{-$locale}/how-it-works'
       preLoaderRoute: typeof Char123LocaleChar125HowItWorksRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/greece': {
+      id: '/{-$locale}/greece'
+      path: '/greece'
+      fullPath: '/{-$locale}/greece'
+      preLoaderRoute: typeof Char123LocaleChar125GreeceRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/forgot-password': {
@@ -713,11 +798,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125DriverIndexRouteImport
       parentRoute: typeof Char123LocaleChar125DriverRoute
     }
+    '/{-$locale}/cities/': {
+      id: '/{-$locale}/cities/'
+      path: '/cities'
+      fullPath: '/{-$locale}/cities/'
+      preLoaderRoute: typeof Char123LocaleChar125CitiesIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/blog/': {
       id: '/{-$locale}/blog/'
       path: '/blog'
       fullPath: '/{-$locale}/blog/'
       preLoaderRoute: typeof Char123LocaleChar125BlogIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/airports/': {
+      id: '/{-$locale}/airports/'
+      path: '/airports'
+      fullPath: '/{-$locale}/airports/'
+      preLoaderRoute: typeof Char123LocaleChar125AirportsIndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/account/': {
@@ -804,6 +903,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125DriverEarningsRouteImport
       parentRoute: typeof Char123LocaleChar125DriverRoute
     }
+    '/{-$locale}/cities/$slug': {
+      id: '/{-$locale}/cities/$slug'
+      path: '/cities/$slug'
+      fullPath: '/{-$locale}/cities/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125CitiesSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/book/success': {
       id: '/{-$locale}/book/success'
       path: '/success'
@@ -816,6 +922,13 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/{-$locale}/blog/$slug'
       preLoaderRoute: typeof Char123LocaleChar125BlogSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/airports/$slug': {
+      id: '/{-$locale}/airports/$slug'
+      path: '/airports/$slug'
+      fullPath: '/{-$locale}/airports/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125AirportsSlugRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/account/profile': {
@@ -838,6 +951,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/{-$locale}/driver/jobs/$id'
       preLoaderRoute: typeof Char123LocaleChar125DriverJobsIdRouteImport
       parentRoute: typeof Char123LocaleChar125DriverRoute
+    }
+    '/{-$locale}/airports/$slug/$routeSlug': {
+      id: '/{-$locale}/airports/$slug/$routeSlug'
+      path: '/$routeSlug'
+      fullPath: '/{-$locale}/airports/$slug/$routeSlug'
+      preLoaderRoute: typeof Char123LocaleChar125AirportsSlugRouteSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125AirportsSlugRoute
     }
     '/{-$locale}/account/bookings/$id': {
       id: '/{-$locale}/account/bookings/$id'
@@ -907,6 +1027,21 @@ const Char123LocaleChar125DriverRouteWithChildren =
     Char123LocaleChar125DriverRouteChildren,
   )
 
+interface Char123LocaleChar125AirportsSlugRouteChildren {
+  Char123LocaleChar125AirportsSlugRouteSlugRoute: typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
+}
+
+const Char123LocaleChar125AirportsSlugRouteChildren: Char123LocaleChar125AirportsSlugRouteChildren =
+  {
+    Char123LocaleChar125AirportsSlugRouteSlugRoute:
+      Char123LocaleChar125AirportsSlugRouteSlugRoute,
+  }
+
+const Char123LocaleChar125AirportsSlugRouteWithChildren =
+  Char123LocaleChar125AirportsSlugRoute._addFileChildren(
+    Char123LocaleChar125AirportsSlugRouteChildren,
+  )
+
 interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125AboutRoute: typeof Char123LocaleChar125AboutRoute
   Char123LocaleChar125AccountRoute: typeof Char123LocaleChar125AccountRouteWithChildren
@@ -917,13 +1052,16 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125ForDriversRoute: typeof Char123LocaleChar125ForDriversRoute
   Char123LocaleChar125ForHotelsRoute: typeof Char123LocaleChar125ForHotelsRoute
   Char123LocaleChar125ForgotPasswordRoute: typeof Char123LocaleChar125ForgotPasswordRoute
+  Char123LocaleChar125GreeceRoute: typeof Char123LocaleChar125GreeceRoute
   Char123LocaleChar125HowItWorksRoute: typeof Char123LocaleChar125HowItWorksRoute
   Char123LocaleChar125LoginRoute: typeof Char123LocaleChar125LoginRoute
   Char123LocaleChar125ResetPasswordRoute: typeof Char123LocaleChar125ResetPasswordRoute
   Char123LocaleChar125ReviewsRoute: typeof Char123LocaleChar125ReviewsRoute
   Char123LocaleChar125SignupRoute: typeof Char123LocaleChar125SignupRoute
   Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
+  Char123LocaleChar125AirportsSlugRoute: typeof Char123LocaleChar125AirportsSlugRouteWithChildren
   Char123LocaleChar125BlogSlugRoute: typeof Char123LocaleChar125BlogSlugRoute
+  Char123LocaleChar125CitiesSlugRoute: typeof Char123LocaleChar125CitiesSlugRoute
   Char123LocaleChar125DriverApplyRoute: typeof Char123LocaleChar125DriverApplyRoute
   Char123LocaleChar125FleetClassRoute: typeof Char123LocaleChar125FleetClassRoute
   Char123LocaleChar125LegalCookiesRoute: typeof Char123LocaleChar125LegalCookiesRoute
@@ -934,7 +1072,9 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125RegionsSlugRoute: typeof Char123LocaleChar125RegionsSlugRoute
   Char123LocaleChar125RoutesSlugRoute: typeof Char123LocaleChar125RoutesSlugRoute
   Char123LocaleChar125ServicesSlugRoute: typeof Char123LocaleChar125ServicesSlugRoute
+  Char123LocaleChar125AirportsIndexRoute: typeof Char123LocaleChar125AirportsIndexRoute
   Char123LocaleChar125BlogIndexRoute: typeof Char123LocaleChar125BlogIndexRoute
+  Char123LocaleChar125CitiesIndexRoute: typeof Char123LocaleChar125CitiesIndexRoute
   Char123LocaleChar125FleetIndexRoute: typeof Char123LocaleChar125FleetIndexRoute
   Char123LocaleChar125RegionsIndexRoute: typeof Char123LocaleChar125RegionsIndexRoute
   Char123LocaleChar125RoutesIndexRoute: typeof Char123LocaleChar125RoutesIndexRoute
@@ -955,6 +1095,7 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125ForHotelsRoute: Char123LocaleChar125ForHotelsRoute,
     Char123LocaleChar125ForgotPasswordRoute:
       Char123LocaleChar125ForgotPasswordRoute,
+    Char123LocaleChar125GreeceRoute: Char123LocaleChar125GreeceRoute,
     Char123LocaleChar125HowItWorksRoute: Char123LocaleChar125HowItWorksRoute,
     Char123LocaleChar125LoginRoute: Char123LocaleChar125LoginRoute,
     Char123LocaleChar125ResetPasswordRoute:
@@ -962,7 +1103,10 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125ReviewsRoute: Char123LocaleChar125ReviewsRoute,
     Char123LocaleChar125SignupRoute: Char123LocaleChar125SignupRoute,
     Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+    Char123LocaleChar125AirportsSlugRoute:
+      Char123LocaleChar125AirportsSlugRouteWithChildren,
     Char123LocaleChar125BlogSlugRoute: Char123LocaleChar125BlogSlugRoute,
+    Char123LocaleChar125CitiesSlugRoute: Char123LocaleChar125CitiesSlugRoute,
     Char123LocaleChar125DriverApplyRoute: Char123LocaleChar125DriverApplyRoute,
     Char123LocaleChar125FleetClassRoute: Char123LocaleChar125FleetClassRoute,
     Char123LocaleChar125LegalCookiesRoute:
@@ -978,7 +1122,10 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125RoutesSlugRoute: Char123LocaleChar125RoutesSlugRoute,
     Char123LocaleChar125ServicesSlugRoute:
       Char123LocaleChar125ServicesSlugRoute,
+    Char123LocaleChar125AirportsIndexRoute:
+      Char123LocaleChar125AirportsIndexRoute,
     Char123LocaleChar125BlogIndexRoute: Char123LocaleChar125BlogIndexRoute,
+    Char123LocaleChar125CitiesIndexRoute: Char123LocaleChar125CitiesIndexRoute,
     Char123LocaleChar125FleetIndexRoute: Char123LocaleChar125FleetIndexRoute,
     Char123LocaleChar125RegionsIndexRoute:
       Char123LocaleChar125RegionsIndexRoute,

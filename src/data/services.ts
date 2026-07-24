@@ -86,11 +86,11 @@ export const SERVICES: ServiceData[] = [
     name: "Long-Distance Transfers",
     tagline: "Cross the whole island — one fixed price.",
     intro: "Heraklion to Chania, Chania to Elounda, Rethymno to Sitia. The long routes done right.",
-    body: "Two-hour drives on Cretan roads are their own experience. We use only Comfort, Minivan and Luxury vehicles on cross-island runs — extra legroom, water on board, a driver who knows where to stop for the best coffee halfway.",
+    body: "Two-hour drives on Cretan roads are their own experience. We use Standard Class and above on cross-island runs — extra legroom, water on board, a driver who knows where to stop for the best coffee halfway.",
     heroImage:
       "https://images.unsplash.com/photo-1601581875039-e899893d520c?auto=format&fit=crop&w=2000&q=70",
     whatsIncluded: [
-      "Comfort-class or higher",
+      "Standard Class or higher",
       "Free coffee stop",
       "Water on board",
       "Fixed price, no per-km surcharge",
@@ -102,7 +102,7 @@ export const SERVICES: ServiceData[] = [
     name: "Group Transfers",
     tagline: "Minivans, minibuses, or a fleet of cars for weddings and events.",
     intro: "Six friends or sixty guests — we have the vehicles and the coordination.",
-    body: "Our Minivan class carries up to 7 passengers with 7 bags. For larger groups we coordinate multiple vehicles on the same pickup, in radio contact with a lead driver. Weddings in Elounda, corporate offsites in Chania, family reunions in Rethymno — one contact, one fixed price.",
+    body: "Our Van Standard class carries up to 7 passengers with 7 bags. For larger groups we have 12- and 16-seat minibuses, or coordinate multiple vehicles on the same pickup. Weddings in Elounda, corporate offsites in Chania, family reunions in Rethymno — one contact, one fixed price.",
     heroImage:
       "https://images.unsplash.com/photo-1609520778763-ed4a1d1f8f81?auto=format&fit=crop&w=2000&q=70",
     whatsIncluded: [

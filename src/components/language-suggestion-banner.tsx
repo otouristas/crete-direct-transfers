@@ -1,0 +1,105 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { Globe, X } from "lucide-react";
+import { isLocale, useLocale, type Locale } from "@/i18n";
+import { cn } from "@/lib/utils";
+
+/**
+ * Accept-Language aware suggestion — NOT a redirect. If the visitor's browser
+ * prefers a language we support that differs from the current URL locale, we
+ * show a dismissible bar offering to switch. We never auto-redirect: forced
+ * redirects harm crawling and can pin users/bots to the wrong locale. The
+ * suggestion is client-only (reads navigator), so it renders nothing on the
+ * server and appears after hydration.
+ */
+
+const DISMISS_KEY = "ta-lang-suggestion-dismissed";
+
+/** "View this site in <language>" written in each target language. */
+const VIEW_IN: Record<Locale, string> = {
+  en: "View this site in English",
+  el: "Δείτε αυτόν τον ιστότοπο στα Ελληνικά",
+  de: "Diese Website auf Deutsch ansehen",
+  fr: "Voir ce site en français",
+  it: "Vedi questo sito in italiano",
+  nl: "Bekijk deze site in het Nederlands",
+  es: "Ver este sitio en español",
+};
+
+export function LanguageSuggestionBanner() {
+  const locale = useLocale();
+  const navigate = useNavigate();
+  const [suggested, setSuggested] = useState<Locale | null>(null);
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(DISMISS_KEY)) return;
+    } catch {
+      // localStorage unavailable (private mode) — just skip persistence.
+    }
+    const prefs =
+      navigator.languages && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language];
+    for (const pref of prefs) {
+      const primary = pref.split("-")[0]?.toLowerCase() ?? "";
+      if (isLocale(primary)) {
+        // Stop at the first supported preference; suggest only if it differs.
+        if (primary !== locale) setSuggested(primary);
+        return;
+      }
+    }
+  }, [locale]);
+
+  if (!suggested) return null;
+
+  const dismiss = () => {
+    try {
+      localStorage.setItem(DISMISS_KEY, "1");
+    } catch {
+      // ignore
+    }
+    setSuggested(null);
+  };
+
+  const switchTo = () => {
+    dismiss();
+    navigate({
+      to: ".",
+      params: (prev: Record<string, string | undefined>) => ({
+        ...prev,
+        locale: suggested === "en" ? undefined : suggested,
+      }),
+      search: true,
+    });
+  };
+
+  return (
+    <div className="bg-primary text-primary-foreground">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2">
+        <button
+          type="button"
+          onClick={switchTo}
+          className={cn(
+            "inline-flex items-center gap-2 text-sm font-medium",
+            "transition-opacity hover:opacity-90",
+          )}
+        >
+          <Globe className="h-4 w-4 shrink-0" />
+          <span>
+            {VIEW_IN[suggested]}
+            <span aria-hidden="true"> →</span>
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={dismiss}
+          aria-label="Dismiss"
+          className="rounded-full p-1 transition-colors hover:bg-white/10"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}

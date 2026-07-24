@@ -12,6 +12,7 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import { useProfile } from "@/queries/profile";
 import { useT } from "@/i18n";
+import { cn } from "@/lib/utils";
 
 function initialsOf(name: string | null | undefined, email: string | undefined): string {
   const source = name?.trim() || email || "?";
@@ -21,21 +22,33 @@ function initialsOf(name: string | null | undefined, email: string | undefined):
 }
 
 /** Desktop header slot: skeleton → "Sign in" → avatar dropdown. */
-export function AccountMenu() {
+export function AccountMenu({ onDark = false }: { onDark?: boolean }) {
   const t = useT();
   const { session, ready, signOut } = useAuth();
   const profile = useProfile();
   const navigate = useNavigate();
 
   if (!ready) {
-    return <div className="hidden h-9 w-9 animate-pulse rounded-full bg-muted md:block" />;
+    return (
+      <div
+        className={cn(
+          "hidden h-9 w-9 animate-pulse rounded-full md:block",
+          onDark ? "bg-primary-foreground/15" : "bg-muted",
+        )}
+      />
+    );
   }
 
   if (!session) {
     return (
       <Link
         to="/{-$locale}/login"
-        className="hidden rounded-full px-3 py-2 text-sm font-medium transition hover:bg-muted md:inline-flex"
+        className={cn(
+          "hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition md:inline-flex",
+          onDark
+            ? "text-primary-foreground hover:bg-primary-foreground/10"
+            : "hover:bg-muted",
+        )}
       >
         {t.nav.signIn}
       </Link>
@@ -47,8 +60,20 @@ export function AccountMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="hidden rounded-full outline-none ring-accent focus-visible:ring-2 md:block">
-        <Avatar className="h-9 w-9 border border-border">
-          <AvatarFallback className="bg-accent/15 text-xs font-semibold text-accent-deep">
+        <Avatar
+          className={cn(
+            "h-9 w-9 border",
+            onDark ? "border-primary-foreground/25" : "border-border",
+          )}
+        >
+          <AvatarFallback
+            className={cn(
+              "text-xs font-semibold",
+              onDark
+                ? "bg-primary-foreground/15 text-primary-foreground"
+                : "bg-accent/15 text-accent-deep",
+            )}
+          >
             {initialsOf(profile.data?.full_name, session.user.email)}
           </AvatarFallback>
         </Avatar>

@@ -1,5 +1,5 @@
-import { SITE_URL, SITE_NAME } from "./site";
-import { localePath, type Locale } from "@/i18n";
+import { SITE_URL, SITE_NAME, OG_DEFAULT_IMAGE } from "./site";
+import { LOCALES, localePath, type Locale } from "@/i18n";
 
 type JsonLd = Record<string, unknown>;
 
@@ -16,8 +16,9 @@ export interface BuildHeadArgs {
 
 /**
  * head() payload for a leaf route: title/description/OG, one canonical and
- * en/el/de/x-default hreflang alternates (absolute URLs). Only leaf routes may
- * emit canonical/hreflang — root `links` merge without dedupe.
+ * per-locale + x-default hreflang alternates (absolute URLs, generated from
+ * LOCALES so new languages appear automatically). Only leaf routes may emit
+ * canonical/hreflang — root `links` merge without dedupe.
  */
 export function buildHead({
   locale,
@@ -38,14 +39,18 @@ export function buildHead({
     { property: "og:url", content: canonical },
     { property: "og:site_name", content: SITE_NAME },
   ];
-  if (ogImage) meta.push({ property: "og:image", content: ogImage });
+  const image = ogImage ?? OG_DEFAULT_IMAGE;
+  meta.push({ property: "og:image", content: image });
+  meta.push({ name: "twitter:image", content: image });
   if (noindex) meta.push({ name: "robots", content: "noindex, nofollow" });
 
   const links = [
     { rel: "canonical", href: canonical },
-    { rel: "alternate", hrefLang: "en", href: `${SITE_URL}${localePath("en", path)}` },
-    { rel: "alternate", hrefLang: "el", href: `${SITE_URL}${localePath("el", path)}` },
-    { rel: "alternate", hrefLang: "de", href: `${SITE_URL}${localePath("de", path)}` },
+    ...LOCALES.map((l) => ({
+      rel: "alternate",
+      hrefLang: l,
+      href: `${SITE_URL}${localePath(l, path)}`,
+    })),
     { rel: "alternate", hrefLang: "x-default", href: `${SITE_URL}${localePath("en", path)}` },
   ];
 

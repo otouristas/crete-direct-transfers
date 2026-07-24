@@ -1,4 +1,12 @@
-export type VehicleClass = "economy" | "comfort" | "minivan" | "luxury";
+export type VehicleClass =
+  | "economy"
+  | "comfort"
+  | "luxury"
+  | "suv"
+  | "minivan"
+  | "van-first"
+  | "minibus-12"
+  | "minibus-16";
 
 export const VEHICLE_CLASSES: {
   id: VehicleClass;
@@ -16,43 +24,79 @@ export const VEHICLE_CLASSES: {
     capacity: "1–3 passengers",
     bags: "3 bags",
     multiplier: 1.0,
-    description: "Skoda Octavia or similar. Air-conditioned, clean, punctual.",
+    description: "Skoda Octavia, Toyota Prius or similar. Air-conditioned, clean, punctual.",
     example: "Skoda Octavia",
-    image:
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1200&q=70",
+    image: "/fleet/economy.jpg",
   },
   {
     id: "comfort",
-    label: "Comfort",
+    label: "Standard Class",
     capacity: "1–3 passengers",
     bags: "3 bags",
     multiplier: 1.25,
-    description: "Mercedes E-Class or similar. Extra legroom, water on board.",
+    description: "Mercedes E-Class, BMW 5 Series or similar. Extra legroom, water on board.",
     example: "Mercedes E-Class",
-    image:
-      "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1200&q=70",
-  },
-  {
-    id: "minivan",
-    label: "Minivan",
-    capacity: "1–7 passengers",
-    bags: "7 bags",
-    multiplier: 1.6,
-    description: "Mercedes Vito or Ford Tourneo. The right pick for families and groups.",
-    example: "Mercedes Vito",
-    image:
-      "https://images.unsplash.com/photo-1609520778763-ed4a1d1f8f81?auto=format&fit=crop&w=1200&q=70",
+    image: "/fleet/comfort.jpg",
   },
   {
     id: "luxury",
-    label: "Luxury",
+    label: "First Class",
     capacity: "1–3 passengers",
     bags: "3 bags",
     multiplier: 2.1,
-    description: "Mercedes S-Class or BMW 7-Series. Chauffeur in suit, still fixed price.",
+    description: "Mercedes S-Class, BMW 7, Audi A8 or similar. Chauffeur service, still fixed price.",
     example: "Mercedes S-Class",
-    image:
-      "https://images.unsplash.com/photo-1631295868223-63265b40d9e4?auto=format&fit=crop&w=1200&q=70",
+    image: "/fleet/luxury.jpg",
+  },
+  {
+    id: "suv",
+    label: "SUV",
+    capacity: "1–6 passengers",
+    bags: "6 bags",
+    multiplier: 1.8,
+    description: "Cadillac Escalade, Chevrolet Suburban or similar. Space and presence for families.",
+    example: "Cadillac Escalade",
+    image: "/fleet/suv.jpg",
+  },
+  {
+    id: "minivan",
+    label: "Van Standard",
+    capacity: "1–7 passengers",
+    bags: "7 bags",
+    multiplier: 1.6,
+    description: "Mercedes Vito, Ford Custom or similar. The right pick for families and groups.",
+    example: "Mercedes Vito",
+    image: "/fleet/minivan.jpg",
+  },
+  {
+    id: "van-first",
+    label: "Van First Class",
+    capacity: "1–6 passengers",
+    bags: "6 bags",
+    multiplier: 2.0,
+    description: "Mercedes V-Class or similar. Premium van comfort for small groups.",
+    example: "Mercedes V-Class",
+    image: "/fleet/van-first.jpg",
+  },
+  {
+    id: "minibus-12",
+    label: "Minibus (12 Pax)",
+    capacity: "1–12 passengers",
+    bags: "12 bags",
+    multiplier: 2.4,
+    description: "Mercedes Sprinter, Ford Transit or similar. Ideal for larger groups.",
+    example: "Mercedes Sprinter",
+    image: "/fleet/minibus-12.jpg",
+  },
+  {
+    id: "minibus-16",
+    label: "Minibus (16 Pax)",
+    capacity: "1–16 passengers",
+    bags: "16 bags",
+    multiplier: 2.8,
+    description: "Mercedes Sprinter, Ford Transit or similar. Maximum capacity for parties and teams.",
+    example: "Mercedes Sprinter",
+    image: "/fleet/minibus-16.jpg",
   },
 ];
 

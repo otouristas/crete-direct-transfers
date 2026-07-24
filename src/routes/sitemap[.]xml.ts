@@ -4,6 +4,9 @@ import { ROUTES, VEHICLE_CLASSES } from "@/data/routes";
 import { REGIONS } from "@/data/regions";
 import { SERVICES } from "@/data/services";
 import { POSTS } from "@/data/posts";
+import { AIRPORTS } from "@/data/airports";
+import { AIRPORT_ROUTES } from "@/data/airport-routes";
+import { listCityDestinations } from "@/data/destinations";
 import { SITE_URL } from "@/lib/site";
 import { LOCALES, localePath } from "@/i18n";
 
@@ -13,6 +16,9 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         const paths: string[] = [
           "/",
+          "/greece",
+          "/airports",
+          "/cities",
           "/routes",
           "/regions",
           "/services",
@@ -35,6 +41,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...SERVICES.map((s) => `/services/${s.slug}`),
           ...VEHICLE_CLASSES.map((v) => `/fleet/${v.id}`),
           ...POSTS.map((p) => `/blog/${p.slug}`),
+          ...AIRPORTS.map((a) => `/airports/${a.slug}`),
+          ...AIRPORT_ROUTES.map((r) => `/airports/${r.airportSlug}/${r.routeSlug}`),
+          ...listCityDestinations().map((c) => `/cities/${c.slug}`),
         ];
 
         const alternates = (path: string) =>

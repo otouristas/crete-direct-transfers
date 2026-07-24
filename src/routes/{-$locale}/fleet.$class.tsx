@@ -5,7 +5,7 @@ import { Check } from "lucide-react";
 import type { Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 
-const VALID: VehicleClass[] = ["economy", "comfort", "minivan", "luxury"];
+const VALID = VEHICLE_CLASSES.map((v) => v.id);
 
 export const Route = createFileRoute("/{-$locale}/fleet/$class")({
   loader: ({ params }) => {

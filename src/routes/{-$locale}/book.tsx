@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { ROUTES, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
-import { quote, formatEur, bagCapacity, type Extras, type TripType } from "@/lib/pricing";
+import { quote, quoteHourly, formatEur, bagCapacity, type Extras, type TripType } from "@/lib/pricing";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useProfile } from "@/queries/profile";
@@ -15,7 +15,18 @@ import { cn } from "@/lib/utils";
 
 const searchSchema = z.object({
   route: z.string().optional(),
-  class: z.enum(["economy", "comfort", "minivan", "luxury"]).optional(),
+  class: z
+    .enum([
+      "economy",
+      "comfort",
+      "luxury",
+      "suv",
+      "minivan",
+      "van-first",
+      "minibus-12",
+      "minibus-16",
+    ])
+    .optional(),
   date: z.string().optional(),
   pax: z.coerce.number().optional(),
   trip: z.enum(["oneway", "return"]).optional(),
@@ -29,6 +40,8 @@ const searchSchema = z.object({
   pickupLng: z.coerce.number().optional(),
   dropoffLat: z.coerce.number().optional(),
   dropoffLng: z.coerce.number().optional(),
+  service: z.enum(["transfer", "hourly"]).optional(),
+  hours: z.coerce.number().min(2).max(12).optional(),
 });
 
 export const Route = createFileRoute("/{-$locale}/book")({
@@ -63,7 +76,11 @@ function BookPage() {
   const navigate = useNavigate();
 
   const [step, setStep] = useState<1 | 2>(1);
-  const [tripType, setTripType] = useState<TripType>(search.trip ?? "oneway");
+  const [service, setService] = useState<"transfer" | "hourly">(search.service ?? "transfer");
+  const [hours, setHours] = useState(search.hours ?? 6);
+  const [tripType, setTripType] = useState<TripType>(
+    search.service === "hourly" ? "oneway" : (search.trip ?? "oneway"),
+  );
   const [routeSlug, setRouteSlug] = useState(search.route ?? ROUTES[0].slug);
   const [vehicleClass, setVehicleClass] = useState<VehicleClass>(search.class ?? "economy");
   const [pickupAt, setPickupAt] = useState(search.date ?? "");
@@ -114,25 +131,33 @@ function BookPage() {
   }, [user, profile.data]);
 
   const currentRoute = ROUTES.find((r) => r.slug === routeSlug)!;
-  const q = useMemo(
-    () =>
-      quote({
-        routeSlug,
+  const isHourly = service === "hourly";
+  const q = useMemo(() => {
+    if (isHourly) {
+      return quoteHourly({
+        hours,
         vehicleClass,
-        tripType,
         pickupAt: pickupAt ? new Date(pickupAt) : undefined,
-        returnAt: returnAt ? new Date(returnAt) : undefined,
-        extras,
-      })!,
-    [routeSlug, vehicleClass, tripType, pickupAt, returnAt, extras],
-  );
+      });
+    }
+    return quote({
+      routeSlug,
+      vehicleClass,
+      tripType,
+      pickupAt: pickupAt ? new Date(pickupAt) : undefined,
+      returnAt: returnAt ? new Date(returnAt) : undefined,
+      extras,
+    });
+  }, [isHourly, hours, routeSlug, vehicleClass, tripType, pickupAt, returnAt, extras]);
 
   const overCapacity = bagsChecked > bagCapacity(vehicleClass);
 
   const proceed = () => {
     const errs: Record<string, string> = {};
     if (!pickupAt) errs.pickupAt = "Please pick a date and time";
-    if (tripType === "return" && !returnAt) errs.returnAt = "Please pick your return date and time";
+    if (!isHourly && tripType === "return" && !returnAt) {
+      errs.returnAt = "Please pick your return date and time";
+    }
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
       return;
@@ -156,8 +181,17 @@ function BookPage() {
     setSubmitting(true);
     setSubmitError(null);
 
+    if (!q) {
+      setSubmitting(false);
+      setSubmitError("Unable to calculate price. Please try again.");
+      return;
+    }
+
+    const hourlyNote =
+      isHourly ? `Hourly chauffeur · ${hours}h${parsed.data.notes ? ` · ${parsed.data.notes}` : ""}` : parsed.data.notes || null;
+
     const base = {
-      route_slug: routeSlug,
+      route_slug: isHourly ? `hourly-${hours}h` : routeSlug,
       vehicle_class: vehicleClass,
       passengers,
       pickup_at: new Date(pickupAt).toISOString(),
@@ -165,7 +199,7 @@ function BookPage() {
       customer_email: parsed.data.customer_email,
       customer_phone: parsed.data.customer_phone,
       flight_number: parsed.data.flight_number || null,
-      notes: parsed.data.notes || null,
+      notes: hourlyNote,
       extras: extras as never,
       price_cents: q.totalEur * 100,
       currency: "EUR",
@@ -173,15 +207,16 @@ function BookPage() {
       user_id: user?.id ?? null,
     };
     const v2 = {
-      trip_type: tripType,
-      return_at: tripType === "return" && returnAt ? new Date(returnAt).toISOString() : null,
+      trip_type: isHourly ? "oneway" : tripType,
+      return_at:
+        !isHourly && tripType === "return" && returnAt ? new Date(returnAt).toISOString() : null,
       return_flight_number: parsed.data.return_flight_number || null,
       bags_checked: bagsChecked,
       bags_cabin: bagsCabin,
       pickup_address: pickupAddress.trim() || null,
-      dropoff_address: dropoffAddress.trim() || null,
+      dropoff_address: isHourly ? null : dropoffAddress.trim() || null,
       pickup_point: pickupPoint ?? null,
-      dropoff_point: dropoffPoint ?? null,
+      dropoff_point: isHourly ? null : dropoffPoint ?? null,
     };
 
     let { data, error } = await supabase
@@ -229,56 +264,100 @@ function BookPage() {
               <h1 className="text-3xl font-display text-primary">{t.common.getPrice}</h1>
               <div className="mt-6 space-y-5">
                 <div className="grid max-w-xs grid-cols-2 gap-1 rounded-xl bg-muted p-1">
-                  {(["oneway", "return"] as const).map((type) => (
+                  {(
+                    [
+                      ["transfer", t.widget.transfer],
+                      ["hourly", t.widget.byTheHour],
+                    ] as const
+                  ).map(([id, label]) => (
                     <button
-                      key={type}
+                      key={id}
                       type="button"
-                      onClick={() => setTripType(type)}
+                      onClick={() => {
+                        setService(id);
+                        if (id === "hourly") setTripType("oneway");
+                      }}
                       className={cn(
                         "rounded-lg py-2 text-sm font-semibold transition",
-                        tripType === type
+                        service === id
                           ? "bg-card text-primary shadow-sm"
                           : "text-muted-foreground hover:text-foreground",
                       )}
                     >
-                      {type === "oneway" ? t.widget.oneWay : t.widget.return}
+                      {label}
                     </button>
                   ))}
                 </div>
 
-                <Field label={t.widget.route}>
-                  <select
-                    value={routeSlug}
-                    onChange={(e) => setRouteSlug(e.target.value)}
-                    className="input"
-                  >
-                    {ROUTES.map((r) => (
-                      <option key={r.slug} value={r.slug}>
-                        {r.from} → {r.to}
-                      </option>
+                {!isHourly && (
+                  <div className="grid max-w-xs grid-cols-2 gap-1 rounded-xl bg-muted p-1">
+                    {(["oneway", "return"] as const).map((type) => (
+                      <button
+                        key={type}
+                        type="button"
+                        onClick={() => setTripType(type)}
+                        className={cn(
+                          "rounded-lg py-2 text-sm font-semibold transition",
+                          tripType === type
+                            ? "bg-card text-primary shadow-sm"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                      >
+                        {type === "oneway" ? t.widget.oneWay : t.widget.return}
+                      </button>
                     ))}
-                  </select>
-                </Field>
+                  </div>
+                )}
 
-                <div className="grid gap-4 md:grid-cols-2">
-                  {[
-                    {
-                      key: "pickup" as const,
-                      label: t.bookPage.pickupAddress,
-                      value: pickupAddress,
-                      setValue: setPickupAddress,
-                      point: pickupPoint,
-                      setPoint: setPickupPoint,
-                    },
-                    {
-                      key: "dropoff" as const,
-                      label: t.bookPage.dropoffAddress,
-                      value: dropoffAddress,
-                      setValue: setDropoffAddress,
-                      point: dropoffPoint,
-                      setPoint: setDropoffPoint,
-                    },
-                  ].map((loc) => (
+                {isHourly ? (
+                  <CounterInput
+                    label={t.widget.hours}
+                    value={hours}
+                    onChange={setHours}
+                    min={2}
+                    max={12}
+                  />
+                ) : (
+                  <Field label={t.widget.route}>
+                    <select
+                      value={routeSlug}
+                      onChange={(e) => setRouteSlug(e.target.value)}
+                      className="input"
+                    >
+                      {ROUTES.map((r) => (
+                        <option key={r.slug} value={r.slug}>
+                          {r.from} → {r.to}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                )}
+
+                <div className={cn("grid gap-4", !isHourly && "md:grid-cols-2")}>
+                  {(
+                    [
+                      {
+                        key: "pickup" as const,
+                        label: t.bookPage.pickupAddress,
+                        value: pickupAddress,
+                        setValue: setPickupAddress,
+                        point: pickupPoint,
+                        setPoint: setPickupPoint,
+                      },
+                      ...(!isHourly
+                        ? [
+                            {
+                              key: "dropoff" as const,
+                              label: t.bookPage.dropoffAddress,
+                              value: dropoffAddress,
+                              setValue: setDropoffAddress,
+                              point: dropoffPoint,
+                              setPoint: setDropoffPoint,
+                            },
+                          ]
+                        : []),
+                    ] as const
+                  ).map((loc) => (
                     <Field key={loc.key} label={`${loc.label} (${t.common.optional})`}>
                       <input
                         className="input"
@@ -351,7 +430,7 @@ function BookPage() {
                       className="input"
                     />
                   </Field>
-                  {tripType === "return" && (
+                  {!isHourly && tripType === "return" && (
                     <Field label={t.widget.returnDate} error={errors.returnAt}>
                       <input
                         type="datetime-local"
@@ -501,7 +580,7 @@ function BookPage() {
                 >
                   {submitting
                     ? t.bookPage.submitting
-                    : `${t.bookPage.confirm} · ${formatEur(q.totalEur)}`}
+                    : `${t.bookPage.confirm} · ${q ? formatEur(q.totalEur) : "—"}`}
                 </button>
               </div>
               <p className="mt-4 text-xs text-muted-foreground">{t.bookPage.payOnArrival}</p>
@@ -513,14 +592,26 @@ function BookPage() {
           <div className="text-xs uppercase tracking-widest text-accent">
             {t.bookPage.yourQuote}
           </div>
-          <div className="mt-2 font-display text-lg">{currentRoute.from}</div>
-          <div className="text-sm text-primary-foreground/70">→ {currentRoute.to}</div>
-          <div className="mt-3 text-sm text-primary-foreground/70">
-            {currentRoute.distanceKm} km · {currentRoute.durationMin} {t.common.minutes}
-            {tripType === "return" && ` · ${t.widget.return}`}
-          </div>
+          {isHourly ? (
+            <>
+              <div className="mt-2 font-display text-lg">{t.widget.byTheHour}</div>
+              <div className="text-sm text-primary-foreground/70">
+                {hours} {t.widget.hours.toLowerCase()}
+                {pickupAddress ? ` · ${pickupAddress}` : ""}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mt-2 font-display text-lg">{currentRoute.from}</div>
+              <div className="text-sm text-primary-foreground/70">→ {currentRoute.to}</div>
+              <div className="mt-3 text-sm text-primary-foreground/70">
+                {currentRoute.distanceKm} km · {currentRoute.durationMin} {t.common.minutes}
+                {tripType === "return" && ` · ${t.widget.return}`}
+              </div>
+            </>
+          )}
           <div className="mt-6 space-y-2 border-t border-primary-foreground/20 pt-4 text-sm">
-            {q.breakdown.map((b, i) => (
+            {(q?.breakdown ?? []).map((b, i) => (
               <div key={i} className="flex justify-between gap-3">
                 <span className="text-primary-foreground/80">{b.label}</span>
                 <span className={cn("tabular-nums", b.amountEur < 0 && "text-accent")}>
@@ -533,7 +624,7 @@ function BookPage() {
             <span className="text-xs uppercase tracking-widest text-primary-foreground/60">
               {t.common.total}
             </span>
-            <span className="text-3xl font-display">{formatEur(q.totalEur)}</span>
+            <span className="text-3xl font-display">{q ? formatEur(q.totalEur) : "—"}</span>
           </div>
           <p className="mt-4 text-xs text-primary-foreground/60">{t.widget.guaranteed}</p>
         </aside>
