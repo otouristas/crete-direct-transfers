@@ -1,14 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-leaflet";
-import { divIcon, type LatLngBoundsExpression, type Marker as LeafletMarker } from "leaflet";
+import { divIcon, type Marker as LeafletMarker } from "leaflet";
 import { Navigation, Loader2 } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import type { PickedLocation } from "./location-picker";
-
-const CRETE_BOUNDS: LatLngBoundsExpression = [
-  [34.75, 23.3],
-  [35.75, 26.4],
-];
 
 const PIN_ICON = divIcon({
   className: "",
@@ -39,6 +34,14 @@ function ClickHandler({ onSelect }: { onSelect: (p: PickedLocation) => void }) {
   useMapEvents({
     click: (e) => onSelect({ lat: e.latlng.lat, lng: e.latlng.lng }),
   });
+  return null;
+}
+
+function Recenter({ value }: { value?: PickedLocation | null }) {
+  const map = useMap();
+  useEffect(() => {
+    if (value) map.setView([value.lat, value.lng], Math.max(map.getZoom(), 12));
+  }, [map, value?.lat, value?.lng]);
   return null;
 }
 
@@ -76,7 +79,7 @@ function GpsControl({ onSelect }: { onSelect: (p: PickedLocation) => void }) {
         {loading ? (
           <Loader2 className="h-4 w-4 animate-spin text-accent" />
         ) : (
-          <Navigation className="h-4 w-4 text-accent fill-accent/20" />
+          <Navigation className="h-4 w-4 fill-accent/20 text-accent" />
         )}
         <span>GPS</span>
       </button>
@@ -92,6 +95,9 @@ export default function LocationPickerInner({
   onPick: (point: PickedLocation, address: string) => void;
 }) {
   const [point, setPoint] = useState<PickedLocation | null>(value ?? null);
+  const center: [number, number] = value
+    ? [value.lat, value.lng]
+    : [35.34, 25.13]; // Crete default start
 
   const select = async (p: PickedLocation) => {
     setPoint(p);
@@ -100,7 +106,8 @@ export default function LocationPickerInner({
 
   return (
     <MapContainer
-      bounds={CRETE_BOUNDS}
+      center={center}
+      zoom={value ? 13 : 8}
       scrollWheelZoom={true}
       className="relative h-64 w-full rounded-xl"
       style={{ minHeight: 256 }}
@@ -109,6 +116,7 @@ export default function LocationPickerInner({
         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
+      <Recenter value={value} />
       <ClickHandler onSelect={select} />
       <GpsControl onSelect={select} />
       {point && (

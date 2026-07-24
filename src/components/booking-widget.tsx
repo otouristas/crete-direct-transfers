@@ -7,13 +7,13 @@ import {
   ChevronDown,
   Clock,
   Info,
-  ListFilter,
   MapPin,
   Minus,
   Plus,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
-import { ROUTES, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
+import { getRoute, ROUTES, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
+import { getIataAirport } from "@/data/iata-airports";
 import { quote, formatEur, bagCapacity, type TripType } from "@/lib/pricing";
 import { matchRouteSlug, type PlaceResult } from "@/lib/place-search";
 import { CounterInput } from "@/components/counter-input";
@@ -25,6 +25,47 @@ import { useT } from "@/i18n";
 import { cn } from "@/lib/utils";
 
 type ServiceMode = "transfer" | "hourly";
+
+function placeFromIata(iata?: string): PlaceResult | null {
+  if (!iata) return null;
+  const a = getIataAirport(iata);
+  if (!a) return null;
+  return {
+    id: `airport:${a.iata}`,
+    label: a.label,
+    kind: "airport",
+    lat: a.lat,
+    lng: a.lng,
+    iata: a.iata,
+    countryCode: a.countryCode,
+    countryName: a.countryName,
+  };
+}
+
+function placeFromLabel(label: string): PlaceResult {
+  const m = label.match(/\(([A-Z]{3})\)/);
+  if (m) {
+    const fromIata = placeFromIata(m[1]);
+    if (fromIata) return fromIata;
+  }
+  return {
+    id: `label:${label}`,
+    label,
+    kind: "route-end",
+    countryCode: "GR",
+    countryName: "Greece",
+  };
+}
+
+function defaultsFromRoute(routeSlug?: string): {
+  from: PlaceResult | null;
+  to: PlaceResult | null;
+} {
+  if (!routeSlug) return { from: null, to: null };
+  const r = getRoute(routeSlug) ?? ROUTES.find((x) => x.slug === routeSlug);
+  if (!r) return { from: null, to: null };
+  return { from: placeFromLabel(r.from), to: placeFromLabel(r.to) };
+}
 
 function defaultPickupLocal(): string {
   const d = new Date();
@@ -69,11 +110,14 @@ const TIME_OPTIONS = Array.from({ length: 24 * 4 }, (_, i) => {
 
 export function BookingWidget({
   defaultRoute,
+  defaultIata,
   defaultClass = "economy",
   compact = false,
   variant,
 }: {
   defaultRoute?: string;
+  /** Prefill From with this IATA airport (pillar / airport pages). */
+  defaultIata?: string;
   defaultClass?: VehicleClass;
   compact?: boolean;
   /** Homepage uses horizontal bar; route pages keep the card. */
@@ -84,21 +128,29 @@ export function BookingWidget({
     return (
       <BookingWidgetCard
         defaultRoute={defaultRoute}
+        defaultIata={defaultIata}
         defaultClass={defaultClass}
         compact={compact}
       />
     );
   }
-  return <BookingWidgetBar defaultClass={defaultClass} />;
+  return <BookingWidgetBar defaultClass={defaultClass} defaultIata={defaultIata} />;
 }
 
-function BookingWidgetBar({ defaultClass = "economy" }: { defaultClass?: VehicleClass }) {
+function BookingWidgetBar({
+  defaultClass = "economy",
+  defaultIata,
+}: {
+  defaultClass?: VehicleClass;
+  defaultIata?: string;
+}) {
   const t = useT();
   const navigate = useNavigate();
+  const initialFrom = placeFromIata(defaultIata);
   const [service, setService] = useState<ServiceMode>("transfer");
-  const [fromQuery, setFromQuery] = useState("");
+  const [fromQuery, setFromQuery] = useState(initialFrom?.label ?? "");
   const [toQuery, setToQuery] = useState("");
-  const [fromPlace, setFromPlace] = useState<PlaceResult | null>(null);
+  const [fromPlace, setFromPlace] = useState<PlaceResult | null>(initialFrom);
   const [toPlace, setToPlace] = useState<PlaceResult | null>(null);
   const [date, setDate] = useState(defaultPickupLocal);
   const [returnDate, setReturnDate] = useState("");
@@ -107,30 +159,46 @@ function BookingWidgetBar({ defaultClass = "economy" }: { defaultClass?: Vehicle
   const [hours, setHours] = useState(6);
   const [vehicleClass] = useState<VehicleClass>(defaultClass);
   const [mapPicker, setMapPicker] = useState<"from" | "to" | null>(null);
-  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(null);
+  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(
+    initialFrom?.lat != null && initialFrom?.lng != null
+      ? { lat: initialFrom.lat, lng: initialFrom.lng }
+      : null,
+  );
   const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(null);
   const [dateOpen, setDateOpen] = useState(false);
   const [returnOpen, setReturnOpen] = useState(false);
 
   const kindLabels = {
-    airport: "Airport",
-    destination: "Place",
-    "route-end": "Route",
-    address: "Address",
+    airport: t.bookPage.kindAirport,
+    port: t.bookPage.kindPort,
+    destination: t.bookPage.kindPlace,
+    "route-end": t.bookPage.kindRoute,
+    address: t.bookPage.kindAddress,
   } as const;
+
+  const groupLabels = {
+    airport: t.bookPage.groupAirports,
+    port: t.bookPage.groupPorts,
+    popular: t.bookPage.groupPopular,
+    "in-country": t.bookPage.groupInCountry,
+  };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const isHourly = service === "hourly";
     const matched = !isHourly ? matchRouteSlug(fromPlace, toPlace) : undefined;
     const trip: TripType = !isHourly && addReturn ? "return" : "oneway";
+    const pickupLat = fromPlace?.lat ?? pickupPoint?.lat;
+    const pickupLng = fromPlace?.lng ?? pickupPoint?.lng;
+    const dropoffLat = isHourly ? undefined : (toPlace?.lat ?? dropoffPoint?.lat);
+    const dropoffLng = isHourly ? undefined : (toPlace?.lng ?? dropoffPoint?.lng);
 
     navigate({
       to: "/{-$locale}/book",
       search: {
         service,
         hours: isHourly ? hours : undefined,
-        route: matched ?? ROUTES[0].slug,
+        route: matched,
         class: vehicleClass,
         date,
         pax,
@@ -138,10 +206,10 @@ function BookingWidgetBar({ defaultClass = "economy" }: { defaultClass?: Vehicle
         returnDate: trip === "return" ? returnDate || undefined : undefined,
         pickupAddress: fromQuery || fromPlace?.label || undefined,
         dropoffAddress: isHourly ? undefined : toQuery || toPlace?.label || undefined,
-        pickupLat: fromPlace?.lat ?? pickupPoint?.lat,
-        pickupLng: fromPlace?.lng ?? pickupPoint?.lng,
-        dropoffLat: isHourly ? undefined : (toPlace?.lat ?? dropoffPoint?.lat),
-        dropoffLng: isHourly ? undefined : (toPlace?.lng ?? dropoffPoint?.lng),
+        pickupLat,
+        pickupLng,
+        dropoffLat,
+        dropoffLng,
       },
     });
   };
@@ -200,6 +268,8 @@ function BookingWidgetBar({ defaultClass = "economy" }: { defaultClass?: Vehicle
             pinLabel={t.widget.pinOnMap}
             noPlacesLabel={t.widget.noPlaces}
             kindLabels={kindLabels}
+            groupLabels={groupLabels}
+            contextPlace={toPlace}
           />
 
           {service === "transfer" ? (
@@ -224,6 +294,8 @@ function BookingWidgetBar({ defaultClass = "economy" }: { defaultClass?: Vehicle
               pinLabel={t.widget.pinOnMap}
               noPlacesLabel={t.widget.noPlaces}
               kindLabels={kindLabels}
+              groupLabels={groupLabels}
+              contextPlace={fromPlace}
             />
           ) : (
             <div className="tfr-cell tfr-cell--hours">
@@ -463,50 +535,81 @@ function DateTimePicker({
   );
 }
 
-/** Legacy vertical card used on route detail pages. */
+/** Vertical card on route / airport pillar pages — same worldwide place search as homepage. */
 function BookingWidgetCard({
   defaultRoute,
+  defaultIata,
   defaultClass = "economy",
   compact = false,
 }: {
   defaultRoute?: string;
+  defaultIata?: string;
   defaultClass?: VehicleClass;
   compact?: boolean;
 }) {
   const t = useT();
   const navigate = useNavigate();
+  const routeDefaults = defaultsFromRoute(defaultRoute);
+  const initialFrom = placeFromIata(defaultIata) ?? routeDefaults.from;
+  const initialTo = routeDefaults.to;
+
   const [tripType, setTripType] = useState<TripType>("oneway");
-  const [routeMode, setRouteMode] = useState<"preset" | "map">("preset");
-  const [routeSlug, setRouteSlug] = useState(defaultRoute ?? ROUTES[0].slug);
+  const [fromQuery, setFromQuery] = useState(initialFrom?.label ?? "");
+  const [toQuery, setToQuery] = useState(initialTo?.label ?? "");
+  const [fromPlace, setFromPlace] = useState<PlaceResult | null>(initialFrom);
+  const [toPlace, setToPlace] = useState<PlaceResult | null>(initialTo);
   const [vehicleClass, setVehicleClass] = useState<VehicleClass>(defaultClass);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(defaultPickupLocal);
   const [returnDate, setReturnDate] = useState("");
   const [pax, setPax] = useState(2);
   const [bagsChecked, setBagsChecked] = useState(2);
   const [bagsCabin, setBagsCabin] = useState(2);
   const [flight, setFlight] = useState("");
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [mapPicker, setMapPicker] = useState<"from" | "to" | null>(null);
+  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(
+    initialFrom?.lat != null && initialFrom?.lng != null
+      ? { lat: initialFrom.lat, lng: initialFrom.lng }
+      : null,
+  );
+  const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(
+    initialTo?.lat != null && initialTo?.lng != null
+      ? { lat: initialTo.lat, lng: initialTo.lng }
+      : null,
+  );
 
-  const [pickupPoint, setPickupPoint] = useState<PickedLocation | null>(null);
-  const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(null);
-  const [pickupAddress, setPickupAddress] = useState("");
-  const [dropoffAddress, setDropoffAddress] = useState("");
-  const [activePicker, setActivePicker] = useState<"pickup" | "dropoff" | null>(null);
-
-  const selected = ROUTES.find((r) => r.slug === routeSlug)!;
+  const matched = matchRouteSlug(fromPlace, toPlace);
+  const selected = matched ? getRoute(matched) : undefined;
   const q = useMemo(
     () =>
-      quote({
-        routeSlug,
-        vehicleClass,
-        tripType,
-        pickupAt: date ? new Date(date) : undefined,
-        returnAt: returnDate ? new Date(returnDate) : undefined,
-      }),
-    [routeSlug, vehicleClass, tripType, date, returnDate],
+      matched
+        ? quote({
+            routeSlug: matched,
+            vehicleClass,
+            tripType,
+            pickupAt: date ? new Date(date) : undefined,
+            returnAt: returnDate ? new Date(returnDate) : undefined,
+          })
+        : null,
+    [matched, vehicleClass, tripType, date, returnDate],
   );
 
   const overCapacity = bagsChecked > bagCapacity(vehicleClass);
+
+  const kindLabels = {
+    airport: t.bookPage.kindAirport,
+    port: t.bookPage.kindPort,
+    destination: t.bookPage.kindPlace,
+    "route-end": t.bookPage.kindRoute,
+    address: t.bookPage.kindAddress,
+  } as const;
+
+  const groupLabels = {
+    airport: t.bookPage.groupAirports,
+    port: t.bookPage.groupPorts,
+    popular: t.bookPage.groupPopular,
+    "in-country": t.bookPage.groupInCountry,
+  };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -514,21 +617,21 @@ function BookingWidgetCard({
       to: "/{-$locale}/book",
       search: {
         service: "transfer",
-        route: routeSlug,
+        route: matched,
         class: vehicleClass,
         date,
         pax,
         trip: tripType,
-        returnDate: tripType === "return" ? returnDate : undefined,
+        returnDate: tripType === "return" ? returnDate || undefined : undefined,
         flight: flight || undefined,
         bagsChecked,
         bagsCabin,
-        pickupAddress: routeMode === "map" && pickupAddress ? pickupAddress : undefined,
-        dropoffAddress: routeMode === "map" && dropoffAddress ? dropoffAddress : undefined,
-        pickupLat: routeMode === "map" && pickupPoint ? pickupPoint.lat : undefined,
-        pickupLng: routeMode === "map" && pickupPoint ? pickupPoint.lng : undefined,
-        dropoffLat: routeMode === "map" && dropoffPoint ? dropoffPoint.lat : undefined,
-        dropoffLng: routeMode === "map" && dropoffPoint ? dropoffPoint.lng : undefined,
+        pickupAddress: fromQuery || fromPlace?.label || undefined,
+        dropoffAddress: toQuery || toPlace?.label || undefined,
+        pickupLat: fromPlace?.lat ?? pickupPoint?.lat,
+        pickupLng: fromPlace?.lng ?? pickupPoint?.lng,
+        dropoffLat: toPlace?.lat ?? dropoffPoint?.lat,
+        dropoffLng: toPlace?.lng ?? dropoffPoint?.lng,
       },
     });
   };
@@ -537,7 +640,7 @@ function BookingWidgetCard({
     <form
       onSubmit={submit}
       className={cn(
-        "rounded-2xl border border-border bg-card text-foreground shadow-2xl ring-1 ring-black/5",
+        "relative z-20 rounded-2xl border border-border bg-card text-foreground shadow-2xl ring-1 ring-black/5",
         compact ? "p-5" : "p-6",
       )}
     >
@@ -568,156 +671,89 @@ function BookingWidgetCard({
         ))}
       </div>
 
-      <div className="mt-4 space-y-4">
-        <div>
-          <div className="flex items-center justify-between">
-            <label className="text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
-              {t.widget.route}
-            </label>
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                onClick={() => setRouteMode("preset")}
-                className={cn(
-                  "flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium transition",
-                  routeMode === "preset"
-                    ? "bg-primary/10 font-semibold text-primary"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                <ListFilter className="h-3 w-3" />
-                {t.widget.selectRoute}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setRouteMode("map");
-                  if (!activePicker) setActivePicker("pickup");
-                }}
-                className={cn(
-                  "flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium transition",
-                  routeMode === "map"
-                    ? "bg-accent/15 font-semibold text-accent-deep"
-                    : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                <MapPin className="h-3 w-3 text-accent" />
-                {t.widget.pinOnMap}
-              </button>
-            </div>
-          </div>
+      <div className="mt-4 space-y-3">
+        <PlaceCombobox
+          variant="field"
+          label={t.widget.from}
+          placeholder={t.widget.placePlaceholder}
+          value={fromQuery}
+          selected={fromPlace}
+          kindLabels={kindLabels}
+          groupLabels={groupLabels}
+          contextPlace={toPlace}
+          onQueryChange={(q) => {
+            setFromQuery(q);
+            setFromPlace(null);
+          }}
+          onSelect={(place) => {
+            setFromPlace(place);
+            setFromQuery(place.label);
+            if (place.lat != null && place.lng != null) {
+              setPickupPoint({ lat: place.lat, lng: place.lng });
+            }
+          }}
+          onPinOnMap={() => setMapPicker("from")}
+          pinLabel={t.widget.pinOnMap}
+          noPlacesLabel={t.widget.noPlaces}
+        />
+        <PlaceCombobox
+          variant="field"
+          label={t.widget.to}
+          placeholder={t.widget.placePlaceholder}
+          value={toQuery}
+          selected={toPlace}
+          kindLabels={kindLabels}
+          groupLabels={groupLabels}
+          contextPlace={fromPlace}
+          onQueryChange={(q) => {
+            setToQuery(q);
+            setToPlace(null);
+          }}
+          onSelect={(place) => {
+            setToPlace(place);
+            setToQuery(place.label);
+            if (place.lat != null && place.lng != null) {
+              setDropoffPoint({ lat: place.lat, lng: place.lng });
+            }
+          }}
+          onPinOnMap={() => setMapPicker("to")}
+          pinLabel={t.widget.pinOnMap}
+          noPlacesLabel={t.widget.noPlaces}
+        />
 
-          <div className="mt-1.5">
-            {routeMode === "preset" ? (
-              <select
-                value={routeSlug}
-                onChange={(e) => setRouteSlug(e.target.value)}
-                className="widget-input"
-              >
-                {ROUTES.map((r) => (
-                  <option key={r.slug} value={r.slug}>
-                    {r.from} → {r.to}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <div className="space-y-3 rounded-xl border border-border bg-muted/40 p-3">
-                <div className="relative space-y-3 pl-5">
-                  <div
-                    className="absolute bottom-3 left-[7px] top-3 w-px bg-border"
-                    aria-hidden
-                  />
-                  <div className="relative">
-                    <span className="absolute -left-5 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border-2 border-accent bg-card" />
-                    <span className="text-[10px] font-semibold uppercase text-muted-foreground">
-                      {t.widget.pickupLocation}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setActivePicker(activePicker === "pickup" ? null : "pickup")}
-                      className={cn(
-                        "mt-1 flex w-full items-center justify-between rounded-lg border px-3 py-2.5 text-left text-xs transition",
-                        activePicker === "pickup"
-                          ? "border-accent bg-card font-medium text-foreground"
-                          : "border-border bg-card/80 text-muted-foreground hover:bg-card",
-                      )}
-                    >
-                      <span className="truncate">
-                        {pickupAddress ||
-                          (pickupPoint
-                            ? `${pickupPoint.lat.toFixed(4)}, ${pickupPoint.lng.toFixed(4)}`
-                            : t.bookPage.pinOnMap)}
-                      </span>
-                      <MapPin
-                        className={cn(
-                          "ml-1 h-3.5 w-3.5 shrink-0",
-                          pickupPoint ? "text-accent" : "text-muted-foreground",
-                        )}
-                      />
-                    </button>
-                  </div>
-                  <div className="relative">
-                    <span className="absolute -left-5 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-primary" />
-                    <span className="text-[10px] font-semibold uppercase text-muted-foreground">
-                      {t.widget.dropoffLocation}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setActivePicker(activePicker === "dropoff" ? null : "dropoff")
-                      }
-                      className={cn(
-                        "mt-1 flex w-full items-center justify-between rounded-lg border px-3 py-2.5 text-left text-xs transition",
-                        activePicker === "dropoff"
-                          ? "border-accent bg-card font-medium text-foreground"
-                          : "border-border bg-card/80 text-muted-foreground hover:bg-card",
-                      )}
-                    >
-                      <span className="truncate">
-                        {dropoffAddress ||
-                          (dropoffPoint
-                            ? `${dropoffPoint.lat.toFixed(4)}, ${dropoffPoint.lng.toFixed(4)}`
-                            : t.bookPage.pinOnMap)}
-                      </span>
-                      <MapPin
-                        className={cn(
-                          "ml-1 h-3.5 w-3.5 shrink-0",
-                          dropoffPoint ? "text-accent" : "text-muted-foreground",
-                        )}
-                      />
-                    </button>
-                  </div>
-                </div>
-
-                {activePicker && (
-                  <div className="space-y-1.5 pt-1">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>
-                        {activePicker === "pickup"
-                          ? t.widget.pickupLocation
-                          : t.widget.dropoffLocation}
-                      </span>
-                      <span>{t.bookPage.pinHint}</span>
-                    </div>
-                    <LocationPicker
-                      key={activePicker}
-                      value={activePicker === "pickup" ? pickupPoint : dropoffPoint}
-                      onPick={(point, address) => {
-                        if (activePicker === "pickup") {
-                          setPickupPoint(point);
-                          setPickupAddress(address);
-                        } else {
-                          setDropoffPoint(point);
-                          setDropoffAddress(address);
-                        }
-                      }}
-                    />
-                  </div>
-                )}
-              </div>
-            )}
+        {mapPicker && (
+          <div className="space-y-1.5">
+            <p className="text-xs text-muted-foreground">{t.bookPage.pinHint}</p>
+            <LocationPicker
+              key={mapPicker}
+              value={mapPicker === "from" ? pickupPoint : dropoffPoint}
+              onPick={(point, address) => {
+                if (mapPicker === "from") {
+                  setPickupPoint(point);
+                  setFromQuery(address);
+                  setFromPlace({
+                    id: "map:from",
+                    label: address,
+                    kind: "address",
+                    lat: point.lat,
+                    lng: point.lng,
+                  });
+                } else {
+                  setDropoffPoint(point);
+                  setToQuery(address);
+                  setToPlace({
+                    id: "map:to",
+                    label: address,
+                    kind: "address",
+                    lat: point.lat,
+                    lng: point.lng,
+                  });
+                }
+                setMapPicker(null);
+              }}
+            />
           </div>
-        </div>
+        )}
 
         <div className={cn("grid gap-4", tripType === "return" && "sm:grid-cols-2")}>
           <Field label={t.widget.pickupDate}>
@@ -766,18 +802,18 @@ function BookingWidgetCard({
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">
-          <CounterInput label={t.widget.passengers} value={pax} onChange={setPax} min={1} max={8} />
+          <CounterInput label={t.widget.passengers} value={pax} onChange={setPax} min={1} max={16} />
           <CounterInput
             label={t.widget.checkedBags}
             value={bagsChecked}
             onChange={setBagsChecked}
-            max={8}
+            max={20}
           />
           <CounterInput
             label={t.widget.cabinBags}
             value={bagsCabin}
             onChange={setBagsCabin}
-            max={8}
+            max={20}
           />
         </div>
 
@@ -792,7 +828,11 @@ function BookingWidgetCard({
       <div className="mt-5 border-t border-border pt-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <div className="text-xs text-muted-foreground">
-            {t.widget.distance(selected.distanceKm, selected.durationMin)}
+            {selected
+              ? t.widget.distance(selected.distanceKm, selected.durationMin)
+              : fromPlace && toPlace
+                ? t.widget.seePrices
+                : t.widget.placePlaceholder}
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-xs uppercase tracking-widest text-muted-foreground">

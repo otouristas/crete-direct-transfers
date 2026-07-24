@@ -29,6 +29,7 @@ import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
 import { LanguageSuggestionBanner } from "../components/language-suggestion-banner";
 import { AuthProvider } from "../hooks/use-auth";
+import { CurrencyProvider, useCurrency } from "../hooks/use-currency";
 import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
@@ -163,16 +164,29 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <div className="min-h-screen flex flex-col">
-          <LanguageSuggestionBanner />
-          <SiteHeader />
-          <main className="flex-1">
-            <Outlet />
-          </main>
-          <SiteFooter />
-        </div>
-        <Toaster position="top-center" />
+        <CurrencyProvider>
+          <RootLayout />
+        </CurrencyProvider>
       </AuthProvider>
     </QueryClientProvider>
+  );
+}
+
+/** Inner layout so useCurrency runs inside CurrencyProvider. */
+function RootLayout() {
+  const { currency } = useCurrency();
+
+  return (
+    <>
+      <div className="min-h-screen flex flex-col">
+        <LanguageSuggestionBanner />
+        <SiteHeader />
+        <main className="flex-1" key={currency}>
+          <Outlet />
+        </main>
+        <SiteFooter />
+      </div>
+      <Toaster position="top-center" />
+    </>
   );
 }

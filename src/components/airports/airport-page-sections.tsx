@@ -34,12 +34,14 @@ export function AirportHero({
   bookingSlot: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden bg-primary text-primary-foreground">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-40"
-        style={{ backgroundImage: `url(${airport.heroImage})` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/75 to-primary/40" />
+    <section className="relative bg-primary text-primary-foreground">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-40"
+          style={{ backgroundImage: `url(${airport.heroImage})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/75 to-primary/40" />
+      </div>
       <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-16 md:pb-14 md:pt-24">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
           Greece · {airport.iata}
@@ -96,38 +98,19 @@ export function AirportBookingSlot({
   airport: AirportData;
   defaultRouteSlug?: string;
 }) {
-  if (airport.bookable === "instant") {
-    return (
-      <div className="rounded-2xl bg-card p-4 text-foreground shadow-xl md:p-6">
-        <BookingWidget defaultRoute={defaultRouteSlug} compact />
-      </div>
-    );
-  }
-
   return (
-    <div className="rounded-2xl bg-card p-5 text-foreground shadow-xl md:p-6">
-      <p className="text-sm font-semibold text-primary">
-        From {formatEur(airport.fromPriceEur)} · quote confirmed before you pay
-      </p>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Instant fixed-price checkout is live for Crete (HER/CHQ). For{" "}
-        {airport.name}, request a quote and we confirm your driver and final
-        fare shortly.
-      </p>
-      <div className="mt-4 flex flex-wrap gap-3">
-        <Link
-          to="/{-$locale}/book"
-          className="inline-flex rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground"
-        >
-          Request quote
-        </Link>
-        <Link
-          to="/{-$locale}/contact"
-          className="inline-flex rounded-xl border border-border px-5 py-3 text-sm font-semibold text-foreground"
-        >
-          Contact us
-        </Link>
-      </div>
+    <div className="relative z-20 rounded-2xl bg-card p-4 text-foreground shadow-xl md:p-6">
+      {airport.bookable !== "instant" && (
+        <p className="mb-4 text-sm text-muted-foreground">
+          From {formatEur(airport.fromPriceEur)} · quote confirmed before you pay.
+          Instant checkout is live for Crete; elsewhere we confirm your fare shortly.
+        </p>
+      )}
+      <BookingWidget
+        defaultIata={airport.iata}
+        defaultRoute={defaultRouteSlug}
+        compact
+      />
     </div>
   );
 }

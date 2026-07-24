@@ -168,7 +168,8 @@
   box-shadow:
     0 25px 50px -12px rgb(0 0 0 / 0.35),
     0 0 0 1px color-mix(in oklab, var(--border) 80%, transparent);
-  overflow: hidden;
+  /* visible so place suggestions are not clipped */
+  overflow: visible;
 }
 
 .tfr-htabs {
@@ -366,8 +367,8 @@
   left: 0;
   right: 0;
   top: calc(100% + 0.35rem);
-  z-index: 40;
-  max-height: 16rem;
+  z-index: 80;
+  max-height: 20rem;
   overflow: auto;
   border-radius: 0.75rem;
   border: 1px solid var(--border);

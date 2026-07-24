@@ -4,6 +4,7 @@ import {
   getAirportRoute,
   type AirportRouteData,
 } from "@/data/airport-routes";
+import { formatMoney } from "@/lib/currency";
 
 export type Extras = {
   childSeat?: boolean;
@@ -149,8 +150,7 @@ export function bagCapacity(vehicleClass: VehicleClass): number {
 }
 
 export function formatEur(amount: number): string {
-  const sign = amount < 0 ? "−" : "";
-  return `${sign}€${Math.abs(amount).toLocaleString("en-IE", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  return formatMoney(amount);
 }
 
 /** Base EUR for an airport hub (city from-price) or a nested airport route. */
@@ -219,4 +219,151 @@ export function vehicleFromPrices(
     example: vc.example,
     fromEur: Math.round(base * vc.multiplier),
   }));
+}
+
+/** Distance-based economy base, tuned to Crete corridor averages (~€1.15/km, €35 floor). */
+const DISTANCE_FLOOR_EUR = 35;
+const DISTANCE_RATE_PER_KM = 1.15;
+
+export function distanceBaseEur(distanceKm: number): number {
+  return Math.max(DISTANCE_FLOOR_EUR, Math.round(distanceKm * DISTANCE_RATE_PER_KM));
+}
+
+export type TripQuote = Quote & {
+  source: "fixed" | "distance";
+  distanceKm?: number;
+  durationMin?: number;
+};
+
+/** Build quote from a known Crete route slug OR a distance-based base. */
+export function quoteFromBase(input: {
+  routeSlug: string;
+  baseEur: number;
+  vehicleClass: VehicleClass;
+  pickupAt?: Date;
+  extras?: Extras;
+  tripType?: TripType;
+  returnAt?: Date;
+  source: "fixed" | "distance";
+  distanceKm?: number;
+  durationMin?: number;
+}): TripQuote | null {
+  const vc = VEHICLE_CLASSES.find((c) => c.id === input.vehicleClass);
+  if (!vc) return null;
+
+  const tripType: TripType = input.tripType ?? "oneway";
+  const base = Math.round(input.baseEur * vc.multiplier);
+  const breakdown: { label: string; amountEur: number }[] = [
+    { label: `${vc.label} vehicle`, amountEur: base },
+  ];
+
+  if (input.extras?.childSeat) {
+    breakdown.push({ label: "Child seat", amountEur: EXTRA_PRICES.childSeat });
+  }
+  if (input.extras?.extraStop) {
+    breakdown.push({ label: "Extra stop", amountEur: EXTRA_PRICES.extraStop });
+  }
+  if (input.extras?.meetAndGreet) {
+    breakdown.push({ label: "Meet & greet with sign", amountEur: EXTRA_PRICES.meetAndGreet });
+  }
+
+  let outboundSubtotal = breakdown.reduce((s, b) => s + b.amountEur, 0);
+
+  if (input.pickupAt && isNight(input.pickupAt)) {
+    const surcharge = Math.round(outboundSubtotal * 0.15);
+    breakdown.push({ label: "Night surcharge (22:00–06:00)", amountEur: surcharge });
+    outboundSubtotal += surcharge;
+  }
+
+  let total = outboundSubtotal;
+
+  if (tripType === "return") {
+    let returnSubtotal = breakdown
+      .filter((b) => !b.label.startsWith("Night surcharge"))
+      .reduce((s, b) => s + b.amountEur, 0);
+    if (input.returnAt && isNight(input.returnAt)) {
+      returnSubtotal += Math.round(returnSubtotal * 0.15);
+    }
+    breakdown.push({ label: "Return trip", amountEur: returnSubtotal });
+    total += returnSubtotal;
+
+    const discount = -Math.round(total * RETURN_DISCOUNT);
+    breakdown.push({ label: "Return discount (−5%)", amountEur: discount });
+    total += discount;
+  }
+
+  return {
+    routeSlug: input.routeSlug,
+    vehicleClass: input.vehicleClass,
+    tripType,
+    currency: "EUR",
+    breakdown,
+    totalEur: total,
+    source: input.source,
+    distanceKm: input.distanceKm,
+    durationMin: input.durationMin,
+  };
+}
+
+/** Quote a trip: prefer fixed Crete ROUTES, else distance-based. */
+export function quoteTrip(input: {
+  routeSlug?: string;
+  distanceKm?: number;
+  durationMin?: number;
+  vehicleClass: VehicleClass;
+  pickupAt?: Date;
+  extras?: Extras;
+  tripType?: TripType;
+  returnAt?: Date;
+}): TripQuote | null {
+  if (input.routeSlug) {
+    const fixed = quote({
+      routeSlug: input.routeSlug,
+      vehicleClass: input.vehicleClass,
+      pickupAt: input.pickupAt,
+      extras: input.extras,
+      tripType: input.tripType,
+      returnAt: input.returnAt,
+    });
+    if (fixed) {
+      const route = getRoute(input.routeSlug);
+      return {
+        ...fixed,
+        source: "fixed",
+        distanceKm: route?.distanceKm ?? input.distanceKm,
+        durationMin: route?.durationMin ?? input.durationMin,
+      };
+    }
+  }
+
+  if (input.distanceKm == null || input.distanceKm <= 0) return null;
+
+  return quoteFromBase({
+    routeSlug: input.routeSlug ?? `distance-${Math.round(input.distanceKm)}km`,
+    baseEur: distanceBaseEur(input.distanceKm),
+    vehicleClass: input.vehicleClass,
+    pickupAt: input.pickupAt,
+    extras: input.extras,
+    tripType: input.tripType,
+    returnAt: input.returnAt,
+    source: "distance",
+    distanceKm: input.distanceKm,
+    durationMin: input.durationMin,
+  });
+}
+
+/** Quotes for every vehicle class (vehicle picker list). */
+export function quoteAllClasses(input: {
+  routeSlug?: string;
+  distanceKm?: number;
+  durationMin?: number;
+  pickupAt?: Date;
+  extras?: Extras;
+  tripType?: TripType;
+  returnAt?: Date;
+}): { vehicleClass: VehicleClass; quote: TripQuote }[] {
+  return VEHICLE_CLASSES.map((vc) => {
+    const q = quoteTrip({ ...input, vehicleClass: vc.id });
+    return q ? { vehicleClass: vc.id, quote: q } : null;
+  }).filter((x): x is { vehicleClass: VehicleClass; quote: TripQuote } => x != null);
 }

@@ -66,12 +66,14 @@ function HomePage() {
   return (
     <>
       {/* 1. Hero — brand + horizontal booking bar; -mt-16 pulls under sticky transparent header */}
-      <section className="relative -mt-16 overflow-hidden bg-primary pt-16">
-        <div
-          className="media-grade absolute inset-0 bg-cover bg-center opacity-40"
-          style={{ backgroundImage: `url(${HERO_IMAGE})` }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/88 to-primary/65" />
+      <section className="relative -mt-16 bg-primary pt-16">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            className="media-grade absolute inset-0 bg-cover bg-center opacity-40"
+            style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/88 to-primary/65" />
+        </div>
         <div className="relative mx-auto max-w-[1280px] px-6 pb-14 pt-14 md:pb-16 md:pt-16">
           <div className="max-w-2xl text-primary-foreground">
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/70">
@@ -85,7 +87,7 @@ function HomePage() {
             <p className="mt-6 max-w-md text-lg text-primary-foreground/80">{t.home.heroSubtitle}</p>
             <TrustPills dark className="mt-8" />
           </div>
-          <div id="book" className="mt-10 w-full scroll-mt-32">
+          <div id="book" className="relative z-[35] mt-10 w-full scroll-mt-32">
             <BookingWidget variant="hbar" />
           </div>
         </div>
