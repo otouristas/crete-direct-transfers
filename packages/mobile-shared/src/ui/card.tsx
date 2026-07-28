@@ -1,10 +1,4 @@
-import {
-  Pressable,
-  View,
-  StyleSheet,
-  type StyleProp,
-  type ViewStyle,
-} from "react-native";
+import { Pressable, View, StyleSheet, type StyleProp, type ViewStyle } from "react-native";
 import { colors, radius, shadow, space } from "./tokens";
 
 export type CardProps = {

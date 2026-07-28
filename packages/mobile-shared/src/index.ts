@@ -1,7 +1,7 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { Database } from "./database";
+import type { Database, Tables } from "./database";
 
-export type { Database };
+export type { Database, Tables };
 
 export type MobileEnv = {
   supabaseUrl: string;

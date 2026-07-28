@@ -24,10 +24,7 @@ export function SegmentedControl<T extends string>({
             onPress={() => onChange(opt.value)}
             style={[styles.segment, active ? styles.segmentActive : null]}
           >
-            <Text
-              variant="subtitle"
-              color={active ? colors.primary : colors.textMuted}
-            >
+            <Text variant="subtitle" color={active ? colors.primary : colors.textMuted}>
               {opt.label}
             </Text>
           </Pressable>

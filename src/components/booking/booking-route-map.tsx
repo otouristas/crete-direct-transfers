@@ -13,7 +13,9 @@ const BookingRouteMapInner = lazy(() => import("./booking-route-map-inner"));
 
 function MapSkeleton({ className }: { className?: string }) {
   return (
-    <div className={`animate-pulse rounded-xl bg-muted ${className ?? "h-[42vh] md:h-[340px] lg:h-[400px]"}`} />
+    <div
+      className={`animate-pulse rounded-xl bg-muted ${className ?? "h-[42vh] md:h-[340px] lg:h-[400px]"}`}
+    />
   );
 }
 

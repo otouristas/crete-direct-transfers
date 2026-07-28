@@ -46,7 +46,10 @@ function AboutPage() {
           </Reveal>
 
           <div className="mt-14 grid items-start gap-10 lg:grid-cols-[1fr_0.95fr]">
-            <Reveal delay={1} className="space-y-6 text-base leading-relaxed text-foreground/85 md:text-lg">
+            <Reveal
+              delay={1}
+              className="space-y-6 text-base leading-relaxed text-foreground/85 md:text-lg"
+            >
               <p>{t.about.body1}</p>
               <p>{t.about.body2}</p>
               <h2 className="pt-4 text-2xl font-display text-primary md:text-3xl">

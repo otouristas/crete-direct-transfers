@@ -70,23 +70,24 @@ export function PlaceCombobox({
   );
 
   const showGroups = open && !value.trim();
-  const flatForKeyboard = showGroups
-    ? emptyGroups.flatMap((g) => g.places)
-    : results;
+  const flatForKeyboard = showGroups ? emptyGroups.flatMap((g) => g.places) : results;
 
   useEffect(() => {
     if (!open) return;
     let cancelled = false;
     const q = value.trim();
     setLoading(true);
-    const handle = window.setTimeout(async () => {
-      const next = await searchPlaces(q, 10, contextPlace);
-      if (!cancelled) {
-        setResults(next);
-        setActive(0);
-        setLoading(false);
-      }
-    }, q.length >= 3 ? 280 : 0);
+    const handle = window.setTimeout(
+      async () => {
+        const next = await searchPlaces(q, 10, contextPlace);
+        if (!cancelled) {
+          setResults(next);
+          setActive(0);
+          setLoading(false);
+        }
+      },
+      q.length >= 3 ? 280 : 0,
+    );
     return () => {
       cancelled = true;
       window.clearTimeout(handle);
@@ -119,11 +120,11 @@ export function PlaceCombobox({
     >
       <KindIcon kind={place.kind} />
       <span className="min-w-0">
-                <span className="block truncate font-medium">{place.label}</span>
-                <span className="tfr-suggest-kind">
-                  {kindLabels[place.kind]}
-                  {place.countryName ? ` · ${place.countryName}` : ""}
-                </span>
+        <span className="block truncate font-medium">{place.label}</span>
+        <span className="tfr-suggest-kind">
+          {kindLabels[place.kind]}
+          {place.countryName ? ` · ${place.countryName}` : ""}
+        </span>
       </span>
     </button>
   );

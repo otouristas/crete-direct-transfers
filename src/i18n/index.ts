@@ -6,30 +6,16 @@ import { fr } from "./fr";
 import { it } from "./it";
 import { nl } from "./nl";
 import { es } from "./es";
+import { LOCALES, LOCALE_LABELS, isLocale, type Locale } from "@transferaround/i18n";
 
 export type { Dict };
-
-export const LOCALES = ["en", "el", "de", "fr", "it", "nl", "es"] as const;
-export type Locale = (typeof LOCALES)[number];
+export { LOCALES, LOCALE_LABELS, isLocale };
+export type { Locale };
 
 /** Locales that appear as a URL prefix — English lives at the root. */
 export const PREFIX_LOCALES = ["el", "de", "fr", "it", "nl", "es"] as const;
 
-export const LOCALE_LABELS: Record<Locale, string> = {
-  en: "English",
-  el: "Ελληνικά",
-  de: "Deutsch",
-  fr: "Français",
-  it: "Italiano",
-  nl: "Nederlands",
-  es: "Español",
-};
-
 const dicts: Record<Locale, Dict> = { en, el, de, fr, it, nl, es };
-
-export function isLocale(value: string): value is Locale {
-  return (LOCALES as readonly string[]).includes(value);
-}
 
 export function getDict(locale: Locale): Dict {
   return dicts[locale];

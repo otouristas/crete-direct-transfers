@@ -9,13 +9,9 @@ import { RoutesChapter } from "@/components/sections/routes-chapter";
 import { InpageNav } from "@/components/inpage-nav";
 import { Reveal } from "@/components/reveal";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
-import {
-  getLocalizedRegions,
-  getLocalizedRoutes,
-  getLocalizedVehicles,
-} from "@/i18n/content";
+import { getLocalizedRegions, getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
-import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF } from "@/lib/site";
+import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF, REVIEWS_VERIFIED } from "@/lib/site";
 import { Phone } from "lucide-react";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
 import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
@@ -43,13 +39,17 @@ export const Route = createFileRoute("/{-$locale}/")({
         url: SITE_URL,
         description: "Fixed-price private transfers across Crete.",
         areaServed: { "@type": "Place", name: "Crete, Greece" },
-        telephone: CONTACT_PHONE,
         priceRange: "€€",
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: AVG_RATING,
-          reviewCount: REVIEWS.length,
-        },
+        ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
+        ...(REVIEWS_VERIFIED
+          ? {
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: AVG_RATING,
+                reviewCount: REVIEWS.length,
+              },
+            }
+          : {}),
       },
     });
   },
@@ -68,7 +68,7 @@ function HomePage() {
     { id: "manifesto", label: t.inpageNav.howItWorks },
     { id: "routes", label: t.inpageNav.routes },
     { id: "fleet", label: t.inpageNav.fleet },
-    { id: "reviews", label: t.inpageNav.reviews },
+    ...(REVIEWS_VERIFIED ? [{ id: "reviews", label: t.inpageNav.reviews }] : []),
     { id: "regions", label: t.inpageNav.regions },
   ];
 
@@ -91,9 +91,13 @@ function HomePage() {
             <h1 className="mt-5 text-4xl font-display leading-[1.05] md:text-5xl lg:text-6xl">
               {t.home.heroTitle1}
               <br />
-              <span className="font-accent text-[1.08em] text-accent">{t.home.heroTitleAccent}</span>
+              <span className="font-accent text-[1.08em] text-accent">
+                {t.home.heroTitleAccent}
+              </span>
             </h1>
-            <p className="mt-6 max-w-md text-lg text-primary-foreground/80">{t.home.heroSubtitle}</p>
+            <p className="mt-6 max-w-md text-lg text-primary-foreground/80">
+              {t.home.heroSubtitle}
+            </p>
             <div className="mt-6">
               <AskTouristasInline prompt="HER to Elounda tomorrow at 3pm" />
             </div>
@@ -173,30 +177,32 @@ function HomePage() {
       </section>
 
       {/* 5. Proof — reviews + region ribbon */}
-      <section id="reviews" className="scroll-mt-32 bg-background">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-          <Reveal>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              {t.nav.reviews}
-            </p>
-            <h2 className="mt-3 text-3xl font-display text-primary md:text-5xl">
-              {t.home.proofTitle}
-            </h2>
-            <p className="mt-4 max-w-xl text-muted-foreground">{t.home.proofSubtitle}</p>
-          </Reveal>
-          <div className="mt-12">
-            <ReviewsGrid reviews={REVIEWS.slice(0, 3)} />
+      {REVIEWS_VERIFIED && (
+        <section id="reviews" className="scroll-mt-32 bg-background">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+            <Reveal>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                {t.nav.reviews}
+              </p>
+              <h2 className="mt-3 text-3xl font-display text-primary md:text-5xl">
+                {t.home.proofTitle}
+              </h2>
+              <p className="mt-4 max-w-xl text-muted-foreground">{t.home.proofSubtitle}</p>
+            </Reveal>
+            <div className="mt-12">
+              <ReviewsGrid reviews={REVIEWS.slice(0, 3)} />
+            </div>
+            <div className="mt-8 text-center">
+              <Link
+                to="/{-$locale}/reviews"
+                className="text-sm font-semibold text-accent-deep hover:underline"
+              >
+                {t.common.viewAll} →
+              </Link>
+            </div>
           </div>
-          <div className="mt-8 text-center">
-            <Link
-              to="/{-$locale}/reviews"
-              className="text-sm font-semibold text-accent-deep hover:underline"
-            >
-              {t.common.viewAll} →
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section id="regions" className="scroll-mt-32 bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
@@ -254,15 +260,17 @@ function HomePage() {
               >
                 {t.common.getPrice}
               </Link>
-              <a
-                href={CONTACT_WHATSAPP_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-primary-foreground/25 px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
-              >
-                <Phone className="h-4 w-4" />
-                {t.common.whatsapp}
-              </a>
+              {CONTACT_WHATSAPP_HREF && (
+                <a
+                  href={CONTACT_WHATSAPP_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-primary-foreground/25 px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
+                >
+                  <Phone className="h-4 w-4" />
+                  {t.common.whatsapp}
+                </a>
+              )}
             </div>
           </Reveal>
         </div>

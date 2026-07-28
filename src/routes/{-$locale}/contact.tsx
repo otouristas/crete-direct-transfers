@@ -54,7 +54,7 @@ function ContactPage() {
             <p className="mt-5 max-w-xl text-lg text-muted-foreground">{t.contact.subtitle}</p>
           </Reveal>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-2">
+          <div className={`mt-12 grid gap-5 ${CONTACT_PHONE ? "md:grid-cols-2" : ""}`}>
             <Reveal delay={1} className="rounded-2xl border border-border bg-card p-7 md:p-8">
               <Mail className="h-5 w-5 text-accent-deep" />
               <div className="mt-4 text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
@@ -84,31 +84,38 @@ function ContactPage() {
               </div>
             </Reveal>
 
-            <Reveal delay={2} className="rounded-2xl border border-border bg-card p-7 md:p-8">
-              <Phone className="h-5 w-5 text-accent-deep" />
-              <div className="mt-4 text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
-                {t.contact.phoneTitle}
-              </div>
-              <a
-                href={CONTACT_PHONE_HREF}
-                className="mt-2 block font-display text-2xl text-primary md:text-3xl"
-              >
-                {CONTACT_PHONE}
-              </a>
-              <div className="mt-6">
+            {CONTACT_PHONE && CONTACT_PHONE_HREF && (
+              <Reveal delay={2} className="rounded-2xl border border-border bg-card p-7 md:p-8">
+                <Phone className="h-5 w-5 text-accent-deep" />
+                <div className="mt-4 text-xs font-medium uppercase tracking-[0.15em] text-muted-foreground">
+                  {t.contact.phoneTitle}
+                </div>
                 <a
-                  href={CONTACT_WHATSAPP_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-semibold text-accent-deep hover:underline"
+                  href={CONTACT_PHONE_HREF}
+                  className="mt-2 block font-display text-2xl text-primary md:text-3xl"
                 >
-                  {t.contact.phoneAction} →
+                  {CONTACT_PHONE}
                 </a>
-              </div>
-            </Reveal>
+                {CONTACT_WHATSAPP_HREF && (
+                  <div className="mt-6">
+                    <a
+                      href={CONTACT_WHATSAPP_HREF}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-accent-deep hover:underline"
+                    >
+                      {t.contact.phoneAction} →
+                    </a>
+                  </div>
+                )}
+              </Reveal>
+            )}
           </div>
 
-          <Reveal delay={3} className="mt-5 flex items-center gap-3 rounded-2xl border border-border bg-muted/40 px-6 py-4 text-sm text-muted-foreground">
+          <Reveal
+            delay={3}
+            className="mt-5 flex items-center gap-3 rounded-2xl border border-border bg-muted/40 px-6 py-4 text-sm text-muted-foreground"
+          >
             <Clock className="h-4 w-4 shrink-0 text-accent-deep" />
             <span>
               <strong className="font-medium text-foreground">{t.contact.hoursTitle}:</strong>{" "}
@@ -123,7 +130,7 @@ function ContactPage() {
           <h2 className="mb-6 text-2xl font-display text-primary md:text-3xl">
             {t.contact.formTitle}
           </h2>
-          <ContactForm topic="general" placeholder="How can we help?" />
+          <ContactForm topic="general" placeholder={t.contact.formTitle} />
         </Reveal>
       </section>
     </>

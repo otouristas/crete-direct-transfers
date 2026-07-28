@@ -9,14 +9,7 @@ export type AppTextProps = TextProps & {
 };
 
 /** Brand-typographic text. `variant` selects size/family from the type scale. */
-export function Text({
-  variant = "body",
-  color,
-  center,
-  muted,
-  style,
-  ...rest
-}: AppTextProps) {
+export function Text({ variant = "body", color, center, muted, style, ...rest }: AppTextProps) {
   const base = typeScale[variant] as TextStyle;
   return (
     <RNText

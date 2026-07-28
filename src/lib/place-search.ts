@@ -375,7 +375,8 @@ function photonLabel(f: PhotonFeature): string {
 }
 
 function photonKind(f: PhotonFeature): PlaceKind {
-  const v = `${f.properties.osm_value || ""} ${f.properties.osm_key || ""} ${f.properties.type || ""}`.toLowerCase();
+  const v =
+    `${f.properties.osm_value || ""} ${f.properties.osm_key || ""} ${f.properties.type || ""}`.toLowerCase();
   if (v.includes("aerodrome") || v.includes("airport")) return "airport";
   if (v.includes("ferry") || v.includes("harbour") || v.includes("harbor") || v.includes("port"))
     return "port";
@@ -412,7 +413,8 @@ export async function searchPhoton(
   if (bias?.countryCode) {
     const cc = bias.countryCode.toLowerCase();
     const preferred = features.filter((f) => (f.properties.countrycode || "").toLowerCase() === cc);
-    if (preferred.length) features = [...preferred, ...features.filter((f) => !preferred.includes(f))];
+    if (preferred.length)
+      features = [...preferred, ...features.filter((f) => !preferred.includes(f))];
   }
 
   return features.slice(0, limit).map((f, i) => {
@@ -471,9 +473,7 @@ export function matchRouteSlug(
 ): string | undefined {
   if (!from || !to) return undefined;
 
-  const fromKeys = new Set(
-    [from.routeEndKey, routeEndKey(from.label)].filter(Boolean) as string[],
-  );
+  const fromKeys = new Set([from.routeEndKey, routeEndKey(from.label)].filter(Boolean) as string[]);
   const toKeys = new Set([to.routeEndKey, routeEndKey(to.label)].filter(Boolean) as string[]);
 
   const matches = (a: string, keys: Set<string>) => {

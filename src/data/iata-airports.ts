@@ -95,17 +95,64 @@ export function searchIataAirports(query: string, limit = 12): IataAirport[] {
 
 /** Popular / large hubs for empty-state when no country context — worldwide first. */
 export const FEATURED_IATA = [
-  "LHR", "CDG", "AMS", "FRA", "FCO", "MXP", "BCN", "MAD", "LIS", "DUB",
-  "ATH", "IST", "DXB", "DOH", "AUH",
-  "JFK", "EWR", "LAX", "ORD", "MIA", "SFO", "YYZ",
-  "SIN", "HKG", "NRT", "ICN", "BKK", "SYD", "MEL",
-  "HER", "CHQ", "SKG", "JTR", "JMK", "RHO", "CFU", "ZTH",
-  "BER", "MUC", "VIE", "ZRH", "CPH", "ARN", "OSL", "HEL",
-  "GRU", "EZE", "JNB", "CAI", "TLV", "BOM", "DEL",
+  "LHR",
+  "CDG",
+  "AMS",
+  "FRA",
+  "FCO",
+  "MXP",
+  "BCN",
+  "MAD",
+  "LIS",
+  "DUB",
+  "ATH",
+  "IST",
+  "DXB",
+  "DOH",
+  "AUH",
+  "JFK",
+  "EWR",
+  "LAX",
+  "ORD",
+  "MIA",
+  "SFO",
+  "YYZ",
+  "SIN",
+  "HKG",
+  "NRT",
+  "ICN",
+  "BKK",
+  "SYD",
+  "MEL",
+  "HER",
+  "CHQ",
+  "SKG",
+  "JTR",
+  "JMK",
+  "RHO",
+  "CFU",
+  "ZTH",
+  "BER",
+  "MUC",
+  "VIE",
+  "ZRH",
+  "CPH",
+  "ARN",
+  "OSL",
+  "HEL",
+  "GRU",
+  "EZE",
+  "JNB",
+  "CAI",
+  "TLV",
+  "BOM",
+  "DEL",
 ] as const;
 
 export function featuredAirports(limit = 12): IataAirport[] {
-  return FEATURED_IATA.map((c) => byIata.get(c)).filter(Boolean).slice(0, limit) as IataAirport[];
+  return FEATURED_IATA.map((c) => byIata.get(c))
+    .filter(Boolean)
+    .slice(0, limit) as IataAirport[];
 }
 
 export function airportsInCountry(countryCode: string, limit = 12): IataAirport[] {

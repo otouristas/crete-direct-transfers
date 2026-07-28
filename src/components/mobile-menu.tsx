@@ -8,6 +8,7 @@ import { MobileAccountLinks } from "@/components/auth/account-menu";
 import { Logo } from "@/components/logo";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { cn } from "@/lib/utils";
+import { BUSINESS_METRICS_VERIFIED, REVIEWS_VERIFIED } from "@/lib/site";
 
 const HEADER_H = "h-16";
 
@@ -46,12 +47,16 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
     { label: t.nav.contact, to: "/{-$locale}/contact" },
     { label: t.nav.blog, to: "/{-$locale}/blog" },
     { label: t.nav.howItWorks, to: "/{-$locale}/how-it-works" },
-    { label: t.nav.reviews, to: "/{-$locale}/reviews" },
+    ...(REVIEWS_VERIFIED ? [{ label: t.nav.reviews, to: "/{-$locale}/reviews" }] : []),
   ];
 
   const stats = [
-    { value: t.stats.transfersValue, label: t.stats.transfers },
-    { value: t.stats.ratingValue, label: t.stats.rating, highlight: true },
+    ...(BUSINESS_METRICS_VERIFIED
+      ? [{ value: t.stats.transfersValue, label: t.stats.transfers }]
+      : []),
+    ...(REVIEWS_VERIFIED
+      ? [{ value: t.stats.ratingValue, label: t.stats.rating, highlight: true }]
+      : []),
     { value: t.stats.supportValue, label: t.stats.support },
   ];
 
@@ -98,12 +103,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         </button>
       </div>
 
-      <div
-        className={cn(
-          "relative flex-1 overflow-y-auto px-6",
-          stickyVisible ? "pb-28" : "pb-8",
-        )}
-      >
+      <div className={cn("relative flex-1 overflow-y-auto px-6", stickyVisible ? "pb-28" : "pb-8")}>
         <TrustPills
           dark
           className="flex-nowrap gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

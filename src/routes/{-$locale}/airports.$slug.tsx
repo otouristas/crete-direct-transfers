@@ -1,9 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { vehicleFromPrices, formatEur } from "@/lib/pricing";
+import { vehicleFromPrices } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { getDict, useT, type Locale } from "@/i18n";
-import { getLocalizedAirport, getLocalizedAirportRoutes } from "@/i18n/content";
+import {
+  getLocalizedAirport,
+  getLocalizedAirports,
+  getLocalizedAirportRoutes,
+} from "@/i18n/content";
 import { getIataAirport } from "@/data/iata-airports";
 import { CtaBand } from "@/components/sections/cta-band";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
@@ -25,31 +29,29 @@ import {
 export const Route = createFileRoute("/{-$locale}/airports/$slug")({
   loader: ({ params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const curated = getLocalizedAirports(locale).some((airport) => airport.slug === params.slug);
+    if (!curated && locale !== "en") throw notFound();
     const airport = getLocalizedAirport(locale, params.slug);
     if (!airport) throw notFound();
     const routes = getLocalizedAirportRoutes(locale).filter((r) => r.airportSlug === airport.slug);
-    return { airport, routes };
+    return { airport, routes, curated };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("Airport") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("Airport") }, { name: "robots", content: "noindex" }],
       };
     }
-    const { airport, routes } = loaderData;
+    const { airport, routes, curated } = loaderData;
     const path = `/airports/${airport.slug}`;
-    const price = formatEur(airport.fromPriceEur);
-
     return buildHead({
       locale,
       path,
       title: t.seo.airportTitle(airport.name, airport.iata),
-      description: `Book fixed-price airport transfers from ${airport.name} (${airport.iata}). Free cancellation, flight tracking, meet & greet. From ${price}.`,
+      description: airport.intro,
+      noindex: !curated,
       ogImage: airport.heroImage,
       jsonLd: {
         "@context": "https://schema.org",
@@ -58,14 +60,14 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
             "@type": "WebPage",
             "@id": `${SITE_URL}${path}#webpage`,
             url: `${SITE_URL}${path}`,
-            name: `${airport.name} Transfers (${airport.iata})`,
+            name: t.seo.airportTitle(airport.name, airport.iata),
             description: airport.intro,
           },
           {
             "@type": "Service",
-            name: `${airport.name} Transfers (${airport.iata})`,
-            serviceType: "Airport Transfer",
-            provider: { "@type": "LocalBusiness", name: SITE_NAME },
+            name: t.seo.airportTitle(airport.name, airport.iata),
+            serviceType: t.nav.airportTransfers,
+            provider: { "@type": "Organization", name: SITE_NAME },
             areaServed: {
               "@type": "Airport",
               name: airport.officialName,
@@ -93,22 +95,22 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
           },
           {
             "@type": "ItemList",
-            name: `Transfer routes from ${airport.name}`,
+            name: airport.name,
             itemListElement: routes.map((r, i) => ({
               "@type": "ListItem",
               position: i + 1,
-              name: `Transfer from ${r.fromName} to ${r.toName}`,
+              name: `${r.fromName} → ${r.toName}`,
               url: `${SITE_URL}/airports/${airport.slug}/${r.routeSlug}`,
             })),
           },
           {
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+              { "@type": "ListItem", position: 1, name: t.nav.home, item: `${SITE_URL}/` },
               {
                 "@type": "ListItem",
                 position: 2,
-                name: "Airports",
+                name: t.nav.airports,
                 item: `${SITE_URL}/airports`,
               },
               {
@@ -136,7 +138,7 @@ function AirportNotFound() {
         to="/{-$locale}/airports"
         className="mt-6 inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground"
       >
-        All airports
+        {t.nav.airports}
       </Link>
     </div>
   );
@@ -144,6 +146,7 @@ function AirportNotFound() {
 
 function AirportHubPage() {
   const { airport, routes } = Route.useLoaderData();
+  const t = useT();
   const vehicles = vehicleFromPrices(airport);
   const defaultLegacy = routes.find((r) => r.legacyRouteSlug)?.legacyRouteSlug;
 
@@ -151,14 +154,9 @@ function AirportHubPage() {
     <>
       <AirportHero
         airport={airport}
-        bookingSlot={
-          <AirportBookingSlot airport={airport} defaultRouteSlug={defaultLegacy} />
-        }
+        bookingSlot={<AirportBookingSlot airport={airport} defaultRouteSlug={defaultLegacy} />}
       />
-      <AskTouristasBand
-        pageType="airport"
-        entityLabel={`${airport.name} (${airport.iata})`}
-      />
+      <AskTouristasBand pageType="airport" entityLabel={`${airport.name} (${airport.iata})`} />
       <AirportInPageNav />
       <AirportFacts airport={airport} />
       <AirportTrustStrip />
@@ -166,17 +164,10 @@ function AirportHubPage() {
       <AirportInsights airport={airport} />
       <AirportComparison airport={airport} />
       <AirportVehicles airport={airport} vehicles={vehicles} />
-      <AirportFaqs
-        title="Frequently Asked Questions"
-        subtitle={`Specific answers about transfers at ${airport.name} — booking, pickup zones, local tolls, and terminals.`}
-        faqs={airport.faqs}
-      />
+      <AirportFaqs title={t.nav.faq} subtitle={airport.intro} faqs={airport.faqs} />
       <AirportPopularRoutes airport={airport} routes={routes} />
       <OtherAirportsInGreece airport={airport} />
-      <CtaBand
-        title="Ready to book?"
-        subtitle="Reserve your private transfer — fixed price, professional local drivers and real-time flight tracking."
-      />
+      <CtaBand />
     </>
   );
 }

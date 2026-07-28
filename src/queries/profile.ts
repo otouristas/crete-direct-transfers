@@ -11,7 +11,7 @@ export type DriverProfile = {
   insurance_number: string | null;
   id_document_number: string | null;
   vehicle_registration_number: string | null;
-  approval_status: string;
+  approval_status: "draft" | "submitted" | "needs_changes" | "approved" | "rejected" | "suspended";
   is_online: boolean;
   partner_id: string | null;
   primary_zone_id: string | null;
@@ -22,22 +22,26 @@ export type Profile = {
   id: string;
   full_name: string | null;
   phone: string | null;
-  role: string;
+  role: "customer" | "driver" | "admin";
+  preferred_locale: "en" | "el" | "de" | "fr" | "it" | "nl" | "es";
+  preferred_currency: string;
   driver_profiles: DriverProfile | null;
 };
+
+export async function getOwnProfile(userId: string): Promise<Profile> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id, full_name, phone, role, preferred_locale, preferred_currency, driver_profiles (*)")
+    .eq("id", userId)
+    .single();
+  if (error) throw error;
+  return data as unknown as Profile;
+}
 
 export const profileQuery = (userId: string) =>
   queryOptions({
     queryKey: ["profile", userId],
-    queryFn: async (): Promise<Profile> => {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("id, full_name, phone, role, driver_profiles (*)")
-        .eq("id", userId)
-        .single();
-      if (error) throw error;
-      return data as unknown as Profile;
-    },
+    queryFn: () => getOwnProfile(userId),
   });
 
 /** Profile (incl. driver sub-profile) for the signed-in user; null query while

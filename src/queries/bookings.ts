@@ -41,7 +41,10 @@ export function hoursUntilPickup(pickupAt: string): number {
 }
 
 /** Preview cancel fee before calling the RPC. */
-export function previewCancelRefund(pickupAt: string, reason: CancellationReason): {
+export function previewCancelRefund(
+  pickupAt: string,
+  reason: CancellationReason,
+): {
   refundPercent: 50 | 100;
   needsReview: boolean;
 } {

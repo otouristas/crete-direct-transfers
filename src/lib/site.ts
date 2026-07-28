@@ -3,21 +3,29 @@ export const SITE_URL = "https://transferaround.com";
 
 export const SITE_NAME = "TransferAround";
 export const CONTACT_EMAIL = "hello@transferaround.com";
-export const CONTACT_PHONE = "+30 28 1000 0000";
-export const CONTACT_PHONE_HREF = "tel:+302810000000";
-/** WhatsApp deep link derived from the public dispatch number. */
-export const CONTACT_WHATSAPP_HREF = "https://wa.me/302810000000";
+export const CONTACT_PHONE: string | undefined =
+  import.meta.env.VITE_CONTACT_PHONE?.trim() || undefined;
+export const CONTACT_PHONE_HREF: string | undefined = CONTACT_PHONE
+  ? `tel:${CONTACT_PHONE.replace(/[^\d+]/g, "")}`
+  : undefined;
+const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER?.replace(/\D/g, "");
+export const CONTACT_WHATSAPP_HREF: string | undefined = WHATSAPP_NUMBER
+  ? `https://wa.me/${WHATSAPP_NUMBER}`
+  : undefined;
 
-/** App store URLs — override with VITE_APP_STORE_URL / VITE_PLAY_STORE_URL when published. */
+/** Store and social links are rendered only after verified production URLs are configured. */
 export const APP_STORE_URL: string | undefined =
-  import.meta.env.VITE_APP_STORE_URL || "https://transferaround.com/apps";
+  import.meta.env.VITE_APP_STORE_URL?.trim() || undefined;
 export const PLAY_STORE_URL: string | undefined =
-  import.meta.env.VITE_PLAY_STORE_URL || "https://transferaround.com/apps";
+  import.meta.env.VITE_PLAY_STORE_URL?.trim() || undefined;
 
-/** Social profile URLs — set when accounts exist; footer shows icons either way. */
-export const SOCIAL_FACEBOOK: string | undefined = undefined;
-export const SOCIAL_INSTAGRAM: string | undefined = undefined;
-export const SOCIAL_X: string | undefined = undefined;
+export const SOCIAL_FACEBOOK: string | undefined =
+  import.meta.env.VITE_SOCIAL_FACEBOOK?.trim() || undefined;
+export const SOCIAL_INSTAGRAM: string | undefined =
+  import.meta.env.VITE_SOCIAL_INSTAGRAM?.trim() || undefined;
+export const SOCIAL_X: string | undefined = import.meta.env.VITE_SOCIAL_X?.trim() || undefined;
+export const REVIEWS_VERIFIED = import.meta.env.VITE_REVIEWS_VERIFIED === "true";
+export const BUSINESS_METRICS_VERIFIED = import.meta.env.VITE_BUSINESS_METRICS_VERIFIED === "true";
 
 /**
  * Default social-share image (absolute URL). Used as the fallback og:image /

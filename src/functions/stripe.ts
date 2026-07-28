@@ -19,13 +19,16 @@ export async function runCreateCheckoutSession(data: {
 }) {
   const stripe = getStripe();
   if (!stripe) {
-    return { skipped: true as const, url: null as string | null, paymentIntentId: null as string | null };
+    return {
+      skipped: true as const,
+      url: null as string | null,
+      paymentIntentId: null as string | null,
+    };
   }
 
   const localePrefix = data.locale && data.locale !== "en" ? `/${data.locale}` : "";
   const success =
-    data.successPath ??
-    `${localePrefix}/book/success?id=${encodeURIComponent(data.bookingId)}`;
+    data.successPath ?? `${localePrefix}/book/success?id=${encodeURIComponent(data.bookingId)}`;
   const cancel =
     data.cancelPath ?? `${localePrefix}/account/bookings/${encodeURIComponent(data.bookingId)}`;
 
@@ -56,12 +59,12 @@ export async function runCreateCheckoutSession(data: {
     paymentIntentId:
       typeof session.payment_intent === "string"
         ? session.payment_intent
-        : session.payment_intent?.id ?? null,
+        : (session.payment_intent?.id ?? null),
   };
 }
 
 export const createCheckoutSession = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (d: {
       bookingId: string;
       priceCents: number;
@@ -75,9 +78,7 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
   .handler(async ({ data }) => runCreateCheckoutSession(data));
 
 export const refundStripePayment = createServerFn({ method: "POST" })
-  .inputValidator(
-    (d: { paymentIntentId: string; amountCents?: number; bookingId: string }) => d,
-  )
+  .validator((d: { paymentIntentId: string; amountCents?: number; bookingId: string }) => d)
   .handler(async ({ data }) => {
     const stripe = getStripe();
     if (!stripe) return { skipped: true as const, refundId: null as string | null };

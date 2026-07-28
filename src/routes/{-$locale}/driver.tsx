@@ -5,7 +5,8 @@ import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { useProfile } from "@/queries/profile";
 import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
-import { CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/lib/site";
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/lib/site";
+import { DriverOnboarding } from "@/components/driver/driver-onboarding";
 
 export const Route = createFileRoute("/{-$locale}/driver")({
   head: (ctx) => {
@@ -38,6 +39,7 @@ function DriverGate() {
 
   if (approval !== "approved") {
     const suspended = approval === "suspended";
+    if (!suspended) return <DriverOnboarding />;
     return (
       <div className="mx-auto max-w-2xl px-6 py-24 text-center">
         {suspended ? (
@@ -52,10 +54,10 @@ function DriverGate() {
           {suspended ? t.driver.suspendedBody : t.driver.pendingBody}
         </p>
         <a
-          href={CONTACT_PHONE_HREF}
+          href={CONTACT_PHONE_HREF ?? `mailto:${CONTACT_EMAIL}`}
           className="mt-8 inline-flex rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
         >
-          {t.common.call}: {CONTACT_PHONE}
+          {CONTACT_PHONE ? `${t.common.call}: ${CONTACT_PHONE}` : CONTACT_EMAIL}
         </a>
       </div>
     );

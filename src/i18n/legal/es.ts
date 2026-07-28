@@ -3,10 +3,12 @@ import type { LegalDocs } from "./types";
 export const legalDocsEs: LegalDocs = {
   terms: {
     metaTitle: "Términos de uso | TransferAround",
-    metaDescription: "Términos de uso para TransferAround.com: transferencias privadas de precio fijo en Creta con conductores locales examinados.",
+    metaDescription:
+      "Términos de uso para TransferAround.com: transferencias privadas de precio fijo en Creta con conductores locales examinados.",
     title: "Condiciones de uso",
     updated: "24 de julio de 2026",
-    intro: "Estos Términos de uso (los “Términos”) son emitidos por TransferAround Travel Services P.C., que opera como TransferAround.com y está registrado en Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la “Compañía”, “TransferAround”, “nosotros”). Regulan el uso del sitio web transferaround.com y cualquier aplicación móvil relacionada (la “Plataforma”) por parte de cualquier visitante o usuario registrado (el “Usuario”, “usted”).",
+    intro:
+      "Estos Términos de uso (los “Términos”) son emitidos por TransferAround Travel Services P.C., que opera como TransferAround.com y está registrado en Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la “Compañía”, “TransferAround”, “nosotros”). Regulan el uso del sitio web transferaround.com y cualquier aplicación móvil relacionada (la “Plataforma”) por parte de cualquier visitante o usuario registrado (el “Usuario”, “usted”).",
     sections: [
       {
         title: "1. generales",
@@ -56,7 +58,7 @@ export const legalDocsEs: LegalDocs = {
       {
         title: "6. Descargos de responsabilidad y limitación de responsabilidad",
         paragraphs: [
-          "La Plataforma y cualquier información proporcionada a través de ella están disponibles \"tal cual\" y \"según disponibilidad\". En la medida máxima permitida por la ley, la Compañía no ofrece garantía de que la Plataforma será ininterrumpida o estará libre de errores.",
+          'La Plataforma y cualquier información proporcionada a través de ella están disponibles "tal cual" y "según disponibilidad". En la medida máxima permitida por la ley, la Compañía no ofrece garantía de que la Plataforma será ininterrumpida o estará libre de errores.',
           "Dado que el contrato de Transferencia se forma directamente entre el Usuario y el Transportista, la responsabilidad de la Compañía se limita a transmitir con precisión la información de la reserva y, cuando corresponda, procesar el pago como intermediario. La Compañía no es responsable de los actos u omisiones del Transportista durante la realización de una Transferencia, sujeto al párrafo siguiente.",
           "Debido a que los Transportistas en la Plataforma deben completar el proceso de verificación descrito en {link:kyc} antes de que se les permita aceptar reservas, la Compañía investigará y tomará las medidas apropiadas (incluida la suspensión o eliminación de un Transportista) en respuesta a quejas de seguridad creíbles.",
           "En la medida máxima permitida por la ley, la responsabilidad total de la Compañía hacia un Usuario que surja de o en conexión con una Transferencia no excederá el Precio de Transferencia pagado por esa Transferencia, excepto cuando las leyes obligatorias del consumidor griegas y EU dispongan lo contrario.",
@@ -94,19 +96,19 @@ export const legalDocsEs: LegalDocs = {
       },
       {
         title: "12. Contacto",
-        paragraphs: [
-          "Las preguntas sobre estos Términos se pueden enviar a {email:support}.",
-        ],
+        paragraphs: ["Las preguntas sobre estos Términos se pueden enviar a {email:support}."],
       },
     ],
   },
 
   privacy: {
     metaTitle: "Política de privacidad | TransferAround",
-    metaDescription: "Cómo TransferAround recopila, utiliza y protege los datos personales de usuarios, pasajeros y transportistas bajo GDPR.",
+    metaDescription:
+      "Cómo TransferAround recopila, utiliza y protege los datos personales de usuarios, pasajeros y transportistas bajo GDPR.",
     title: "política de privacidad",
     updated: "24 de julio de 2026",
-    intro: "Esta Política de Privacidad explica cómo TransferAround Travel Services P.C., operando como TransferAround.com, registrado en Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la \"Compañía\", \"nosotros\"), recopila, utiliza y protege datos personales de Usuarios, pasajeros y Transportistas (incluidos sus conductores) en relación con la plataforma transferaround.com (el \"Servicio\"). A los efectos de EU/ley griega de protección de datos, la Compañía es el controlador de datos.",
+    intro:
+      'Esta Política de Privacidad explica cómo TransferAround Travel Services P.C., operando como TransferAround.com, registrado en Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la "Compañía", "nosotros"), recopila, utiliza y protege datos personales de Usuarios, pasajeros y Transportistas (incluidos sus conductores) en relación con la plataforma transferaround.com (el "Servicio"). A los efectos de EU/ley griega de protección de datos, la Compañía es el controlador de datos.',
     sections: [
       {
         title: "1. Quiénes somos",
@@ -207,10 +209,12 @@ export const legalDocsEs: LegalDocs = {
 
   driverPartnership: {
     metaTitle: "Acuerdo de asociación de conductores | TransferAround",
-    metaDescription: "Términos para transportistas y conductores independientes asociados con TransferAround.com en Creta.",
+    metaDescription:
+      "Términos para transportistas y conductores independientes asociados con TransferAround.com en Creta.",
     title: "Acuerdo de asociación de conductores",
     updated: "24 de julio de 2026",
-    intro: "Este Acuerdo de asociación de conductores (el \"Acuerdo\") se celebra entre TransferAround Travel Services P.C., que opera como TransferAround.com, registrada en Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la \"Compañía\"), y la persona o empresa de transporte con licencia que se registra como Transportista en la Plataforma (el \"Transportista\", \"usted\"). Al completar el registro y el proceso de verificación KYC, el Transportista acepta este Acuerdo.",
+    intro:
+      'Este Acuerdo de asociación de conductores (el "Acuerdo") se celebra entre TransferAround Travel Services P.C., que opera como TransferAround.com, registrada en Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la "Compañía"), y la persona o empresa de transporte con licencia que se registra como Transportista en la Plataforma (el "Transportista", "usted"). Al completar el registro y el proceso de verificación KYC, el Transportista acepta este Acuerdo.',
     sections: [
       {
         title: "1. Definiciones",
@@ -320,10 +324,12 @@ export const legalDocsEs: LegalDocs = {
 
   kyc: {
     metaTitle: "Política Conozca a su conductor (KYC) | TransferAround",
-    metaDescription: "Requisitos de verificación para transportistas y conductores en TransferAround.com antes de aceptar reservas.",
+    metaDescription:
+      "Requisitos de verificación para transportistas y conductores en TransferAround.com antes de aceptar reservas.",
     title: "Política Conozca a su conductor (KYC)",
     updated: "24 de julio de 2026",
-    intro: "Esta Política Conozca a su Conductor (KYC) establece el proceso de verificación que cada Transportista y conductor deben completar antes de que se les permita aceptar reservas en TransferAround.com. Su propósito es confirmar la identidad y legitimidad de los Transportistas, proteger la seguridad de los pasajeros, respaldar la promesa de la Plataforma de contar con conductores locales examinados y abordar las recomendaciones aplicables contra el lavado de dinero y la financiación del terrorismo.",
+    intro:
+      "Esta Política Conozca a su Conductor (KYC) establece el proceso de verificación que cada Transportista y conductor deben completar antes de que se les permita aceptar reservas en TransferAround.com. Su propósito es confirmar la identidad y legitimidad de los Transportistas, proteger la seguridad de los pasajeros, respaldar la promesa de la Plataforma de contar con conductores locales examinados y abordar las recomendaciones aplicables contra el lavado de dinero y la financiación del terrorismo.",
     sections: [
       {
         title: "1. Propósito",
@@ -339,9 +345,7 @@ export const legalDocsEs: LegalDocs = {
       },
       {
         title: "3. Documentación requerida",
-        paragraphs: [
-          "Antes de la activación, un Transportista debe presentar y haber verificado:",
-        ],
+        paragraphs: ["Antes de la activación, un Transportista debe presentar y haber verificado:"],
         items: [
           "Una identificación con fotografía o pasaporte válido emitido por el gobierno.",
           "Un permiso de conducir válido que cubra la categoría del vehículo utilizado.",
@@ -411,7 +415,8 @@ export const legalDocsEs: LegalDocs = {
 
   refunds: {
     metaTitle: "Cancelación y reembolsos | TransferAround",
-    metaDescription: "Ventanas de cancelación, tiempos de espera y condiciones de reembolso para reservas TransferAround.",
+    metaDescription:
+      "Ventanas de cancelación, tiempos de espera y condiciones de reembolso para reservas TransferAround.",
     title: "Cancelación y reembolsos",
     updated: "24 de julio de 2026",
     sections: [
@@ -509,7 +514,8 @@ export const legalDocsEs: LegalDocs = {
     metaDescription: "Cómo utiliza TransferAround cookies y tecnologías similares.",
     title: "Política de cookies",
     updated: "24 de julio de 2026",
-    intro: "Utilizamos cookies y tecnologías similares para que la Plataforma pueda funcionar y, con su consentimiento cuando sea necesario, para mejorar su experiencia y mostrar ofertas relevantes. Esta política debe leerse junto con nuestro {link:privacy}.",
+    intro:
+      "Utilizamos cookies y tecnologías similares para que la Plataforma pueda funcionar y, con su consentimiento cuando sea necesario, para mejorar su experiencia y mostrar ofertas relevantes. Esta política debe leerse junto con nuestro {link:privacy}.",
     sections: [
       {
         title: "Galletas esenciales",
@@ -549,5 +555,4 @@ export const legalDocsEs: LegalDocs = {
       },
     ],
   },
-
 };

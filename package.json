@@ -7,8 +7,13 @@
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "preview": "vite preview",
-    "lint": "eslint .",
+    "preview": "npm run build && wrangler dev --config wrangler.preview.jsonc --local",
+    "typecheck": "tsc --noEmit",
+    "typecheck:i18n": "tsc --noEmit -p packages/i18n/tsconfig.json",
+    "lint": "eslint src packages scripts --max-warnings=0",
+    "check:i18n": "npm run typecheck:i18n && node scripts/check-hardcoded-copy.mjs",
+    "check:i18n:strict": "npm run typecheck:i18n && node scripts/check-hardcoded-copy.mjs --strict",
+    "check": "npm run typecheck && npm run check:i18n && npm run lint && npm run build",
     "format": "prettier --write .",
     "generate:airports": "node scripts/generate-iata-airports.mjs",
     "verify:dispatch-push": "node scripts/verify-dispatch-push.mjs",
@@ -52,6 +57,7 @@
     "@tanstack/react-router": "^1.170.16",
     "@tanstack/react-start": "^1.168.26",
     "@tanstack/router-plugin": "^1.168.18",
+    "@transferaround/i18n": "file:packages/i18n",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -74,7 +80,6 @@
     "tailwindcss": "^4.2.1",
     "tw-animate-css": "^1.3.4",
     "vaul": "^1.1.2",
-    "vite-tsconfig-paths": "^6.0.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -95,6 +100,7 @@
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^8.0.16"
+    "vite": "^8.0.16",
+    "wrangler": "4.114.0"
   }
 }

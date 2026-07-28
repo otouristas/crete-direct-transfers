@@ -1,9 +1,6 @@
 import { getRoute, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { getAirport, type AirportData } from "@/data/airports";
-import {
-  getAirportRoute,
-  type AirportRouteData,
-} from "@/data/airport-routes";
+import { getAirportRoute, type AirportRouteData } from "@/data/airport-routes";
 import { formatMoney } from "@/lib/currency";
 
 export type Extras = {
@@ -175,7 +172,12 @@ export function quoteAirportRoute(input: {
   airportSlug: string;
   routeSlug?: string;
   vehicleClass: VehicleClass;
-}): { totalEur: number; baseEur: number; vehicleClass: VehicleClass; bookable: "instant" | "quote" } | null {
+}): {
+  totalEur: number;
+  baseEur: number;
+  vehicleClass: VehicleClass;
+  bookable: "instant" | "quote";
+} | null {
   const airport = getAirport(input.airportSlug);
   const vc = VEHICLE_CLASSES.find((c) => c.id === input.vehicleClass);
   if (!airport || !vc) return null;
@@ -204,7 +206,14 @@ export function quoteAirportRoute(input: {
 export function vehicleFromPrices(
   airport: AirportData,
   route?: AirportRouteData,
-): { id: VehicleClass; label: string; capacity: string; bags: string; example: string; fromEur: number }[] {
+): {
+  id: VehicleClass;
+  label: string;
+  capacity: string;
+  bags: string;
+  example: string;
+  fromEur: number;
+}[] {
   const base = route
     ? route.legacyRouteSlug
       ? (getRoute(route.legacyRouteSlug)?.basePriceEur ?? route.basePriceEur)

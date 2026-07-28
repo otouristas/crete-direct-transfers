@@ -43,7 +43,9 @@ function TouristasAiPage() {
     <div className="bg-[radial-gradient(ellipse_at_top,rgba(20,184,166,0.08),transparent_50%)]">
       <section className="border-b border-border bg-primary text-primary-foreground">
         <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">{t.poweredBy}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            {t.poweredBy}
+          </p>
           <h1 className="mt-3 font-accent text-4xl md:text-5xl">{t.fullPageTitle}</h1>
           <p className="mt-3 max-w-xl text-primary-foreground/80">{t.fullPageSubtitle}</p>
           <p className="mt-4 font-display text-sm font-semibold text-accent">{chat.identity}</p>

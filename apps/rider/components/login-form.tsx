@@ -3,9 +3,11 @@ import { useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { BrandHeader, Button, Field, Text, colors, space } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../lib/auth";
+import { localizedAuthError, useI18n } from "../lib/i18n";
 
 export default function LoginForm() {
   const { signIn } = useAuth();
+  const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +19,7 @@ export default function LoginForm() {
     try {
       await signIn(email.trim(), password);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Sign in failed");
+      setError(t(localizedAuthError(e)));
     } finally {
       setBusy(false);
     }
@@ -31,7 +33,7 @@ export default function LoginForm() {
       <BrandHeader subtitle="Book private airport transfers in seconds." />
       <View style={styles.form}>
         <Field
-          label="Email"
+          label={t("auth.email")}
           icon="mail-outline"
           autoCapitalize="none"
           keyboardType="email-address"
@@ -40,7 +42,7 @@ export default function LoginForm() {
           onChangeText={setEmail}
         />
         <Field
-          label="Password"
+          label={t("auth.password")}
           icon="lock-closed-outline"
           secureTextEntry
           placeholder="••••••••"
@@ -48,10 +50,10 @@ export default function LoginForm() {
           onChangeText={setPassword}
           error={error}
         />
-        <Button title="Sign in" onPress={onSubmit} loading={busy} fullWidth />
+        <Button title={t("auth.signIn")} onPress={onSubmit} loading={busy} fullWidth />
         <Link href="/signup" style={styles.link}>
           <Text variant="subtitle" color={colors.accentDeep} center>
-            Create an account
+            {t("auth.createAccount")}
           </Text>
         </Link>
       </View>

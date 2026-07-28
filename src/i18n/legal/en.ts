@@ -98,9 +98,7 @@ export const legalDocsEn: LegalDocs = {
       },
       {
         title: "12. Contact",
-        paragraphs: [
-          "Questions about these Terms can be sent to {email:support}.",
-        ],
+        paragraphs: ["Questions about these Terms can be sent to {email:support}."],
       },
     ],
   },
@@ -204,9 +202,7 @@ export const legalDocsEn: LegalDocs = {
       },
       {
         title: "13. Contact",
-        paragraphs: [
-          "For any privacy-related question or request, contact {email:privacy}.",
-        ],
+        paragraphs: ["For any privacy-related question or request, contact {email:privacy}."],
       },
     ],
   },
@@ -506,9 +502,7 @@ export const legalDocsEn: LegalDocs = {
       },
       {
         title: "Dispute resolution",
-        paragraphs: [
-          "The EU online dispute resolution platform is available at {url:odr}.",
-        ],
+        paragraphs: ["The EU online dispute resolution platform is available at {url:odr}."],
       },
     ],
   },

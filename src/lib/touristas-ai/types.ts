@@ -16,7 +16,7 @@ export type TouristasPageType =
   | "account"
   | "other";
 
-export type TouristasMarketSlug = "greece" | "spain" | "italy";
+export type TouristasMarketSlug = "greece" | "spain" | "italy" | "portugal" | "cyprus" | "turkey";
 
 export type TouristasPageContext = {
   locale: string;

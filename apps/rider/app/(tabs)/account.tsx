@@ -16,25 +16,27 @@ import {
 } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../../lib/auth";
 import { API_URL } from "../../lib/config";
+import { useI18n } from "../../lib/i18n";
 
 export default function AccountScreen() {
   const { user, profile, signOut, isDemo } = useAuth();
+  const { t } = useI18n();
   const router = useRouter();
 
   return (
     <Screen scroll>
-      <Heading variant="h1">Account</Heading>
+      <Heading variant="h1">{t("mobile.tab.account")}</Heading>
 
       <Card padded>
         <View style={styles.profile}>
           <Avatar name={profile?.full_name} size={60} />
           <View style={{ flex: 1 }}>
-            <Text variant="h2">{profile?.full_name || "Traveler"}</Text>
+            <Text variant="h2">{profile?.full_name || t("auth.customer")}</Text>
             <Text variant="caption" color={colors.textMuted}>
               {user?.email}
             </Text>
             <Text variant="caption" color={colors.textMuted}>
-              {profile?.phone || "No phone on file"}
+              {profile?.phone || t("profile.phone")}
             </Text>
           </View>
         </View>
@@ -44,7 +46,7 @@ export default function AccountScreen() {
       <Card padded={false}>
         <ListRow
           icon="receipt-outline"
-          title="Your trips"
+          title={t("mobile.tab.trips")}
           subtitle="Bookings & receipts"
           onPress={() => router.push("/(tabs)/trips")}
         />
@@ -73,7 +75,12 @@ export default function AccountScreen() {
           </Text>
         </Card>
       ) : (
-        <Button title="Sign out" variant="outline" icon="log-out-outline" onPress={() => void signOut()} />
+        <Button
+          title={t("common.signOut")}
+          variant="outline"
+          icon="log-out-outline"
+          onPress={() => void signOut()}
+        />
       )}
     </Screen>
   );

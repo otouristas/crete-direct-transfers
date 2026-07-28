@@ -62,7 +62,8 @@ function renderRichText(text: string, locale: Locale, t: ReturnType<typeof useT>
     }
     const [, kind, token] = match;
     if (kind === "email") {
-      const email = LEGAL_EMAILS[token as keyof typeof LEGAL_EMAILS] ?? `${token}@transferaround.com`;
+      const email =
+        LEGAL_EMAILS[token as keyof typeof LEGAL_EMAILS] ?? `${token}@transferaround.com`;
       nodes.push(
         <a key={key++} href={`mailto:${email}`}>
           {email}

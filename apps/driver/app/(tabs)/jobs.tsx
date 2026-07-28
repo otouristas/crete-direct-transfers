@@ -17,11 +17,13 @@ import {
 } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
+import { useI18n } from "../../lib/i18n";
 
 type Job = Awaited<ReturnType<typeof fetchDriverJobs>>[number];
 
 export default function JobsScreen() {
   const { user, isDemo } = useAuth();
+  const { locale, t } = useI18n();
   const router = useRouter();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +49,7 @@ export default function JobsScreen() {
 
   return (
     <Screen scroll refreshing={loading} onRefresh={load}>
-      <Heading variant="h1">Your jobs</Heading>
+      <Heading variant="h1">{t("mobile.tab.jobs")}</Heading>
 
       {loading && jobs.length === 0 ? (
         <ActivityIndicator color={colors.accent} style={{ marginTop: space.xl }} />
@@ -56,11 +58,9 @@ export default function JobsScreen() {
       {!loading && jobs.length === 0 ? (
         <EmptyState
           icon="briefcase-outline"
-          title={isDemo ? "Demo mode" : "No assigned jobs yet"}
+          title={isDemo ? "Demo" : t("mobile.noJobs")}
           subtitle={
-            isDemo
-              ? "Go online on Offers to preview sample offers."
-              : "Accepted and claimed jobs will appear here."
+            isDemo ? "Go online on Offers to preview sample offers." : t("mobile.noJobsHelp")
           }
         />
       ) : null}
@@ -73,10 +73,14 @@ export default function JobsScreen() {
           </View>
           <Divider />
           <View style={{ marginTop: space.md }}>
-            <RouteRail from={j.pickup_address || "Pickup"} to={j.dropoff_address || "Drop-off"} compact />
+            <RouteRail
+              from={j.pickup_address || t("mobile.pickup")}
+              to={j.dropoff_address || t("mobile.dropoff")}
+              compact
+            />
           </View>
           <Text variant="caption" color={colors.textMuted} style={{ marginTop: space.md }}>
-            {new Date(j.pickup_at).toLocaleString()}
+            {new Date(j.pickup_at).toLocaleString(locale)}
           </Text>
         </Card>
       ))}
@@ -85,6 +89,11 @@ export default function JobsScreen() {
 }
 
 const styles = StyleSheet.create({
-  head: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: space.md },
+  head: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: space.md,
+  },
   price: { fontFamily: fonts.bold, fontSize: 18, color: colors.text },
 });

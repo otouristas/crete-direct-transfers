@@ -1,15 +1,7 @@
 import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/site";
 import { useT } from "@/i18n";
 
-function StoreBadge({
-  href,
-  src,
-  alt,
-}: {
-  href?: string;
-  src: string;
-  alt: string;
-}) {
+function StoreBadge({ href, src, alt }: { href?: string; src: string; alt: string }) {
   const img = (
     <img
       src={src}

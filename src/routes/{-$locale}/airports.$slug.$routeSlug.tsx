@@ -35,10 +35,7 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("Route") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("Route") }, { name: "robots", content: "noindex" }],
       };
     }
     const { airport, route } = loaderData;

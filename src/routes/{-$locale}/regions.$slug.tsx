@@ -3,11 +3,7 @@ import { RouteCard } from "@/components/sections/route-card";
 import { CtaBand } from "@/components/sections/cta-band";
 import { InpageNav } from "@/components/inpage-nav";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
-import {
-  getLocalizedRegion,
-  getLocalizedRegions,
-  getLocalizedRoutes,
-} from "@/i18n/content";
+import { getLocalizedRegion, getLocalizedRegions, getLocalizedRoutes } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/{-$locale}/regions/$slug")({
@@ -22,10 +18,7 @@ export const Route = createFileRoute("/{-$locale}/regions/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("Region") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("Region") }, { name: "robots", content: "noindex" }],
       };
     }
     const r = loaderData.region;

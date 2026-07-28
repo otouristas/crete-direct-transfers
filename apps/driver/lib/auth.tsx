@@ -112,8 +112,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [session?.user?.id, refreshProfile]);
 
   const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
+    const row = await fetchProfile(supabase, data.user.id);
+    if (!row || (row.role !== "driver" && row.role !== "admin")) {
+      await supabase.auth.signOut();
+      throw new Error("driver_role_required");
+    }
+    setProfile(row);
   }, []);
 
   const signOut = useCallback(async () => {

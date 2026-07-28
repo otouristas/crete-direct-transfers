@@ -5,8 +5,12 @@ import { getDict } from "@/i18n";
 import { useProfile } from "@/queries/profile";
 import {
   openIncidentsQuery,
+  getDriverDocumentReviewUrl,
+  opsDriverOnboardingQuery,
   opsPartnersQuery,
   pendingRefundsQuery,
+  reviewDriverDocumentAdmin,
+  reviewDriverOnboardingAdmin,
   resolveIncidentAdmin,
   setPartnerStatusAdmin,
   unassignedBookingsQuery,
@@ -41,6 +45,7 @@ function OpsPage() {
   const refunds = useQuery({ ...pendingRefundsQuery, enabled: isAdmin });
   const unassigned = useQuery({ ...unassignedBookingsQuery, enabled: isAdmin });
   const partners = useQuery({ ...opsPartnersQuery, enabled: isAdmin });
+  const onboarding = useQuery({ ...opsDriverOnboardingQuery, enabled: isAdmin });
 
   const resolve = useMutation({
     mutationFn: resolveIncidentAdmin,
@@ -72,6 +77,24 @@ function OpsPage() {
     },
   });
 
+  const reviewDocument = useMutation({
+    mutationFn: reviewDriverDocumentAdmin,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ops-driver-onboarding"] });
+      toast.success("Document updated");
+    },
+    onError: () => toast.error("Document review failed"),
+  });
+
+  const reviewOnboarding = useMutation({
+    mutationFn: reviewDriverOnboardingAdmin,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ops-driver-onboarding"] });
+      toast.success("Application updated");
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   if (profile.isPending) return <Skeleton className="h-64 w-full rounded-2xl" />;
 
   if (!profile.data || profile.data.role !== "admin") {
@@ -79,7 +102,10 @@ function OpsPage() {
       <div className="mx-auto max-w-lg px-6 py-20 text-center">
         <h1 className="font-display text-2xl text-primary">Ops</h1>
         <p className="mt-3 text-sm text-muted-foreground">Admin access required.</p>
-        <Link to="/{-$locale}/account" className="mt-6 inline-block text-sm text-accent-deep underline">
+        <Link
+          to="/{-$locale}/account"
+          className="mt-6 inline-block text-sm text-accent-deep underline"
+        >
           {t.account.backToBookings}
         </Link>
       </div>
@@ -107,6 +133,120 @@ function OpsPage() {
       </div>
 
       <section>
+        <h2 className="font-display text-xl text-primary">Driver onboarding review</h2>
+        {onboarding.isPending ? (
+          <Skeleton className="mt-4 h-40 w-full rounded-2xl" />
+        ) : onboarding.data?.length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">No applications awaiting review.</p>
+        ) : (
+          <ul className="mt-4 space-y-4">
+            {onboarding.data?.map((application) => (
+              <li key={application.id} className="rounded-2xl border border-border bg-card p-5">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="font-semibold">
+                      {application.profile?.full_name ?? application.driver_id.slice(0, 8)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {application.status} · {application.profile?.phone}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium"
+                      onClick={() =>
+                        reviewOnboarding.mutate({
+                          driverId: application.driver_id,
+                          status: "approved",
+                          notes: "All required documents verified.",
+                        })
+                      }
+                    >
+                      Approve
+                    </button>
+                    <button
+                      type="button"
+                      className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium"
+                      onClick={() => {
+                        const notes = window.prompt("Required changes");
+                        if (notes?.trim()) {
+                          reviewOnboarding.mutate({
+                            driverId: application.driver_id,
+                            status: "needs_changes",
+                            notes,
+                          });
+                        }
+                      }}
+                    >
+                      Request changes
+                    </button>
+                  </div>
+                </div>
+                <ul className="mt-4 grid gap-2 md:grid-cols-2">
+                  {application.documents.map((document) => (
+                    <li key={document.id} className="rounded-xl bg-muted/50 p-3 text-sm">
+                      <div className="flex items-center justify-between gap-2">
+                        <button
+                          type="button"
+                          className="font-medium text-accent-deep underline"
+                          onClick={async () => {
+                            const url = await getDriverDocumentReviewUrl(document.storage_path);
+                            window.open(url, "_blank", "noopener,noreferrer");
+                          }}
+                        >
+                          {document.document_type}
+                        </button>
+                        <span className="text-xs text-muted-foreground">{document.status}</span>
+                      </div>
+                      {document.expires_on && (
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          Expires {new Date(document.expires_on).toLocaleDateString(locale)}
+                        </p>
+                      )}
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          type="button"
+                          className="rounded-lg border border-border px-2.5 py-1 text-xs"
+                          onClick={() =>
+                            reviewDocument.mutate({
+                              documentId: document.id,
+                              status: "verified",
+                            })
+                          }
+                        >
+                          Verify
+                        </button>
+                        <button
+                          type="button"
+                          className="rounded-lg border border-destructive/30 px-2.5 py-1 text-xs text-destructive"
+                          onClick={() => {
+                            const reason = window.prompt("Rejection reason");
+                            if (reason?.trim()) {
+                              reviewDocument.mutate({
+                                documentId: document.id,
+                                status: "rejected",
+                                reason,
+                              });
+                            }
+                          }}
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                {application.reviewer_notes && (
+                  <p className="mt-3 text-xs text-muted-foreground">{application.reviewer_notes}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section>
         <h2 className="font-display text-xl text-primary">Unassigned bookings</h2>
         {unassigned.isPending ? (
           <Skeleton className="mt-4 h-32 w-full rounded-2xl" />
@@ -125,10 +265,7 @@ function OpsPage() {
                 </span>
                 <span className="text-muted-foreground">
                   {formatEur(b.price_cents / 100)} ·{" "}
-                  <Link
-                    to="/{-$locale}/partner"
-                    className="text-accent-deep underline"
-                  >
+                  <Link to="/{-$locale}/partner" className="text-accent-deep underline">
                     Partner inbox
                   </Link>
                 </span>

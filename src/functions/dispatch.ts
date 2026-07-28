@@ -7,7 +7,7 @@ import {
 } from "@/server/dispatch";
 
 export const dispatchNewBooking = createServerFn({ method: "POST" })
-  .inputValidator(
+  .validator(
     (d: {
       bookingId: string;
       market?: DispatchMarket | null;
@@ -21,11 +21,11 @@ export const dispatchNewBooking = createServerFn({ method: "POST" })
   .handler(async ({ data }) => runDispatchNewBooking(data));
 
 export const expireOffersAndEscalate = createServerFn({ method: "POST" })
-  .inputValidator((d: { locale?: string } = {}) => d)
+  .validator((d: { locale?: string } = {}) => d)
   .handler(async ({ data }) => runExpireAndEscalate(data.locale));
 
 export const notifyDriverAssigned = createServerFn({ method: "POST" })
-  .inputValidator((d: { bookingId: string; locale?: string }) => d)
+  .validator((d: { bookingId: string; locale?: string }) => d)
   .handler(async ({ data }) => {
     await notifyCustomerDriverAssigned(data.bookingId, data.locale);
     return { ok: true as const };

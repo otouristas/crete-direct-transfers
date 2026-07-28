@@ -38,13 +38,7 @@ export function Field({
           {label}
         </Text>
       ) : null}
-      <View
-        style={[
-          styles.field,
-          focused ? styles.focused : null,
-          error ? styles.errored : null,
-        ]}
-      >
+      <View style={[styles.field, focused ? styles.focused : null, error ? styles.errored : null]}>
         {icon ? <Icon name={icon} size={18} color={colors.textFaint} /> : null}
         <TextInput
           placeholderTextColor={colors.textFaint}

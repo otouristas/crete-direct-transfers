@@ -121,7 +121,9 @@ function PartnerInboxPage() {
                   {driverList.map((d) => (
                     <option key={d.id} value={d.id}>
                       {d.full_name ?? d.id.slice(0, 8)}
-                      {d.is_online ? ` · ${t.partner.onlineDriver}` : ` · ${t.partner.offlineDriver}`}
+                      {d.is_online
+                        ? ` · ${t.partner.onlineDriver}`
+                        : ` · ${t.partner.offlineDriver}`}
                       {d.vehicle_class ? ` · ${d.vehicle_class}` : ""}
                     </option>
                   ))}

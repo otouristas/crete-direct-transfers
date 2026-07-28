@@ -22,8 +22,12 @@ export const Route = createFileRoute("/{-$locale}/faq")({
       <>
         <section className="border-b border-border bg-muted">
           <div className="mx-auto max-w-4xl px-6 py-16 md:py-20">
-            <div className="text-xs uppercase tracking-[0.2em] text-accent">{t.faqPage.eyebrow}</div>
-            <h1 className="mt-3 text-4xl md:text-6xl font-display text-primary">{t.faqPage.title}</h1>
+            <div className="text-xs uppercase tracking-[0.2em] text-accent">
+              {t.faqPage.eyebrow}
+            </div>
+            <h1 className="mt-3 text-4xl md:text-6xl font-display text-primary">
+              {t.faqPage.title}
+            </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl">{t.faqPage.subtitle}</p>
           </div>
         </section>

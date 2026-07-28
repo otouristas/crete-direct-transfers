@@ -36,7 +36,13 @@ export function Reveal({
   return (
     <div
       ref={ref}
-      className={cn("reveal", delay === 1 && "reveal-delay-1", delay === 2 && "reveal-delay-2", delay === 3 && "reveal-delay-3", className)}
+      className={cn(
+        "reveal",
+        delay === 1 && "reveal-delay-1",
+        delay === 2 && "reveal-delay-2",
+        delay === 3 && "reveal-delay-3",
+        className,
+      )}
     >
       {children}
     </div>

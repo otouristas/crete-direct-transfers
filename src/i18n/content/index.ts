@@ -7,6 +7,7 @@ import { MARKETS, type Market } from "@/data/markets";
 import { MARKET_HUB_AIRPORTS, MARKET_HUB_CITIES } from "@/data/market-hubs";
 import { AIRPORTS, type AirportData } from "@/data/airports";
 import { getAirportResolved } from "@/lib/airport-resolve";
+import { localizeMarket } from "@/i18n/markets";
 import { AIRPORT_ROUTES, type AirportRouteData } from "@/data/airport-routes";
 import { POSTS, type Post } from "@/data/posts";
 import type {
@@ -24,26 +25,6 @@ import type {
 } from "./types";
 
 type OverlayModule = Partial<ContentOverlays>;
-
-const overlayLoaders: Record<Exclude<Locale, "en">, () => Promise<OverlayModule>> = {
-  el: () => import("./overlays/el").then((m) => m.default),
-  de: () => import("./overlays/de").then((m) => m.default),
-  fr: () => import("./overlays/fr").then((m) => m.default),
-  it: () => import("./overlays/it").then((m) => m.default),
-  nl: () => import("./overlays/nl").then((m) => m.default),
-  es: () => import("./overlays/es").then((m) => m.default),
-};
-
-const cache = new Map<Locale, OverlayModule>();
-
-async function loadOverlay(locale: Locale): Promise<OverlayModule> {
-  if (locale === "en") return {};
-  const cached = cache.get(locale);
-  if (cached) return cached;
-  const data = await overlayLoaders[locale]();
-  cache.set(locale, data);
-  return data;
-}
 
 /** Sync access after warm — overlays are imported eagerly for SSR/head. */
 import elOverlay from "./overlays/el";
@@ -110,8 +91,9 @@ export function getLocalizedRoute(locale: Locale, slug: string) {
 
 export function getLocalizedMarkets(locale: Locale): Market[] {
   const o = overlay(locale).markets as MarketOverlay | undefined;
-  if (!o) return MARKETS;
-  return MARKETS.map((m) => (o[m.slug] ? { ...m, ...o[m.slug] } : m));
+  return MARKETS.map((market) =>
+    localizeMarket(o?.[market.slug] ? { ...market, ...o[market.slug] } : market, locale),
+  );
 }
 
 export function getLocalizedMarket(locale: Locale, slug: string): Market | undefined {
@@ -216,4 +198,3 @@ export function getLocalizedPost(locale: Locale, slug: string): Post | undefined
 }
 
 // Keep async loader available for future lazy splitting
-export { loadOverlay };

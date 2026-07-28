@@ -14,7 +14,10 @@ function daysFromNow(days: number, hour = 12, minute = 0): string {
   return d.toISOString();
 }
 
-function base(partial: Partial<Booking> & Pick<Booking, "id" | "route_slug" | "status" | "pickup_at" | "price_cents" | "vehicle_class">): Booking {
+function base(
+  partial: Partial<Booking> &
+    Pick<Booking, "id" | "route_slug" | "status" | "pickup_at" | "price_cents" | "vehicle_class">,
+): Booking {
   return {
     assigned_at: null,
     bags_cabin: 1,

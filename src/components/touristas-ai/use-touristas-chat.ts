@@ -35,7 +35,10 @@ export function withSearchParam(path: string, key: string, value: string): strin
   return `${base}${qs ? `?${qs}` : ""}${hash}`;
 }
 
-export function identityLine(ctx: TouristasPageContext, t: ReturnType<typeof getDict>["touristasAi"]) {
+export function identityLine(
+  ctx: TouristasPageContext,
+  t: ReturnType<typeof getDict>["touristasAi"],
+) {
   switch (ctx.pageType) {
     case "airport":
       return t.identityAirport.replace("{place}", ctx.entityLabel ?? "airport");
@@ -181,9 +184,7 @@ export function useTouristasChat() {
         copy[messageIndex] = { ...target, dispatch: next };
         if (
           assistantLine &&
-          (next.status === "claimed" ||
-            next.status === "en_route" ||
-            next.status === "expired")
+          (next.status === "claimed" || next.status === "en_route" || next.status === "expired")
         ) {
           const already = copy.some(
             (m, i) => i > messageIndex && m.role === "assistant" && m.content === assistantLine,
@@ -210,7 +211,7 @@ export function useTouristasChat() {
     return Boolean(
       (window as unknown as { SpeechRecognition?: unknown; webkitSpeechRecognition?: unknown })
         .SpeechRecognition ||
-        (window as unknown as { webkitSpeechRecognition?: unknown }).webkitSpeechRecognition,
+      (window as unknown as { webkitSpeechRecognition?: unknown }).webkitSpeechRecognition,
     );
   }, []);
 
@@ -232,7 +233,20 @@ export function useTouristasChat() {
     const recognition = new Ctor();
     recognition.continuous = false;
     recognition.interimResults = true;
-    recognition.lang = locale === "el" ? "el-GR" : locale === "de" ? "de-DE" : locale === "fr" ? "fr-FR" : locale === "it" ? "it-IT" : locale === "es" ? "es-ES" : locale === "nl" ? "nl-NL" : "en-US";
+    recognition.lang =
+      locale === "el"
+        ? "el-GR"
+        : locale === "de"
+          ? "de-DE"
+          : locale === "fr"
+            ? "fr-FR"
+            : locale === "it"
+              ? "it-IT"
+              : locale === "es"
+                ? "es-ES"
+                : locale === "nl"
+                  ? "nl-NL"
+                  : "en-US";
     recognition.onresult = (event) => {
       let transcript = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -282,10 +296,15 @@ type SpeechRecognitionLike = {
   lang: string;
   start: () => void;
   stop: () => void;
-  onresult: ((event: {
-    resultIndex: number;
-    results: { length: number; [i: number]: { isFinal: boolean; [j: number]: { transcript: string } } };
-  }) => void) | null;
+  onresult:
+    | ((event: {
+        resultIndex: number;
+        results: {
+          length: number;
+          [i: number]: { isFinal: boolean; [j: number]: { transcript: string } };
+        };
+      }) => void)
+    | null;
   onerror: (() => void) | null;
   onend: (() => void) | null;
 };

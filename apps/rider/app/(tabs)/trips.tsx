@@ -17,11 +17,13 @@ import {
 } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
+import { useI18n } from "../../lib/i18n";
 
 type Trip = Awaited<ReturnType<typeof fetchMyBookings>>[number];
 
 export default function TripsScreen() {
   const { user, isDemo } = useAuth();
+  const { locale, t: tr } = useI18n();
   const router = useRouter();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,7 +49,7 @@ export default function TripsScreen() {
 
   return (
     <Screen scroll refreshing={loading} onRefresh={load}>
-      <Heading variant="h1">Your trips</Heading>
+      <Heading variant="h1">{tr("mobile.tab.trips")}</Heading>
 
       {loading && trips.length === 0 ? (
         <ActivityIndicator color={colors.accent} style={{ marginTop: space.xl }} />
@@ -56,11 +58,9 @@ export default function TripsScreen() {
       {!loading && trips.length === 0 ? (
         <EmptyState
           icon="map-outline"
-          title={isDemo ? "Demo mode" : "No trips yet"}
+          title={isDemo ? "Demo" : tr("mobile.noTrips")}
           subtitle={
-            isDemo
-              ? "Live trips appear here once sign-in is restored."
-              : "Book your first transfer and it will show up here."
+            isDemo ? "Live trips appear here once sign-in is restored." : tr("mobile.noTripsHelp")
           }
         />
       ) : null}
@@ -73,10 +73,14 @@ export default function TripsScreen() {
           </View>
           <Divider />
           <View style={{ marginTop: space.md }}>
-            <RouteRail from={t.pickup_address || "Pickup"} to={t.dropoff_address || "Drop-off"} compact />
+            <RouteRail
+              from={t.pickup_address || tr("mobile.pickup")}
+              to={t.dropoff_address || tr("mobile.dropoff")}
+              compact
+            />
           </View>
           <Text variant="caption" color={colors.textMuted} style={{ marginTop: space.md }}>
-            {new Date(t.pickup_at).toLocaleString()}
+            {new Date(t.pickup_at).toLocaleString(locale)}
           </Text>
         </Card>
       ))}

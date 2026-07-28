@@ -205,8 +205,7 @@ export const de: Dict = {
     heroEyebrow: "Private Transfers zum Festpreis",
     heroTitle1: "Ihre Insel.",
     heroTitleAccent: "Ihr Fahrer.",
-    heroSubtitle:
-      "Am Flughafen oder Hafen — Festpreis, Flugverfolgung, kostenlose Stornierung.",
+    heroSubtitle: "Am Flughafen oder Hafen — Festpreis, Flugverfolgung, kostenlose Stornierung.",
     manifestoLead: "Die besten Ankünfte fühlen sich",
     manifestoAccent: "mühelos an.",
     manifestoBody:
@@ -224,7 +223,8 @@ export const de: Dict = {
     regionsSubtitle: "Zwei internationale Flughäfen, drei Fährhäfen, 260 km Küste.",
     closingTitle: "Sie erkunden.",
     closingAccent: "Wir fahren.",
-    closingSubtitle: "Festpreis, lizenzierter Fahrer, kostenlose Stornierung. Buchung in zwei Minuten.",
+    closingSubtitle:
+      "Festpreis, lizenzierter Fahrer, kostenlose Stornierung. Buchung in zwei Minuten.",
     popularTitle: "Beliebte Strecken",
     popularSubtitle: "Festpreise auf den Strecken, die Reisende am häufigsten buchen.",
     reviewsTitle: "4,9 von Reisenden wie Ihnen",
@@ -458,7 +458,8 @@ export const de: Dict = {
   },
   howItWorksPage: {
     metaTitle: "Wie es funktioniert | Buchen Sie einen Kreta-Transfer in 3 Schritten",
-    metaDescription: "Wählen Sie eine Route zum Festpreis, buchen Sie in zwei Minuten und treffen Sie Ihren Fahrer im Ankunftsbereich. Wie TransferAround funktioniert, Schritt für Schritt.",
+    metaDescription:
+      "Wählen Sie eine Route zum Festpreis, buchen Sie in zwei Minuten und treffen Sie Ihren Fahrer im Ankunftsbereich. Wie TransferAround funktioniert, Schritt für Schritt.",
     eyebrow: "Wie es funktioniert",
     title: "Drei Schritte. Kein Hin und Her.",
     cta: "Starten Sie Ihre Buchung →",
@@ -466,19 +467,19 @@ export const de: Dict = {
       {
         n: "01",
         title: "Holen Sie sich Ihren Festpreis",
-        body: "Geben Sie Ihre Route, Ihr Datum und Ihre Passagierzahl ein. Unsere Preismaschine liefert einen garantierten Festpreis für vier Fahrzeugklassen – kein Bieten, kein Warten auf die Antwort eines Fahrers."
+        body: "Geben Sie Ihre Route, Ihr Datum und Ihre Passagierzahl ein. Unsere Preismaschine liefert einen garantierten Festpreis für vier Fahrzeugklassen – kein Bieten, kein Warten auf die Antwort eines Fahrers.",
       },
       {
         n: "02",
         title: "Buchen Sie in einer Minute",
-        body: "Name, Kontakt und Flugnummer des Passagiers. Das ist es. Sie erhalten sofort eine E-Mail-Bestätigung und 24 Stunden vor der Abholung den Namen, das Foto und WhatsApp Ihres Fahrers."
+        body: "Name, Kontakt und Flugnummer des Passagiers. Das ist es. Sie erhalten sofort eine E-Mail-Bestätigung und 24 Stunden vor der Abholung den Namen, das Foto und WhatsApp Ihres Fahrers.",
       },
       {
         n: "03",
         title: "Treffen Sie sich am Tor",
-        body: "Ihr Fahrer verfolgt Ihren Flug oder Ihre Fähre, trifft 15 Minuten vor Ihrer Landung ein und wartet mit Ihrem Namen an der Ankunftshalle. Bezahlen Sie bar, mit Karte oder online im Voraus."
-      }
-    ]
+        body: "Ihr Fahrer verfolgt Ihren Flug oder Ihre Fähre, trifft 15 Minuten vor Ihrer Landung ein und wartet mit Ihrem Namen an der Ankunftshalle. Bezahlen Sie bar, mit Karte oder online im Voraus.",
+      },
+    ],
   },
   reviewsPage: {
     metaTitle: "Bewertungen | Kreta-Transfers mit 4,9 Sternen",
@@ -490,10 +491,12 @@ export const de: Dict = {
   },
   forHotels: {
     metaTitle: "Für Hotels | Transferpartnerprogramm auf Kreta",
-    metaDescription: "Bieten Sie Ihren Gästen lizenzierte Transfers zum Festpreis mit einem benannten Fahrer an. Partner-Dashboard, Provision und vorrangiger Versand für Hotels auf Kreta.",
+    metaDescription:
+      "Bieten Sie Ihren Gästen lizenzierte Transfers zum Festpreis mit einem benannten Fahrer an. Partner-Dashboard, Provision und vorrangiger Versand für Hotels auf Kreta.",
     eyebrow: "Partnerschaft",
     title: "Für Hotels.",
-    subtitle: "Ein Gästetransfer, der Ihren Ansprüchen entspricht. Feste Preise, benannte Fahrer, eine Rufnummer für Ihren Concierge.",
+    subtitle:
+      "Ein Gästetransfer, der Ihren Ansprüchen entspricht. Feste Preise, benannte Fahrer, eine Rufnummer für Ihren Concierge.",
     formTitle: "Nehmen Sie Kontakt auf",
     benefitsTitle: "Was Partnerhotels bekommen",
     benefits: [
@@ -503,20 +506,24 @@ export const de: Dict = {
       "Provision auf jeden gebuchten Transfer",
       "Monatliches Reporting und Abgleich",
       "Bevorzugter Fahrerpool, der Ihrer Immobilie zugewiesen ist",
-      "Individuelle Preise für Gruppen- und Hochzeitsbuchungen"
+      "Individuelle Preise für Gruppen- und Hochzeitsbuchungen",
     ],
     referralsTitle: "Wie Empfehlungen funktionieren",
-    referralsBody: "Nach der Freigabe erhalten Sie einen Code wie HOTEL-CHANIA. Gäste buchen mit ?ref=HOTEL-CHANIA auf der Buchungs-URL – die Provision wird automatisch erfasst, wenn die Reise abgeschlossen ist.",
-    partnersNote: "Wir arbeiten bereits mit Boutique-Hotels in Chania, Rethymno, Heraklion und Lasithi zusammen – von 10-Zimmer-Hotels bis hin zu großen Resorts.",
+    referralsBody:
+      "Nach der Freigabe erhalten Sie einen Code wie HOTEL-CHANIA. Gäste buchen mit ?ref=HOTEL-CHANIA auf der Buchungs-URL – die Provision wird automatisch erfasst, wenn die Reise abgeschlossen ist.",
+    partnersNote:
+      "Wir arbeiten bereits mit Boutique-Hotels in Chania, Rethymno, Heraklion und Lasithi zusammen – von 10-Zimmer-Hotels bis hin zu großen Resorts.",
     submitLabel: "Fordern Sie Partnerschaftsinformationen an",
-    placeholder: "Erzählen Sie uns von Ihrer Immobilie und dem typischen Gästeaufkommen."
+    placeholder: "Erzählen Sie uns von Ihrer Immobilie und dem typischen Gästeaufkommen.",
   },
   forDrivers: {
     metaTitle: "Für Fahrer | Treten Sie dem TransferAround-Netzwerk bei",
-    metaDescription: "Lizenzierter Fahrer auf Kreta? Treten Sie einem Netzwerk mit festen Routen, fairer Bezahlung und ohne Bietergefechte bei. Mindestens drei Jahre Erfahrung erforderlich.",
+    metaDescription:
+      "Lizenzierter Fahrer auf Kreta? Treten Sie einem Netzwerk mit festen Routen, fairer Bezahlung und ohne Bietergefechte bei. Mindestens drei Jahre Erfahrung erforderlich.",
     eyebrow: "Fahren Sie mit uns",
     title: "Für Fahrer.",
-    subtitle: "Ein Festpreisnetzwerk für professionelle kretische Fahrer, denen Stammgäste und Ruf am Herzen liegen – und nicht Bietergefechte.",
+    subtitle:
+      "Ein Festpreisnetzwerk für professionelle kretische Fahrer, denen Stammgäste und Ruf am Herzen liegen – und nicht Bietergefechte.",
     formTitle: "Bewerben Sie sich für den Beitritt",
     applyCta: "Bewerben Sie sich zum Fahren",
     requirementsTitle: "Anforderungen",
@@ -526,20 +533,20 @@ export const de: Dict = {
       "Mindestens 3 Jahre Berufserfahrung als Fahrer auf Kreta",
       "Arbeitsenglisch (Grundkenntnisse)",
       "Smartphone mit WhatsApp",
-      "Bereitschaft, nach einem Festpreismodell zu arbeiten"
+      "Bereitschaft, nach einem Festpreismodell zu arbeiten",
     ],
     perksTitle: "Was Sie bekommen",
     perks: [
       "Garantierter Tarif pro Strecke – kein Bieten, keine Preisunterbietung",
       "Wöchentliche Auszahlungen, kein gehaltenes Bargeld",
       "Lokaler Versand (Heraklion und Chania) rund um die Uhr verfügbar",
-      "Priorität für Wiederholungs- und Partnerhotelbuchungen"
+      "Priorität für Wiederholungs- und Partnerhotelbuchungen",
     ],
     applyIntroBefore: "Bereit zum Start?",
     applyIntroLink: "Erstellen Sie Ihr Fahrerkonto",
     applyIntroAfter: "– oder senden Sie uns zunächst eine Nachricht.",
     submitLabel: "Bewerbung senden",
-    placeholder: "Basisstadt, Fahrzeugmarke/-modell/-jahr, Fahrjahre auf Kreta."
+    placeholder: "Basisstadt, Fahrzeugmarke/-modell/-jahr, Fahrjahre auf Kreta.",
   },
   legal: {
     eyebrow: "Rechtliches",
@@ -568,20 +575,28 @@ export const de: Dict = {
     notFound: (entity: string) => `${entity} nicht gefunden | TransferAround`,
     serviceTitle: (name: string) => `${name} auf Kreta | Festpreis · TransferAround`,
     regionTitle: (name: string) => `${name}, Kreta Transfers | TransferAround`,
-    routeTitle: (from: string, to: string) => `${from} nach ${to} Transfer | Festpreis · TransferAround`,
-    airportTitle: (name: string, iata: string) => `${name} (${iata}) Transfers | Festpreis · TransferAround`,
-    airportRouteTitle: (from: string, to: string) => `${from} nach ${to} Privattransfer | TransferAround`,
+    routeTitle: (from: string, to: string) =>
+      `${from} nach ${to} Transfer | Festpreis · TransferAround`,
+    airportTitle: (name: string, iata: string) =>
+      `${name} (${iata}) Transfers | Festpreis · TransferAround`,
+    airportRouteTitle: (from: string, to: string) =>
+      `${from} nach ${to} Privattransfer | TransferAround`,
     fleetTitle: (label: string) => `${label} Transfers auf Kreta | TransferAround`,
     fleetIndexTitle: "Flotte | Fahrzeugklassen für Kreta-Transfers",
-    fleetIndexDescription: "Vom Economy- zum Minibus – wählen Sie die richtige Fahrzeugklasse für Ihren Kreta-Transfer. Festpreise, lizenzierte Fahrer.",
+    fleetIndexDescription:
+      "Vom Economy- zum Minibus – wählen Sie die richtige Fahrzeugklasse für Ihren Kreta-Transfer. Festpreise, lizenzierte Fahrer.",
     servicesIndexTitle: "Transferdienste auf Kreta | TransferAround",
-    servicesIndexDescription: "Flughafen-, Hafen-, Resort- und stündliche Chauffeurdienste auf ganz Kreta – Festpreise, benannte lokale Fahrer.",
+    servicesIndexDescription:
+      "Flughafen-, Hafen-, Resort- und stündliche Chauffeurdienste auf ganz Kreta – Festpreise, benannte lokale Fahrer.",
     regionsIndexTitle: "Kreta-Regionen | Chania, Rethymno, Heraklion, Lasithi",
-    regionsIndexDescription: "Entdecken Sie die Transferabdeckung in den vier Präfekturen Kretas – Flughäfen, Häfen und Ferienorten.",
+    regionsIndexDescription:
+      "Entdecken Sie die Transferabdeckung in den vier Präfekturen Kretas – Flughäfen, Häfen und Ferienorten.",
     routesIndexTitle: "Kreta-Transferrouten | Festpreise · TransferAround",
-    routesIndexDescription: "Durchsuchen Sie alle privaten Transferrouten zum Festpreis auf Kreta – Flughäfen, Häfen und Resorts.",
+    routesIndexDescription:
+      "Durchsuchen Sie alle privaten Transferrouten zum Festpreis auf Kreta – Flughäfen, Häfen und Resorts.",
     airportsIndexTitle: "Flughafentransfers in Griechenland | TransferAround",
-    airportsIndexDescription: "Private Flughafentransfers mit lizenzierten Fahrern – Kreta und darüber hinaus. Festpreise, Meet & Greet.",
+    airportsIndexDescription:
+      "Private Flughafentransfers mit lizenzierten Fahrern – Kreta und darüber hinaus. Festpreise, Meet & Greet.",
     citiesIndexTitle: "Stadttransfers | TransferAround",
     citiesIndexDescription: "Private Transfers zu Städten und Resorts auf unserer Abdeckungskarte.",
     cityTitle: (name: string) => `${name} Transfers | TransferAround`,
@@ -597,7 +612,8 @@ export const de: Dict = {
     loginSubtitle: "Melden Sie sich an, um Ihre Buchungen zu sehen und zu verwalten.",
     asCustomer: "Als Kunde",
     asDriver: "Als Fahrer",
-    driverLoginSubtitle: "Melden Sie sich im Fahrerportal an, um Fahrten und Auszahlungen einzusehen.",
+    driverLoginSubtitle:
+      "Melden Sie sich im Fahrerportal an, um Fahrten und Auszahlungen einzusehen.",
     applyToDriveCta: "Möchten Sie für uns fahren? Bewerben",
     signupTitle: "Konto erstellen",
     signupSubtitle:
@@ -617,6 +633,8 @@ export const de: Dict = {
     haveAccount: "Sie haben bereits ein Konto?",
     invalidCredentials: "Falsche E-Mail oder falsches Passwort.",
     emailNotConfirmed: "Bitte bestätigen Sie zuerst Ihre E-Mail — prüfen Sie Ihren Posteingang.",
+    unexpectedError:
+      "Die Anfrage konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut.",
     alreadyRegistered:
       "Ein Konto mit dieser E-Mail existiert bereits. Versuchen Sie sich anzumelden.",
     checkEmailTitle: "Prüfen Sie Ihre E-Mails",
@@ -676,14 +694,15 @@ export const de: Dict = {
     backToBookings: "Zurück zu meinen Buchungen",
     driverTitle: "Ihr Fahrer",
     findingDriverTitle: "Fahrer wird gesucht",
-    findingDriverBody: "Wir ordnen Ihnen einen lizenzierten lokalen Fahrer zu. Sie erhalten eine E-Mail mit Name und Telefon, sobald zugewiesen.",
+    findingDriverBody:
+      "Wir ordnen Ihnen einen lizenzierten lokalen Fahrer zu. Sie erhalten eine E-Mail mit Name und Telefon, sobald zugewiesen.",
     driverPendingBody:
       "In Kürze wird ein lizenzierter Fahrer zugewiesen — Name, Telefon und Fahrzeug erscheinen hier.",
     plate: "Kennzeichen",
     cancelBooking: "Buchung stornieren",
     cancelTitle: "Diese Buchung stornieren?",
     cancelBody:
-            "Kostenlose Stornierung bis 24 Stunden vor Abholung. Innerhalb von 24 Stunden fällt eine Gebühr von 50 % an. Bitte wählen Sie einen Grund.",
+      "Kostenlose Stornierung bis 24 Stunden vor Abholung. Innerhalb von 24 Stunden fällt eine Gebühr von 50 % an. Bitte wählen Sie einen Grund.",
     cancelConfirm: "Ja, stornieren",
     cancelKeep: "Buchung behalten",
     cancelled: "Buchung storniert.",
@@ -791,7 +810,8 @@ export const de: Dict = {
     offersTitle: "Auftragsangebote",
     offersEmpty: "Keine aktiven Angebote. Bleiben Sie online.",
     asapTitle: "JETZT / ASAP",
-    asapEmpty: "Keine live JETZT-Anfragen. Wenn ein Gast Touristas um eine sofortige Fahrt bittet, erscheint sie hier.",
+    asapEmpty:
+      "Keine live JETZT-Anfragen. Wenn ein Gast Touristas um eine sofortige Fahrt bittet, erscheint sie hier.",
     asapBadge: "JETZT",
     asapExpires: "Läuft ab in {sec}s",
     asapNewToast: "Neue JETZT-Transferanfrage",
@@ -820,12 +840,13 @@ export const de: Dict = {
     noShow: "Nicht erschienen",
     confirmComplete: "Diesen Auftrag als abgeschlossen markieren?",
     confirmNoShow:
-            "Als Nichterscheinen markieren? Nur nach kostenlosem Warten (60 Min. Flughafen/Hafen, 30 Min. sonst).",
+      "Als Nichterscheinen markieren? Nur nach kostenlosem Warten (60 Min. Flughafen/Hafen, 30 Min. sonst).",
     unableToComplete: "Nicht abschließbar",
     confirmUnable:
       "Melden, dass Sie diesen Auftrag nicht abschließen können? Der Kunde erhält einen Ausgleich.",
     unableReported: "Gemeldet — die Disposition hilft dem Kunden.",
-    waitNotElapsed: "Die kostenlose Wartezeit ist noch nicht abgelaufen — weiter warten oder den Gast kontaktieren.",
+    waitNotElapsed:
+      "Die kostenlose Wartezeit ist noch nicht abgelaufen — weiter warten oder den Gast kontaktieren.",
 
     statusUpdated: "Status aktualisiert.",
     updateFailed: "Status konnte nicht aktualisiert werden — erneut versuchen.",
@@ -887,7 +908,8 @@ export const de: Dict = {
       "Hallo. Ich kann private Transfers kalkulieren und das Buchungsformular öffnen. Versuch HER to Elounda tomorrow at 3pm.",
     welcomeAirport: "Frag nach Transfers ab {place}. Ich kalkuliere und öffne das Formular.",
     welcomeCity: "Transfer nach oder von {place}? Frag nach einem Angebot oder Buchungshilfe.",
-    welcomeCorridor: "Diese Seite: {from} nach {to}. Frag nach einem Preis oder Passagieren und Uhrzeit.",
+    welcomeCorridor:
+      "Diese Seite: {from} nach {to}. Frag nach einem Preis oder Passagieren und Uhrzeit.",
     welcomeCountry: "Private Transfers in {market}. Frag nach Flughafen oder Stadt.",
     welcomeRoutes: "Frag zu {place}, oder wähle einen Chip für diesen Korridor.",
     welcomeBook: "Ich helfe mit günstigeren Fahrzeugen, Rückfahrt und Wartezeiten.",
@@ -932,7 +954,8 @@ export const de: Dict = {
     fullPageTitle: "Touristas AI",
     fullPageSubtitle: "Private Transfers kalkulieren, Fahrzeuge vergleichen und buchen.",
     fullPageMetaTitle: "Touristas AI | TransferAround",
-    fullPageMetaDescription: "Touristas AI für feste Transferpreise auf Kreta, in Griechenland, Spanien und Italien.",
+    fullPageMetaDescription:
+      "Touristas AI für feste Transferpreise auf Kreta, in Griechenland, Spanien und Italien.",
 
     contextPrefix: "Kontext:",
   },

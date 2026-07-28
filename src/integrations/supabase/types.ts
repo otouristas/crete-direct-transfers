@@ -523,6 +523,159 @@ export type Database = {
           },
         ];
       };
+      driver_onboarding_submissions: {
+        Row: {
+          consent_version: string | null;
+          consented_at: string | null;
+          created_at: string;
+          current_step: number;
+          driver_id: string;
+          id: string;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          reviewer_notes: string | null;
+          status: string;
+          submitted_at: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          consent_version?: string | null;
+          consented_at?: string | null;
+          created_at?: string;
+          current_step?: number;
+          driver_id: string;
+          id?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          reviewer_notes?: string | null;
+          status?: string;
+          submitted_at?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          consent_version?: string | null;
+          consented_at?: string | null;
+          created_at?: string;
+          current_step?: number;
+          driver_id?: string;
+          id?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          reviewer_notes?: string | null;
+          status?: string;
+          submitted_at?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_onboarding_submissions_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: true;
+            referencedRelation: "driver_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_documents: {
+        Row: {
+          created_at: string;
+          document_type: string;
+          driver_id: string;
+          expires_on: string | null;
+          id: string;
+          mime_type: string;
+          original_filename: string;
+          rejection_reason: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          size_bytes: number;
+          status: string;
+          storage_path: string;
+          updated_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          document_type: string;
+          driver_id: string;
+          expires_on?: string | null;
+          id?: string;
+          mime_type: string;
+          original_filename: string;
+          rejection_reason?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          size_bytes: number;
+          status?: string;
+          storage_path: string;
+          updated_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          document_type?: string;
+          driver_id?: string;
+          expires_on?: string | null;
+          id?: string;
+          mime_type?: string;
+          original_filename?: string;
+          rejection_reason?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          size_bytes?: number;
+          status?: string;
+          storage_path?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_documents_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_onboarding_events: {
+        Row: {
+          actor_id: string | null;
+          created_at: string;
+          driver_id: string;
+          event_type: string;
+          from_status: string | null;
+          id: number;
+          notes: string | null;
+          to_status: string | null;
+        };
+        Insert: {
+          actor_id?: string | null;
+          created_at?: string;
+          driver_id: string;
+          event_type: string;
+          from_status?: string | null;
+          id?: number;
+          notes?: string | null;
+          to_status?: string | null;
+        };
+        Update: {
+          actor_id?: string | null;
+          created_at?: string;
+          driver_id?: string;
+          event_type?: string;
+          from_status?: string | null;
+          id?: number;
+          notes?: string | null;
+          to_status?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_onboarding_events_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       device_tokens: {
         Row: {
           created_at: string;
@@ -739,6 +892,8 @@ export type Database = {
           full_name: string | null;
           id: string;
           phone: string | null;
+          preferred_currency: string;
+          preferred_locale: string;
           role: string;
           updated_at: string;
         };
@@ -747,6 +902,8 @@ export type Database = {
           full_name?: string | null;
           id: string;
           phone?: string | null;
+          preferred_currency?: string;
+          preferred_locale?: string;
           role?: string;
           updated_at?: string;
         };
@@ -755,6 +912,8 @@ export type Database = {
           full_name?: string | null;
           id?: string;
           phone?: string | null;
+          preferred_currency?: string;
+          preferred_locale?: string;
           role?: string;
           updated_at?: string;
         };
@@ -1010,6 +1169,26 @@ export type Database = {
       respond_to_offer: {
         Args: { p_offer_id: string; p_accept: boolean };
         Returns: Database["public"]["Tables"]["bookings"]["Row"] | null;
+      };
+      submit_driver_onboarding: {
+        Args: { p_consent_version: string };
+        Returns: Database["public"]["Tables"]["driver_onboarding_submissions"]["Row"];
+      };
+      review_driver_document: {
+        Args: {
+          p_document_id: string;
+          p_status: string;
+          p_rejection_reason?: string | null;
+        };
+        Returns: Database["public"]["Tables"]["driver_documents"]["Row"];
+      };
+      review_driver_onboarding: {
+        Args: {
+          p_driver_id: string;
+          p_status: string;
+          p_notes?: string | null;
+        };
+        Returns: Database["public"]["Tables"]["driver_onboarding_submissions"]["Row"];
       };
       set_driver_online: {
         Args: { p_online: boolean };

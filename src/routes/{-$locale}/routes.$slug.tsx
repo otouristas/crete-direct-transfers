@@ -7,11 +7,7 @@ import { CtaBand } from "@/components/sections/cta-band";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
 import { InpageNav } from "@/components/inpage-nav";
 import { getDict, useLocale, useT, type Locale, type Dict } from "@/i18n";
-import {
-  getLocalizedRoute,
-  getLocalizedRoutes,
-  getLocalizedVehicles,
-} from "@/i18n/content";
+import { getLocalizedRoute, getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 import { Check, Clock, MapPin, Plane, Radar } from "lucide-react";
@@ -41,10 +37,7 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("Route") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("Route") }, { name: "robots", content: "noindex" }],
       };
     }
     const r = loaderData.route;
@@ -250,7 +243,9 @@ function RoutePage() {
 
           <section id="overview" className="scroll-mt-32">
             <p className="max-w-2xl text-lg leading-relaxed text-foreground/90">{route.blurb}</p>
-            <h2 className="mt-10 text-2xl font-display text-primary">{t.routesPages.whatToExpect}</h2>
+            <h2 className="mt-10 text-2xl font-display text-primary">
+              {t.routesPages.whatToExpect}
+            </h2>
             <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">{route.notes}</p>
 
             <div className="mt-10 grid gap-5 md:grid-cols-2">
@@ -265,7 +260,9 @@ function RoutePage() {
                 </ul>
               </div>
               <div className="rounded-2xl border border-border bg-card p-6">
-                <h3 className="font-display text-lg text-primary">{t.routesPages.optionalExtras}</h3>
+                <h3 className="font-display text-lg text-primary">
+                  {t.routesPages.optionalExtras}
+                </h3>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                   {t.routesPages.optionalItems.map((x) => (
                     <li key={x}>{x}</li>

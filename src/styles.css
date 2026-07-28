@@ -189,7 +189,9 @@
   color: var(--muted-foreground);
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .tfr-htab:hover {
@@ -328,7 +330,9 @@
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--foreground);
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .tfr-stepbtn:hover:not(:disabled) {

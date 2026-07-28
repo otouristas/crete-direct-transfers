@@ -13,6 +13,9 @@ export type Market = {
   featuredAirportSlugs: string[];
   /** Featured city destination slugs */
   featuredCitySlugs: string[];
+  publicationStatus: "draft" | "published";
+  lastModified: string;
+  supportedLocales: readonly ["en", "el", "de", "fr", "it", "nl", "es"];
   live: boolean;
 };
 
@@ -39,6 +42,9 @@ export const MARKETS: Market[] = [
     ],
     featuredAirportSlugs: [],
     featuredCitySlugs: [],
+    publicationStatus: "published",
+    lastModified: "2026-07-28",
+    supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
     live: true,
   },
   {
@@ -61,8 +67,15 @@ export const MARKETS: Market[] = [
       "Ibiza airport transfer",
       "City-to-city rides in Spain",
     ],
-    featuredAirportSlugs: ["madrid-barajas-airport-transfers-mad", "barcelona-el-prat-airport-transfers-bcn", "malaga-airport-transfers-agp"],
+    featuredAirportSlugs: [
+      "madrid-barajas-airport-transfers-mad",
+      "barcelona-el-prat-airport-transfers-bcn",
+      "malaga-airport-transfers-agp",
+    ],
     featuredCitySlugs: ["madrid", "barcelona", "malaga"],
+    publicationStatus: "published",
+    lastModified: "2026-07-28",
+    supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
     live: true,
   },
   {
@@ -85,9 +98,88 @@ export const MARKETS: Market[] = [
       "Amalfi coast private transfer",
       "City-to-city rides in Italy",
     ],
-    featuredAirportSlugs: ["rome-fiumicino-airport-transfers-fco", "milan-malpensa-airport-transfers-mxp", "venice-marco-polo-airport-transfers-vce"],
+    featuredAirportSlugs: [
+      "rome-fiumicino-airport-transfers-fco",
+      "milan-malpensa-airport-transfers-mxp",
+      "venice-marco-polo-airport-transfers-vce",
+    ],
     featuredCitySlugs: ["rome", "milan", "venice"],
+    publicationStatus: "published",
+    lastModified: "2026-07-28",
+    supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
     live: true,
+  },
+  {
+    slug: "portugal",
+    name: "Portugal",
+    countryCode: "PT",
+    bookableDefault: "quote",
+    currency: "EUR",
+    heroTitle: "Private transfers in Portugal",
+    heroBody: "Quote-confirmed airport, island and city transfers with licensed local partners.",
+    metaTitle: "Private Transfers in Portugal | TransferAround",
+    metaDescription:
+      "Request private transfers in Portugal for Lisbon, Porto, Algarve, Madeira and the Azores.",
+    searchIntents: [],
+    featuredAirportSlugs: [
+      "lisbon-airport-transfers-lis",
+      "porto-airport-transfers-opo",
+      "faro-airport-transfers-fao",
+      "funchal-airport-transfers-fnc",
+      "ponta-delgada-airport-transfers-pdl",
+    ],
+    featuredCitySlugs: ["lisbon", "porto", "algarve", "funchal", "ponta-delgada"],
+    publicationStatus: "draft",
+    lastModified: "2026-07-28",
+    supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
+    live: false,
+  },
+  {
+    slug: "cyprus",
+    name: "Cyprus",
+    countryCode: "CY",
+    bookableDefault: "quote",
+    currency: "EUR",
+    heroTitle: "Private transfers in Cyprus",
+    heroBody: "Quote-confirmed airport, resort and city transfers with licensed local partners.",
+    metaTitle: "Private Transfers in Cyprus | TransferAround",
+    metaDescription:
+      "Request private transfers in Cyprus for Larnaca, Paphos, Limassol, Nicosia and the eastern resorts.",
+    searchIntents: [],
+    featuredAirportSlugs: ["larnaca-airport-transfers-lca", "paphos-airport-transfers-pfo"],
+    featuredCitySlugs: ["larnaca", "paphos", "limassol", "nicosia", "ayia-napa", "protaras"],
+    publicationStatus: "draft",
+    lastModified: "2026-07-28",
+    supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
+    live: false,
+  },
+  {
+    slug: "turkey",
+    name: "Turkey",
+    countryCode: "TR",
+    bookableDefault: "quote",
+    currency: "EUR",
+    heroTitle: "Private transfers in Turkey",
+    heroBody:
+      "Quote-confirmed airport, coastal resort and city transfers with licensed local partners.",
+    metaTitle: "Private Transfers in Turkey | TransferAround",
+    metaDescription:
+      "Request private transfers in Turkey for Istanbul, Antalya, Izmir, Bodrum, Dalaman and Cappadocia.",
+    searchIntents: [],
+    featuredAirportSlugs: [
+      "istanbul-airport-transfers-ist",
+      "istanbul-sabiha-airport-transfers-saw",
+      "antalya-airport-transfers-ayt",
+      "izmir-airport-transfers-adb",
+      "bodrum-airport-transfers-bjv",
+      "dalaman-airport-transfers-dlm",
+      "kayseri-airport-transfers-asr",
+    ],
+    featuredCitySlugs: ["istanbul", "antalya", "izmir", "bodrum", "dalaman", "cappadocia"],
+    publicationStatus: "draft",
+    lastModified: "2026-07-28",
+    supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
+    live: false,
   },
 ];
 
@@ -96,5 +188,5 @@ export function getMarket(slug: string): Market | undefined {
 }
 
 export function listLiveMarkets(): Market[] {
-  return MARKETS.filter((m) => m.live);
+  return MARKETS.filter((m) => m.live && m.publicationStatus === "published");
 }

@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { z } from "zod";
-import { MailCheck } from "lucide-react";
+import { MailCheck, ShieldCheck } from "lucide-react";
+import { translate } from "@transferaround/i18n";
 import { supabase } from "@/integrations/supabase/client";
-import { VEHICLE_CLASSES } from "@/data/routes";
 import { getDict, localePath, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { Field, InputStyles } from "@/components/form/field";
@@ -23,98 +22,59 @@ export const Route = createFileRoute("/{-$locale}/driver_/apply")({
   component: DriverApplyPage,
 });
 
-const schema = z.object({
-  full_name: z.string().trim().min(2, "Please enter your name").max(100),
-  email: z.string().trim().email("Please enter a valid email").max(255),
-  phone: z.string().trim().min(5, "Please enter your phone").max(30),
-  password: z.string().min(8, "At least 8 characters").max(72),
-  vehicle_class: z.enum([
-    "economy",
-    "comfort",
-    "luxury",
-    "suv",
-    "minivan",
-    "van-first",
-    "minibus-12",
-    "minibus-16",
-  ]),
-  vehicle_make_model: z.string().trim().min(2, "Please enter your vehicle").max(100),
-  vehicle_plate: z.string().trim().min(2, "Please enter your plate").max(20),
-  license_number: z.string().trim().min(2, "Please enter your driving licence number").max(50),
-  insurance_number: z.string().trim().min(2, "Please enter your insurance policy number").max(50),
-  id_document_number: z
-    .string()
-    .trim()
-    .min(2, "Please enter your ID / passport / EOT number")
-    .max(50),
-  vehicle_registration_number: z
-    .string()
-    .trim()
-    .min(2, "Please enter your vehicle registration number")
-    .max(50),
-});
-
 function DriverApplyPage() {
   const { locale } = Route.useRouteContext();
   const t = getDict(locale);
-
+  const tr = (key: Parameters<typeof translate>[1]) => translate(locale, key);
   const [values, setValues] = useState({
     full_name: "",
     email: "",
     phone: "",
     password: "",
-    vehicle_class: "comfort",
-    vehicle_make_model: "",
-    vehicle_plate: "",
-    license_number: "",
-    insurance_number: "",
-    id_document_number: "",
-    vehicle_registration_number: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const set = (key: keyof typeof values) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setValues({ ...values, [key]: e.target.value });
-
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const parsed = schema.safeParse(values);
-    if (!parsed.success) {
-      const errs: Record<string, string> = {};
-      for (const i of parsed.error.issues) errs[i.path.join(".")] = i.message;
-      setErrors(errs);
-      return;
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const nextErrors: Record<string, string> = {};
+    if (values.full_name.trim().length < 2) nextErrors.full_name = tr("validation.name");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
+      nextErrors.email = tr("validation.email");
     }
-    setErrors({});
-    setError(null);
+    if (values.phone.trim().length < 5) nextErrors.phone = tr("validation.phone");
+    if (values.password.length < 8) nextErrors.password = tr("validation.password");
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length) return;
+
     setSubmitting(true);
-    // The DB trigger reads signup_role + vehicle metadata and creates the
-    // profile + pending driver_profiles rows — works before email confirmation.
-    const { error: err } = await supabase.auth.signUp({
-      email: parsed.data.email,
-      password: parsed.data.password,
+    setError(null);
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: values.email.trim(),
+      password: values.password,
       options: {
         data: {
           signup_role: "driver",
-          full_name: parsed.data.full_name,
-          phone: parsed.data.phone,
-          vehicle_class: parsed.data.vehicle_class,
-          vehicle_make_model: parsed.data.vehicle_make_model,
-          vehicle_plate: parsed.data.vehicle_plate,
-          license_number: parsed.data.license_number,
-          insurance_number: parsed.data.insurance_number,
-          id_document_number: parsed.data.id_document_number,
-          vehicle_registration_number: parsed.data.vehicle_registration_number,
+          full_name: values.full_name.trim(),
+          phone: values.phone.trim(),
+          locale,
         },
         emailRedirectTo: `${window.location.origin}${localePath(locale, "/driver")}`,
       },
     });
     setSubmitting(false);
-    if (err) {
-      setError(/already registered/i.test(err.message) ? t.auth.alreadyRegistered : err.message);
+
+    if (signUpError) {
+      setError(
+        signUpError.code === "user_already_exists" ? t.auth.alreadyRegistered : tr("common.error"),
+      );
+      return;
+    }
+
+    if (data.session) {
+      window.location.assign(localePath(locale, "/driver"));
       return;
     }
     setSent(true);
@@ -123,7 +83,7 @@ function DriverApplyPage() {
   if (sent) {
     return (
       <div className="mx-auto max-w-md px-6 py-16">
-        <div className="rounded-2xl border border-border bg-card p-8 text-center">
+        <div className="rounded-3xl border border-border bg-card p-8 text-center shadow-sm">
           <MailCheck className="mx-auto h-12 w-12 text-accent" strokeWidth={1.5} />
           <h1 className="mt-4 text-2xl font-display text-primary">{t.driver.applySuccessTitle}</h1>
           <p className="mt-2 text-sm text-muted-foreground">{t.driver.applySuccessBody}</p>
@@ -133,36 +93,60 @@ function DriverApplyPage() {
   }
 
   return (
-    <div className="mx-auto max-w-xl px-6 py-16">
-      <div className="rounded-2xl border border-border bg-card p-8">
-        <h1 className="text-3xl font-display text-primary">{t.driver.applyTitle}</h1>
-        <p className="mt-2 text-sm text-muted-foreground">{t.driver.applySubtitle}</p>
-        <form onSubmit={submit} className="mt-6 space-y-4">
+    <div className="mx-auto grid max-w-5xl gap-8 px-6 py-14 lg:grid-cols-[0.85fr_1.15fr]">
+      <div className="rounded-3xl bg-primary p-8 text-primary-foreground lg:p-10">
+        <ShieldCheck className="h-10 w-10 text-accent" strokeWidth={1.5} />
+        <h1 className="mt-6 text-4xl font-display">{t.driver.applyTitle}</h1>
+        <p className="mt-4 leading-7 text-primary-foreground/75">{t.driver.applySubtitle}</p>
+        <ol className="mt-8 space-y-4 text-sm text-primary-foreground/80">
+          {[
+            tr("onboarding.step.identity"),
+            tr("onboarding.step.vehicle"),
+            tr("onboarding.step.documents"),
+            tr("onboarding.step.review"),
+          ].map((label, index) => (
+            <li key={label} className="flex items-center gap-3">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-white/10 font-semibold">
+                {index + 1}
+              </span>
+              {label}
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div className="rounded-3xl border border-border bg-card p-8 shadow-sm lg:p-10">
+        <form onSubmit={submit} className="space-y-5">
           <Field label={t.bookPage.fullName} error={errors.full_name}>
             <input
               className="input"
               autoComplete="name"
               value={values.full_name}
-              onChange={set("full_name")}
+              onChange={(event) =>
+                setValues((current) => ({ ...current, full_name: event.target.value }))
+              }
             />
           </Field>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-5 sm:grid-cols-2">
             <Field label={t.auth.email} error={errors.email}>
               <input
                 type="email"
                 className="input"
                 autoComplete="email"
                 value={values.email}
-                onChange={set("email")}
+                onChange={(event) =>
+                  setValues((current) => ({ ...current, email: event.target.value }))
+                }
               />
             </Field>
             <Field label={t.bookPage.phoneLabel} error={errors.phone}>
               <input
                 className="input"
                 autoComplete="tel"
-                placeholder="+30 …"
                 value={values.phone}
-                onChange={set("phone")}
+                onChange={(event) =>
+                  setValues((current) => ({ ...current, phone: event.target.value }))
+                }
               />
             </Field>
           </div>
@@ -172,89 +156,29 @@ function DriverApplyPage() {
               className="input"
               autoComplete="new-password"
               value={values.password}
-              onChange={set("password")}
+              onChange={(event) =>
+                setValues((current) => ({ ...current, password: event.target.value }))
+              }
             />
           </Field>
-          <Field label={t.driver.vehicleClass} error={errors.vehicle_class}>
-            <select
-              className="input"
-              value={values.vehicle_class}
-              onChange={(e) => setValues({ ...values, vehicle_class: e.target.value })}
-            >
-              {VEHICLE_CLASSES.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.label} — {v.capacity}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field label={t.driver.vehicleMakeModel} error={errors.vehicle_make_model}>
-              <input
-                className="input"
-                placeholder="Mercedes E-Class"
-                value={values.vehicle_make_model}
-                onChange={set("vehicle_make_model")}
-              />
-            </Field>
-            <Field label={t.driver.vehiclePlate} error={errors.vehicle_plate}>
-              <input
-                className="input"
-                placeholder="HKA-1234"
-                value={values.vehicle_plate}
-                onChange={set("vehicle_plate")}
-              />
-            </Field>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field label={t.driver.licenseNumber} error={errors.license_number}>
-              <input
-                className="input"
-                value={values.license_number}
-                onChange={set("license_number")}
-              />
-            </Field>
-            <Field label={t.driver.insuranceNumber} error={errors.insurance_number}>
-              <input
-                className="input"
-                value={values.insurance_number}
-                onChange={set("insurance_number")}
-              />
-            </Field>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            <Field label={t.driver.idDocumentNumber} error={errors.id_document_number}>
-              <input
-                className="input"
-                value={values.id_document_number}
-                onChange={set("id_document_number")}
-              />
-            </Field>
-            <Field
-              label={t.driver.vehicleRegistrationNumber}
-              error={errors.vehicle_registration_number}
-            >
-              <input
-                className="input"
-                value={values.vehicle_registration_number}
-                onChange={set("vehicle_registration_number")}
-              />
-            </Field>
-          </div>
-          {error && (
-            <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</div>
-          )}
+          {error ? (
+            <div className="rounded-xl bg-destructive/10 p-4 text-sm text-destructive">{error}</div>
+          ) : null}
           <button
             type="submit"
             disabled={submitting}
             className="w-full rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
           >
-            {submitting ? t.auth.sending : t.driver.submitApplication}
+            {submitting ? t.auth.creating : tr("auth.createAccount")}
           </button>
         </form>
-        <p className="mt-4 text-sm text-muted-foreground">
+        <p className="mt-5 text-sm text-muted-foreground">
           {t.auth.haveAccount}{" "}
-          <Link to="/{-$locale}/login" className="font-medium text-accent-deep hover:underline">
+          <Link
+            to="/{-$locale}/login"
+            search={{ role: "driver" }}
+            className="font-semibold text-accent-deep hover:underline"
+          >
             {t.auth.signIn}
           </Link>
         </p>

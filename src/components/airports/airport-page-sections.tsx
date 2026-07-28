@@ -1,14 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  Check,
-  ChevronDown,
-  Clock,
-  MapPin,
-  Plane,
-  Shield,
-  Sparkles,
-} from "lucide-react";
+import { Check, ChevronDown, Clock, MapPin, Plane, Shield, Sparkles } from "lucide-react";
 import type { AirportData } from "@/data/airports";
 import type { AirportRouteData } from "@/data/airport-routes";
 import { relatedAirportsByCountry } from "@/lib/airport-resolve";
@@ -51,8 +43,8 @@ export function AirportHero({
           {airport.name} Transfers ({airport.iata})
         </h1>
         <p className="mt-4 max-w-2xl text-lg text-primary-foreground/85">
-          Fixed-price private transfers with licensed local chauffeurs. Meet &
-          greet, real-time flight tracking and a free 60-minute wait.
+          Fixed-price private transfers with licensed local chauffeurs. Meet & greet, real-time
+          flight tracking and a free 60-minute wait.
         </p>
         <p className="mt-4 text-sm text-primary-foreground/65">
           Fixed price · Free cancellation · Flight monitoring
@@ -108,15 +100,11 @@ export function AirportBookingSlot({
     <div className="relative z-20 rounded-2xl bg-card p-4 text-foreground shadow-xl md:p-6">
       {airport.bookable !== "instant" && (
         <p className="mb-4 text-sm text-muted-foreground">
-          From {formatEur(airport.fromPriceEur)} · quote confirmed before you pay.
-          Instant checkout is live for Crete; elsewhere we confirm your fare shortly.
+          From {formatEur(airport.fromPriceEur)} · quote confirmed before you pay. Instant checkout
+          is live for Crete; elsewhere we confirm your fare shortly.
         </p>
       )}
-      <BookingWidget
-        defaultIata={airport.iata}
-        defaultRoute={defaultRouteSlug}
-        compact
-      />
+      <BookingWidget defaultIata={airport.iata} defaultRoute={defaultRouteSlug} compact />
     </div>
   );
 }
@@ -205,8 +193,8 @@ export function AirportKnowBefore({ airport }: { airport: AirportData }) {
           What to know before your transfer at {airport.name} ({airport.iata})
         </h2>
         <p className="mt-2 max-w-3xl text-muted-foreground">
-          Tolls, charges, terminal pickup zones and local rules that affect your
-          private transfer at {airport.name}.
+          Tolls, charges, terminal pickup zones and local rules that affect your private transfer at{" "}
+          {airport.name}.
         </p>
         <div className="mt-10 grid gap-8 sm:grid-cols-2">
           {airport.knowBefore.map((tip) => (
@@ -242,7 +230,10 @@ export function AirportInsights({ airport }: { airport: AirportData }) {
                 key={i}
                 className="rounded-2xl border border-border bg-card/90 p-6 text-sm leading-relaxed text-muted-foreground shadow-sm"
                 dangerouslySetInnerHTML={{
-                  __html: p.replace(/\*\*(.*?)\*\*/g, "<strong class='text-foreground'>$1</strong>"),
+                  __html: p.replace(
+                    /\*\*(.*?)\*\*/g,
+                    "<strong class='text-foreground'>$1</strong>",
+                  ),
                 }}
               />
             ))}
@@ -364,7 +355,12 @@ export function AirportComparison({ airport }: { airport: AirportData }) {
                   className={cn(row.recommended && "bg-accent/10 font-medium text-foreground")}
                 >
                   <td className="px-4 py-4 align-top">
-                    <span className="font-bold">{row.mode.replace("TransferAround private transfer", "TransferAround private transfer")}</span>
+                    <span className="font-bold">
+                      {row.mode.replace(
+                        "TransferAround private transfer",
+                        "TransferAround private transfer",
+                      )}
+                    </span>
                     {row.recommended ? (
                       <span className="ml-2 inline-flex rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">
                         Recommended
@@ -394,7 +390,14 @@ export function AirportVehicles({
   vehicles,
 }: {
   airport: AirportData;
-  vehicles: { id: string; label: string; capacity: string; bags: string; example: string; fromEur: number }[];
+  vehicles: {
+    id: string;
+    label: string;
+    capacity: string;
+    bags: string;
+    example: string;
+    fromEur: number;
+  }[];
 }) {
   return (
     <section id="vehicles-available" className="bg-secondary/40 py-14 sm:py-20">

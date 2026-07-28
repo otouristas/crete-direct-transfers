@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
-import { useT } from "@/i18n";
+import { useLocale, useT } from "@/i18n";
+import { getLocalizedRoutes, getLocalizedServices } from "@/i18n/content";
 import {
   APP_STORE_URL,
   CONTACT_EMAIL,
@@ -13,28 +14,20 @@ import {
   SOCIAL_FACEBOOK,
   SOCIAL_INSTAGRAM,
   SOCIAL_X,
+  REVIEWS_VERIFIED,
 } from "@/lib/site";
 import { AVG_RATING } from "@/data/reviews";
 import { Logo } from "@/components/logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
-const TOP_ROUTES = [
-  { label: "Heraklion Airport → Elounda", slug: "heraklion-airport-to-elounda" },
-  { label: "Heraklion Airport → Chania", slug: "heraklion-airport-to-chania" },
-  { label: "Heraklion Airport → Rethymno", slug: "heraklion-airport-to-rethymno" },
-  { label: "Chania Airport → Old Town", slug: "chania-airport-to-chania-old-town" },
-  { label: "Chania Airport → Kissamos", slug: "chania-airport-to-kissamos" },
-  { label: "Souda Port → Chania", slug: "souda-port-to-chania-old-town" },
-];
-
-const SERVICES = [
-  { label: "Airport transfers", slug: "airport-transfers" },
-  { label: "Port transfers", slug: "port-transfers" },
-  { label: "Hotel transfers", slug: "hotel-transfers" },
-  { label: "Private day tours", slug: "private-tours" },
-  { label: "Long distance", slug: "long-distance" },
-  { label: "Group transfers", slug: "group-transfers" },
-] as const;
+const TOP_ROUTE_SLUGS = new Set([
+  "heraklion-airport-to-elounda",
+  "heraklion-airport-to-chania",
+  "heraklion-airport-to-rethymno",
+  "chania-airport-to-chania-old-town",
+  "chania-airport-to-kissamos",
+  "souda-port-to-chania-old-town",
+]);
 
 const PAYMENT_LOGOS = [
   { src: "/footer/visa.svg", alt: "Visa", className: "h-6 w-auto lg:h-7" },
@@ -59,22 +52,12 @@ function OptionalLink({
 }) {
   if (href) {
     return (
-      <a
-        href={href}
-        title={title}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-      >
+      <a href={href} title={title} target="_blank" rel="noopener noreferrer" className={className}>
         {children}
       </a>
     );
   }
-  return (
-    <span title={title} className={className} aria-label={title}>
-      {children}
-    </span>
-  );
+  return null;
 }
 
 function FacebookIcon({ className }: { className?: string }) {
@@ -109,12 +92,15 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-const linkClass =
-  "text-primary-foreground/80 transition hover:text-accent hover:underline";
+const linkClass = "text-primary-foreground/80 transition hover:text-accent hover:underline";
 
 export function SiteFooter() {
   const t = useT();
+  const locale = useLocale();
   const year = new Date().getFullYear();
+  const topRoutes = getLocalizedRoutes(locale).filter((route) => TOP_ROUTE_SLUGS.has(route.slug));
+  const services = getLocalizedServices(locale);
+  const hasSocial = Boolean(SOCIAL_FACEBOOK || SOCIAL_INSTAGRAM || SOCIAL_X);
 
   return (
     <footer className="bg-primary text-primary-foreground">
@@ -127,37 +113,42 @@ export function SiteFooter() {
             </Link>
           </div>
           <div className="flex items-center justify-start md:justify-end">
-            <LanguageSwitcher onDark className="text-primary-foreground hover:bg-primary-foreground/10" />
+            <LanguageSwitcher
+              onDark
+              className="text-primary-foreground hover:bg-primary-foreground/10"
+            />
           </div>
         </div>
 
         {/* Social icons */}
-        <div className="mt-10 flex gap-x-6" aria-label={t.footer.socialAria}>
-          <OptionalLink
-            href={SOCIAL_FACEBOOK}
-            title={t.footer.facebook}
-            className="text-primary-foreground transition hover:text-primary-foreground/70"
-          >
-            <span className="sr-only">{t.footer.facebook}</span>
-            <FacebookIcon className="size-6" />
-          </OptionalLink>
-          <OptionalLink
-            href={SOCIAL_INSTAGRAM}
-            title={t.footer.instagram}
-            className="text-primary-foreground transition hover:text-primary-foreground/70"
-          >
-            <span className="sr-only">{t.footer.instagram}</span>
-            <InstagramIcon className="size-6" />
-          </OptionalLink>
-          <OptionalLink
-            href={SOCIAL_X}
-            title={t.footer.x}
-            className="text-primary-foreground transition hover:text-primary-foreground/70"
-          >
-            <span className="sr-only">{t.footer.x}</span>
-            <XIcon className="size-6" />
-          </OptionalLink>
-        </div>
+        {hasSocial && (
+          <div className="mt-10 flex gap-x-6" aria-label={t.footer.socialAria}>
+            <OptionalLink
+              href={SOCIAL_FACEBOOK}
+              title={t.footer.facebook}
+              className="text-primary-foreground transition hover:text-primary-foreground/70"
+            >
+              <span className="sr-only">{t.footer.facebook}</span>
+              <FacebookIcon className="size-6" />
+            </OptionalLink>
+            <OptionalLink
+              href={SOCIAL_INSTAGRAM}
+              title={t.footer.instagram}
+              className="text-primary-foreground transition hover:text-primary-foreground/70"
+            >
+              <span className="sr-only">{t.footer.instagram}</span>
+              <InstagramIcon className="size-6" />
+            </OptionalLink>
+            <OptionalLink
+              href={SOCIAL_X}
+              title={t.footer.x}
+              className="text-primary-foreground transition hover:text-primary-foreground/70"
+            >
+              <span className="sr-only">{t.footer.x}</span>
+              <XIcon className="size-6" />
+            </OptionalLink>
+          </div>
+        )}
       </div>
 
       {/* Columns */}
@@ -166,23 +157,27 @@ export function SiteFooter() {
         <div>
           <p className="text-lg font-semibold">{t.footer.supportTitle}</p>
           <div className="mt-5 space-y-4 text-sm">
-            <div>
-              <p className="font-light text-primary-foreground/50">{t.footer.dispatch}</p>
-              <a href={CONTACT_PHONE_HREF} className={`mt-1 block ${linkClass}`}>
-                {CONTACT_PHONE}
-              </a>
-            </div>
-            <div>
-              <p className="font-light text-primary-foreground/50">{t.footer.whatsappSupport}</p>
-              <a
-                href={CONTACT_WHATSAPP_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`mt-1 block ${linkClass}`}
-              >
-                {CONTACT_PHONE}
-              </a>
-            </div>
+            {CONTACT_PHONE && CONTACT_PHONE_HREF && (
+              <div>
+                <p className="font-light text-primary-foreground/50">{t.footer.dispatch}</p>
+                <a href={CONTACT_PHONE_HREF} className={`mt-1 block ${linkClass}`}>
+                  {CONTACT_PHONE}
+                </a>
+              </div>
+            )}
+            {CONTACT_PHONE && CONTACT_WHATSAPP_HREF && (
+              <div>
+                <p className="font-light text-primary-foreground/50">{t.footer.whatsappSupport}</p>
+                <a
+                  href={CONTACT_WHATSAPP_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`mt-1 block ${linkClass}`}
+                >
+                  {CONTACT_PHONE}
+                </a>
+              </div>
+            )}
             <div>
               <p className="font-light text-primary-foreground/50">{t.footer.generalInquiries}</p>
               <a href={`mailto:${CONTACT_EMAIL}`} className={`mt-1 block ${linkClass}`}>
@@ -197,19 +192,18 @@ export function SiteFooter() {
         <nav aria-label={t.footer.routesTitle}>
           <h3 className="text-lg font-semibold">{t.footer.routesTitle}</h3>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed">
-            {TOP_ROUTES.map((r) => (
+            {topRoutes.map((r) => (
               <li key={r.slug}>
-                <Link
-                  to="/{-$locale}/routes/$slug"
-                  params={{ slug: r.slug }}
-                  className={linkClass}
-                >
-                  {r.label}
+                <Link to="/{-$locale}/routes/$slug" params={{ slug: r.slug }} className={linkClass}>
+                  {r.from} → {r.to}
                 </Link>
               </li>
             ))}
             <li>
-              <Link to="/{-$locale}/routes" className="font-medium text-accent transition hover:opacity-80">
+              <Link
+                to="/{-$locale}/routes"
+                className="font-medium text-accent transition hover:opacity-80"
+              >
                 {t.nav.allRoutes} →
               </Link>
             </li>
@@ -220,14 +214,14 @@ export function SiteFooter() {
         <nav aria-label={t.footer.servicesTitle}>
           <h3 className="text-lg font-semibold">{t.footer.servicesTitle}</h3>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed">
-            {SERVICES.map((s) => (
+            {services.map((s) => (
               <li key={s.slug}>
                 <Link
                   to="/{-$locale}/services/$slug"
                   params={{ slug: s.slug }}
                   className={linkClass}
                 >
-                  {s.label}
+                  {s.name}
                 </Link>
               </li>
             ))}
@@ -263,11 +257,13 @@ export function SiteFooter() {
                 {t.nav.howItWorks}
               </Link>
             </li>
-            <li>
-              <Link to="/{-$locale}/reviews" className={linkClass}>
-                {t.nav.reviews}
-              </Link>
-            </li>
+            {REVIEWS_VERIFIED && (
+              <li>
+                <Link to="/{-$locale}/reviews" className={linkClass}>
+                  {t.nav.reviews}
+                </Link>
+              </li>
+            )}
             <li>
               <Link to="/{-$locale}/faq" className={linkClass}>
                 {t.nav.faq}
@@ -324,10 +320,12 @@ export function SiteFooter() {
               </Link>
             </li>
           </ul>
-          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1.5 text-xs font-medium">
-            <Star className="h-3.5 w-3.5 fill-highlight text-highlight" />
-            {AVG_RATING} · Google
-          </div>
+          {REVIEWS_VERIFIED && (
+            <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1.5 text-xs font-medium">
+              <Star className="h-3.5 w-3.5 fill-highlight text-highlight" />
+              {AVG_RATING} · Google
+            </div>
+          )}
         </div>
       </div>
 

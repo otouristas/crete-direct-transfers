@@ -145,9 +145,8 @@ function BookingDetailPage() {
       toast.success(t.account.incidentOpened);
       if (b) {
         try {
-          const { incidentOpenedEmail, opsNotifyEmail, sendTransactionalEmail } = await import(
-            "@/functions/email"
-          );
+          const { incidentOpenedEmail, opsNotifyEmail, sendTransactionalEmail } =
+            await import("@/functions/email");
           await sendTransactionalEmail({
             data: incidentOpenedEmail({
               to: b.customer_email,
@@ -249,9 +248,7 @@ function BookingDetailPage() {
             value={`${b.bags_checked} ${t.widget.checkedBags.toLowerCase()} · ${b.bags_cabin} ${t.widget.cabinBags.toLowerCase()}`}
           />
           {b.flight_number && <Item label={t.widget.flightNumber} value={b.flight_number} />}
-          {b.flight_number && (
-            <FlightStatusRow flightNumber={b.flight_number} />
-          )}
+          {b.flight_number && <FlightStatusRow flightNumber={b.flight_number} />}
           {b.return_flight_number && (
             <Item label={t.bookPage.returnFlightNumber} value={b.return_flight_number} />
           )}
@@ -345,18 +342,16 @@ function BookingDetailPage() {
           <h3 className="font-display text-lg text-primary">{t.account.incidentsTitle}</h3>
           <ul className="mt-4 space-y-3">
             {incidents.data.map((inc) => (
-              <li
-                key={inc.id}
-                className="rounded-xl border border-border px-4 py-3 text-sm"
-              >
+              <li key={inc.id} className="rounded-xl border border-border px-4 py-3 text-sm">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-medium">
                     {t.account.incidentTypes[inc.type as keyof typeof t.account.incidentTypes] ??
                       inc.type}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {t.account.incidentStatus[inc.status as keyof typeof t.account.incidentStatus] ??
-                      inc.status}
+                    {t.account.incidentStatus[
+                      inc.status as keyof typeof t.account.incidentStatus
+                    ] ?? inc.status}
                   </span>
                 </div>
                 {inc.note && <p className="mt-1 text-muted-foreground">{inc.note}</p>}
@@ -502,21 +497,25 @@ function BookingDetailPage() {
           </AlertDialog>
         )}
 
-        <a
-          href={CONTACT_WHATSAPP_HREF}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
-        >
-          {t.account.needHelpWhatsapp}
-        </a>
-        <a
-          href={CONTACT_PHONE_HREF}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
-        >
-          <Phone className="h-4 w-4" />
-          {CONTACT_PHONE}
-        </a>
+        {CONTACT_WHATSAPP_HREF && (
+          <a
+            href={CONTACT_WHATSAPP_HREF}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
+          >
+            {t.account.needHelpWhatsapp}
+          </a>
+        )}
+        {CONTACT_PHONE && CONTACT_PHONE_HREF && (
+          <a
+            href={CONTACT_PHONE_HREF}
+            className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
+          >
+            <Phone className="h-4 w-4" />
+            {CONTACT_PHONE}
+          </a>
+        )}
       </div>
     </div>
   );
@@ -537,9 +536,7 @@ function FlightStatusRow({ flightNumber }: { flightNumber: string }) {
     let cancelled = false;
     void lookupFlight(flightNumber).then((f) => {
       if (cancelled) return;
-      const eta = f.estimatedArrival
-        ? new Date(f.estimatedArrival).toLocaleString()
-        : "—";
+      const eta = f.estimatedArrival ? new Date(f.estimatedArrival).toLocaleString() : "—";
       setLabel(
         f.source === "live"
           ? `${f.status} · ETA ${eta}`

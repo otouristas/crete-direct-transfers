@@ -28,8 +28,8 @@ export const Route = createFileRoute("/{-$locale}/greece")({
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "Service",
-        name: `Private transfers in ${market.name}`,
-        provider: { "@type": "LocalBusiness", name: "TransferAround" },
+        name: market.heroTitle,
+        provider: { "@type": "Organization", name: "TransferAround" },
         areaServed: { "@type": "Country", name: market.name },
       },
     });

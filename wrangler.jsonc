@@ -10,12 +10,12 @@
   "main": ".output/server/index.mjs",
   "assets": {
     "binding": "ASSETS",
-    "directory": ".output/public"
+    "directory": ".output/public",
   },
   "build": {
-    "command": "bun run build"
+    "command": "npm run build",
   },
   "observability": {
-    "enabled": true
-  }
+    "enabled": true,
+  },
 }

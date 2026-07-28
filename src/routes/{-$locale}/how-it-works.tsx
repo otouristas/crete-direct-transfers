@@ -21,7 +21,9 @@ export const Route = createFileRoute("/{-$locale}/how-it-works")({
       <>
         <section className="border-b border-border bg-muted">
           <div className="mx-auto max-w-4xl px-6 py-16 md:py-24">
-            <div className="text-xs uppercase tracking-[0.2em] text-accent">{t.howItWorksPage.eyebrow}</div>
+            <div className="text-xs uppercase tracking-[0.2em] text-accent">
+              {t.howItWorksPage.eyebrow}
+            </div>
             <h1 className="mt-3 text-4xl md:text-6xl font-display text-primary">
               {t.howItWorksPage.title}
             </h1>

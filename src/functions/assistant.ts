@@ -28,7 +28,10 @@ type OpenAiMessage = {
 };
 
 function extractJsonObject(text: string): unknown {
-  const cleaned = text.replace(/```json\s*/gi, "").replace(/```/g, "").trim();
+  const cleaned = text
+    .replace(/```json\s*/gi, "")
+    .replace(/```/g, "")
+    .trim();
   try {
     return JSON.parse(cleaned);
   } catch {
@@ -117,8 +120,7 @@ function hydrateFromTools(
     return normalizeResponse(base);
   }
 
-  const pickupAt =
-    trip.date != null ? `${trip.date}T${trip.time ?? "12:00"}:00` : undefined;
+  const pickupAt = trip.date != null ? `${trip.date}T${trip.time ?? "12:00"}:00` : undefined;
   const { quotes, routeSlug } = toolQuoteVehicles({
     from: trip.from,
     to: trip.to,
@@ -159,12 +161,8 @@ function hydrateFromTools(
 }
 
 export const chatTouristasAssistant = createServerFn({ method: "POST" })
-  .inputValidator(
-    (d: {
-      messages: ChatMessage[];
-      locale?: string;
-      pageContext?: TouristasPageContext;
-    }) => d,
+  .validator(
+    (d: { messages: ChatMessage[]; locale?: string; pageContext?: TouristasPageContext }) => d,
   )
   .handler(async ({ data }): Promise<AssistantResponse> => {
     const lastUser = [...data.messages].reverse().find((m) => m.role === "user");
@@ -289,13 +287,7 @@ export const chatTouristasAssistant = createServerFn({ method: "POST" })
         const parsed = extractJsonObject(content);
         const validated = assistantResponseSchema.safeParse(parsed);
         if (validated.success) {
-          return hydrateFromTools(
-            validated.data,
-            locale,
-            userText,
-            pageContext,
-            toolDispatch,
-          );
+          return hydrateFromTools(validated.data, locale, userText, pageContext, toolDispatch);
         }
 
         return hydrateFromTools(

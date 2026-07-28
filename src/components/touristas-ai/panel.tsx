@@ -41,13 +41,8 @@ function launcherSecondaryForContext(
 export function TouristasAiPanel({ className }: { className?: string }) {
   const locale = useLocale();
   const t = getDict(locale).touristasAi;
-  const {
-    isOpen,
-    openTouristas,
-    closeTouristas,
-    pendingPrompt,
-    consumePendingPrompt,
-  } = useTouristasAi();
+  const { isOpen, openTouristas, closeTouristas, pendingPrompt, consumePendingPrompt } =
+    useTouristasAi();
   const chat = useTouristasChat();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const handledPrompt = useRef<string | null>(null);

@@ -21,7 +21,12 @@ export function LogoMark({
   return (
     <Svg width={size} height={size} viewBox="0 0 48 48" fill="none" accessibilityRole="image">
       {rounded ? <Rect width={48} height={48} rx={12} fill={colors.primary} /> : null}
-      <Path d="M40.5 30.5A18 18 0 1 1 42 24" stroke={colors.accent} strokeWidth={4} strokeLinecap="round" />
+      <Path
+        d="M40.5 30.5A18 18 0 1 1 42 24"
+        stroke={colors.accent}
+        strokeWidth={4}
+        strokeLinecap="round"
+      />
       <Path
         d="M42.5 15.5 42 24l-7.5-4"
         fill="none"
@@ -40,7 +45,13 @@ export function LogoMark({
 }
 
 /** "TransferAround" wordmark with the accent on "Around". */
-export function BrandWordmark({ size = 24, tone = "light" }: { size?: number; tone?: "light" | "dark" }) {
+export function BrandWordmark({
+  size = 24,
+  tone = "light",
+}: {
+  size?: number;
+  tone?: "light" | "dark";
+}) {
   return (
     <Text
       style={{
@@ -50,12 +61,21 @@ export function BrandWordmark({ size = 24, tone = "light" }: { size?: number; to
         color: tone === "dark" ? colors.inverse : colors.text,
       }}
     >
-      Transfer<Text style={{ fontFamily: fonts.display, fontSize: size, color: colors.accent }}>Around</Text>
+      Transfer
+      <Text style={{ fontFamily: fonts.display, fontSize: size, color: colors.accent }}>
+        Around
+      </Text>
     </Text>
   );
 }
 
-export function BrandHeader({ subtitle, tone = "light" }: { subtitle?: string; tone?: "light" | "dark" }) {
+export function BrandHeader({
+  subtitle,
+  tone = "light",
+}: {
+  subtitle?: string;
+  tone?: "light" | "dark";
+}) {
   return (
     <View style={styles.wrap}>
       <View style={styles.row} accessibilityRole="header" accessibilityLabel="TransferAround">
@@ -63,7 +83,11 @@ export function BrandHeader({ subtitle, tone = "light" }: { subtitle?: string; t
         <BrandWordmark size={26} tone={tone} />
       </View>
       {subtitle ? (
-        <Text variant="body" color={tone === "dark" ? colors.textFaint : colors.textMuted} style={styles.sub}>
+        <Text
+          variant="body"
+          color={tone === "dark" ? colors.textFaint : colors.textMuted}
+          style={styles.sub}
+        >
           {subtitle}
         </Text>
       ) : null}
@@ -77,7 +101,10 @@ export function BrandSplash() {
     <View style={styles.splash}>
       <LogoMark size={72} rounded />
       <Text style={styles.splashWord}>
-        Transfer<Text style={{ fontFamily: fonts.display, color: colors.accent, fontSize: 22 }}>Around</Text>
+        Transfer
+        <Text style={{ fontFamily: fonts.display, color: colors.accent, fontSize: 22 }}>
+          Around
+        </Text>
       </Text>
     </View>
   );

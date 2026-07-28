@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
@@ -29,6 +29,7 @@ export function RequireAuth({ children, role }: { children: ReactNode; role?: "d
   const location = useLocation();
   const locale = useLocale();
   const profile = useProfile();
+  const [requestedPath] = useState(() => location.pathname);
 
   const needsLogin = ready && !session;
   const wrongRole = role === "driver" && profile.data ? profile.data.role !== "driver" : false;
@@ -38,13 +39,13 @@ export function RequireAuth({ children, role }: { children: ReactNode; role?: "d
       navigate({
         to: "/{-$locale}/login",
         params: { locale: locale === "en" ? undefined : locale },
-        search: { redirect: location.pathname },
+        search: { redirect: requestedPath },
         replace: true,
       });
     } else if (wrongRole) {
       navigate({ to: localePath(locale, "/account"), replace: true });
     }
-  }, [needsLogin, wrongRole, navigate, locale, location.pathname]);
+  }, [needsLogin, wrongRole, navigate, locale, requestedPath]);
 
   if (!ready || needsLogin) return <PageSkeleton />;
   if (role === "driver" && (profile.isPending || wrongRole)) return <PageSkeleton />;

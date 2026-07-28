@@ -22,15 +22,17 @@ export function CtaBand({ title, subtitle }: { title?: string; subtitle?: string
           >
             {t.common.getPrice}
           </Link>
-          <a
-            href={CONTACT_WHATSAPP_HREF}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl border border-primary-foreground/25 px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
-          >
-            <Phone className="h-4 w-4" />
-            {t.common.whatsapp}
-          </a>
+          {CONTACT_WHATSAPP_HREF && (
+            <a
+              href={CONTACT_WHATSAPP_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border border-primary-foreground/25 px-6 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
+            >
+              <Phone className="h-4 w-4" />
+              {t.common.whatsapp}
+            </a>
+          )}
         </div>
       </div>
     </section>

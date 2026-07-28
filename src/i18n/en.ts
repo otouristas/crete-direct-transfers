@@ -220,8 +220,7 @@ export const en = {
     proofTitle: "Rated 4.9 by travellers like you",
     proofSubtitle: "Real reviews from real pickups across Crete.",
     regionsTitle: "One island, covered end to end",
-    regionsSubtitle:
-      "Two international airports, three ferry ports, 260 km of coastline.",
+    regionsSubtitle: "Two international airports, three ferry ports, 260 km of coastline.",
     closingTitle: "You explore.",
     closingAccent: "We drive.",
     closingSubtitle: "Fixed price, licensed driver, free cancellation. Book in two minutes.",
@@ -319,7 +318,8 @@ export const en = {
     indexSubtitle: "Local drivers in all four prefectures — from Balos to Vai.",
     routesIn: "Routes in this region",
     hotelsTitle: "Popular areas & hotels",
-    hotelsNote: "Not on the list? We serve every hotel and villa in {name} — enter your address at booking.",
+    hotelsNote:
+      "Not on the list? We serve every hotel and villa in {name} — enter your address at booking.",
     bookAsideBody: "Local drivers who live here — not shipped in from elsewhere on the island.",
   },
   servicesPages: {
@@ -431,7 +431,8 @@ export const en = {
     freeCancelTitle: "FREE Cancellation 24H",
     freeCancelBodyBefore: "Book today, lock the price. Cancel free until",
     freeCancelBodyAfter: "for a full refund.",
-    freeCancelBodyGeneric: "Book today, lock the price. Free cancellation up to 24 hours before pickup.",
+    freeCancelBodyGeneric:
+      "Book today, lock the price. Free cancellation up to 24 hours before pickup.",
     seeVehicles: "See vehicle prices",
     needPlaces: "Please select pickup and drop-off with a precise location.",
     needQuote: "Unable to price this trip yet. Pick places on the map or from the list.",
@@ -572,7 +573,8 @@ export const en = {
     notFound: (entity: string) => `${entity} not found | TransferAround`,
     serviceTitle: (name: string) => `${name} in Crete | Fixed Price · TransferAround`,
     regionTitle: (name: string) => `${name}, Crete Transfers | TransferAround`,
-    routeTitle: (from: string, to: string) => `${from} to ${to} Transfer | Fixed Price · TransferAround`,
+    routeTitle: (from: string, to: string) =>
+      `${from} to ${to} Transfer | Fixed Price · TransferAround`,
     airportTitle: (name: string, iata: string) =>
       `${name} (${iata}) Transfers | Fixed Price · TransferAround`,
     airportRouteTitle: (from: string, to: string) =>
@@ -627,6 +629,7 @@ export const en = {
     haveAccount: "Already have an account?",
     invalidCredentials: "Wrong email or password.",
     emailNotConfirmed: "Please confirm your email first — check your inbox.",
+    unexpectedError: "We couldn't complete that request. Please try again.",
     alreadyRegistered: "An account with this email already exists. Try signing in.",
     checkEmailTitle: "Check your email",
     checkEmailBody: (email: string) =>
@@ -796,7 +799,8 @@ export const en = {
     offersTitle: "Job offers",
     offersEmpty: "No active offers. Stay online — new ones appear here.",
     asapTitle: "NOW / ASAP",
-    asapEmpty: "No live NOW requests. When a passenger asks Touristas for a transfer now, it shows here.",
+    asapEmpty:
+      "No live NOW requests. When a passenger asks Touristas for a transfer now, it shows here.",
     asapBadge: "NOW",
     asapExpires: "Expires in {sec}s",
     asapNewToast: "New NOW transfer request",
@@ -889,9 +893,11 @@ export const en = {
     identityDefault: "Your transfer assistant",
     welcome:
       "Hi. I can quote private transfers and open the booking form. Try HER to Elounda tomorrow at 3pm.",
-    welcomeAirport: "Ask about transfers from {place}. I can quote vehicles and open the booking form.",
+    welcomeAirport:
+      "Ask about transfers from {place}. I can quote vehicles and open the booking form.",
     welcomeCity: "Planning a transfer to or from {place}? Ask for a quote or booking help.",
-    welcomeCorridor: "This page is {from} to {to}. Ask me to quote it or change passengers and time.",
+    welcomeCorridor:
+      "This page is {from} to {to}. Ask me to quote it or change passengers and time.",
     welcomeCountry: "Private transfers in {market}. Ask for an airport or city quote.",
     welcomeRoutes: "Ask about {place}, or pick a chip to book this corridor.",
     welcomeBook: "I can suggest cheaper vehicles, returns, and waiting rules for your booking.",

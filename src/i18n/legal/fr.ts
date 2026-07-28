@@ -3,10 +3,12 @@ import type { LegalDocs } from "./types";
 export const legalDocsFr: LegalDocs = {
   terms: {
     metaTitle: "Conditions d'utilisation | TransferAround",
-    metaDescription: "Conditions d'utilisation de TransferAround.com — transferts privés à prix fixe en Crète avec des chauffeurs locaux agréés.",
+    metaDescription:
+      "Conditions d'utilisation de TransferAround.com — transferts privés à prix fixe en Crète avec des chauffeurs locaux agréés.",
     title: "Conditions d'utilisation",
     updated: "24 juillet 2026",
-    intro: "Ces conditions d'utilisation (les « Conditions ») sont émises par TransferAround Travel Services P.C., opérant sous le nom de TransferAround.com et enregistrée auprès de Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la « Société », « TransferAround », « nous »). Ils régissent l'utilisation du site Internet transferaround.com et de toute application mobile associée (la « Plateforme ») par tout visiteur ou utilisateur enregistré (l'« Utilisateur », « vous »).",
+    intro:
+      "Ces conditions d'utilisation (les « Conditions ») sont émises par TransferAround Travel Services P.C., opérant sous le nom de TransferAround.com et enregistrée auprès de Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la « Société », « TransferAround », « nous »). Ils régissent l'utilisation du site Internet transferaround.com et de toute application mobile associée (la « Plateforme ») par tout visiteur ou utilisateur enregistré (l'« Utilisateur », « vous »).",
     sections: [
       {
         title: "1. Général",
@@ -103,10 +105,12 @@ export const legalDocsFr: LegalDocs = {
 
   privacy: {
     metaTitle: "Politique de confidentialité | TransferAround",
-    metaDescription: "Comment TransferAround collecte, utilise et protège les données personnelles des utilisateurs, passagers et transporteurs sous GDPR.",
+    metaDescription:
+      "Comment TransferAround collecte, utilise et protège les données personnelles des utilisateurs, passagers et transporteurs sous GDPR.",
     title: "politique de confidentialité",
     updated: "24 juillet 2026",
-    intro: "Cette politique de confidentialité explique comment TransferAround Travel Services P.C., opérant sous le nom de TransferAround.com, enregistré auprès de Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la « Société », « nous »), collecte, utilise et protège les données personnelles des utilisateurs, des passagers et des transporteurs (y compris leurs chauffeurs) en relation avec la plateforme transferaround.com (le « Service »). Aux fins de la loi EU/grecque sur la protection des données, la Société est le responsable du traitement des données.",
+    intro:
+      "Cette politique de confidentialité explique comment TransferAround Travel Services P.C., opérant sous le nom de TransferAround.com, enregistré auprès de Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la « Société », « nous »), collecte, utilise et protège les données personnelles des utilisateurs, des passagers et des transporteurs (y compris leurs chauffeurs) en relation avec la plateforme transferaround.com (le « Service »). Aux fins de la loi EU/grecque sur la protection des données, la Société est le responsable du traitement des données.",
     sections: [
       {
         title: "1. Qui nous sommes",
@@ -207,10 +211,12 @@ export const legalDocsFr: LegalDocs = {
 
   driverPartnership: {
     metaTitle: "Accord de partenariat avec les chauffeurs | TransferAround",
-    metaDescription: "Conditions pour les transporteurs et chauffeurs indépendants partenaires de TransferAround.com en Crète.",
+    metaDescription:
+      "Conditions pour les transporteurs et chauffeurs indépendants partenaires de TransferAround.com en Crète.",
     title: "Accord de partenariat avec les chauffeurs",
     updated: "24 juillet 2026",
-    intro: "Cet accord de partenariat de chauffeurs (l'« Accord ») est conclu entre TransferAround Travel Services P.C., exerçant ses activités sous le nom de TransferAround.com, enregistré auprès de Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la « Société »), et la personne physique ou l'entreprise de transport agréée s'inscrivant en tant que Transporteur sur la Plateforme (le « Transporteur », « vous »). En complétant l'inscription et le processus de vérification KYC, le transporteur accepte le présent accord.",
+    intro:
+      "Cet accord de partenariat de chauffeurs (l'« Accord ») est conclu entre TransferAround Travel Services P.C., exerçant ses activités sous le nom de TransferAround.com, enregistré auprès de Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la « Société »), et la personne physique ou l'entreprise de transport agréée s'inscrivant en tant que Transporteur sur la Plateforme (le « Transporteur », « vous »). En complétant l'inscription et le processus de vérification KYC, le transporteur accepte le présent accord.",
     sections: [
       {
         title: "1. Définitions",
@@ -320,10 +326,12 @@ export const legalDocsFr: LegalDocs = {
 
   kyc: {
     metaTitle: "Politique de connaissance de votre conducteur (KYC) | TransferAround",
-    metaDescription: "Exigences de vérification pour les transporteurs et les chauffeurs sur TransferAround.com avant d'accepter les réservations.",
+    metaDescription:
+      "Exigences de vérification pour les transporteurs et les chauffeurs sur TransferAround.com avant d'accepter les réservations.",
     title: "Politique de connaissance de votre conducteur (KYC)",
     updated: "24 juillet 2026",
-    intro: "Cette politique Know Your Driver (KYC) définit le processus de vérification que chaque transporteur et chauffeur doit suivre avant d'être autorisé à accepter des réservations sur TransferAround.com. Son objectif est de confirmer l'identité et la légitimité des transporteurs, de protéger la sécurité des passagers, de soutenir la promesse de la plateforme de chauffeurs locaux sélectionnés et de répondre aux recommandations applicables en matière de lutte contre le blanchiment d'argent et le financement du terrorisme.",
+    intro:
+      "Cette politique Know Your Driver (KYC) définit le processus de vérification que chaque transporteur et chauffeur doit suivre avant d'être autorisé à accepter des réservations sur TransferAround.com. Son objectif est de confirmer l'identité et la légitimité des transporteurs, de protéger la sécurité des passagers, de soutenir la promesse de la plateforme de chauffeurs locaux sélectionnés et de répondre aux recommandations applicables en matière de lutte contre le blanchiment d'argent et le financement du terrorisme.",
     sections: [
       {
         title: "1. Objectif",
@@ -339,9 +347,7 @@ export const legalDocsFr: LegalDocs = {
       },
       {
         title: "3. Documents requis",
-        paragraphs: [
-          "Avant l'activation, un transporteur doit soumettre et avoir vérifié :",
-        ],
+        paragraphs: ["Avant l'activation, un transporteur doit soumettre et avoir vérifié :"],
         items: [
           "Une pièce d'identité ou un passeport valide avec photo émis par le gouvernement.",
           "Un permis de conduire valide couvrant la catégorie du véhicule utilisé.",
@@ -411,7 +417,8 @@ export const legalDocsFr: LegalDocs = {
 
   refunds: {
     metaTitle: "Annulation et remboursements | TransferAround",
-    metaDescription: "Fenêtres d'annulation, temps d'attente et conditions de remboursement pour les réservations TransferAround.",
+    metaDescription:
+      "Fenêtres d'annulation, temps d'attente et conditions de remboursement pour les réservations TransferAround.",
     title: "Annulation et remboursements",
     updated: "24 juillet 2026",
     sections: [
@@ -509,7 +516,8 @@ export const legalDocsFr: LegalDocs = {
     metaDescription: "Comment TransferAround utilise les cookies et technologies similaires.",
     title: "Politique en matière de cookies",
     updated: "24 juillet 2026",
-    intro: "Nous utilisons des cookies et des technologies similaires pour que la Plateforme puisse fonctionner et, avec votre consentement si nécessaire, pour améliorer votre expérience et afficher des offres pertinentes. Cette politique doit être lue avec notre {link:privacy}.",
+    intro:
+      "Nous utilisons des cookies et des technologies similaires pour que la Plateforme puisse fonctionner et, avec votre consentement si nécessaire, pour améliorer votre expérience et afficher des offres pertinentes. Cette politique doit être lue avec notre {link:privacy}.",
     sections: [
       {
         title: "Cookies essentiels",
@@ -549,5 +557,4 @@ export const legalDocsFr: LegalDocs = {
       },
     ],
   },
-
 };

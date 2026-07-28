@@ -1,0 +1,57 @@
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/driver/package-lock.json
+            apps/rider/package-lock.json
+      - name: Install website
+        run: npm ci
+      - name: Install driver app
+        run: npm ci --prefix apps/driver
+      - name: Install rider app
+        run: npm ci --prefix apps/rider
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Typecheck driver app
+        run: npm run typecheck --prefix apps/driver
+      - name: Typecheck rider app
+        run: npm run typecheck --prefix apps/rider
+      - name: Localization completeness
+        run: npm run check:i18n
+      - name: Lint
+        run: npm run lint
+      - name: Production build
+        run: npm run build
+      - name: Production dependency audit
+        run: |
+          npm audit --omit=dev --audit-level=high
+          npm audit --prefix apps/driver --omit=dev --audit-level=high
+          npm audit --prefix apps/rider --omit=dev --audit-level=high
+
+  database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.110.0
+      - name: Start temporary Supabase stack
+        run: supabase start
+      - name: Validate migrations and RLS assertions
+        run: supabase test db

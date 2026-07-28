@@ -13,7 +13,12 @@ import {
   type TripType,
 } from "@/lib/pricing";
 import { fetchTripRoute, type TripGeometry } from "@/lib/trip-route";
-import { matchRouteSlug, placeCountry, searchLocalPlaces, type PlaceResult } from "@/lib/place-search";
+import {
+  matchRouteSlug,
+  placeCountry,
+  searchLocalPlaces,
+  type PlaceResult,
+} from "@/lib/place-search";
 import { getIataAirport } from "@/data/iata-airports";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -263,14 +268,20 @@ function BookPage() {
     }));
   }, [user, profile.data]);
 
-  const fromCoords =
-    fromPlace?.lat != null && fromPlace?.lng != null
-      ? { lat: fromPlace.lat, lng: fromPlace.lng }
-      : pickupPoint;
-  const toCoords =
-    toPlace?.lat != null && toPlace?.lng != null
-      ? { lat: toPlace.lat, lng: toPlace.lng }
-      : dropoffPoint;
+  const fromCoords = useMemo(
+    () =>
+      fromPlace?.lat != null && fromPlace?.lng != null
+        ? { lat: fromPlace.lat, lng: fromPlace.lng }
+        : pickupPoint,
+    [fromPlace?.lat, fromPlace?.lng, pickupPoint],
+  );
+  const toCoords = useMemo(
+    () =>
+      toPlace?.lat != null && toPlace?.lng != null
+        ? { lat: toPlace.lat, lng: toPlace.lng }
+        : dropoffPoint,
+    [toPlace?.lat, toPlace?.lng, dropoffPoint],
+  );
 
   const isHourly = service === "hourly";
 
@@ -315,16 +326,7 @@ function BookPage() {
     return () => {
       cancelled = true;
     };
-  }, [
-    isHourly,
-    fromPlace,
-    toPlace,
-    fromCoords?.lat,
-    fromCoords?.lng,
-    toCoords?.lat,
-    toCoords?.lng,
-    search.route,
-  ]);
+  }, [isHourly, fromPlace, toPlace, fromCoords, toCoords, search.route]);
 
   const classQuotes = useMemo(() => {
     if (isHourly) {
@@ -449,7 +451,9 @@ function BookPage() {
 
     const routeSlug = isHourly
       ? `hourly-${hours}h`
-      : routeInfo?.routeSlug || search.route || `distance-${Math.round(routeInfo?.distanceKm ?? 0)}km`;
+      : routeInfo?.routeSlug ||
+        search.route ||
+        `distance-${Math.round(routeInfo?.distanceKm ?? 0)}km`;
 
     let quoteId: string | null = null;
     let lockedPriceCents = q.totalEur * 100;
@@ -465,9 +469,7 @@ function BookPage() {
         extras,
         pickupAt: new Date(pickupAt).toISOString(),
         returnAt:
-          !isHourly && tripType === "return" && returnAt
-            ? new Date(returnAt).toISOString()
-            : null,
+          !isHourly && tripType === "return" && returnAt ? new Date(returnAt).toISOString() : null,
         distanceKm: routeInfo?.distanceKm ?? null,
         durationMin: routeInfo?.durationMin ?? null,
         hours: isHourly ? hours : null,
@@ -509,7 +511,7 @@ function BookPage() {
       pickup_address: fromQuery.trim() || fromPlace?.label || null,
       dropoff_address: isHourly ? null : toQuery.trim() || toPlace?.label || null,
       pickup_point: fromCoords ?? null,
-      dropoff_point: isHourly ? null : toCoords ?? null,
+      dropoff_point: isHourly ? null : (toCoords ?? null),
     };
 
     let { data, error } = await supabase

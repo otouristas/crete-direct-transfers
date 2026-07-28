@@ -42,7 +42,7 @@ export async function sendEmailDirect(payload: EmailPayload) {
 }
 
 export const sendTransactionalEmail = createServerFn({ method: "POST" })
-  .inputValidator((d: EmailPayload) => d)
+  .validator((d: EmailPayload) => d)
   .handler(async ({ data }) => sendViaResend(data));
 
 export function bookingCreatedEmail(input: {

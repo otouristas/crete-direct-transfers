@@ -19,7 +19,7 @@ export function AskTouristasBand({
   entityLabel?: string;
   entitySlug?: string;
   secondaryLabel?: string;
-  market?: "greece" | "spain" | "italy";
+  market?: "greece" | "spain" | "italy" | "portugal" | "cyprus" | "turkey";
   chips?: string[];
   className?: string;
 }) {
@@ -35,7 +35,9 @@ export function AskTouristasBand({
       entityLabel,
       entitySlug,
       secondaryLabel,
-      market: market ?? (entitySlug as "greece" | "spain" | "italy" | undefined),
+      market:
+        market ??
+        (entitySlug as "greece" | "spain" | "italy" | "portugal" | "cyprus" | "turkey" | undefined),
     });
 
   const open = (prompt?: string, autoSend = false) => {

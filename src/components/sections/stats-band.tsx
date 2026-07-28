@@ -1,16 +1,21 @@
 import { useT } from "@/i18n";
+import { BUSINESS_METRICS_VERIFIED, REVIEWS_VERIFIED } from "@/lib/site";
 
 export function StatsBand() {
   const t = useT();
   const stats = [
-    { value: t.stats.transfersValue, label: t.stats.transfers },
-    { value: t.stats.ratingValue, label: t.stats.rating, amber: true },
+    ...(BUSINESS_METRICS_VERIFIED
+      ? [{ value: t.stats.transfersValue, label: t.stats.transfers }]
+      : []),
+    ...(REVIEWS_VERIFIED
+      ? [{ value: t.stats.ratingValue, label: t.stats.rating, amber: true }]
+      : []),
     { value: t.stats.routesValue, label: t.stats.routes },
     { value: t.stats.supportValue, label: t.stats.support },
   ];
   return (
     <section className="border-y border-border bg-card">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-10 md:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-10">
         {stats.map((s) => (
           <div key={s.label} className="text-center">
             <div

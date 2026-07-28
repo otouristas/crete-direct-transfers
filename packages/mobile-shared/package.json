@@ -21,13 +21,27 @@
     "react-native-webview": "*"
   },
   "peerDependenciesMeta": {
-    "@expo-google-fonts/inter": { "optional": true },
-    "@expo-google-fonts/plus-jakarta-sans": { "optional": true },
-    "@expo/vector-icons": { "optional": true },
-    "expo-font": { "optional": true },
-    "react-native-safe-area-context": { "optional": true },
-    "react-native-svg": { "optional": true },
-    "react-native-webview": { "optional": true }
+    "@expo-google-fonts/inter": {
+      "optional": true
+    },
+    "@expo-google-fonts/plus-jakarta-sans": {
+      "optional": true
+    },
+    "@expo/vector-icons": {
+      "optional": true
+    },
+    "expo-font": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "react-native-svg": {
+      "optional": true
+    },
+    "react-native-webview": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.110.0",

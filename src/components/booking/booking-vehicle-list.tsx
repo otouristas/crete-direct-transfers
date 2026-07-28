@@ -62,9 +62,7 @@ export function BookingVehicleList({
             key={vc.id}
             className={cn(
               "group flex cursor-pointer rounded-xl border-2 bg-card transition-all",
-              isOn
-                ? "border-accent bg-accent/5 shadow-sm"
-                : "border-border/60 hover:border-border",
+              isOn ? "border-accent bg-accent/5 shadow-sm" : "border-border/60 hover:border-border",
             )}
           >
             <input

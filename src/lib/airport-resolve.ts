@@ -37,7 +37,8 @@ export function airportFromIata(ia: IataAirport): AirportData {
     terminals: "Your driver meets you inside the arrivals hall with a name sign.",
     pickupPoint: "Arrivals hall — look for your name on the sign",
     cityDriveMin: "Varies by destination",
-    tollsNote: "Any tolls or airport fees are included in your fixed quote — no surprises on arrival.",
+    tollsNote:
+      "Any tolls or airport fees are included in your fixed quote — no surprises on arrival.",
     updatedAt: "2026-07-24",
     intro: `Book a fixed-price private transfer from ${ia.name} (${ia.iata}) in ${where}. A licensed local driver tracks your flight, meets you in arrivals with a name sign, and takes you door-to-door for an agreed price — no meters, no surge, no bidding. Enter your destination for an instant quote confirmed before you pay.`,
     knowBefore: [

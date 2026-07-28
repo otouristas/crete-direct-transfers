@@ -1,8 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
 function loadEnv(path) {
+  if (!existsSync(path)) return {};
   const env = {};
   for (const line of readFileSync(path, "utf8").split("\n")) {
     const trimmed = line.trim();
@@ -10,10 +11,7 @@ function loadEnv(path) {
     const i = trimmed.indexOf("=");
     const key = trimmed.slice(0, i).trim();
     let val = trimmed.slice(i + 1).trim();
-    if (
-      (val.startsWith('"') && val.endsWith('"')) ||
-      (val.startsWith("'") && val.endsWith("'"))
-    ) {
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
       val = val.slice(1, -1);
     }
     env[key] = val;
@@ -21,22 +19,40 @@ function loadEnv(path) {
   return env;
 }
 
+function argument(name) {
+  const prefix = `--${name}=`;
+  return process.argv.find((value) => value.startsWith(prefix))?.slice(prefix.length);
+}
+
 const fileEnv = loadEnv(resolve(process.cwd(), ".env"));
-const url = fileEnv.SUPABASE_URL || fileEnv.VITE_SUPABASE_URL;
-const serviceKey = fileEnv.SUPABASE_SERVICE_ROLE_KEY;
-const anonKey = fileEnv.SUPABASE_PUBLISHABLE_KEY || fileEnv.VITE_SUPABASE_PUBLISHABLE_KEY;
+const env = { ...fileEnv, ...process.env };
+const url = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
+const serviceKey = env.SUPABASE_SERVICE_ROLE_KEY;
+const anonKey = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const email = argument("email") || env.DEMO_USER_EMAIL;
+const password = argument("password") || env.DEMO_USER_PASSWORD;
+const fullName = argument("name") || env.DEMO_USER_NAME || "Demo Driver";
 
 if (!url || !serviceKey) {
-  console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env");
+  console.error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+  process.exit(1);
+}
+
+if (!email || !password) {
+  console.error(
+    "Provide DEMO_USER_EMAIL and DEMO_USER_PASSWORD, or use --email=... --password=...",
+  );
+  process.exit(1);
+}
+
+if (password.length < 12) {
+  console.error("DEMO_USER_PASSWORD must contain at least 12 characters");
   process.exit(1);
 }
 
 const admin = createClient(url, serviceKey, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
-
-const email = "ikinezos@gmail.com";
-const password = "1020304050";
 
 async function main() {
   const listed = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
@@ -50,7 +66,7 @@ async function main() {
       password,
       email_confirm: true,
       user_metadata: {
-        full_name: "Ikinezos",
+        full_name: fullName,
         signup_role: "driver",
         vehicle_class: "comfort",
         vehicle_make_model: "Mercedes E-Class",
@@ -66,7 +82,7 @@ async function main() {
       email_confirm: true,
       user_metadata: {
         ...(user.user_metadata || {}),
-        full_name: user.user_metadata?.full_name || "Ikinezos",
+        full_name: user.user_metadata?.full_name || fullName,
         signup_role: "driver",
       },
     });
@@ -77,8 +93,7 @@ async function main() {
 
   const { error: pErr } = await admin.from("profiles").upsert({
     id: user.id,
-    full_name: "Ikinezos",
-    phone: "+306900000000",
+    full_name: fullName,
     role: "driver",
   });
   if (pErr) throw pErr;
@@ -120,10 +135,12 @@ async function main() {
   }
 
   if (partner?.id) {
-    const { error: mErr } = await admin.from("partner_members").upsert(
-      { partner_id: partner.id, user_id: user.id, role: "dispatcher" },
-      { onConflict: "partner_id,user_id" },
-    );
+    const { error: mErr } = await admin
+      .from("partner_members")
+      .upsert(
+        { partner_id: partner.id, user_id: user.id, role: "dispatcher" },
+        { onConflict: "partner_id,user_id" },
+      );
     if (mErr) console.warn("partner_members:", mErr.message);
   }
 
@@ -152,13 +169,11 @@ async function main() {
     JSON.stringify(
       {
         ok: true,
-        email,
-        password_set: true,
         userId: user.id,
         role: profile?.role,
         approval: dp?.approval_status,
         partner_id: dp?.partner_id ?? null,
-        note: "Same account works for rider (booking) and driver (approved). Go online in driver app to get offers.",
+        note: "Demo driver account is ready.",
       },
       null,
       2,

@@ -77,7 +77,12 @@ export function BottomSheetScaffold({
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={[
-          { padding: space.xl, paddingTop: space.sm, paddingBottom: bottomInset + space.xxl, gap: space.lg },
+          {
+            padding: space.xl,
+            paddingTop: space.sm,
+            paddingBottom: bottomInset + space.xxl,
+            gap: space.lg,
+          },
           contentStyle,
         ]}
         showsVerticalScrollIndicator={false}

@@ -33,9 +33,7 @@ async function requireUserId(): Promise<string> {
 }
 
 export const registerDeviceToken = createServerFn({ method: "POST" })
-  .inputValidator(
-    (d: { expoPushToken: string; role: DeviceRole; platform: DevicePlatform }) => d,
-  )
+  .validator((d: { expoPushToken: string; role: DeviceRole; platform: DevicePlatform }) => d)
   .handler(async ({ data }) => {
     const userId = await requireUserId();
     return upsertDeviceToken({
@@ -47,7 +45,7 @@ export const registerDeviceToken = createServerFn({ method: "POST" })
   });
 
 export const unregisterDeviceToken = createServerFn({ method: "POST" })
-  .inputValidator((d: { expoPushToken: string }) => d)
+  .validator((d: { expoPushToken: string }) => d)
   .handler(async ({ data }) => {
     const userId = await requireUserId();
     return deleteDeviceToken({ userId, expoPushToken: data.expoPushToken });

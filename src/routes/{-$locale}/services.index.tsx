@@ -59,7 +59,10 @@ function ServicesHub() {
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/50 via-transparent to-transparent" />
                 <div className="absolute bottom-0 left-0 p-6 text-primary-foreground">
                   <div className="font-mono text-xs text-primary-foreground/70">
-                    {String(services.findIndex((s) => s.slug === current.slug) + 1).padStart(2, "0")}
+                    {String(services.findIndex((s) => s.slug === current.slug) + 1).padStart(
+                      2,
+                      "0",
+                    )}
                   </div>
                   <div className="mt-1 font-display text-2xl">{current.name}</div>
                 </div>

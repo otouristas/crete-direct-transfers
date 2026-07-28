@@ -1,10 +1,13 @@
 /** Map ISO country codes / place hints to TransferAround market slugs. */
-export type DispatchMarket = "greece" | "spain" | "italy";
+export type DispatchMarket = "greece" | "spain" | "italy" | "portugal" | "cyprus" | "turkey";
 
 const COUNTRY_TO_MARKET: Record<string, DispatchMarket> = {
   GR: "greece",
   ES: "spain",
   IT: "italy",
+  PT: "portugal",
+  CY: "cyprus",
+  TR: "turkey",
 };
 
 export function marketFromCountryCode(code?: string | null): DispatchMarket {

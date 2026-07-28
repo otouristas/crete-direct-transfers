@@ -1,8 +1,10 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, fonts } from "@transferaround/mobile-shared/ui";
+import { useI18n } from "../../lib/i18n";
 
 export default function TabsLayout() {
+  const { t } = useI18n();
   return (
     <Tabs
       screenOptions={{
@@ -21,7 +23,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Offers",
+          title: t("mobile.tab.offers"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? "flash" : "flash-outline"} size={24} color={color} />
           ),
@@ -30,7 +32,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="jobs"
         options={{
-          title: "Jobs",
+          title: t("mobile.tab.jobs"),
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? "briefcase" : "briefcase-outline"} size={24} color={color} />
           ),

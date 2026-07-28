@@ -136,8 +136,7 @@ export const es: Dict = {
     licensedBody:
       "Cada conductor tiene licencia, seguro y conduce por las carreteras de Creta desde hace al menos tres años.",
     cancelTitle: "Cancelación gratuita",
-    cancelBody:
-      "Los planes cambian. Cancela hasta 24 horas antes de la recogida sin pagar nada.",
+    cancelBody: "Los planes cambian. Cancela hasta 24 horas antes de la recogida sin pagar nada.",
     payTitle: "Pago a la llegada",
     payBody:
       "Reserva ahora, paga al conductor con tarjeta o en efectivo cuando llegues. Sin pago anticipado, sin riesgo.",
@@ -226,7 +225,8 @@ export const es: Dict = {
     regionsSubtitle: "Dos aeropuertos internacionales, tres puertos, 260 km de costa.",
     closingTitle: "Tu exploras.",
     closingAccent: "Nosotros conducimos.",
-    closingSubtitle: "Precio fijo, conductor con licencia, cancelacion gratuita. Reserva en dos minutos.",
+    closingSubtitle:
+      "Precio fijo, conductor con licencia, cancelacion gratuita. Reserva en dos minutos.",
     popularTitle: "Rutas populares",
     popularSubtitle: "Precios fijos en las rutas que mas reservan los viajeros.",
     reviewsTitle: "Valoracion 4,9 de viajeros como tu",
@@ -234,7 +234,8 @@ export const es: Dict = {
     faqTitle: "Preguntas, respondidas",
     faqSubtitle: "Lo que preguntan los viajeros antes de reservar.",
     ctaTitle: "Listo para una llegada sin estres?",
-    ctaSubtitle: "Precio fijo, conductor con licencia, cancelacion gratuita. Reserva en dos minutos.",
+    ctaSubtitle:
+      "Precio fijo, conductor con licencia, cancelacion gratuita. Reserva en dos minutos.",
   },
   inpageNav: {
     ariaLabel: "Navegación en la página",
@@ -363,7 +364,8 @@ export const es: Dict = {
     value2Title: "Transparencia",
     value2Body: "Un precio fijo por ruta. Fijado antes de reservar, nunca después.",
     value3Title: "Responsabilidad",
-    value3Body: "Una empresa, un solo número al que llamar, un conductor con nombre en cada reserva.",
+    value3Body:
+      "Una empresa, un solo número al que llamar, un conductor con nombre en cada reserva.",
     value4Title: "Conocimiento local",
     value4Body: "Cubrimos una sola isla y conocemos cada carretera de acceso a los hoteles.",
     ctaTitle: "Nota la diferencia en tu próxima llegada",
@@ -404,7 +406,8 @@ export const es: Dict = {
     pinHint: "Haz clic en el mapa o arrastra el marcador hasta tu punto exacto de recogida.",
     returnFlightNumber: "Número de vuelo de vuelta",
     notes: "Notas para el conductor",
-    notesPlaceholder: "Puerta de llegada, posición de la silla infantil, dirección de una parada extra…",
+    notesPlaceholder:
+      "Puerta de llegada, posición de la silla infantil, dirección de una parada extra…",
     extrasTitle: "Extras",
     childSeat: "Silla infantil",
     extraStop: "Parada extra",
@@ -461,7 +464,8 @@ export const es: Dict = {
   },
   howItWorksPage: {
     metaTitle: "Cómo funciona | Reserve un traslado a Creta en 3 pasos",
-    metaDescription: "Elija una ruta de precio fijo, reserve en dos minutos y reúnase con su conductor en llegadas. Cómo funciona TransferAround, paso a paso.",
+    metaDescription:
+      "Elija una ruta de precio fijo, reserve en dos minutos y reúnase con su conductor en llegadas. Cómo funciona TransferAround, paso a paso.",
     eyebrow: "como funciona",
     title: "Tres pasos. Cero ida y vuelta.",
     cta: "Inicia tu reserva →",
@@ -469,19 +473,19 @@ export const es: Dict = {
       {
         n: "01",
         title: "Consigue tu precio fijo",
-        body: "Ingrese su ruta, fecha y número de pasajeros. Nuestro motor de precios arroja un precio fijo garantizado en cuatro clases de vehículos: sin pujas ni esperas a que el conductor responda."
+        body: "Ingrese su ruta, fecha y número de pasajeros. Nuestro motor de precios arroja un precio fijo garantizado en cuatro clases de vehículos: sin pujas ni esperas a que el conductor responda.",
       },
       {
         n: "02",
         title: "Reserva en un minuto",
-        body: "Nombre del pasajero, contacto y número de vuelo. Eso es todo. Recibirás una confirmación por correo electrónico inmediatamente y el nombre, la foto y el WhatsApp de tu conductor 24 horas antes de la recogida."
+        body: "Nombre del pasajero, contacto y número de vuelo. Eso es todo. Recibirás una confirmación por correo electrónico inmediatamente y el nombre, la foto y el WhatsApp de tu conductor 24 horas antes de la recogida.",
       },
       {
         n: "03",
         title: "Reunirse en la puerta",
-        body: "Su conductor rastrea su vuelo o ferry, llega 15 minutos antes de su aterrizaje y espera en la terminal de llegadas con su nombre. Paga en efectivo, con tarjeta o online por adelantado."
-      }
-    ]
+        body: "Su conductor rastrea su vuelo o ferry, llega 15 minutos antes de su aterrizaje y espera en la terminal de llegadas con su nombre. Paga en efectivo, con tarjeta o online por adelantado.",
+      },
+    ],
   },
   reviewsPage: {
     metaTitle: "Opiniones | Traslados en Creta valorados con 4,9",
@@ -493,10 +497,12 @@ export const es: Dict = {
   },
   forHotels: {
     metaTitle: "Para Hoteles | Programa de socios de transferencia en Creta",
-    metaDescription: "Ofrezca a sus invitados traslados con licencia y precio fijo con un conductor designado. Panel de control de socios, comisión y envío prioritario para hoteles de Creta.",
+    metaDescription:
+      "Ofrezca a sus invitados traslados con licencia y precio fijo con un conductor designado. Panel de control de socios, comisión y envío prioritario para hoteles de Creta.",
     eyebrow: "Asociación",
     title: "Para hoteles.",
-    subtitle: "Un traslado de invitados que refleja sus estándares. Precios fijos, conductores designados, un número al que puede llamar su conserje.",
+    subtitle:
+      "Un traslado de invitados que refleja sus estándares. Precios fijos, conductores designados, un número al que puede llamar su conserje.",
     formTitle: "Ponte en contacto",
     benefitsTitle: "Qué obtienen los hoteles asociados",
     benefits: [
@@ -506,20 +512,24 @@ export const es: Dict = {
       "Comisión por cada traslado reservado",
       "Informes y conciliaciones mensuales",
       "Grupo de conductores preferidos asignado a su propiedad",
-      "Precios personalizados para reservas de grupos y bodas."
+      "Precios personalizados para reservas de grupos y bodas.",
     ],
     referralsTitle: "Cómo funcionan las referencias",
-    referralsBody: "Después de la aprobación, recibirá un código como HOTEL-CHANIA. Los huéspedes reservan con ?ref=HOTEL-CHANIA en la URL de reserva; la comisión se registra automáticamente cuando se completa el viaje.",
-    partnersNote: "Ya estamos asociados con hoteles boutique en Chania, Rethymno, Heraklion y Lasithi, desde propiedades de 10 habitaciones hasta importantes complejos turísticos.",
+    referralsBody:
+      "Después de la aprobación, recibirá un código como HOTEL-CHANIA. Los huéspedes reservan con ?ref=HOTEL-CHANIA en la URL de reserva; la comisión se registra automáticamente cuando se completa el viaje.",
+    partnersNote:
+      "Ya estamos asociados con hoteles boutique en Chania, Rethymno, Heraklion y Lasithi, desde propiedades de 10 habitaciones hasta importantes complejos turísticos.",
     submitLabel: "Solicitar información de asociación",
-    placeholder: "Cuéntenos sobre su propiedad y el volumen típico de huéspedes."
+    placeholder: "Cuéntenos sobre su propiedad y el volumen típico de huéspedes.",
   },
   forDrivers: {
     metaTitle: "Para conductores | Únete a la Red TransferAround",
-    metaDescription: "¿Conductor con licencia en Creta? Únase a una red con rutas fijas, salario justo y sin guerras de ofertas. Se requieren mínimo tres años de experiencia.",
+    metaDescription:
+      "¿Conductor con licencia en Creta? Únase a una red con rutas fijas, salario justo y sin guerras de ofertas. Se requieren mínimo tres años de experiencia.",
     eyebrow: "Conduce con nosotros",
     title: "Para conductores.",
-    subtitle: "Una red de precio fijo creada para conductores cretenses profesionales que se preocupan por los huéspedes habituales y la reputación, no por las guerras de ofertas.",
+    subtitle:
+      "Una red de precio fijo creada para conductores cretenses profesionales que se preocupan por los huéspedes habituales y la reputación, no por las guerras de ofertas.",
     formTitle: "Aplicar para unirse",
     applyCta: "Aplicar para conducir",
     requirementsTitle: "Requisitos",
@@ -529,20 +539,20 @@ export const es: Dict = {
       "Mínimo 3 años de conducción profesional en Creta.",
       "Inglés de trabajo (básico)",
       "Smartphone con WhatsApp",
-      "Voluntad de trabajar según un modelo de precio fijo"
+      "Voluntad de trabajar según un modelo de precio fijo",
     ],
     perksTitle: "lo que obtienes",
     perks: [
       "Tarifa garantizada por ruta: sin pujas ni subcotizaciones",
       "Pagos semanales, sin efectivo retenido",
       "Envío local (Heraklion y Chania) disponible 24 horas al día, 7 días a la semana",
-      "Prioridad para reservas repetidas y de hoteles asociados"
+      "Prioridad para reservas repetidas y de hoteles asociados",
     ],
     applyIntroBefore: "¿Listo para empezar?",
     applyIntroLink: "Crea tu cuenta de conductor",
     applyIntroAfter: "- o envíenos un mensaje primero.",
     submitLabel: "Enviar solicitud",
-    placeholder: "Ciudad base, marca/modelo/año del vehículo, años conduciendo en Creta."
+    placeholder: "Ciudad base, marca/modelo/año del vehículo, años conduciendo en Creta.",
   },
   legal: {
     eyebrow: "Legal",
@@ -572,21 +582,29 @@ export const es: Dict = {
     serviceTitle: (name: string) => `${name} en Creta | Precio fijo · TransferAround`,
     regionTitle: (name: string) => `${name}, traslados Creta | TransferAround`,
     routeTitle: (from: string, to: string) => `${from} a ${to} | Precio fijo · TransferAround`,
-    airportTitle: (name: string, iata: string) => `${name} (${iata}) traslados | Precio fijo · TransferAround`,
-    airportRouteTitle: (from: string, to: string) => `${from} a ${to} traslado privado | TransferAround`,
+    airportTitle: (name: string, iata: string) =>
+      `${name} (${iata}) traslados | Precio fijo · TransferAround`,
+    airportRouteTitle: (from: string, to: string) =>
+      `${from} a ${to} traslado privado | TransferAround`,
     fleetTitle: (label: string) => `${label} traslados en Creta | TransferAround`,
     fleetIndexTitle: "Flota | Clases de vehículos para traslados a Creta",
-    fleetIndexDescription: "De económico a minibús: elija la clase de vehículo adecuada para su traslado a Creta. Precios fijos, conductores con licencia.",
+    fleetIndexDescription:
+      "De económico a minibús: elija la clase de vehículo adecuada para su traslado a Creta. Precios fijos, conductores con licencia.",
     servicesIndexTitle: "Servicios de traslado en Creta | Transferir alrededor",
-    servicesIndexDescription: "Servicios de chofer en aeropuertos, puertos, centros turísticos y por horas en Creta: precios fijos, conductores locales nombrados.",
+    servicesIndexDescription:
+      "Servicios de chofer en aeropuertos, puertos, centros turísticos y por horas en Creta: precios fijos, conductores locales nombrados.",
     regionsIndexTitle: "Regiones de Creta | La Canea, Rétino, Heraklion, Lasithi",
-    regionsIndexDescription: "Explore la cobertura de traslados en las cuatro prefecturas de Creta: aeropuertos, puertos y zonas turísticas.",
+    regionsIndexDescription:
+      "Explore la cobertura de traslados en las cuatro prefecturas de Creta: aeropuertos, puertos y zonas turísticas.",
     routesIndexTitle: "Rutas de transferencia de Creta | Precios Fijos · TransferAround",
-    routesIndexDescription: "Explore todas las rutas de traslados privados de precio fijo en Creta: aeropuertos, puertos y centros turísticos.",
+    routesIndexDescription:
+      "Explore todas las rutas de traslados privados de precio fijo en Creta: aeropuertos, puertos y centros turísticos.",
     airportsIndexTitle: "Traslados al aeropuerto en Grecia | Transferir alrededor",
-    airportsIndexDescription: "Traslados privados al aeropuerto con conductores autorizados: Creta y más allá. Precios fijos, conocer y saludar.",
+    airportsIndexDescription:
+      "Traslados privados al aeropuerto con conductores autorizados: Creta y más allá. Precios fijos, conocer y saludar.",
     citiesIndexTitle: "Traslados Ciudad | Transferir alrededor",
-    citiesIndexDescription: "Traslados privados a ciudades y resorts a través de nuestro mapa de cobertura.",
+    citiesIndexDescription:
+      "Traslados privados a ciudades y resorts a través de nuestro mapa de cobertura.",
     cityTitle: (name: string) => `${name} traslados | TransferAround`,
     postTitle: (title: string) => `${title} · Blog TransferAround`,
     countryEyebrow: "País",
@@ -620,18 +638,21 @@ export const es: Dict = {
     haveAccount: "¿Ya tienes una cuenta?",
     invalidCredentials: "Correo o contraseña incorrectos.",
     emailNotConfirmed: "Confirma primero tu correo — revisa tu bandeja de entrada.",
+    unexpectedError: "No hemos podido completar la solicitud. Inténtalo de nuevo.",
     alreadyRegistered: "Ya existe una cuenta con este correo. Prueba a iniciar sesión.",
     checkEmailTitle: "Revisa tu correo",
     checkEmailBody: (email: string) =>
       `Hemos enviado un enlace de confirmación a ${email}. Haz clic en él para activar tu cuenta.`,
     resetTitle: "Restablece tu contraseña",
     resetSubtitle: "Introduce tu correo y te enviaremos un enlace de restablecimiento.",
-    resetSent: "Si existe una cuenta para ese correo, un enlace de restablecimiento está en camino.",
+    resetSent:
+      "Si existe una cuenta para ese correo, un enlace de restablecimiento está en camino.",
     sendResetLink: "Enviar enlace de restablecimiento",
     newPasswordTitle: "Elige una nueva contraseña",
     updatePassword: "Actualizar contraseña",
     passwordUpdated: "Contraseña actualizada.",
-    resetInvalid: "Este enlace de restablecimiento no es válido o ha caducado. Solicita uno nuevo abajo.",
+    resetInvalid:
+      "Este enlace de restablecimiento no es válido o ha caducado. Solicita uno nuevo abajo.",
     trackCta: "Crea una cuenta para seguir esta reserva",
     viewMyBookings: "Ver mis reservas",
   },
@@ -678,18 +699,21 @@ export const es: Dict = {
     backToBookings: "Volver a mis reservas",
     driverTitle: "Tu conductor",
     findingDriverTitle: "Buscando tu conductor",
-    findingDriverBody: "Estamos asignando un chófer local con licencia. Recibirás un email con nombre y teléfono cuando esté asignado.",
+    findingDriverBody:
+      "Estamos asignando un chófer local con licencia. Recibirás un email con nombre y teléfono cuando esté asignado.",
     driverPendingBody:
       "Se asignará un conductor con licencia en breve — su nombre, teléfono y vehículo aparecerán aquí.",
     plate: "Matrícula",
     cancelBooking: "Cancelar reserva",
     cancelTitle: "¿Cancelar esta reserva?",
-    cancelBody:       "Cancelación gratuita hasta 24 horas antes de la recogida. Dentro de 24 horas aplica una tarifa del 50%. Elige un motivo.",
+    cancelBody:
+      "Cancelación gratuita hasta 24 horas antes de la recogida. Dentro de 24 horas aplica una tarifa del 50%. Elige un motivo.",
     cancelConfirm: "Sí, cancelar",
     cancelKeep: "Mantener reserva",
     cancelled: "Reserva cancelada.",
     cancelFailed: "No pudimos cancelar esta reserva en línea — llámanos y lo solucionamos.",
-    tooLateToCancel: (phone: string) => `Menos de 24h para la recogida — llama al ${phone} para cambios`,
+    tooLateToCancel: (phone: string) =>
+      `Menos de 24h para la recogida — llama al ${phone} para cambios`,
     cancelReasonLabel: "Motivo",
     cancelNoteLabel: "Detalles (opcional)",
     cancelNotePlaceholder: "¿Hay algo que debamos saber?",
@@ -702,7 +726,8 @@ export const es: Dict = {
     cancelFeeFull: "Reembolso completo / cancelación gratuita — sin cargo.",
     cancelFeeHalf: "Cancelación tardía — tarifa del 50%.",
     cancelNeedsReview: "Ops confirmará el reembolso parcial en breve.",
-    preferCreditHint: "Prefiero un crédito TransferAround del 100% en lugar del reembolso (recomendado).",
+    preferCreditHint:
+      "Prefiero un crédito TransferAround del 100% en lugar del reembolso (recomendado).",
     policyBlurb:
       "Espera gratuita: 60 min en aeropuertos/puertos con seguimiento de vuelo, 30 min en hoteles/direcciones. ¿El conductor no apareció? Reporta un problema para compensación total.",
     paidOnline: "Pagado online",
@@ -772,8 +797,10 @@ export const es: Dict = {
     pendingBody:
       "Estamos revisando tu solicitud — la mayoría se aprueban en 48 horas. ¿Dudas? Llama a la central.",
     suspendedTitle: "Cuenta suspendida",
-    suspendedBody: "Tu cuenta de conductor está suspendida actualmente. Contacta con la central para más detalles.",
-    poolEmpty: "No hay trabajos disponibles ahora mismo. Las nuevas reservas aparecen aquí automáticamente.",
+    suspendedBody:
+      "Tu cuenta de conductor está suspendida actualmente. Contacta con la central para más detalles.",
+    poolEmpty:
+      "No hay trabajos disponibles ahora mismo. Las nuevas reservas aparecen aquí automáticamente.",
     claim: "Aceptar trabajo",
     claiming: "Aceptando…",
     claimedToast: "Trabajo aceptado — es tuyo.",
@@ -789,7 +816,8 @@ export const es: Dict = {
     offersTitle: "Ofertas de trabajo",
     offersEmpty: "No hay ofertas activas. Mantente en línea.",
     asapTitle: "AHORA / ASAP",
-    asapEmpty: "No hay solicitudes AHORA en vivo. Cuando un pasajero pida un traslado inmediato a Touristas, aparece aquí.",
+    asapEmpty:
+      "No hay solicitudes AHORA en vivo. Cuando un pasajero pida un traslado inmediato a Touristas, aparece aquí.",
     asapBadge: "AHORA",
     asapExpires: "Caduca en {sec}s",
     asapNewToast: "Nueva solicitud de traslado AHORA",
@@ -817,12 +845,14 @@ export const es: Dict = {
     completeTrip: "Completado",
     noShow: "No se presentó",
     confirmComplete: "¿Marcar este trabajo como completado?",
-    confirmNoShow:       "¿Marcar como no-show? Solo después de la espera gratuita (60 min aeropuerto/puerto, 30 min en otros).",
+    confirmNoShow:
+      "¿Marcar como no-show? Solo después de la espera gratuita (60 min aeropuerto/puerto, 30 min en otros).",
     unableToComplete: "No se puede completar",
     confirmUnable:
       "¿Reportar que no puedes completar este trabajo? El cliente recibirá compensación.",
     unableReported: "Reportado — despacho ayudará al cliente.",
-    waitNotElapsed: "El tiempo de espera gratuita aún no ha pasado — sigue esperando o contacta al huésped.",
+    waitNotElapsed:
+      "El tiempo de espera gratuita aún no ha pasado — sigue esperando o contacta al huésped.",
 
     statusUpdated: "Estado actualizado.",
     updateFailed: "No se pudo actualizar el estado — inténtalo de nuevo.",
@@ -929,7 +959,8 @@ export const es: Dict = {
     fullPageTitle: "Touristas AI",
     fullPageSubtitle: "Cotiza traslados privados, compara vehículos y abre el formulario.",
     fullPageMetaTitle: "Touristas AI | TransferAround",
-    fullPageMetaDescription: "Pregunta a Touristas AI por precios fijos en Creta, Grecia, España e Italia.",
+    fullPageMetaDescription:
+      "Pregunta a Touristas AI por precios fijos en Creta, Grecia, España e Italia.",
 
     contextPrefix: "Contexto:",
   },

@@ -1,11 +1,12 @@
 import { Star, ShieldCheck, CalendarX2, PlaneLanding, Wallet } from "lucide-react";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/utils";
+import { REVIEWS_VERIFIED } from "@/lib/site";
 
 export function TrustPills({ dark = false, className }: { dark?: boolean; className?: string }) {
   const t = useT();
   const pills = [
-    { icon: Star, label: t.trust.rating, star: true },
+    ...(REVIEWS_VERIFIED ? [{ icon: Star, label: t.trust.rating, star: true }] : []),
     { icon: ShieldCheck, label: t.trust.licensed },
     { icon: CalendarX2, label: t.trust.freeCancel },
     { icon: PlaneLanding, label: t.trust.flightTracked },

@@ -3,10 +3,12 @@ import type { LegalDocs } from "./types";
 export const legalDocsDe: LegalDocs = {
   terms: {
     metaTitle: "Nutzungsbedingungen | TransferAround",
-    metaDescription: "Nutzungsbedingungen für TransferAround.com – Privattransfers zum Festpreis auf Kreta mit geprüften Fahrern vor Ort.",
+    metaDescription:
+      "Nutzungsbedingungen für TransferAround.com – Privattransfers zum Festpreis auf Kreta mit geprüften Fahrern vor Ort.",
     title: "Nutzungsbedingungen",
     updated: "24. Juli 2026",
-    intro: "Diese Nutzungsbedingungen (die „Bedingungen“) werden von TransferAround Travel Services P.C. herausgegeben, das als TransferAround.com firmiert und bei Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα registriert ist (das „Unternehmen“, „TransferAround“, „wir“). Sie regeln die Nutzung der Website transferaround.com und aller damit verbundenen mobilen Anwendungen (die „Plattform“) durch jeden Besucher oder registrierten Benutzer (der „Benutzer“, „Sie“).",
+    intro:
+      "Diese Nutzungsbedingungen (die „Bedingungen“) werden von TransferAround Travel Services P.C. herausgegeben, das als TransferAround.com firmiert und bei Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα registriert ist (das „Unternehmen“, „TransferAround“, „wir“). Sie regeln die Nutzung der Website transferaround.com und aller damit verbundenen mobilen Anwendungen (die „Plattform“) durch jeden Besucher oder registrierten Benutzer (der „Benutzer“, „Sie“).",
     sections: [
       {
         title: "1. Allgemeines",
@@ -94,19 +96,19 @@ export const legalDocsDe: LegalDocs = {
       },
       {
         title: "12. Kontakt",
-        paragraphs: [
-          "Fragen zu diesen Bedingungen können an {email:support} gesendet werden.",
-        ],
+        paragraphs: ["Fragen zu diesen Bedingungen können an {email:support} gesendet werden."],
       },
     ],
   },
 
   privacy: {
     metaTitle: "Datenschutzrichtlinie | TransferAround",
-    metaDescription: "Wie TransferAround im Rahmen von GDPR personenbezogene Daten von Benutzern, Passagieren und Beförderern erhebt, nutzt und schützt.",
+    metaDescription:
+      "Wie TransferAround im Rahmen von GDPR personenbezogene Daten von Benutzern, Passagieren und Beförderern erhebt, nutzt und schützt.",
     title: "Datenschutzrichtlinie",
     updated: "24. Juli 2026",
-    intro: "In dieser Datenschutzrichtlinie wird erläutert, wie TransferAround Travel Services P.C., firmierend als TransferAround.com, mit Sitz in Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (das „Unternehmen“, „wir“), personenbezogene Daten von Nutzern, Passagieren und Carriern (einschließlich ihrer Fahrer) im Zusammenhang mit der Plattform transferaround.com (der „Service“) erhebt, verwendet und schützt. Für die Zwecke des EU-/griechischen Datenschutzrechts ist das Unternehmen der Verantwortliche.",
+    intro:
+      "In dieser Datenschutzrichtlinie wird erläutert, wie TransferAround Travel Services P.C., firmierend als TransferAround.com, mit Sitz in Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (das „Unternehmen“, „wir“), personenbezogene Daten von Nutzern, Passagieren und Carriern (einschließlich ihrer Fahrer) im Zusammenhang mit der Plattform transferaround.com (der „Service“) erhebt, verwendet und schützt. Für die Zwecke des EU-/griechischen Datenschutzrechts ist das Unternehmen der Verantwortliche.",
     sections: [
       {
         title: "1. Wer wir sind",
@@ -207,10 +209,12 @@ export const legalDocsDe: LegalDocs = {
 
   driverPartnership: {
     metaTitle: "Fahrer-Partnerschaftsvereinbarung | TransferAround",
-    metaDescription: "Bedingungen für unabhängige Spediteure und Fahrer, die mit TransferAround.com auf Kreta zusammenarbeiten.",
+    metaDescription:
+      "Bedingungen für unabhängige Spediteure und Fahrer, die mit TransferAround.com auf Kreta zusammenarbeiten.",
     title: "Fahrer-Partnerschaftsvereinbarung",
     updated: "24. Juli 2026",
-    intro: "Diese Fahrerpartnerschaftsvereinbarung (die „Vereinbarung“) wird zwischen TransferAround Travel Services P.C., handelnd als TransferAround.com, registriert bei Durch den Abschluss der Registrierung und des KYC-Verifizierungsprozesses akzeptiert der Spediteur diese Vereinbarung.",
+    intro:
+      "Diese Fahrerpartnerschaftsvereinbarung (die „Vereinbarung“) wird zwischen TransferAround Travel Services P.C., handelnd als TransferAround.com, registriert bei Durch den Abschluss der Registrierung und des KYC-Verifizierungsprozesses akzeptiert der Spediteur diese Vereinbarung.",
     sections: [
       {
         title: "1. Definitionen",
@@ -320,10 +324,12 @@ export const legalDocsDe: LegalDocs = {
 
   kyc: {
     metaTitle: "Richtlinie „Kennen Sie Ihren Fahrer“ (KYC) | TransferAround",
-    metaDescription: "Verifizierungsanforderungen für Spediteure und Fahrer auf TransferAround.com vor der Annahme von Buchungen.",
+    metaDescription:
+      "Verifizierungsanforderungen für Spediteure und Fahrer auf TransferAround.com vor der Annahme von Buchungen.",
     title: "Kennen Sie Ihre Fahrerrichtlinie (KYC).",
     updated: "24. Juli 2026",
-    intro: "Diese „Know Your Driver“ (KYC)-Richtlinie legt den Überprüfungsprozess fest, den jeder Spediteur und Fahrer durchlaufen muss, bevor er Buchungen auf TransferAround.com annehmen darf. Ihr Zweck besteht darin, die Identität und Legitimität von Transportunternehmen zu bestätigen, die Sicherheit der Passagiere zu schützen, das Versprechen der Plattform für geprüfte lokale Fahrer zu unterstützen und geltende Empfehlungen zur Bekämpfung von Geldwäsche und Terrorismusfinanzierung umzusetzen.",
+    intro:
+      "Diese „Know Your Driver“ (KYC)-Richtlinie legt den Überprüfungsprozess fest, den jeder Spediteur und Fahrer durchlaufen muss, bevor er Buchungen auf TransferAround.com annehmen darf. Ihr Zweck besteht darin, die Identität und Legitimität von Transportunternehmen zu bestätigen, die Sicherheit der Passagiere zu schützen, das Versprechen der Plattform für geprüfte lokale Fahrer zu unterstützen und geltende Empfehlungen zur Bekämpfung von Geldwäsche und Terrorismusfinanzierung umzusetzen.",
     sections: [
       {
         title: "1. Zweck",
@@ -411,7 +417,8 @@ export const legalDocsDe: LegalDocs = {
 
   refunds: {
     metaTitle: "Stornierung und Rückerstattung | TransferAround",
-    metaDescription: "Stornierungsfristen, Wartezeiten und Rückerstattungsbedingungen für TransferAround-Buchungen.",
+    metaDescription:
+      "Stornierungsfristen, Wartezeiten und Rückerstattungsbedingungen für TransferAround-Buchungen.",
     title: "Stornierung und Rückerstattung",
     updated: "24. Juli 2026",
     sections: [
@@ -497,9 +504,7 @@ export const legalDocsDe: LegalDocs = {
       },
       {
         title: "Streitbeilegung",
-        paragraphs: [
-          "Die Online-Streitbeilegungsplattform EU ist unter {url:odr} verfügbar.",
-        ],
+        paragraphs: ["Die Online-Streitbeilegungsplattform EU ist unter {url:odr} verfügbar."],
       },
     ],
   },
@@ -509,7 +514,8 @@ export const legalDocsDe: LegalDocs = {
     metaDescription: "Wie TransferAround Cookies und ähnliche Technologien verwendet.",
     title: "Cookie-Richtlinie",
     updated: "24. Juli 2026",
-    intro: "Wir verwenden Cookies und ähnliche Technologien, damit die Plattform funktioniert und, mit Ihrer Zustimmung, sofern erforderlich, Ihr Erlebnis zu verbessern und relevante Angebote anzuzeigen. Diese Richtlinie sollte zusammen mit unserem {link:privacy} gelesen werden.",
+    intro:
+      "Wir verwenden Cookies und ähnliche Technologien, damit die Plattform funktioniert und, mit Ihrer Zustimmung, sofern erforderlich, Ihr Erlebnis zu verbessern und relevante Angebote anzuzeigen. Diese Richtlinie sollte zusammen mit unserem {link:privacy} gelesen werden.",
     sections: [
       {
         title: "Unverzichtbare Cookies",
@@ -549,5 +555,4 @@ export const legalDocsDe: LegalDocs = {
       },
     ],
   },
-
 };

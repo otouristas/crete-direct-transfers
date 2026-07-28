@@ -11,7 +11,7 @@ import {
   Minus,
   Plus,
 } from "lucide-react";
-import { format, parseISO } from "date-fns";
+import { parseISO } from "date-fns";
 import { getRoute, ROUTES, type VehicleClass } from "@/data/routes";
 import { getIataAirport } from "@/data/iata-airports";
 import { quote, formatEur, bagCapacity, type TripType } from "@/lib/pricing";
@@ -78,11 +78,18 @@ function defaultPickupLocal(): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-function formatPickupLabel(value: string): string {
+function formatPickupLabel(value: string, locale: string): string {
   if (!value) return "—";
   try {
     const d = parseISO(value);
-    return format(d, "EEE, MMM d · HH:mm");
+    return new Intl.DateTimeFormat(locale, {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    }).format(d);
   } catch {
     return value;
   }
@@ -146,6 +153,7 @@ function BookingWidgetBar({
   defaultIata?: string;
 }) {
   const t = useT();
+  const locale = useLocale();
   const navigate = useNavigate();
   const initialFrom = placeFromIata(defaultIata);
   const [service, setService] = useState<ServiceMode>("transfer");
@@ -334,7 +342,9 @@ function BookingWidgetBar({
                 <CalendarDays className="tfr-cell-ic" aria-hidden />
                 <span className="tfr-cell-field">
                   <span className="tfr-cell-label">{t.widget.pickupDate}</span>
-                  <span className="tfr-cell-value capitalize">{formatPickupLabel(date)}</span>
+                  <span className="tfr-cell-value capitalize">
+                    {formatPickupLabel(date, locale)}
+                  </span>
                 </span>
               </button>
             </PopoverTrigger>
@@ -376,7 +386,7 @@ function BookingWidgetBar({
                       <span className="tfr-cell-field">
                         <span className="tfr-cell-label">{t.widget.returnDate}</span>
                         <span className="tfr-cell-value capitalize">
-                          {formatPickupLabel(returnDate)}
+                          {formatPickupLabel(returnDate, locale)}
                         </span>
                       </span>
                     </button>
@@ -804,7 +814,13 @@ function BookingWidgetCard({
         </div>
 
         <div className={cn("grid sm:grid-cols-3", compact ? "gap-2" : "gap-3")}>
-          <CounterInput label={t.widget.passengers} value={pax} onChange={setPax} min={1} max={16} />
+          <CounterInput
+            label={t.widget.passengers}
+            value={pax}
+            onChange={setPax}
+            min={1}
+            max={16}
+          />
           <CounterInput
             label={t.widget.checkedBags}
             value={bagsChecked}

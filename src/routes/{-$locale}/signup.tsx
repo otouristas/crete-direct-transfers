@@ -55,13 +55,20 @@ function SignupPage() {
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
-        data: { full_name: parsed.data.full_name, phone: parsed.data.phone || "" },
+        data: {
+          full_name: parsed.data.full_name,
+          phone: parsed.data.phone || "",
+          locale,
+          signup_role: "customer",
+        },
         emailRedirectTo: `${window.location.origin}${localePath(locale, "/account")}`,
       },
     });
     setSubmitting(false);
     if (err) {
-      setError(/already registered/i.test(err.message) ? t.auth.alreadyRegistered : err.message);
+      setError(
+        err.code === "user_already_exists" ? t.auth.alreadyRegistered : t.auth.unexpectedError,
+      );
       return;
     }
     // With email confirmation ON there is no session yet — show the check-email

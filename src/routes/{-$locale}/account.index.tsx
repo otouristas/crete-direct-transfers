@@ -46,7 +46,11 @@ function bookingLabel(b: Booking): string {
 }
 
 function isUpcoming(b: Booking, now: number): boolean {
-  return new Date(b.pickup_at).getTime() >= now && !TERMINAL_DONE.has(b.status) && b.status !== "cancelled";
+  return (
+    new Date(b.pickup_at).getTime() >= now &&
+    !TERMINAL_DONE.has(b.status) &&
+    b.status !== "cancelled"
+  );
 }
 
 function isCanceled(b: Booking): boolean {
@@ -370,7 +374,9 @@ function SelectMenu({
         {icon}
         <span className="text-muted-foreground">{prefix}</span>
         <span className="font-medium">{value}</span>
-        <ChevronDown className={cn("h-3 w-3 text-muted-foreground transition", open && "rotate-180")} />
+        <ChevronDown
+          className={cn("h-3 w-3 text-muted-foreground transition", open && "rotate-180")}
+        />
       </button>
       {open && (
         <ul

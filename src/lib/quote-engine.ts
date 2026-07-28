@@ -1,12 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import {
-  quote,
-  quoteHourly,
-  quoteTrip,
-  type Extras,
-  type TripType,
-} from "@/lib/pricing";
+import { quote, quoteHourly, quoteTrip, type Extras, type TripType } from "@/lib/pricing";
 import type { VehicleClass } from "@/data/routes";
 import { getAirport } from "@/data/airports";
 import { getAirportRoute } from "@/data/airport-routes";
@@ -181,11 +175,7 @@ export async function createAndPersistQuote(
 
 /** Fetch a quote and ensure it has not expired. */
 export async function getValidQuote(quoteId: string): Promise<QuoteRow | null> {
-  const { data, error } = await supabase
-    .from("quotes")
-    .select("*")
-    .eq("id", quoteId)
-    .maybeSingle();
+  const { data, error } = await supabase.from("quotes").select("*").eq("id", quoteId).maybeSingle();
   if (error || !data) return null;
   const row = data as QuoteRow;
   if (new Date(row.expires_at).getTime() < Date.now()) return null;

@@ -1,5 +1,3 @@
-import { getMarket } from "@/data/markets";
-import { MARKET_HUB_AIRPORTS } from "@/data/market-hubs";
 import type { TouristasPageContext, TouristasPageType } from "./types";
 
 const GLOBAL_RULES = `You are Touristas AI, the booking assistant for TransferAround (private fixed-price transfers).
@@ -44,79 +42,90 @@ export function buildSystemPrompt(ctx: TouristasPageContext): string {
   return `${GLOBAL_RULES}\n\n${pagePromptExtras(ctx)}`;
 }
 
-function countryChips(ctx: TouristasPageContext): string[] {
-  const market = ctx.market ?? (ctx.entitySlug as "greece" | "spain" | "italy" | undefined);
-  if (market === "spain") {
-    const hubs = MARKET_HUB_AIRPORTS.filter((a) => a.countrySlug === "spain");
-    const a = hubs[0];
-    const b = hubs[1];
-    return [
-      a ? `${a.iata} to ${a.cityName} tomorrow 3pm` : "MAD to Madrid tomorrow 3pm",
-      b ? `${b.iata} to hotel` : "BCN airport to hotel",
-      "How does quoting work?",
-    ];
-  }
-  if (market === "italy") {
-    const hubs = MARKET_HUB_AIRPORTS.filter((a) => a.countrySlug === "italy");
-    const a = hubs[0];
-    const b = hubs[1];
-    return [
-      a ? `${a.iata} to ${a.cityName} tomorrow 3pm` : "FCO to Rome tomorrow 3pm",
-      b ? `${b.iata} to hotel` : "MXP airport to hotel",
-      "How does quoting work?",
-    ];
-  }
-  const name = getMarket("greece")?.name ?? "Greece";
-  return [
-    "HER to Chania Old Town tomorrow 3pm",
-    "Athens airport to hotel",
-    `How do transfers work in ${name}?`,
-  ];
-}
+const CHIP_COPY = {
+  en: {
+    quote: "Get a transfer quote",
+    now: "I need a transfer now",
+    waiting: "What is the free waiting time?",
+    cancellation: "Cancellation policy",
+    returnTrip: "Add a return trip",
+    hourly: "Hourly chauffeur for 4 hours",
+  },
+  el: {
+    quote: "Λάβετε προσφορά μεταφοράς",
+    now: "Χρειάζομαι μεταφορά τώρα",
+    waiting: "Πόσος είναι ο δωρεάν χρόνος αναμονής;",
+    cancellation: "Πολιτική ακύρωσης",
+    returnTrip: "Προσθήκη επιστροφής",
+    hourly: "Οδηγός ανά ώρα για 4 ώρες",
+  },
+  de: {
+    quote: "Transferangebot erhalten",
+    now: "Ich brauche jetzt einen Transfer",
+    waiting: "Wie lang ist die kostenlose Wartezeit?",
+    cancellation: "Stornierungsbedingungen",
+    returnTrip: "Rückfahrt hinzufügen",
+    hourly: "Chauffeur für 4 Stunden",
+  },
+  fr: {
+    quote: "Obtenir un devis de transfert",
+    now: "J’ai besoin d’un transfert maintenant",
+    waiting: "Quelle est la durée d’attente gratuite ?",
+    cancellation: "Politique d’annulation",
+    returnTrip: "Ajouter un retour",
+    hourly: "Chauffeur à l’heure pendant 4 heures",
+  },
+  it: {
+    quote: "Richiedi un preventivo",
+    now: "Mi serve un transfer adesso",
+    waiting: "Quanto dura l’attesa gratuita?",
+    cancellation: "Politica di cancellazione",
+    returnTrip: "Aggiungi il ritorno",
+    hourly: "Autista a ore per 4 ore",
+  },
+  nl: {
+    quote: "Vraag een transferofferte aan",
+    now: "Ik heb nu een transfer nodig",
+    waiting: "Hoe lang is de gratis wachttijd?",
+    cancellation: "Annuleringsbeleid",
+    returnTrip: "Terugrit toevoegen",
+    hourly: "Chauffeur voor 4 uur",
+  },
+  es: {
+    quote: "Solicitar presupuesto de traslado",
+    now: "Necesito un traslado ahora",
+    waiting: "¿Cuánto dura la espera gratuita?",
+    cancellation: "Política de cancelación",
+    returnTrip: "Añadir un trayecto de vuelta",
+    hourly: "Chófer por horas durante 4 horas",
+  },
+} as const;
 
 export function starterChips(
   pageType: TouristasPageType,
   entityLabel?: string,
   ctx?: TouristasPageContext,
 ): string[] {
-  const place = entityLabel ?? ctx?.entityLabel ?? "this place";
+  const copy = CHIP_COPY[(ctx?.locale as keyof typeof CHIP_COPY) ?? "en"] ?? CHIP_COPY.en;
+  const place = entityLabel ?? ctx?.entityLabel;
   const dest = ctx?.secondaryLabel;
+  const corridor = [place, dest].filter(Boolean).join(" → ");
 
   switch (pageType) {
     case "airport":
-      return [
-        `Transfer from ${place} to Elounda`,
-        `I need a transfer NOW from ${place}`,
-        "What is the free waiting time?",
-      ];
+      return [`${copy.quote}: ${place ?? "HER"} → Elounda`, copy.now, copy.waiting];
     case "corridor":
-      return [
-        dest ? `Book ${place} to ${dest} tomorrow` : "Book this corridor tomorrow",
-        dest ? `I need ${place} to ${dest} NOW` : "I need this transfer NOW",
-        "What is the free waiting time?",
-      ];
+      return [corridor ? `${copy.quote}: ${corridor}` : copy.quote, copy.now, copy.waiting];
     case "city":
-      return [
-        `Airport transfer to ${place}`,
-        `Transfer NOW to ${place}`,
-        "Cancellation policy",
-      ];
+      return [place ? `${copy.quote}: ${place}` : copy.quote, copy.now, copy.cancellation];
     case "book":
-      return ["Cheaper vehicle options", "Add a return trip", "Free waiting rules"];
+      return [copy.quote, copy.returnTrip, copy.waiting];
     case "country":
-      return countryChips(ctx ?? { locale: "en", path: "/", pageType: "country", entityLabel: place });
+      return [place ? `${copy.quote}: ${place}` : copy.quote, copy.now, copy.waiting];
     case "routes":
-      return [
-        place && place !== "this place" ? `Book ${place} tomorrow` : "Book this corridor tomorrow",
-        "I need this transfer NOW",
-        "Waiting time at airports",
-      ];
+      return [place ? `${copy.quote}: ${place}` : copy.quote, copy.now, copy.waiting];
     case "home":
     default:
-      return [
-        "HER to Elounda tomorrow 3pm",
-        "I need a transfer NOW from HER to Domotel Rethymno",
-        "Hourly chauffeur 4 hours",
-      ];
+      return [`${copy.quote}: HER → Elounda`, copy.now, copy.hourly];
   }
 }

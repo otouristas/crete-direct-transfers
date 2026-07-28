@@ -1,13 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import {
-  Briefcase,
-  Building2,
-  Car,
-  ChevronDown,
-  Menu,
-  X,
-} from "lucide-react";
+import { Briefcase, Building2, Car, ChevronDown, Menu, X } from "lucide-react";
 import { PREFIX_LOCALES, useT } from "@/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { AccountMenu } from "@/components/auth/account-menu";
@@ -116,10 +109,7 @@ export function SiteHeader() {
           </Link>
 
           {/* Center — flat nav */}
-          <nav
-            className="hidden items-center gap-0.5 lg:flex"
-            aria-label="Global"
-          >
+          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Global">
             {primaryLinks.map((item) => (
               <Link
                 key={item.label}

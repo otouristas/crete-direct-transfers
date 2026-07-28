@@ -3,10 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Car, Clock, Loader2, Phone, Radio } from "lucide-react";
 import { formatEur } from "@/lib/pricing";
 import { localePath, type Locale } from "@/i18n";
-import {
-  mapAsapStatusToUi,
-  watchAsapBooking,
-} from "@/lib/asap-dispatch";
+import { mapAsapStatusToUi, watchAsapBooking } from "@/lib/asap-dispatch";
 import type { AssistantResponse } from "@/lib/touristas-ai/types";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +35,7 @@ export function DispatchLiveCard({
 
   useEffect(() => {
     setState(initial);
-  }, [initial.bookingId]);
+  }, [initial]);
 
   useEffect(() => {
     if (
@@ -62,8 +59,7 @@ export function DispatchLiveCard({
           status: mapped.status,
           etaMinutes: mapped.etaMinutes ?? prev.etaMinutes,
           driverName: mapped.driverName ?? prev.driverName,
-          priceEur:
-            status.priceCents != null ? status.priceCents / 100 : prev.priceEur,
+          priceEur: status.priceCents != null ? status.priceCents / 100 : prev.priceEur,
           expiresAt: status.expiresAt ?? prev.expiresAt,
         };
 

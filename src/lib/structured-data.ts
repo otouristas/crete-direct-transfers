@@ -3,13 +3,7 @@
 // identity for the brand — the key signal for a Google knowledge panel and for
 // GEO citation (ChatGPT / Perplexity / Gemini / AI Overviews). Per-page schema
 // (LocalBusiness, TaxiService, Article…) references these by @id.
-import {
-  SITE_URL,
-  SITE_NAME,
-  CONTACT_EMAIL,
-  CONTACT_PHONE,
-  OG_DEFAULT_IMAGE,
-} from "./site";
+import { SITE_URL, SITE_NAME, CONTACT_EMAIL, CONTACT_PHONE, OG_DEFAULT_IMAGE } from "./site";
 import { LOCALES } from "@/i18n";
 
 /** BCP-47 language tags we publish in — drives availableLanguage / inLanguage. */
@@ -23,7 +17,6 @@ export const ORGANIZATION_JSONLD = {
   "@type": "Organization",
   "@id": ORGANIZATION_ID,
   name: SITE_NAME,
-  legalName: "TransferAround Travel Services P.C.",
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",
@@ -33,30 +26,19 @@ export const ORGANIZATION_JSONLD = {
   description:
     "Fixed-price private airport, port and city-to-city transfers with licensed local drivers, flight tracking and no bidding.",
   email: CONTACT_EMAIL,
-  telephone: CONTACT_PHONE,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Οδός Ρεθύμνου 12",
-    addressLocality: "Rethymno",
-    postalCode: "74100",
-    addressRegion: "Crete",
-    addressCountry: "GR",
-  },
   areaServed: [
     { "@type": "Country", name: "Greece" },
-    { "@type": "Place", name: "Crete" },
+    { "@type": "Country", name: "Spain" },
+    { "@type": "Country", name: "Italy" },
   ],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
-    telephone: CONTACT_PHONE,
     email: CONTACT_EMAIL,
     availableLanguage: LANGUAGE_TAGS,
+    ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
   },
-  // TODO: populate with social/profile URLs (Facebook, Instagram, LinkedIn,
-  // Google Business Profile) once live — sameAs is a strong entity signal for
-  // AI answer engines and knowledge panels. Left empty rather than fabricated.
-  sameAs: [] as string[],
+  ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
 };
 
 export const WEBSITE_JSONLD = {

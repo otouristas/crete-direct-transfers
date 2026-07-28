@@ -111,7 +111,13 @@ export function RouteMap({
     return out;
   }, [from, to]);
   return (
-    <LeafletMap points={points} height={height} interactive={interactive} rounded={rounded} style={style} />
+    <LeafletMap
+      points={points}
+      height={height}
+      interactive={interactive}
+      rounded={rounded}
+      style={style}
+    />
   );
 }
 

@@ -3,10 +3,12 @@ import type { LegalDocs } from "./types";
 export const legalDocsNl: LegalDocs = {
   terms: {
     metaTitle: "Gebruiksvoorwaarden | TransferAround",
-    metaDescription: "Gebruiksvoorwaarden voor TransferAround.com – privétransfers tegen een vaste prijs op Kreta met doorgelichte lokale chauffeurs.",
+    metaDescription:
+      "Gebruiksvoorwaarden voor TransferAround.com – privétransfers tegen een vaste prijs op Kreta met doorgelichte lokale chauffeurs.",
     title: "Gebruiksvoorwaarden",
     updated: "24 juli 2026",
-    intro: "Deze Gebruiksvoorwaarden (de “Voorwaarden”) zijn uitgegeven door TransferAround Travel Services P.C., handelend onder de naam TransferAround.com en geregistreerd bij Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (het “Bedrijf”, “TransferAround”, “wij”). Ze regelen het gebruik van de website transferaround.com en alle gerelateerde mobiele applicaties (het “Platform”) door elke bezoeker of geregistreerde gebruiker (de “Gebruiker”, “u”).",
+    intro:
+      "Deze Gebruiksvoorwaarden (de “Voorwaarden”) zijn uitgegeven door TransferAround Travel Services P.C., handelend onder de naam TransferAround.com en geregistreerd bij Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (het “Bedrijf”, “TransferAround”, “wij”). Ze regelen het gebruik van de website transferaround.com en alle gerelateerde mobiele applicaties (het “Platform”) door elke bezoeker of geregistreerde gebruiker (de “Gebruiker”, “u”).",
     sections: [
       {
         title: "1. Algemeen",
@@ -94,19 +96,19 @@ export const legalDocsNl: LegalDocs = {
       },
       {
         title: "12. Contactpersoon",
-        paragraphs: [
-          "Vragen over deze Voorwaarden kunnen worden gestuurd naar {email:support}.",
-        ],
+        paragraphs: ["Vragen over deze Voorwaarden kunnen worden gestuurd naar {email:support}."],
       },
     ],
   },
 
   privacy: {
     metaTitle: "Privacybeleid | TransferAround",
-    metaDescription: "Hoe TransferAround persoonlijke gegevens van gebruikers, passagiers en vervoerders verzamelt, gebruikt en beschermt onder GDPR.",
+    metaDescription:
+      "Hoe TransferAround persoonlijke gegevens van gebruikers, passagiers en vervoerders verzamelt, gebruikt en beschermt onder GDPR.",
     title: "Privacybeleid",
     updated: "24 juli 2026",
-    intro: "Dit Privacybeleid legt uit hoe TransferAround Travel Services P.C., handelend onder de naam TransferAround.com, geregistreerd bij Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (het “Bedrijf”, “wij”), persoonlijke gegevens van Gebruikers, passagiers en Vervoerders (inclusief hun chauffeurs) verzamelt, gebruikt en beschermt in verband met het transferaround.com-platform (de “Service”). Voor de doeleinden van EU/Griekse wetgeving inzake gegevensbescherming is het bedrijf de gegevensbeheerder.",
+    intro:
+      "Dit Privacybeleid legt uit hoe TransferAround Travel Services P.C., handelend onder de naam TransferAround.com, geregistreerd bij Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (het “Bedrijf”, “wij”), persoonlijke gegevens van Gebruikers, passagiers en Vervoerders (inclusief hun chauffeurs) verzamelt, gebruikt en beschermt in verband met het transferaround.com-platform (de “Service”). Voor de doeleinden van EU/Griekse wetgeving inzake gegevensbescherming is het bedrijf de gegevensbeheerder.",
     sections: [
       {
         title: "1. Wie we zijn",
@@ -207,10 +209,12 @@ export const legalDocsNl: LegalDocs = {
 
   driverPartnership: {
     metaTitle: "Partnerschapsovereenkomst chauffeur | TransferAround",
-    metaDescription: "Voorwaarden voor onafhankelijke vervoerders en chauffeurs die samenwerken met TransferAround.com op Kreta.",
+    metaDescription:
+      "Voorwaarden voor onafhankelijke vervoerders en chauffeurs die samenwerken met TransferAround.com op Kreta.",
     title: "Partnerschapsovereenkomst voor chauffeurs",
     updated: "24 juli 2026",
-    intro: "Deze Partnerschapsovereenkomst voor chauffeurs (de “Overeenkomst”) wordt aangegaan tussen TransferAround Travel Services P.C., handelend onder de naam TransferAround.com, geregistreerd bij Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (het “Bedrijf”), en het individuele of gelicentieerde transportbedrijf dat zich registreert als Vervoerder op het Platform (de “Vervoerder”, “u”). Door de registratie en het KYC-verificatieproces te voltooien, accepteert de vervoerder deze overeenkomst.",
+    intro:
+      "Deze Partnerschapsovereenkomst voor chauffeurs (de “Overeenkomst”) wordt aangegaan tussen TransferAround Travel Services P.C., handelend onder de naam TransferAround.com, geregistreerd bij Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (het “Bedrijf”), en het individuele of gelicentieerde transportbedrijf dat zich registreert als Vervoerder op het Platform (de “Vervoerder”, “u”). Door de registratie en het KYC-verificatieproces te voltooien, accepteert de vervoerder deze overeenkomst.",
     sections: [
       {
         title: "1. Definities",
@@ -320,10 +324,12 @@ export const legalDocsNl: LegalDocs = {
 
   kyc: {
     metaTitle: "Ken uw stuurprogrammabeleid (KYC) | TransferAround",
-    metaDescription: "Verificatievereisten voor vervoerders en chauffeurs op TransferAround.com voordat boekingen worden geaccepteerd.",
+    metaDescription:
+      "Verificatievereisten voor vervoerders en chauffeurs op TransferAround.com voordat boekingen worden geaccepteerd.",
     title: "Ken uw stuurprogrammabeleid (KYC).",
     updated: "24 juli 2026",
-    intro: "In dit Know Your Driver (KYC)-beleid wordt het verificatieproces beschreven dat elke vervoerder en chauffeur moet voltooien voordat zij boekingen op TransferAround.com mogen accepteren. Het doel ervan is om de identiteit en legitimiteit van vervoerders te bevestigen, de veiligheid van passagiers te beschermen, de belofte van het platform van doorgelichte lokale chauffeurs te ondersteunen en toepasselijke aanbevelingen ter bestrijding van het witwassen van geld en de financiering van terrorisme te adresseren.",
+    intro:
+      "In dit Know Your Driver (KYC)-beleid wordt het verificatieproces beschreven dat elke vervoerder en chauffeur moet voltooien voordat zij boekingen op TransferAround.com mogen accepteren. Het doel ervan is om de identiteit en legitimiteit van vervoerders te bevestigen, de veiligheid van passagiers te beschermen, de belofte van het platform van doorgelichte lokale chauffeurs te ondersteunen en toepasselijke aanbevelingen ter bestrijding van het witwassen van geld en de financiering van terrorisme te adresseren.",
     sections: [
       {
         title: "1. Doel",
@@ -411,7 +417,8 @@ export const legalDocsNl: LegalDocs = {
 
   refunds: {
     metaTitle: "Annulering en restitutie | TransferAround",
-    metaDescription: "Annuleringstermijnen, wachttijden en terugbetalingsvoorwaarden voor TransferAround-boekingen.",
+    metaDescription:
+      "Annuleringstermijnen, wachttijden en terugbetalingsvoorwaarden voor TransferAround-boekingen.",
     title: "Annulering en restitutie",
     updated: "24 juli 2026",
     sections: [
@@ -497,9 +504,7 @@ export const legalDocsNl: LegalDocs = {
       },
       {
         title: "Geschillenbeslechting",
-        paragraphs: [
-          "Het EU online geschillenbeslechtingsplatform is beschikbaar op {url:odr}.",
-        ],
+        paragraphs: ["Het EU online geschillenbeslechtingsplatform is beschikbaar op {url:odr}."],
       },
     ],
   },
@@ -509,7 +514,8 @@ export const legalDocsNl: LegalDocs = {
     metaDescription: "Hoe TransferAround cookies en vergelijkbare technologieën gebruikt.",
     title: "Cookiebeleid",
     updated: "24 juli 2026",
-    intro: "We gebruiken cookies en vergelijkbare technologieën zodat het Platform kan functioneren en, indien nodig met uw toestemming, om uw ervaring te verbeteren en relevante aanbiedingen te tonen. Dit beleid moet samen met onze {link:privacy} worden gelezen.",
+    intro:
+      "We gebruiken cookies en vergelijkbare technologieën zodat het Platform kan functioneren en, indien nodig met uw toestemming, om uw ervaring te verbeteren en relevante aanbiedingen te tonen. Dit beleid moet samen met onze {link:privacy} worden gelezen.",
     sections: [
       {
         title: "Essentiële koekjes",
@@ -549,5 +555,4 @@ export const legalDocsNl: LegalDocs = {
       },
     ],
   },
-
 };

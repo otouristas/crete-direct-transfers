@@ -8,10 +8,12 @@ import {
   type ReactNode,
 } from "react";
 import type { Session, User } from "@supabase/supabase-js";
+import * as Linking from "expo-linking";
 import { fetchProfile } from "@transferaround/mobile-shared";
 import { SKIP_AUTH } from "./config";
 import { supabase } from "./supabase";
 import { clearRiderPushToken, syncRiderPushToken } from "./push";
+import { getDeviceLocale } from "./i18n";
 
 type Profile = Awaited<ReturnType<typeof fetchProfile>>;
 
@@ -35,7 +37,7 @@ type AuthState = {
   loading: boolean;
   isDemo: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
+  signUp: (email: string, password: string, fullName: string) => Promise<boolean>;
   signOut: () => Promise<void>;
 };
 
@@ -80,12 +82,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = useCallback(async (email: string, password: string, fullName: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName, signup_role: "customer" } },
+      options: {
+        data: {
+          full_name: fullName,
+          signup_role: "customer",
+          locale: getDeviceLocale(),
+        },
+        emailRedirectTo: Linking.createURL("/"),
+      },
     });
     if (error) throw error;
+    return Boolean(data.session);
   }, []);
 
   const signOut = useCallback(async () => {

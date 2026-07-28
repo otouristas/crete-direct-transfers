@@ -30,7 +30,9 @@ export const Route = createFileRoute("/{-$locale}/driver/")({
 
 function playAsapChime() {
   try {
-    const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    const Ctx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
     if (!Ctx) return;
     const ctx = new Ctx();
     const osc = ctx.createOscillator();
@@ -120,9 +122,7 @@ function OpenJobsPage() {
 
   const asapJobs = useMemo(() => {
     const fromPool = (jobs.data ?? []).filter((j) => j.urgency === "asap");
-    const fromEvents = asapEvents.filter(
-      (e) => !fromPool.some((j) => j.id === e.booking_id),
-    );
+    const fromEvents = asapEvents.filter((e) => !fromPool.some((j) => j.id === e.booking_id));
     return { fromPool, fromEvents };
   }, [jobs.data, asapEvents]);
 
@@ -389,7 +389,9 @@ function OpenJobCard({ job, asap = false }: { job: OpenJob; asap?: boolean }) {
             <span className="inline-flex items-center gap-1 rounded-lg bg-accent/15 px-2 py-1 text-xs font-semibold text-accent-deep">
               <Radio className="h-3 w-3" />
               {t.driver.asapBadge}
-              {job.asap_expires_at ? ` · ${t.driver.asapExpires.replace("{sec}", String(seconds))}` : ""}
+              {job.asap_expires_at
+                ? ` · ${t.driver.asapExpires.replace("{sec}", String(seconds))}`
+                : ""}
             </span>
           )}
           {asap && job.eta_minutes != null && (
@@ -403,11 +405,7 @@ function OpenJobCard({ job, asap = false }: { job: OpenJob; asap?: boolean }) {
             disabled={claim.isPending || (asap && seconds <= 0 && Boolean(job.asap_expires_at))}
             className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
           >
-            {claim.isPending
-              ? t.driver.claiming
-              : asap
-                ? t.driver.asapAccept
-                : t.driver.claim}
+            {claim.isPending ? t.driver.claiming : asap ? t.driver.asapAccept : t.driver.claim}
           </button>
         </div>
       }

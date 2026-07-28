@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -8,6 +8,7 @@ import { buildHead } from "@/lib/seo";
 import { Field, InputStyles } from "@/components/form/field";
 import { User, Car } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getOwnProfile } from "@/queries/profile";
 
 const searchSchema = z.object({
   redirect: z.string().optional(),
@@ -44,39 +45,61 @@ function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const goAfterLogin = (role: "user" | "driver" = loginRole) => {
-    if (redirect && redirect.startsWith("/")) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      navigate({ to: redirect as any, replace: true });
-    } else if (role === "driver") {
-      navigate({ to: "/{-$locale}/driver", replace: true });
-    } else {
-      navigate({ to: "/{-$locale}/account", replace: true });
-    }
-  };
+  const goAfterLogin = useCallback(
+    async (userId: string) => {
+      let profile;
+      try {
+        profile = await getOwnProfile(userId);
+      } catch {
+        setError(t.auth.unexpectedError);
+        return;
+      }
+
+      const safeRedirect =
+        redirect &&
+        redirect.startsWith("/") &&
+        !redirect.startsWith("//") &&
+        !/\/login(?:[/?#]|$)/.test(redirect);
+
+      if (safeRedirect) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        navigate({ to: redirect as any, replace: true });
+        return;
+      }
+
+      navigate({
+        to:
+          profile.role === "driver" || profile.role === "admin"
+            ? "/{-$locale}/driver"
+            : "/{-$locale}/account",
+        params: { locale: locale === "en" ? undefined : locale },
+        replace: true,
+      });
+    },
+    [locale, navigate, redirect, t.auth.unexpectedError],
+  );
 
   // Already signed in? Straight to the respective dashboard.
   useEffect(() => {
-    if (ready && session) goAfterLogin(loginRole);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, !!session]);
+    if (ready && session) void goAfterLogin(session.user.id);
+  }, [goAfterLogin, ready, session]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
-    const { error: err } = await supabase.auth.signInWithPassword({
+    const { data, error: err } = await supabase.auth.signInWithPassword({
       email: email.trim(),
       password,
     });
     setSubmitting(false);
     if (err) {
-      if (/invalid login credentials/i.test(err.message)) setError(t.auth.invalidCredentials);
-      else if (/email not confirmed/i.test(err.message)) setError(t.auth.emailNotConfirmed);
-      else setError(err.message);
+      if (err.code === "invalid_credentials") setError(t.auth.invalidCredentials);
+      else if (err.code === "email_not_confirmed") setError(t.auth.emailNotConfirmed);
+      else setError(t.auth.unexpectedError);
       return;
     }
-    goAfterLogin(loginRole);
+    if (data.user) await goAfterLogin(data.user.id);
   };
 
   return (

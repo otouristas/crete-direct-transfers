@@ -82,10 +82,11 @@ function OpenPopupMarker({
   children: React.ReactNode;
 }) {
   const ref = useRef<LMarker | null>(null);
+  const [latitude, longitude] = position;
   useEffect(() => {
     const t = window.setTimeout(() => ref.current?.openPopup(), 200);
     return () => window.clearTimeout(t);
-  }, [position[0], position[1]]);
+  }, [latitude, longitude]);
   return (
     <Marker ref={ref} position={position} icon={icon}>
       {children}

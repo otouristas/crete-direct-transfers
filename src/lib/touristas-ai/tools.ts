@@ -4,17 +4,8 @@ import { getAirport } from "@/data/airports";
 import { getDestination, listCityDestinations } from "@/data/destinations";
 import { computeQuotePrice } from "@/lib/quote-engine";
 import { explainPolicy } from "@/lib/booking-policy";
-import {
-  matchRouteSlug,
-  searchLocalPlaces,
-  type PlaceResult,
-} from "@/lib/place-search";
-import type {
-  AssistantResponse,
-  QuoteCard,
-  TouristasPageContext,
-  TripSummary,
-} from "./types";
+import { matchRouteSlug, searchLocalPlaces, type PlaceResult } from "@/lib/place-search";
+import type { AssistantResponse, QuoteCard, TouristasPageContext, TripSummary } from "./types";
 import { stripEmDashes } from "./types";
 
 const PLACE_ALIASES: Record<string, string> = {
@@ -29,7 +20,7 @@ const PLACE_ALIASES: Record<string, string> = {
   "domotel rethymno": "Rethymno",
   "domotel rethimno": "Rethymno",
   "hotel domotel": "Rethymno",
-  "domotel": "Rethymno",
+  domotel: "Rethymno",
 };
 
 function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
@@ -71,7 +62,7 @@ function resolvePlaceQuery(raw: string): PlaceResult | null {
   const hits = searchLocalPlaces(lookup, 5);
   if (!hits.length) return null;
   if (aliased) {
-    const dest = hits.find((h) => h.kind === "destination" || h.kind === "city");
+    const dest = hits.find((h) => h.kind === "destination");
     if (dest) return dest;
   }
   return hits[0];
@@ -93,7 +84,10 @@ export function resolveTrip(text: string): {
   const asap = detectAsapFromText(working);
   if (asap) {
     working = working
-      .replace(/\b(right now|as soon as possible|asap|immediately|urgent|now|jetzt|τώρα|transfert maintenant)\b/gi, " ")
+      .replace(
+        /\b(right now|as soon as possible|asap|immediately|urgent|now|jetzt|τώρα|transfert maintenant)\b/gi,
+        " ",
+      )
       .replace(/\s+/g, " ")
       .trim();
   }
@@ -108,9 +102,7 @@ export function resolveTrip(text: string): {
   let date: string | undefined;
   let time: string | undefined;
 
-  const timeMatch = working.match(
-    /\b(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/i,
-  );
+  const timeMatch = working.match(/\b(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/i);
   if (timeMatch) {
     let h = Number(timeMatch[1]);
     const m = timeMatch[2] ? Number(timeMatch[2]) : 0;
@@ -133,7 +125,10 @@ export function resolveTrip(text: string): {
   }
 
   working = working
-    .replace(/\b(i\s+need|i\s+want|i'?d\s+like|please|book|a\s+transfer|transfer|private\s+transfer)\b/gi, " ")
+    .replace(
+      /\b(i\s+need|i\s+want|i'?d\s+like|please|book|a\s+transfer|transfer|private\s+transfer)\b/gi,
+      " ",
+    )
     .replace(/\bfrom\b/gi, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -291,10 +286,7 @@ export function toolQuoteVehicles(input: {
     )}km`;
 
   const distanceKm =
-    input.from.lat != null &&
-    input.to.lat != null &&
-    input.from.lng != null &&
-    input.to.lng != null
+    input.from.lat != null && input.to.lat != null && input.from.lng != null && input.to.lng != null
       ? haversineKm(
           { lat: input.from.lat, lng: input.from.lng },
           { lat: input.to.lat, lng: input.to.lng },
@@ -353,10 +345,7 @@ export function toolBuildBookUrl(input: {
   if (input.vehicleClass) params.set("class", input.vehicleClass);
   if (input.pax) params.set("pax", String(input.pax));
   if (input.date) {
-    const iso =
-      input.time != null
-        ? `${input.date}T${input.time}:00`
-        : `${input.date}T12:00:00`;
+    const iso = input.time != null ? `${input.date}T${input.time}:00` : `${input.date}T12:00:00`;
     params.set("date", iso);
   }
   return `${prefix}/book?${params.toString()}`;
@@ -474,10 +463,7 @@ export async function offlineAssist(
   }
 
   if (trip.from && trip.to && trip.from.lat != null && trip.to.lat != null) {
-    const pickupAt =
-      trip.date != null
-        ? `${trip.date}T${trip.time ?? "12:00"}:00`
-        : undefined;
+    const pickupAt = trip.date != null ? `${trip.date}T${trip.time ?? "12:00"}:00` : undefined;
     const { quotes, routeSlug } = toolQuoteVehicles({
       from: trip.from,
       to: trip.to,
@@ -558,7 +544,8 @@ export const OPENAI_TOOLS = [
     type: "function" as const,
     function: {
       name: "resolve_trip",
-      description: "Parse a natural language transfer request into from/to places, date, time, pax.",
+      description:
+        "Parse a natural language transfer request into from/to places, date, time, pax.",
       parameters: {
         type: "object",
         properties: { text: { type: "string" } },
@@ -680,10 +667,22 @@ export async function executeTool(
     const trip = resolveTripWithContext(String(args.text ?? ""), pageContext);
     return {
       from: trip.from
-        ? { id: trip.from.id, label: trip.from.label, lat: trip.from.lat, lng: trip.from.lng, iata: trip.from.iata }
+        ? {
+            id: trip.from.id,
+            label: trip.from.label,
+            lat: trip.from.lat,
+            lng: trip.from.lng,
+            iata: trip.from.iata,
+          }
         : null,
       to: trip.to
-        ? { id: trip.to.id, label: trip.to.label, lat: trip.to.lat, lng: trip.to.lng, iata: trip.to.iata }
+        ? {
+            id: trip.to.id,
+            label: trip.to.label,
+            lat: trip.to.lat,
+            lng: trip.to.lng,
+            iata: trip.to.iata,
+          }
         : null,
       when: trip.when,
       date: trip.date,
@@ -770,9 +769,7 @@ export async function executeTool(
     if (!to && defaults.to) to = defaults.to;
     if (!from || !to) return { error: "places_not_found", from, to };
     const pickupAt =
-      args.date != null
-        ? `${String(args.date)}T${String(args.time ?? "12:00")}:00`
-        : undefined;
+      args.date != null ? `${String(args.date)}T${String(args.time ?? "12:00")}:00` : undefined;
     return toolQuoteVehicles({ from, to, pickupAt, pax: args.pax as number | undefined });
   }
 

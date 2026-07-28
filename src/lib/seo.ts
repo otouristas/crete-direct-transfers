@@ -44,22 +44,29 @@ export function buildHead({
   meta.push({ name: "twitter:image", content: image });
   if (noindex) meta.push({ name: "robots", content: "noindex, nofollow" });
 
-  const links = [
-    { rel: "canonical", href: canonical },
-    ...LOCALES.map((l) => ({
-      rel: "alternate",
-      hrefLang: l,
-      href: `${SITE_URL}${localePath(l, path)}`,
-    })),
-    { rel: "alternate", hrefLang: "x-default", href: `${SITE_URL}${localePath("en", path)}` },
-  ];
+  const links = noindex
+    ? []
+    : [
+        { rel: "canonical", href: canonical },
+        ...LOCALES.map((l) => ({
+          rel: "alternate",
+          hrefLang: l,
+          href: `${SITE_URL}${localePath(l, path)}`,
+        })),
+        {
+          rel: "alternate",
+          hrefLang: "x-default",
+          href: `${SITE_URL}${localePath("en", path)}`,
+        },
+      ];
 
-  const scripts = jsonLd
-    ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((obj) => ({
-        type: "application/ld+json",
-        children: JSON.stringify(obj),
-      }))
-    : undefined;
+  const scripts =
+    jsonLd && !noindex
+      ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((obj) => ({
+          type: "application/ld+json",
+          children: JSON.stringify(obj),
+        }))
+      : undefined;
 
   return { meta, links, ...(scripts ? { scripts } : {}) };
 }

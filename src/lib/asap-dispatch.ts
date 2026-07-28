@@ -86,10 +86,7 @@ export async function createAsapBooking(input: AsapCreateInput): Promise<{
     )}km`;
 
   const distanceKm =
-    input.from.lat != null &&
-    input.to.lat != null &&
-    input.from.lng != null &&
-    input.to.lng != null
+    input.from.lat != null && input.to.lat != null && input.from.lng != null && input.to.lng != null
       ? haversineKm(
           { lat: input.from.lat, lng: input.from.lng },
           { lat: input.to.lat, lng: input.to.lng },
@@ -111,8 +108,7 @@ export async function createAsapBooking(input: AsapCreateInput): Promise<{
 
   const catalog = getRoute(routeSlug);
   const etaHint =
-    catalog?.durationMin ??
-    (distanceKm != null ? Math.max(20, Math.round(distanceKm * 1.2)) : 35);
+    catalog?.durationMin ?? (distanceKm != null ? Math.max(20, Math.round(distanceKm * 1.2)) : 35);
 
   const { data, error } = await supabase.rpc("create_asap_booking", {
     p_route_slug: routeSlug,

@@ -44,7 +44,8 @@ export const VEHICLE_CLASSES: {
     capacity: "1–3 passengers",
     bags: "3 bags",
     multiplier: 2.1,
-    description: "Mercedes S-Class, BMW 7, Audi A8 or similar. Chauffeur service, still fixed price.",
+    description:
+      "Mercedes S-Class, BMW 7, Audi A8 or similar. Chauffeur service, still fixed price.",
     example: "Mercedes S-Class",
     image: "/fleet/luxury.jpg",
   },
@@ -54,7 +55,8 @@ export const VEHICLE_CLASSES: {
     capacity: "1–6 passengers",
     bags: "6 bags",
     multiplier: 1.8,
-    description: "Cadillac Escalade, Chevrolet Suburban or similar. Space and presence for families.",
+    description:
+      "Cadillac Escalade, Chevrolet Suburban or similar. Space and presence for families.",
     example: "Cadillac Escalade",
     image: "/fleet/suv.jpg",
   },
@@ -94,7 +96,8 @@ export const VEHICLE_CLASSES: {
     capacity: "1–16 passengers",
     bags: "16 bags",
     multiplier: 2.8,
-    description: "Mercedes Sprinter, Ford Transit or similar. Maximum capacity for parties and teams.",
+    description:
+      "Mercedes Sprinter, Ford Transit or similar. Maximum capacity for parties and teams.",
     example: "Mercedes Sprinter",
     image: "/fleet/minibus-16.jpg",
   },

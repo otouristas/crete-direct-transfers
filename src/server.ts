@@ -124,7 +124,15 @@ export default {
         const { runDispatchNewBooking } = await import("./server/dispatch");
         const result = await runDispatchNewBooking({
           bookingId: body.bookingId,
-          market: (body.market as "greece" | "spain" | "italy" | null) ?? null,
+          market:
+            (body.market as
+              | "greece"
+              | "spain"
+              | "italy"
+              | "portugal"
+              | "cyprus"
+              | "turkey"
+              | null) ?? null,
           countryCode: body.countryCode ?? null,
           lat: body.lat ?? null,
           lng: body.lng ?? null,

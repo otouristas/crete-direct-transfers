@@ -10,10 +10,12 @@ import {
 } from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
+import { translate } from "@transferaround/i18n";
 
 export function CountryHubPage({ market }: { market: Market }) {
   const t = useT();
   const locale = useLocale();
+  const tr = (key: Parameters<typeof translate>[1]) => translate(locale, key);
   const isGreece = market.slug === "greece";
   const airports = isGreece
     ? getLocalizedAirports(locale)
@@ -91,9 +93,7 @@ export function CountryHubPage({ market }: { market: Market }) {
                     <span>
                       {a.name} ({a.iata})
                     </span>
-                    <span className="text-muted-foreground">
-                      from {formatEur(a.fromPriceEur)} · quote
-                    </span>
+                    <span className="text-muted-foreground">{tr("market.quoteOnly")}</span>
                   </div>
                 )}
               </li>
@@ -136,19 +136,13 @@ export function CountryHubPage({ market }: { market: Market }) {
 
         {!isGreece && (
           <div className="mt-14 max-w-3xl space-y-4 text-muted-foreground leading-relaxed">
-            <h2 className="text-2xl font-display text-primary">How booking works here</h2>
-            <p>
-              {market.name} routes are quote-confirmed with licensed local partners. Submit your
-              trip on the booking form — we confirm price and driver details by email or WhatsApp.
-            </p>
+            <h2 className="text-2xl font-display text-primary">{tr("market.bookingTitle")}</h2>
+            <p>{tr("market.bookingBody")}</p>
           </div>
         )}
       </section>
 
-      <CtaBand
-        title={`Plan your ${market.name} transfer`}
-        subtitle="Airport to hotel, port to resort — one fixed price."
-      />
+      <CtaBand title={tr("market.ctaTitle")} subtitle={tr("market.ctaSubtitle")} />
     </>
   );
 }

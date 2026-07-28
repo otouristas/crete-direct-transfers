@@ -13,10 +13,18 @@ import { colors, radius, space } from "./tokens";
 export type ButtonVariant = "primary" | "accent" | "outline" | "ghost" | "danger";
 export type ButtonSize = "md" | "lg";
 
-const VARIANTS: Record<ButtonVariant, { bg: string; bgPressed: string; fg: string; border?: string }> = {
+const VARIANTS: Record<
+  ButtonVariant,
+  { bg: string; bgPressed: string; fg: string; border?: string }
+> = {
   primary: { bg: colors.primary, bgPressed: colors.primaryPressed, fg: colors.inverse },
   accent: { bg: colors.accent, bgPressed: colors.accentPressed, fg: colors.primary },
-  outline: { bg: colors.surface, bgPressed: colors.surfaceMuted, fg: colors.text, border: colors.borderStrong },
+  outline: {
+    bg: colors.surface,
+    bgPressed: colors.surfaceMuted,
+    fg: colors.text,
+    border: colors.borderStrong,
+  },
   ghost: { bg: "transparent", bgPressed: colors.surfaceMuted, fg: colors.primary },
   danger: { bg: colors.danger, bgPressed: "#B91C1C", fg: colors.inverse },
 };

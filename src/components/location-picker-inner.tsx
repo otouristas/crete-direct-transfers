@@ -41,7 +41,7 @@ function Recenter({ value }: { value?: PickedLocation | null }) {
   const map = useMap();
   useEffect(() => {
     if (value) map.setView([value.lat, value.lng], Math.max(map.getZoom(), 12));
-  }, [map, value?.lat, value?.lng]);
+  }, [map, value]);
   return null;
 }
 
@@ -95,9 +95,7 @@ export default function LocationPickerInner({
   onPick: (point: PickedLocation, address: string) => void;
 }) {
   const [point, setPoint] = useState<PickedLocation | null>(value ?? null);
-  const center: [number, number] = value
-    ? [value.lat, value.lng]
-    : [35.34, 25.13]; // Crete default start
+  const center: [number, number] = value ? [value.lat, value.lng] : [35.34, 25.13]; // Crete default start
 
   const select = async (p: PickedLocation) => {
     setPoint(p);

@@ -36,6 +36,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-localization",
       [
         "expo-notifications",
         {
@@ -45,10 +46,7 @@
       ]
     ],
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "transferaround-rider-placeholder"
-      }
+      "router": {}
     },
     "owner": "transferaround"
   }

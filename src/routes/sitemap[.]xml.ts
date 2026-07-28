@@ -8,7 +8,7 @@ import { AIRPORTS } from "@/data/airports";
 import { AIRPORT_ROUTES } from "@/data/airport-routes";
 import { listCityDestinations } from "@/data/destinations";
 import { listLiveMarkets } from "@/data/markets";
-import { SITE_URL } from "@/lib/site";
+import { REVIEWS_VERIFIED, SITE_URL } from "@/lib/site";
 import { LOCALES, localePath } from "@/i18n";
 
 export const Route = createFileRoute("/sitemap.xml")({
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/how-it-works",
           "/faq",
           "/contact",
-          "/reviews",
+          ...(REVIEWS_VERIFIED ? ["/reviews"] : []),
           "/for-hotels",
           "/for-drivers",
           "/legal/terms",
@@ -63,7 +63,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           .flatMap((path) =>
             LOCALES.map(
               (locale) =>
-                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>\n${alternates(path)}\n    <changefreq>weekly</changefreq>\n  </url>`,
+                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>\n${alternates(path)}\n    <lastmod>2026-07-28</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>`,
             ),
           )
           .join("\n");
