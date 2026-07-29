@@ -27,9 +27,14 @@ import {
   space,
 } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../../lib/auth";
+import { useI18n } from "../../lib/i18n";
 import { supabase } from "../../lib/supabase";
 import { API_URL } from "../../lib/config";
-import { ACCEPT_ACTION, DECLINE_ACTION, presentDemoOfferNotification } from "../../lib/demo-notifications";
+import {
+  ACCEPT_ACTION,
+  DECLINE_ACTION,
+  presentDemoOfferNotification,
+} from "../../lib/demo-notifications";
 
 type Offer = Awaited<ReturnType<typeof fetchMyJobOffers>>[number];
 type OpenJob = Awaited<ReturnType<typeof fetchOpenJobs>>[number];
@@ -76,6 +81,7 @@ function GateScreen({
   subtitle: string;
   onSignOut: () => void;
 }) {
+  const { t } = useI18n();
   return (
     <Screen edges={["top", "bottom"]}>
       <View style={styles.gate}>
@@ -88,7 +94,12 @@ function GateScreen({
         <Text variant="body" color={colors.textMuted} center>
           {subtitle}
         </Text>
-        <Button title="Sign out" variant="outline" icon="log-out-outline" onPress={onSignOut} />
+        <Button
+          title={t("common.signOut")}
+          variant="outline"
+          icon="log-out-outline"
+          onPress={onSignOut}
+        />
       </View>
     </Screen>
   );
@@ -96,6 +107,7 @@ function GateScreen({
 
 export default function OffersScreen() {
   const { profile, user, refreshProfile, signOut, isDemo, setDemoOnline } = useAuth();
+  const { t } = useI18n();
   const driverRow = (() => {
     const dp = profile?.driver_profiles as
       | { is_online?: boolean; approval_status?: string; vehicle_make_model?: string }
@@ -103,7 +115,7 @@ export default function OffersScreen() {
       | null
       | undefined;
     if (!dp) return null;
-    return Array.isArray(dp) ? dp[0] ?? null : dp;
+    return Array.isArray(dp) ? (dp[0] ?? null) : dp;
   })();
   const isOnline = Boolean(driverRow?.is_online);
   const approved = profile?.role === "driver" && driverRow?.approval_status === "approved";
@@ -136,7 +148,7 @@ export default function OffersScreen() {
       setOffers(o);
       setJobs(j);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load");
+      setError(e instanceof Error ? e.message : t("mobile.failedLoad"));
     } finally {
       setLoading(false);
     }
@@ -229,7 +241,9 @@ export default function OffersScreen() {
 
   async function onRespond(offerId: string, accept: boolean, bookingId: string) {
     if (isDemo) {
-      setError(accept ? "Demo mode — accept is preview only." : "Demo mode — offer declined (local).");
+      setError(
+        accept ? "Demo mode — accept is preview only." : "Demo mode — offer declined (local).",
+      );
       if (!accept) setOffers((prev) => prev.filter((o) => o.offer_id !== offerId));
       return;
     }
@@ -253,7 +267,7 @@ export default function OffersScreen() {
 
   async function onClaim(bookingId: string) {
     if (isDemo) {
-      setError("Demo mode — claim is preview only.");
+      setError(t("mobile.demoClaimOnly"));
       return;
     }
     setBusyId(bookingId);
@@ -261,7 +275,7 @@ export default function OffersScreen() {
       await claimJob(supabase, bookingId);
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Claim failed");
+      setError(e instanceof Error ? e.message : t("mobile.claimFailed"));
     } finally {
       setBusyId(null);
     }
@@ -271,8 +285,8 @@ export default function OffersScreen() {
     return (
       <GateScreen
         icon="car-outline"
-        title="Driver access required"
-        subtitle="This app is for approved TransferAround drivers."
+        title={t("mobile.driverAccessRequired")}
+        subtitle={t("mobile.driverAccessBody")}
         onSignOut={() => void signOut()}
       />
     );
@@ -282,14 +296,14 @@ export default function OffersScreen() {
     return (
       <GateScreen
         icon="time-outline"
-        title="Pending approval"
-        subtitle="Ops will approve your driver profile before you can go online."
+        title={t("mobile.pendingApproval")}
+        subtitle={t("mobile.pendingApprovalBody")}
         onSignOut={() => void signOut()}
       />
     );
   }
 
-  const firstName = (profile?.full_name ?? "Driver").split(" ")[0];
+  const firstName = (profile?.full_name ?? t("mobile.driverDefault")).split(" ")[0];
   const stats = isDemo
     ? { earnings: "€240", trips: "4", rating: "4.9" }
     : { earnings: "—", trips: "—", rating: "New" };
@@ -309,12 +323,16 @@ export default function OffersScreen() {
           <Text variant="caption" color={colors.textMuted}>
             DRIVER
           </Text>
-          <Heading variant="h1">Hey, {firstName}</Heading>
+          <Heading variant="h1">{t("mobile.greeting", { name: firstName })}</Heading>
         </View>
         {driverRow?.vehicle_make_model ? (
           <View style={styles.vehicleChip}>
             <Icon name="car-sport" size={14} color={colors.primary} />
-            <Text variant="caption" color={colors.primary} style={{ fontFamily: fonts.bodySemibold }}>
+            <Text
+              variant="caption"
+              color={colors.primary}
+              style={{ fontFamily: fonts.bodySemibold }}
+            >
               {driverRow.vehicle_make_model}
             </Text>
           </View>
@@ -323,16 +341,21 @@ export default function OffersScreen() {
 
       <Card padded elevated style={isOnline ? styles.heroOnline : undefined}>
         <View style={styles.heroTop}>
-          <View style={[styles.statusDot, { backgroundColor: isOnline ? colors.success : colors.textFaint }]} />
+          <View
+            style={[
+              styles.statusDot,
+              { backgroundColor: isOnline ? colors.success : colors.textFaint },
+            ]}
+          />
           <View style={{ flex: 1 }}>
-            <Text variant="h2">{isOnline ? "You’re online" : "You’re offline"}</Text>
+            <Text variant="h2">{isOnline ? t("mobile.online") : t("mobile.offlineTitle")}</Text>
             <Text variant="caption" color={colors.textMuted}>
-              {isOnline ? "You’ll receive nearby transfer offers." : "Go online to start receiving offers."}
+              {isOnline ? t("mobile.onlineBody") : t("mobile.offlineBody")}
             </Text>
           </View>
         </View>
         <Button
-          title={isOnline ? "Go offline" : "Go online"}
+          title={isOnline ? t("mobile.goOffline") : t("mobile.goOnline")}
           icon={isOnline ? "pause" : "flash"}
           variant={isOnline ? "outline" : "accent"}
           onPress={() => void toggleOnline()}
@@ -344,11 +367,23 @@ export default function OffersScreen() {
 
       <Card padded>
         <View style={styles.statsRow}>
-          <StatTile label="Today" value={stats.earnings} icon={<Icon name="cash-outline" size={18} color={colors.accentDeep} />} />
+          <StatTile
+            label="Today"
+            value={stats.earnings}
+            icon={<Icon name="cash-outline" size={18} color={colors.accentDeep} />}
+          />
           <View style={styles.statDivider} />
-          <StatTile label="Trips" value={stats.trips} icon={<Icon name="navigate-outline" size={18} color={colors.accentDeep} />} />
+          <StatTile
+            label="Trips"
+            value={stats.trips}
+            icon={<Icon name="navigate-outline" size={18} color={colors.accentDeep} />}
+          />
           <View style={styles.statDivider} />
-          <StatTile label="Rating" value={stats.rating} icon={<Icon name="star-outline" size={18} color={colors.accentDeep} />} />
+          <StatTile
+            label="Rating"
+            value={stats.rating}
+            icon={<Icon name="star-outline" size={18} color={colors.accentDeep} />}
+          />
         </View>
       </Card>
 
@@ -364,14 +399,18 @@ export default function OffersScreen() {
       {!isOnline ? (
         <EmptyState
           icon="flash-outline"
-          title="You’re offline"
-          subtitle="Toggle online above to receive transfer offers."
+          title={t("mobile.offlineTitle")}
+          subtitle={t("mobile.offlineHelp")}
         />
       ) : (
         <>
-          <SectionLabel>Personal offers</SectionLabel>
+          <SectionLabel>{t("mobile.personalOffers")}</SectionLabel>
           {offers.length === 0 ? (
-            <EmptyState icon="notifications-outline" title="No offers right now" subtitle="New offers arrive here in real time." />
+            <EmptyState
+              icon="notifications-outline"
+              title={t("mobile.noOffers")}
+              subtitle={t("mobile.noOffersHelp")}
+            />
           ) : (
             offers.map((o) => {
               const cd = countdown(o.expires_at as string | null);
@@ -381,13 +420,21 @@ export default function OffersScreen() {
                   <View style={styles.offerHead}>
                     <View style={styles.offerTag}>
                       <Icon name="flash" size={13} color={colors.accentDeep} />
-                      <Text variant="caption" color={colors.accentDeep} style={{ fontFamily: fonts.bodySemibold }}>
-                        New offer
+                      <Text
+                        variant="caption"
+                        color={colors.accentDeep}
+                        style={{ fontFamily: fonts.bodySemibold }}
+                      >
+                        {t("mobile.newOffer")}
                       </Text>
                     </View>
                     {cd ? (
                       <View style={[styles.timer, expiring ? styles.timerHot : null]}>
-                        <Icon name="time-outline" size={13} color={expiring ? colors.danger : colors.textMuted} />
+                        <Icon
+                          name="time-outline"
+                          size={13}
+                          color={expiring ? colors.danger : colors.textMuted}
+                        />
                         <Text
                           variant="caption"
                           color={expiring ? colors.danger : colors.textMuted}
@@ -410,7 +457,7 @@ export default function OffersScreen() {
                   <View style={styles.offerMeta}>
                     <View>
                       <Text variant="caption" color={colors.textMuted}>
-                        Pickup
+                        {t("mobile.pickup")}
                       </Text>
                       <Text variant="subtitle">
                         {o.pickup_at ? new Date(o.pickup_at).toLocaleString() : "—"}
@@ -421,13 +468,13 @@ export default function OffersScreen() {
 
                   <View style={styles.offerActions}>
                     <Button
-                      title="Decline"
+                      title={t("mobile.decline")}
                       variant="outline"
                       onPress={() => void onRespond(o.offer_id as string, false, o.id as string)}
                       style={{ flex: 1 }}
                     />
                     <Button
-                      title="Accept"
+                      title={t("mobile.accept")}
                       variant="accent"
                       onPress={() => void onRespond(o.offer_id as string, true, o.id as string)}
                       loading={busyId === o.offer_id}
@@ -439,9 +486,13 @@ export default function OffersScreen() {
             })
           )}
 
-          <SectionLabel>Open pool</SectionLabel>
+          <SectionLabel>{t("mobile.openPool")}</SectionLabel>
           {jobs.length === 0 ? (
-            <EmptyState icon="albums-outline" title="Pool is empty" subtitle="Unassigned jobs you can claim show up here." />
+            <EmptyState
+              icon="albums-outline"
+              title={t("mobile.poolEmpty")}
+              subtitle={t("mobile.poolEmptyHelp")}
+            />
           ) : (
             jobs.map((j) => (
               <Card key={j.id} padded>
@@ -453,14 +504,16 @@ export default function OffersScreen() {
                 <View style={styles.offerMeta}>
                   <View>
                     <Text variant="caption" color={colors.textMuted}>
-                      Pickup
+                      {t("mobile.pickup")}
                     </Text>
-                    <Text variant="subtitle">{new Date(j.pickup_at as string).toLocaleString()}</Text>
+                    <Text variant="subtitle">
+                      {new Date(j.pickup_at as string).toLocaleString()}
+                    </Text>
                   </View>
                   <Text style={styles.price}>{euros(j.price_cents as number)}</Text>
                 </View>
                 <Button
-                  title="Claim job"
+                  title={t("mobile.claimJob")}
                   variant="primary"
                   icon="hand-left-outline"
                   onPress={() => void onClaim(j.id as string)}
@@ -474,7 +527,12 @@ export default function OffersScreen() {
         </>
       )}
 
-      <Button title="Sign out" variant="ghost" icon="log-out-outline" onPress={() => void signOut()} />
+      <Button
+        title={t("common.signOut")}
+        variant="ghost"
+        icon="log-out-outline"
+        onPress={() => void signOut()}
+      />
     </Screen>
   );
 }
@@ -531,7 +589,13 @@ const styles = StyleSheet.create({
   },
   price: { fontFamily: fonts.display, fontSize: 24, color: colors.text, letterSpacing: -0.5 },
   offerActions: { flexDirection: "row", gap: space.md, marginTop: space.lg },
-  gate: { flex: 1, alignItems: "center", justifyContent: "center", gap: space.md, paddingHorizontal: space.xl },
+  gate: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: space.md,
+    paddingHorizontal: space.xl,
+  },
   gateIcon: {
     width: 64,
     height: 64,

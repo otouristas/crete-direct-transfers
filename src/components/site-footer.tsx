@@ -351,7 +351,7 @@ export function SiteFooter() {
           {REVIEWS_VERIFIED && (
             <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1.5 text-xs font-medium">
               <Star className="h-3.5 w-3.5 fill-highlight text-highlight" />
-              {AVG_RATING} · Google
+              {AVG_RATING} <span aria-hidden>·</span> Google
             </div>
           )}
         </div>
@@ -387,7 +387,7 @@ export function SiteFooter() {
         <div className="mt-6 grid grid-cols-1 gap-4 text-sm text-primary-foreground/70 lg:grid-cols-2">
           <div>
             <p>
-              {year} © {SITE_NAME} | {t.footer.rights}
+              {year} {"©"} {SITE_NAME} | {t.footer.rights}
             </p>
             <p className="mt-1 text-primary-foreground/50">{t.footer.regions}</p>
           </div>

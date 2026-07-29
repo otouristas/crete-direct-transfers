@@ -7,7 +7,7 @@ const CreteMapInner = lazy(() => import("./crete-map-inner"));
 function MapSkeleton() {
   return (
     <div className="flex h-full w-full items-center justify-center rounded-2xl bg-muted">
-      <span className="text-sm text-muted-foreground">…</span>
+      <span className="text-sm text-muted-foreground">{"…"}</span>
     </div>
   );
 }

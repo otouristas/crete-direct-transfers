@@ -2,6 +2,8 @@
 // Native-speaker QA recommended on high-traffic pages before launch.
 import type { Dict } from "./en";
 import { legalDocsFr } from "./legal/fr";
+import { airportPages } from "./airport-pages";
+import { opsCopy } from "./ops-copy";
 
 export const fr: Dict = {
   common: {
@@ -75,6 +77,42 @@ export const fr: Dict = {
     language: "Langue",
     currency: "Devise",
     close: "Fermer",
+    viewSiteIn: "Voir ce site en français",
+  },
+  ui: {
+    close: "Fermer",
+    dismiss: "Ignorer",
+    breadcrumb: "Fil d’Ariane",
+    more: "Plus",
+    pagination: "Pagination",
+    previousPage: "Aller à la page précédente",
+    previous: "Précédent",
+    nextPage: "Aller à la page suivante",
+    next: "Suivant",
+    morePages: "Plus de pages",
+    previousSlide: "Diapositive précédente",
+    nextSlide: "Diapositive suivante",
+    sidebar: "Barre latérale",
+    sidebarDescription: "Affiche la barre latérale sur mobile.",
+    toggleSidebar: "Afficher ou masquer la barre latérale",
+    decrease: "Diminuer",
+    increase: "Augmenter",
+  },
+  forms: {
+    name: "Nom",
+    email: "E-mail",
+    phoneOptional: "Téléphone (facultatif)",
+    companyOptional: "Hôtel / entreprise (facultatif)",
+    message: "Message",
+    sendMessage: "Envoyer le message",
+    sending: "Envoi…",
+    messageSent: "Message envoyé",
+    thankYou: "Merci.",
+    replyHours: "Nous répondons sous quelques heures pendant les horaires 08:00–22:00 EET.",
+    sendAnother: "Envoyer un autre message",
+    validationName: "Saisissez votre nom",
+    validationEmail: "Saisissez une adresse e-mail valide",
+    validationMessage: "Donnez-nous un peu plus de détails",
   },
   footer: {
     tagline:
@@ -202,6 +240,8 @@ export const fr: Dict = {
     dropoffLocation: "Lieu de dépose",
     customRouteHint:
       "Emplacement personnalisé. Points de prise en charge et de dépose définis sur la carte.",
+    serviceType: "Type de service",
+    time: "Heure",
   },
   home: {
     metaTitle: "TransferAround — Transferts aeroport & port en Crete a prix fixe",
@@ -1052,6 +1092,8 @@ export const fr: Dict = {
 
     contextPrefix: "Contexte :",
   },
+  airportPages: airportPages.fr,
+  ops: opsCopy.fr,
   notFound: {
     title: "Page introuvable",
     body: "La page que vous recherchez n'existe pas ou a été déplacée.",

@@ -1,7 +1,11 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Linking, ScrollView, StyleSheet, View } from "react-native";
-import { fetchBooking, reportUnableToComplete, updateJobStatus } from "@transferaround/mobile-shared";
+import {
+  fetchBooking,
+  reportUnableToComplete,
+  updateJobStatus,
+} from "@transferaround/mobile-shared";
 import {
   Avatar,
   Button,
@@ -17,6 +21,7 @@ import {
   radius,
   space,
 } from "@transferaround/mobile-shared/ui";
+import { useI18n } from "../../lib/i18n";
 import { supabase } from "../../lib/supabase";
 
 type Booking = NonNullable<Awaited<ReturnType<typeof fetchBooking>>>;
@@ -24,6 +29,7 @@ type Booking = NonNullable<Awaited<ReturnType<typeof fetchBooking>>>;
 export default function JobDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { t } = useI18n();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
@@ -51,7 +57,7 @@ export default function JobDetailScreen() {
       await updateJobStatus(supabase, id, status);
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Update failed");
+      setError(e instanceof Error ? e.message : t("common.error"));
     } finally {
       setBusy(null);
     }
@@ -64,7 +70,7 @@ export default function JobDetailScreen() {
       await reportUnableToComplete(supabase, id);
       await load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Report failed");
+      setError(e instanceof Error ? e.message : t("common.error"));
     } finally {
       setBusy(null);
     }
@@ -73,7 +79,7 @@ export default function JobDetailScreen() {
   const header = (
     <Stack.Screen
       options={{
-        title: "Job",
+        title: t("mobile.jobDetails"),
         headerShown: true,
         headerStyle: { backgroundColor: colors.surface },
         headerShadowVisible: false,
@@ -97,8 +103,13 @@ export default function JobDetailScreen() {
       <View style={styles.center}>
         {header}
         <Icon name="alert-circle-outline" size={40} color={colors.textFaint} />
-        <Text variant="title">Job not found</Text>
-        <Button title="Go back" variant="outline" icon="arrow-back" onPress={() => router.back()} />
+        <Text variant="title">{t("mobile.jobNotFound")}</Text>
+        <Button
+          title={t("mobile.goBack")}
+          variant="outline"
+          icon="arrow-back"
+          onPress={() => router.back()}
+        />
       </View>
     );
   }
@@ -113,8 +124,16 @@ export default function JobDetailScreen() {
   return (
     <View style={styles.root}>
       {header}
-      <ScrollView contentContainerStyle={{ paddingBottom: space.xxxl }} showsVerticalScrollIndicator={false}>
-        <RouteMap from={booking.pickup_address} to={booking.dropoff_address} height={220} interactive />
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: space.xxxl }}
+        showsVerticalScrollIndicator={false}
+      >
+        <RouteMap
+          from={booking.pickup_address}
+          to={booking.dropoff_address}
+          height={220}
+          interactive
+        />
 
         <View style={styles.body}>
           <Card padded>
@@ -124,7 +143,10 @@ export default function JobDetailScreen() {
             </View>
             <Divider />
             <View style={{ marginTop: space.md }}>
-              <RouteRail from={booking.pickup_address || "Pickup"} to={booking.dropoff_address || "Drop-off"} />
+              <RouteRail
+                from={booking.pickup_address || t("mobile.pickup")}
+                to={booking.dropoff_address || t("mobile.dropoff")}
+              />
             </View>
             <Text variant="caption" color={colors.textMuted} style={{ marginTop: space.md }}>
               {new Date(booking.pickup_at).toLocaleString()}
@@ -135,14 +157,14 @@ export default function JobDetailScreen() {
             <View style={styles.customer}>
               <Avatar name={booking.customer_name} size={48} />
               <View style={{ flex: 1 }}>
-                <Text variant="subtitle">{booking.customer_name || "Traveler"}</Text>
+                <Text variant="subtitle">{booking.customer_name || t("mobile.traveler")}</Text>
                 <Text variant="caption" color={colors.textMuted}>
-                  {booking.customer_phone || "No phone"}
+                  {booking.customer_phone || t("mobile.noPhone")}
                 </Text>
               </View>
               {booking.customer_phone ? (
                 <Button
-                  title="Call"
+                  title={t("mobile.call")}
                   variant="outline"
                   icon="call-outline"
                   size="md"
@@ -153,7 +175,13 @@ export default function JobDetailScreen() {
           </Card>
 
           {maps ? (
-            <Button title="Navigate" variant="primary" icon="navigate" onPress={() => void Linking.openURL(maps)} fullWidth />
+            <Button
+              title={t("mobile.navigate")}
+              variant="primary"
+              icon="navigate"
+              onPress={() => void Linking.openURL(maps)}
+              fullWidth
+            />
           ) : null}
 
           {error ? (
@@ -167,7 +195,7 @@ export default function JobDetailScreen() {
 
           {canStart ? (
             <Button
-              title="Start trip · En route"
+              title={t("mobile.startTrip")}
               variant="accent"
               icon="play"
               onPress={() => void move("en_route")}
@@ -179,7 +207,7 @@ export default function JobDetailScreen() {
           {enRoute ? (
             <View style={{ gap: space.md }}>
               <Button
-                title="Complete trip"
+                title={t("mobile.completeTrip")}
                 variant="accent"
                 icon="checkmark-done"
                 onPress={() => void move("completed")}
@@ -187,14 +215,14 @@ export default function JobDetailScreen() {
                 fullWidth
               />
               <Button
-                title="Traveler no-show"
+                title={t("mobile.travelerNoShow")}
                 variant="outline"
                 onPress={() => void move("no_show")}
                 loading={busy === "no_show"}
                 fullWidth
               />
               <Button
-                title="Unable to complete"
+                title={t("mobile.unableToComplete")}
                 variant="danger"
                 onPress={() => void unable()}
                 loading={busy === "unable"}
@@ -210,9 +238,20 @@ export default function JobDetailScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
-  center: { flex: 1, backgroundColor: colors.bg, alignItems: "center", justifyContent: "center", gap: space.md },
+  center: {
+    flex: 1,
+    backgroundColor: colors.bg,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: space.md,
+  },
   body: { padding: space.lg, gap: space.lg },
-  statusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: space.md },
+  statusRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: space.md,
+  },
   price: { fontFamily: fonts.display, fontSize: 24, color: colors.text, letterSpacing: -0.5 },
   customer: { flexDirection: "row", alignItems: "center", gap: space.md },
   errorBox: {

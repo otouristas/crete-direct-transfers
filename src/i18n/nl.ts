@@ -2,6 +2,8 @@
 // Native-speaker QA recommended on high-traffic pages before launch.
 import type { Dict } from "./en";
 import { legalDocsNl } from "./legal/nl";
+import { airportPages } from "./airport-pages";
+import { opsCopy } from "./ops-copy";
 
 export const nl: Dict = {
   common: {
@@ -75,6 +77,42 @@ export const nl: Dict = {
     language: "Taal",
     currency: "Valuta",
     close: "Sluiten",
+    viewSiteIn: "Bekijk deze site in het Nederlands",
+  },
+  ui: {
+    close: "Sluiten",
+    dismiss: "Negeren",
+    breadcrumb: "Broodkruimelnavigatie",
+    more: "Meer",
+    pagination: "Paginering",
+    previousPage: "Naar de vorige pagina",
+    previous: "Vorige",
+    nextPage: "Naar de volgende pagina",
+    next: "Volgende",
+    morePages: "Meer pagina’s",
+    previousSlide: "Vorige dia",
+    nextSlide: "Volgende dia",
+    sidebar: "Zijbalk",
+    sidebarDescription: "Toont de mobiele zijbalk.",
+    toggleSidebar: "Zijbalk in- of uitschakelen",
+    decrease: "Verlagen",
+    increase: "Verhogen",
+  },
+  forms: {
+    name: "Naam",
+    email: "E-mail",
+    phoneOptional: "Telefoon (optioneel)",
+    companyOptional: "Hotel / bedrijf (optioneel)",
+    message: "Bericht",
+    sendMessage: "Bericht verzenden",
+    sending: "Verzenden…",
+    messageSent: "Bericht verzonden",
+    thankYou: "Bedankt.",
+    replyHours: "We antwoorden binnen enkele uren tijdens kantooruren 08:00–22:00 EET.",
+    sendAnother: "Nog een bericht verzenden",
+    validationName: "Vul je naam in",
+    validationEmail: "Vul een geldig e-mailadres in",
+    validationMessage: "Vertel ons iets meer",
   },
   footer: {
     tagline:
@@ -201,6 +239,8 @@ export const nl: Dict = {
     pickupLocation: "Ophaallocatie",
     dropoffLocation: "Afzetlocatie",
     customRouteHint: "Aangepaste locatie. Ophaal- en afzetpunten ingesteld op de kaart.",
+    serviceType: "Servicetype",
+    time: "Tijd",
   },
   home: {
     metaTitle: "TransferAround — Vaste-prijs luchthaven- & havenvervoer op Kreta",
@@ -1034,6 +1074,8 @@ export const nl: Dict = {
 
     contextPrefix: "Context:",
   },
+  airportPages: airportPages.nl,
+  ops: opsCopy.nl,
   notFound: {
     title: "Pagina niet gevonden",
     body: "De pagina die u zoekt bestaat niet of is verplaatst.",

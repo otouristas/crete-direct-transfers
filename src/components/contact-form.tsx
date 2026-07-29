@@ -1,19 +1,12 @@
 import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-
-const schema = z.object({
-  name: z.string().trim().min(2, "Please enter your name").max(100),
-  email: z.string().trim().email("Please enter a valid email").max(255),
-  phone: z.string().trim().max(30).optional().or(z.literal("")),
-  company: z.string().trim().max(100).optional().or(z.literal("")),
-  message: z.string().trim().min(10, "Tell us a little more").max(2000),
-});
+import { useT } from "@/i18n";
 
 export function ContactForm({
   topic,
   showCompany = false,
-  submitLabel = "Send message",
+  submitLabel,
   placeholder,
 }: {
   topic: "general" | "hotel" | "driver";
@@ -21,6 +14,14 @@ export function ContactForm({
   submitLabel?: string;
   placeholder?: string;
 }) {
+  const t = useT();
+  const schema = z.object({
+    name: z.string().trim().min(2, t.forms.validationName).max(100),
+    email: z.string().trim().email(t.forms.validationEmail).max(255),
+    phone: z.string().trim().max(30).optional().or(z.literal("")),
+    company: z.string().trim().max(100).optional().or(z.literal("")),
+    message: z.string().trim().min(10, t.forms.validationMessage).max(2000),
+  });
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -52,7 +53,7 @@ export function ContactForm({
       message: parsed.data.message,
     });
     if (error) {
-      setErrorMsg(error.message);
+      setErrorMsg(t.auth.unexpectedError);
       setState("error");
       return;
     }
@@ -63,16 +64,14 @@ export function ContactForm({
   if (state === "sent") {
     return (
       <div className="rounded-2xl bg-primary text-primary-foreground p-8">
-        <div className="text-xs uppercase tracking-widest text-accent">Message sent</div>
-        <div className="mt-2 font-display text-2xl">Thank you.</div>
-        <p className="mt-3 text-primary-foreground/80 text-sm">
-          We reply within a few hours during Crete business hours (08:00 – 22:00 EET).
-        </p>
+        <div className="text-xs uppercase tracking-widest text-accent">{t.forms.messageSent}</div>
+        <div className="mt-2 font-display text-2xl">{t.forms.thankYou}</div>
+        <p className="mt-3 text-primary-foreground/80 text-sm">{t.forms.replyHours}</p>
         <button
           onClick={() => setState("idle")}
           className="mt-6 text-sm underline underline-offset-4 text-accent"
         >
-          Send another
+          {t.forms.sendAnother}
         </button>
       </div>
     );
@@ -81,14 +80,14 @@ export function ContactForm({
   return (
     <form onSubmit={submit} className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Name" error={errors.name}>
+        <Field label={t.forms.name} error={errors.name}>
           <input
             className="cf-input"
             value={values.name}
             onChange={(e) => setValues({ ...values, name: e.target.value })}
           />
         </Field>
-        <Field label="Email" error={errors.email}>
+        <Field label={t.forms.email} error={errors.email}>
           <input
             type="email"
             className="cf-input"
@@ -98,7 +97,7 @@ export function ContactForm({
         </Field>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        <Field label="Phone (optional)" error={errors.phone}>
+        <Field label={t.forms.phoneOptional} error={errors.phone}>
           <input
             className="cf-input"
             value={values.phone}
@@ -106,7 +105,7 @@ export function ContactForm({
           />
         </Field>
         {showCompany && (
-          <Field label="Hotel / company (optional)" error={errors.company}>
+          <Field label={t.forms.companyOptional} error={errors.company}>
             <input
               className="cf-input"
               value={values.company}
@@ -115,7 +114,7 @@ export function ContactForm({
           </Field>
         )}
       </div>
-      <Field label="Message" error={errors.message}>
+      <Field label={t.forms.message} error={errors.message}>
         <textarea
           className="cf-input min-h-32"
           placeholder={placeholder}
@@ -131,7 +130,7 @@ export function ContactForm({
         disabled={state === "sending"}
         className="rounded-xl bg-accent px-6 py-3 text-accent-foreground text-sm hover:opacity-90 disabled:opacity-50"
       >
-        {state === "sending" ? "Sending…" : submitLabel}
+        {state === "sending" ? t.forms.sending : (submitLabel ?? t.forms.sendMessage)}
       </button>
 
       <style>{`

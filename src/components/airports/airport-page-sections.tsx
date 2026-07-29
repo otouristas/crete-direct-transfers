@@ -8,16 +8,7 @@ import { formatEur } from "@/lib/pricing";
 import { BookingWidget } from "@/components/booking-widget";
 import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 import { cn } from "@/lib/utils";
-
-const NAV_ITEMS = [
-  { id: "key-transfer-facts", label: "Key facts" },
-  { id: "airport-operational-info", label: "Local info" },
-  { id: "transfer-overview", label: "Airport overview" },
-  { id: "transport-comparison", label: "Compare options" },
-  { id: "vehicles-available", label: "Vehicles" },
-  { id: "airport-faq", label: "FAQs" },
-  { id: "related-routes", label: "Popular routes" },
-] as const;
+import { useT } from "@/i18n";
 
 export function AirportHero({
   airport,
@@ -26,6 +17,7 @@ export function AirportHero({
   airport: AirportData;
   bookingSlot: ReactNode;
 }) {
+  const t = useT();
   return (
     <section className="relative bg-primary text-primary-foreground">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -37,22 +29,17 @@ export function AirportHero({
       </div>
       <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-16 md:pb-14 md:pt-24">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-          Greece · {airport.iata}
+          {t.directoryPages.greece} <span aria-hidden>·</span> {airport.iata}
         </p>
         <h1 className="mt-3 max-w-3xl text-4xl font-display md:text-5xl lg:text-6xl">
-          {airport.name} Transfers ({airport.iata})
+          {t.airportPages.transfersTitle(airport.name, airport.iata)}
         </h1>
         <p className="mt-4 max-w-2xl text-lg text-primary-foreground/85">
-          Fixed-price private transfers with licensed local chauffeurs. Meet & greet, real-time
-          flight tracking and a free 60-minute wait.
+          {t.airportPages.heroDescription}
         </p>
-        <p className="mt-4 text-sm text-primary-foreground/65">
-          Fixed price · Free cancellation · Flight monitoring
-        </p>
+        <p className="mt-4 text-sm text-primary-foreground/65">{t.airportPages.heroTrustLine}</p>
         <div className="mt-5">
-          <AskTouristasInline
-            prompt={`Transfer from ${airport.name} (${airport.iata}) tomorrow for 2 passengers`}
-          />
+          <AskTouristasInline prompt={t.airportPages.aiPrompt(airport.name, airport.iata)} />
         </div>
         <div className="mt-8" id="react-picker">
           {bookingSlot}
@@ -63,19 +50,29 @@ export function AirportHero({
 }
 
 export function AirportInPageNav() {
+  const t = useT();
+  const navItems = [
+    { id: "key-transfer-facts", label: t.inpageNav.keyFacts },
+    { id: "airport-operational-info", label: t.inpageNav.localInfo },
+    { id: "transfer-overview", label: t.inpageNav.overview },
+    { id: "transport-comparison", label: t.inpageNav.compare },
+    { id: "vehicles-available", label: t.inpageNav.vehicles },
+    { id: "airport-faq", label: t.inpageNav.faqs },
+    { id: "related-routes", label: t.inpageNav.related },
+  ];
   return (
     <nav
       className="sticky top-0 z-20 border-y border-border bg-background/95 backdrop-blur"
-      aria-label="In-page navigation"
+      aria-label={t.inpageNav.ariaLabel}
     >
       <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto px-4 py-3 text-sm sm:px-6">
         <a
           href="#react-picker"
           className="shrink-0 rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground"
         >
-          Book now
+          {t.common.bookNow}
         </a>
-        {NAV_ITEMS.map((item) => (
+        {navItems.map((item) => (
           <a
             key={item.id}
             href={`#${item.id}`}
@@ -96,12 +93,12 @@ export function AirportBookingSlot({
   airport: AirportData;
   defaultRouteSlug?: string;
 }) {
+  const t = useT();
   return (
     <div className="relative z-20 rounded-2xl bg-card p-4 text-foreground shadow-xl md:p-6">
       {airport.bookable !== "instant" && (
         <p className="mb-4 text-sm text-muted-foreground">
-          From {formatEur(airport.fromPriceEur)} · quote confirmed before you pay. Instant checkout
-          is live for Crete; elsewhere we confirm your fare shortly.
+          {t.airportPages.quoteNote(formatEur(airport.fromPriceEur))}
         </p>
       )}
       <BookingWidget defaultIata={airport.iata} defaultRoute={defaultRouteSlug} compact />
@@ -110,18 +107,19 @@ export function AirportBookingSlot({
 }
 
 export function AirportFacts({ airport }: { airport: AirportData }) {
+  const t = useT();
   const facts = [
-    { label: "Airport name", value: `${airport.name} (${airport.iata})` },
-    { label: "Primary city served", value: airport.cityName },
-    { label: "Country", value: airport.country },
-    { label: "Starting price", value: formatEur(airport.fromPriceEur) },
+    { label: t.airportPages.airportName, value: `${airport.name} (${airport.iata})` },
+    { label: t.airportPages.primaryCity, value: airport.cityName },
+    { label: t.airportPages.country, value: airport.country },
+    { label: t.airportPages.startingPrice, value: formatEur(airport.fromPriceEur) },
     {
-      label: "Flight monitoring",
-      value: "Real-time flight tracking — driver adjusts if delayed",
+      label: t.routesPages.factTracking,
+      value: t.airportPages.flightMonitoringValue,
     },
     {
-      label: "Waiting time",
-      value: "60 min free wait at arrivals, 15 min for other pickups",
+      label: t.airportPages.waitingTime,
+      value: t.airportPages.waitingTimeValue,
     },
   ];
 
@@ -130,20 +128,22 @@ export function AirportFacts({ airport }: { airport: AirportData }) {
       <div className="mx-auto max-w-7xl px-6">
         <nav className="mb-6 flex flex-wrap gap-2 text-xs uppercase tracking-wide text-muted-foreground">
           <Link to="/{-$locale}" className="hover:text-accent-deep">
-            Home
+            {t.nav.home}
           </Link>
           <span>/</span>
           <Link to="/{-$locale}/airports" className="hover:text-accent-deep">
-            Airports
+            {t.nav.airports}
           </Link>
           <span>/</span>
           <span className="text-foreground">{airport.name}</span>
         </nav>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <h2 className="text-2xl font-display text-primary sm:text-3xl">
-            Essential facts for transfers at {airport.name} ({airport.iata})
+            {t.airportPages.factsTitle(airport.name, airport.iata)}
           </h2>
-          <p className="text-xs text-muted-foreground">Updated {airport.updatedAt}</p>
+          <p className="text-xs text-muted-foreground">
+            {t.airportPages.updated(airport.updatedAt)}
+          </p>
         </div>
         <p className="mt-3 max-w-3xl text-base text-muted-foreground">{airport.intro}</p>
         <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -160,14 +160,26 @@ export function AirportFacts({ airport }: { airport: AirportData }) {
 }
 
 export function AirportTrustStrip() {
+  const t = useT();
   const items = [
-    { icon: Shield, label: "Licensed drivers", value: "Greek private-hire" },
-    { icon: Sparkles, label: "Arrival care", value: "Meet & greet included" },
-    { icon: Check, label: "Transparent fares", value: "Fixed price" },
-    { icon: Clock, label: "Flexibility", value: "Free cancellation" },
+    { icon: Shield, label: t.trust.licensed, value: t.airportPages.privateHire },
+    {
+      icon: Sparkles,
+      label: t.airportPages.arrivalCare,
+      value: t.advantages.meetTitle,
+    },
+    {
+      icon: Check,
+      label: t.airportPages.transparentFares,
+      value: t.common.fixedPrice,
+    },
+    { icon: Clock, label: t.airportPages.flexibility, value: t.trust.freeCancel },
   ];
   return (
-    <section className="border-b border-border bg-card py-6" aria-label="Trust highlights">
+    <section
+      className="border-b border-border bg-card py-6"
+      aria-label={t.airportPages.trustHighlights}
+    >
       <div className="mx-auto flex max-w-7xl gap-4 overflow-x-auto px-6">
         {items.map(({ icon: Icon, label, value }) => (
           <div key={label} className="flex min-w-[180px] flex-1 items-center gap-3">
@@ -186,15 +198,15 @@ export function AirportTrustStrip() {
 }
 
 export function AirportKnowBefore({ airport }: { airport: AirportData }) {
+  const t = useT();
   return (
     <section id="airport-operational-info" className="bg-background py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-2xl font-display text-primary sm:text-3xl">
-          What to know before your transfer at {airport.name} ({airport.iata})
+          {t.airportPages.knowBeforeTitle(airport.name, airport.iata)}
         </h2>
         <p className="mt-2 max-w-3xl text-muted-foreground">
-          Tolls, charges, terminal pickup zones and local rules that affect your private transfer at{" "}
-          {airport.name}.
+          {t.airportPages.knowBeforeBody(airport.name)}
         </p>
         <div className="mt-10 grid gap-8 sm:grid-cols-2">
           {airport.knowBefore.map((tip) => (
@@ -210,6 +222,7 @@ export function AirportKnowBefore({ airport }: { airport: AirportData }) {
 }
 
 export function AirportInsights({ airport }: { airport: AirportData }) {
+  const t = useT();
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -217,7 +230,7 @@ export function AirportInsights({ airport }: { airport: AirportData }) {
       <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1.4fr_0.8fr]">
         <div>
           <h2 className="text-3xl font-display text-primary sm:text-4xl">
-            Transfer insights for {airport.name}
+            {t.airportPages.insightsTitle(airport.name)}
           </h2>
           <div
             className={cn(
@@ -246,7 +259,7 @@ export function AirportInsights({ airport }: { airport: AirportData }) {
             onClick={() => setExpanded((v) => !v)}
             className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-5 py-2 text-sm font-semibold text-foreground transition hover:border-accent"
           >
-            {expanded ? "Show less" : "Read more insights"}
+            {expanded ? t.airportPages.showLess : t.airportPages.readMoreInsights}
             <ChevronDown className={cn("size-4 transition", expanded && "rotate-180")} />
           </button>
         </div>
@@ -262,12 +275,12 @@ export function AirportInsights({ airport }: { airport: AirportData }) {
             </div>
           </div>
           <div className="mt-6 space-y-2 text-sm">
-            <InfoRow label="Status" value="Operating" highlight />
-            <InfoRow label="Official name" value={airport.officialName} />
-            <InfoRow label="IATA code" value={airport.iata} />
-            <InfoRow label="Address" value={airport.address} />
+            <InfoRow label={t.airportPages.status} value={t.airportPages.operating} highlight />
+            <InfoRow label={t.airportPages.officialName} value={airport.officialName} />
+            <InfoRow label={t.airportPages.iataCode} value={airport.iata} />
+            <InfoRow label={t.airportPages.address} value={airport.address} />
             <div className="flex flex-col gap-1 rounded-2xl bg-secondary/60 px-4 py-3 sm:flex-row sm:justify-between">
-              <span className="font-bold text-muted-foreground">City</span>
+              <span className="font-bold text-muted-foreground">{t.airportPages.city}</span>
               <Link
                 to="/{-$locale}/cities/$slug"
                 params={{ slug: airport.citySlug }}
@@ -277,18 +290,18 @@ export function AirportInsights({ airport }: { airport: AirportData }) {
               </Link>
             </div>
             <div className="flex flex-col gap-1 rounded-2xl bg-secondary/60 px-4 py-3 sm:flex-row sm:justify-between">
-              <span className="font-bold text-muted-foreground">Country</span>
+              <span className="font-bold text-muted-foreground">{t.airportPages.country}</span>
               <Link
                 to="/{-$locale}/greece"
                 className="font-bold text-accent-deep hover:underline sm:text-right"
               >
-                Greece
+                {t.directoryPages.greece}
               </Link>
             </div>
-            {airport.zip ? <InfoRow label="Zipcode" value={airport.zip} /> : null}
-            <InfoRow label="Alias" value={airport.alias} />
-            <InfoRow label="Pickup" value={airport.pickupPoint} />
-            <InfoRow label="Terminals" value={airport.terminals} />
+            {airport.zip ? <InfoRow label={t.airportPages.zipcode} value={airport.zip} /> : null}
+            <InfoRow label={t.airportPages.alias} value={airport.alias} />
+            <InfoRow label={t.airportPages.pickup} value={airport.pickupPoint} />
+            <InfoRow label={t.airportPages.terminals} value={airport.terminals} />
           </div>
           <div className="mt-6 overflow-hidden rounded-2xl border border-border">
             <img
@@ -327,25 +340,23 @@ function InfoRow({
 }
 
 export function AirportComparison({ airport }: { airport: AirportData }) {
+  const t = useT();
   return (
     <section id="transport-comparison" className="bg-background py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-2xl font-display text-primary sm:text-3xl">
-          Ways to get from {airport.name} ({airport.iata}) to {airport.cityName} — compared
+          {t.airportPages.comparisonTitle(airport.name, airport.iata, airport.cityName)}
         </h2>
-        <p className="mt-2 max-w-3xl text-muted-foreground">
-          Real time, real cost, real trade-offs across the realistic transport options at this
-          airport.
-        </p>
+        <p className="mt-2 max-w-3xl text-muted-foreground">{t.airportPages.comparisonBody}</p>
         <div className="mt-8 overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
           <table className="min-w-full divide-y divide-border text-sm">
             <thead className="bg-secondary/50 text-left text-xs uppercase tracking-wide text-muted-foreground">
               <tr>
-                <th className="px-4 py-3 font-bold">Mode</th>
-                <th className="px-4 py-3 font-bold">Time</th>
-                <th className="px-4 py-3 font-bold">Cost</th>
-                <th className="px-4 py-3 font-bold">Pros</th>
-                <th className="px-4 py-3 font-bold">Cons</th>
+                <th className="px-4 py-3 font-bold">{t.airportPages.mode}</th>
+                <th className="px-4 py-3 font-bold">{t.widget.time}</th>
+                <th className="px-4 py-3 font-bold">{t.airportPages.cost}</th>
+                <th className="px-4 py-3 font-bold">{t.airportPages.pros}</th>
+                <th className="px-4 py-3 font-bold">{t.airportPages.cons}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -363,7 +374,7 @@ export function AirportComparison({ airport }: { airport: AirportData }) {
                     </span>
                     {row.recommended ? (
                       <span className="ml-2 inline-flex rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold uppercase text-accent-foreground">
-                        Recommended
+                        {t.airportPages.recommended}
                       </span>
                     ) : null}
                   </td>
@@ -376,10 +387,7 @@ export function AirportComparison({ airport }: { airport: AirportData }) {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          Times are typical door-to-door including expected wait. Public-transport fares are
-          reference-only and may vary.
-        </p>
+        <p className="mt-3 text-xs text-muted-foreground">{t.airportPages.comparisonNote}</p>
       </div>
     </section>
   );
@@ -399,16 +407,14 @@ export function AirportVehicles({
     fromEur: number;
   }[];
 }) {
+  const t = useT();
   return (
     <section id="vehicles-available" className="bg-secondary/40 py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-2xl font-display text-primary sm:text-3xl">
-          Vehicles available at {airport.name} ({airport.iata})
+          {t.airportPages.vehiclesTitle(airport.name, airport.iata)}
         </h2>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Choose the right vehicle for your group size and comfort needs. All fares are fixed and
-          include meet & greet.
-        </p>
+        <p className="mt-2 max-w-2xl text-muted-foreground">{t.airportPages.vehiclesBody}</p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {vehicles.map((v) => (
             <a
@@ -427,7 +433,7 @@ export function AirportVehicles({
                   <span>{v.bags}</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs text-muted-foreground">from</span>
+                  <span className="text-xs text-muted-foreground">{t.common.from}</span>
                   <p className="text-xl font-bold text-foreground">{formatEur(v.fromEur)}</p>
                 </div>
               </div>
@@ -448,6 +454,7 @@ export function AirportFaqs({
   subtitle: string;
   faqs: { q: string; a: string }[];
 }) {
+  const t = useT();
   return (
     <section id="airport-faq" className="bg-background py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
@@ -483,6 +490,7 @@ export function AirportPopularRoutes({
   airport: AirportData;
   routes: AirportRouteData[];
 }) {
+  const t = useT();
   const [showAll, setShowAll] = useState(false);
   const visible = showAll ? routes : routes.slice(0, 6);
 
@@ -492,10 +500,10 @@ export function AirportPopularRoutes({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-3xl font-display text-primary sm:text-4xl">
-              Popular transfer routes from {airport.name} ({airport.iata})
+              {t.airportPages.popularRoutesTitle(airport.name, airport.iata)}
             </h2>
             <p className="mt-2 max-w-3xl text-muted-foreground">
-              Discover the most booked private transfers that depart from this airport.
+              {t.airportPages.popularRoutesBody}
             </p>
           </div>
           {routes.length > 6 ? (
@@ -504,7 +512,7 @@ export function AirportPopularRoutes({
               onClick={() => setShowAll((v) => !v)}
               className="inline-flex rounded-full border border-border px-4 py-2 text-sm font-bold text-foreground hover:border-accent"
             >
-              {showAll ? "Show fewer destinations" : "View more destinations"}
+              {showAll ? t.airportPages.showFewer : t.airportPages.viewMore}
             </button>
           ) : null}
         </div>
@@ -516,26 +524,28 @@ export function AirportPopularRoutes({
                 params={{ slug: airport.slug, routeSlug: r.routeSlug }}
                 className="block rounded-2xl border border-border bg-card p-6 shadow-sm transition hover:shadow-lg"
               >
-                <span className="text-sm uppercase tracking-wide text-accent-deep">Route</span>
+                <span className="text-sm uppercase tracking-wide text-accent-deep">
+                  {t.airportPages.route}
+                </span>
                 <span className="mt-2 block text-lg font-bold text-foreground">
-                  Transfer from {r.fromName} to {r.toName}
+                  {t.airportPages.transferFromTo(r.fromName, r.toName)}
                 </span>
                 <dl className="mt-4 space-y-2 text-sm">
                   <div className="flex justify-between rounded-lg bg-secondary/60 px-3 py-2">
-                    <dt className="font-bold">From</dt>
+                    <dt className="font-bold">{t.routesPages.factFromPrice}</dt>
                     <dd className="font-bold">{formatEur(r.basePriceEur)}</dd>
                   </div>
                   <div className="flex justify-between rounded-lg bg-secondary/60 px-3 py-2">
-                    <dt className="font-bold">Duration</dt>
+                    <dt className="font-bold">{t.routesPages.factDuration}</dt>
                     <dd>{r.durationMin} min</dd>
                   </div>
                   <div className="flex justify-between rounded-lg bg-secondary/60 px-3 py-2">
-                    <dt className="font-bold">Distance</dt>
+                    <dt className="font-bold">{t.routesPages.factDistance}</dt>
                     <dd>{r.distanceKm} km</dd>
                   </div>
                 </dl>
                 <span className="mt-3 inline-flex text-sm font-bold text-muted-foreground">
-                  Compare fares →
+                  {t.airportPages.compareFares} <span aria-hidden>→</span>
                 </span>
               </Link>
             </li>
@@ -547,6 +557,7 @@ export function AirportPopularRoutes({
 }
 
 export function OtherAirportsInGreece({ airport }: { airport: AirportData }) {
+  const t = useT();
   // Country-aware: show other airports in the same country (curated slug where a
   // rich page exists, generated slug otherwise). Falls back to nothing if none.
   const others = relatedAirportsByCountry(airport.iata, 9);
@@ -556,11 +567,9 @@ export function OtherAirportsInGreece({ airport }: { airport: AirportData }) {
     <section className="bg-secondary/40 py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-2xl font-display text-primary sm:text-3xl">
-          Other airports in {country}
+          {t.airportPages.otherAirportsTitle(country)}
         </h2>
-        <p className="mt-2 text-muted-foreground">
-          Discover more airport transfer options across {country}.
-        </p>
+        <p className="mt-2 text-muted-foreground">{t.airportPages.otherAirportsBody(country)}</p>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {others.map((a) => (
             <li key={a.slug}>
@@ -581,7 +590,7 @@ export function OtherAirportsInGreece({ airport }: { airport: AirportData }) {
           to="/{-$locale}/airports"
           className="mt-6 inline-flex text-sm font-semibold text-accent-deep hover:underline"
         >
-          View all airports →
+          {t.airportPages.viewAllAirports} <span aria-hidden>→</span>
         </Link>
       </div>
     </section>

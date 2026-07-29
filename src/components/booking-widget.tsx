@@ -229,7 +229,7 @@ function BookingWidgetBar({
   return (
     <div className="tfr-hbar relative z-10 w-full">
       <div className="tfr-hbar-shell">
-        <div className="tfr-htabs" role="tablist" aria-label="Service type">
+        <div className="tfr-htabs" role="tablist" aria-label={t.widget.serviceType}>
           <button
             type="button"
             role="tab"
@@ -315,7 +315,7 @@ function BookingWidgetBar({
                   <button
                     type="button"
                     className="tfr-stepbtn"
-                    aria-label="−"
+                    aria-label={t.ui.decrease}
                     disabled={hours <= 2}
                     onClick={() => setHours((h) => Math.max(2, h - 1))}
                   >
@@ -325,7 +325,7 @@ function BookingWidgetBar({
                   <button
                     type="button"
                     className="tfr-stepbtn"
-                    aria-label="+"
+                    aria-label={t.ui.increase}
                     disabled={hours >= 12}
                     onClick={() => setHours((h) => Math.min(12, h + 1))}
                   >
@@ -422,7 +422,7 @@ function BookingWidgetBar({
                 <button
                   type="button"
                   className="tfr-stepbtn"
-                  aria-label="−"
+                  aria-label={t.ui.decrease}
                   disabled={pax <= 1}
                   onClick={() => setPax((n) => Math.max(1, n - 1))}
                 >
@@ -432,7 +432,7 @@ function BookingWidgetBar({
                 <button
                   type="button"
                   className="tfr-stepbtn"
-                  aria-label="+"
+                  aria-label={t.ui.increase}
                   disabled={pax >= 16}
                   onClick={() => setPax((n) => Math.min(16, n + 1))}
                 >
@@ -520,6 +520,7 @@ function DateTimePicker({
   onDateChange: (d: Date) => void;
   onTimeChange: (t: string) => void;
 }) {
+  const t = useT();
   return (
     <div className="space-y-3">
       <Calendar
@@ -529,7 +530,7 @@ function DateTimePicker({
         disabled={{ before: new Date() }}
       />
       <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-        Time
+        {t.widget.time}
         <select
           className="mt-1.5 w-full rounded-lg border border-border bg-card px-3 py-2 text-sm"
           value={time}

@@ -8,7 +8,11 @@ export function getDeviceLocale(): Locale {
 
 export function useI18n() {
   const locale = getDeviceLocale();
-  const t = useCallback((key: MessageKey) => translate(locale, key), [locale]);
+  const t = useCallback(
+    (key: MessageKey, variables?: Record<string, string | number>) =>
+      translate(locale, key, variables),
+    [locale],
+  );
   return { locale, t };
 }
 

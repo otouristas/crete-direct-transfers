@@ -1,6 +1,8 @@
 // English — source of truth. el.ts / de.ts are typed against `Dict` so TS
 // enforces completeness; there is no runtime fallback for missing keys.
 import { legalDocsEn } from "./legal/en";
+import { airportPages } from "./airport-pages";
+import { opsCopy } from "./ops-copy";
 
 export const en = {
   common: {
@@ -74,6 +76,42 @@ export const en = {
     language: "Language",
     currency: "Currency",
     close: "Close",
+    viewSiteIn: "View this site in English",
+  },
+  ui: {
+    close: "Close",
+    dismiss: "Dismiss",
+    breadcrumb: "Breadcrumb",
+    more: "More",
+    pagination: "Pagination",
+    previousPage: "Go to previous page",
+    previous: "Previous",
+    nextPage: "Go to next page",
+    next: "Next",
+    morePages: "More pages",
+    previousSlide: "Previous slide",
+    nextSlide: "Next slide",
+    sidebar: "Sidebar",
+    sidebarDescription: "Displays the mobile sidebar.",
+    toggleSidebar: "Toggle sidebar",
+    decrease: "Decrease",
+    increase: "Increase",
+  },
+  forms: {
+    name: "Name",
+    email: "Email",
+    phoneOptional: "Phone (optional)",
+    companyOptional: "Hotel / company (optional)",
+    message: "Message",
+    sendMessage: "Send message",
+    sending: "Sending…",
+    messageSent: "Message sent",
+    thankYou: "Thank you.",
+    replyHours: "We reply within a few hours during business hours (08:00–22:00 EET).",
+    sendAnother: "Send another",
+    validationName: "Please enter your name",
+    validationEmail: "Please enter a valid email",
+    validationMessage: "Tell us a little more",
   },
   footer: {
     tagline:
@@ -198,6 +236,8 @@ export const en = {
     pickupLocation: "Pickup location",
     dropoffLocation: "Drop-off location",
     customRouteHint: "Custom pin location. Pickup and drop-off points set on map.",
+    serviceType: "Service type",
+    time: "Time",
   },
   home: {
     metaTitle: "TransferAround — Fixed-Price Airport & Port Transfers in Crete",
@@ -1027,6 +1067,8 @@ export const en = {
     fullPageMetaDescription:
       "Ask Touristas AI for fixed-price private transfer quotes across Crete, Greece, Spain and Italy.",
   },
+  airportPages: airportPages.en,
+  ops: opsCopy.en,
   notFound: {
     title: "Page not found",
     body: "The page you're looking for doesn't exist or has been moved.",

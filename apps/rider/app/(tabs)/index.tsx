@@ -1,14 +1,6 @@
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import {
-  Dimensions,
-  Image,
-  Linking,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Dimensions, Image, Linking, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { createBooking } from "@transferaround/mobile-shared";
 import {
@@ -31,6 +23,7 @@ import {
 } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../../lib/auth";
 import { API_URL } from "../../lib/config";
+import { useI18n } from "../../lib/i18n";
 import { PRESET_ROUTES, type PresetRoute } from "../../lib/presets";
 import { supabase } from "../../lib/supabase";
 import { VEHICLE_OPTIONS, priceForClass, type VehicleOption } from "../../lib/vehicles";
@@ -58,6 +51,7 @@ function friendlyDate(iso: string) {
 
 export default function BookScreen() {
   const { user, profile, isDemo } = useAuth();
+  const { t } = useI18n();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -151,7 +145,10 @@ export default function BookScreen() {
         <View style={styles.brandPill}>
           <LogoMark size={22} rounded />
           <Text style={styles.brandText}>
-            Transfer<Text style={{ fontFamily: fonts.display, fontSize: 15, color: colors.accent }}>Around</Text>
+            Transfer
+            <Text style={{ fontFamily: fonts.display, fontSize: 15, color: colors.accent }}>
+              Around
+            </Text>
           </Text>
         </View>
       </View>
@@ -164,11 +161,15 @@ export default function BookScreen() {
           bottomInset={insets.bottom}
         >
           <View style={styles.headingRow}>
-            <Heading variant="h1">Where to?</Heading>
+            <Heading variant="h1">{t("mobile.whereTo")}</Heading>
             {isDemo ? (
               <View style={styles.demoTag}>
-                <Text variant="caption" color={colors.accentDeep} style={{ fontFamily: fonts.bodySemibold }}>
-                  Demo
+                <Text
+                  variant="caption"
+                  color={colors.accentDeep}
+                  style={{ fontFamily: fonts.bodySemibold }}
+                >
+                  {t("mobile.demo")}
                 </Text>
               </View>
             ) : null}
@@ -180,7 +181,7 @@ export default function BookScreen() {
             </View>
           </Card>
 
-          <SectionLabel>Popular routes</SectionLabel>
+          <SectionLabel>{t("mobile.popularRoutes")}</SectionLabel>
           <View style={{ gap: space.sm }}>
             {PRESET_ROUTES.map((r) => {
               const selected = r.id === route.id;
@@ -195,7 +196,9 @@ export default function BookScreen() {
                         {r.label}
                       </Text>
                       <Text variant="caption" color={colors.textMuted}>
-                        From €{(r.priceCents / 100).toFixed(0)} · private transfer
+                        {t("mobile.fromPrivate", {
+                          price: `€${(r.priceCents / 100).toFixed(0)}`,
+                        })}
                       </Text>
                     </View>
                     <Icon
@@ -209,7 +212,7 @@ export default function BookScreen() {
             })}
           </View>
 
-          <SectionLabel>Choose a ride</SectionLabel>
+          <SectionLabel>{t("mobile.chooseRide")}</SectionLabel>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -236,9 +239,9 @@ export default function BookScreen() {
             })}
           </ScrollView>
 
-          <SectionLabel>Trip details</SectionLabel>
+          <SectionLabel>{t("mobile.tripDetails")}</SectionLabel>
           <Field
-            label="Pickup time"
+            label={t("mobile.pickupTime")}
             icon="calendar-outline"
             value={pickupLocal}
             onChangeText={setPickupLocal}
@@ -251,15 +254,24 @@ export default function BookScreen() {
 
           <View style={styles.passengerRow}>
             <View>
-              <Text variant="subtitle">Passengers</Text>
+              <Text variant="subtitle">{t("mobile.passengers")}</Text>
               <Text variant="caption" color={colors.textMuted}>
-                Up to {vehicle.seats} in a {vehicle.name}
+                {t("mobile.passengerCapacity", {
+                  count: vehicle.seats,
+                  vehicle: vehicle.name,
+                })}
               </Text>
             </View>
             <Stepper value={passengers} onChange={setPassengers} min={1} max={vehicle.seats} />
           </View>
 
-          <Field label="Your name" icon="person-outline" value={name} onChangeText={setName} placeholder="Full name" />
+          <Field
+            label={t("mobile.yourName")}
+            icon="person-outline"
+            value={name}
+            onChangeText={setName}
+            placeholder={t("profile.fullName")}
+          />
           <Field
             label="Phone"
             icon="call-outline"
@@ -272,14 +284,18 @@ export default function BookScreen() {
           <View style={styles.summary}>
             <View>
               <Text variant="caption" color={colors.textMuted}>
-                Total · fixed price
+                {t("mobile.totalFixed")}
               </Text>
               <Text style={styles.summaryPrice}>{totalLabel}</Text>
             </View>
             <View style={styles.summaryRight}>
               <Icon name="shield-checkmark" size={16} color={colors.accentDeep} />
-              <Text variant="caption" color={colors.accentDeep} style={{ fontFamily: fonts.bodySemibold }}>
-                Free cancellation
+              <Text
+                variant="caption"
+                color={colors.accentDeep}
+                style={{ fontFamily: fonts.bodySemibold }}
+              >
+                {t("mobile.freeCancellation")}
               </Text>
             </View>
           </View>
@@ -291,7 +307,7 @@ export default function BookScreen() {
           ) : null}
 
           <Button
-            title={`Book & pay ${totalLabel}`}
+            title={t("mobile.bookAndPay", { price: totalLabel })}
             icon="arrow-forward"
             onPress={() => void onBook()}
             loading={busy}
@@ -374,6 +390,11 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     padding: space.lg,
   },
-  summaryPrice: { fontFamily: fonts.display, fontSize: 26, color: colors.text, letterSpacing: -0.5 },
+  summaryPrice: {
+    fontFamily: fonts.display,
+    fontSize: 26,
+    color: colors.text,
+    letterSpacing: -0.5,
+  },
   summaryRight: { flexDirection: "row", alignItems: "center", gap: 6 },
 });

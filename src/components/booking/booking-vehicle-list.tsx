@@ -1,15 +1,15 @@
 import { Users, Briefcase } from "lucide-react";
 import type { VehicleClass } from "@/data/routes";
 import { formatEur, type TripQuote } from "@/lib/pricing";
-import { useLocale } from "@/i18n";
+import { useLocale, useT } from "@/i18n";
 import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
 
-const BADGES: Partial<Record<VehicleClass, { label: string; className: string }>> = {
-  economy: { label: "Best value", className: "bg-emerald-50 text-emerald-700" },
-  comfort: { label: "Most popular", className: "bg-rose-50 text-rose-700" },
-  luxury: { label: "Top class", className: "bg-slate-100 text-slate-600" },
-  "van-first": { label: "Top class", className: "bg-slate-100 text-slate-600" },
+const BADGES: Partial<Record<VehicleClass, { className: string }>> = {
+  economy: { className: "bg-emerald-50 text-emerald-700" },
+  comfort: { className: "bg-rose-50 text-rose-700" },
+  luxury: { className: "bg-slate-100 text-slate-600" },
+  "van-first": { className: "bg-slate-100 text-slate-600" },
 };
 
 function paxMax(capacity: string): string {
@@ -41,17 +41,18 @@ export function BookingVehicleList({
     topClass: string;
   };
 }) {
+  const t = useT();
   const vehicles = getLocalizedVehicles(useLocale());
   const badgeLabel = (id: VehicleClass) => {
     if (id === "economy") return labels.bestValue;
     if (id === "comfort") return labels.mostPopular;
     if (id === "luxury" || id === "van-first") return labels.topClass;
-    return BADGES[id]?.label;
+    return undefined;
   };
 
   return (
     <fieldset className="w-full space-y-2.5">
-      <legend className="sr-only">Vehicle class</legend>
+      <legend className="sr-only">{t.widget.vehicleClass}</legend>
       {vehicles.map((vc) => {
         const row = quotes.find((q) => q.vehicleClass === vc.id);
         const price = row?.quote.totalEur;

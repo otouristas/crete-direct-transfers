@@ -1,5 +1,7 @@
 import type { Dict } from "./en";
 import { legalDocsDe } from "./legal/de";
+import { airportPages } from "./airport-pages";
+import { opsCopy } from "./ops-copy";
 
 export const de: Dict = {
   common: {
@@ -73,6 +75,43 @@ export const de: Dict = {
     language: "Sprache",
     currency: "Währung",
     close: "Schließen",
+    viewSiteIn: "Diese Website auf Deutsch ansehen",
+  },
+  ui: {
+    close: "Schließen",
+    dismiss: "Ausblenden",
+    breadcrumb: "Brotkrümelnavigation",
+    more: "Mehr",
+    pagination: "Seitennavigation",
+    previousPage: "Zur vorherigen Seite",
+    previous: "Zurück",
+    nextPage: "Zur nächsten Seite",
+    next: "Weiter",
+    morePages: "Weitere Seiten",
+    previousSlide: "Vorherige Folie",
+    nextSlide: "Nächste Folie",
+    sidebar: "Seitenleiste",
+    sidebarDescription: "Zeigt die mobile Seitenleiste an.",
+    toggleSidebar: "Seitenleiste umschalten",
+    decrease: "Verringern",
+    increase: "Erhöhen",
+  },
+  forms: {
+    name: "Name",
+    email: "E-Mail",
+    phoneOptional: "Telefon (optional)",
+    companyOptional: "Hotel / Unternehmen (optional)",
+    message: "Nachricht",
+    sendMessage: "Nachricht senden",
+    sending: "Wird gesendet…",
+    messageSent: "Nachricht gesendet",
+    thankYou: "Vielen Dank.",
+    replyHours:
+      "Wir antworten während der Geschäftszeiten 08:00–22:00 EET innerhalb weniger Stunden.",
+    sendAnother: "Weitere Nachricht senden",
+    validationName: "Geben Sie Ihren Namen ein",
+    validationEmail: "Geben Sie eine gültige E-Mail-Adresse ein",
+    validationMessage: "Teilen Sie uns bitte etwas mehr mit",
   },
   footer: {
     tagline:
@@ -199,6 +238,8 @@ export const de: Dict = {
     pickupLocation: "Abholort",
     dropoffLocation: "Zielort",
     customRouteHint: "Benutzerdefinierte Position. Abhol- und Zielpunkte auf der Karte festgelegt.",
+    serviceType: "Serviceart",
+    time: "Uhrzeit",
   },
   home: {
     metaTitle: "TransferAround — Flughafen- & Hafentransfers auf Kreta zum Festpreis",
@@ -1038,6 +1079,8 @@ export const de: Dict = {
 
     contextPrefix: "Kontext:",
   },
+  airportPages: airportPages.de,
+  ops: opsCopy.de,
   notFound: {
     title: "Seite nicht gefunden",
     body: "Die gesuchte Seite existiert nicht oder wurde verschoben.",

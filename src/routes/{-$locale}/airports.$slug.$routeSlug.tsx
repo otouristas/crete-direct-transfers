@@ -35,27 +35,37 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [{ title: t.seo.notFound("Route") }, { name: "robots", content: "noindex" }],
+        meta: [
+          { title: t.seo.notFound(t.airportPages.route) },
+          { name: "robots", content: "noindex" },
+        ],
       };
     }
     const { airport, route } = loaderData;
     const path = `/airports/${airport.slug}/${route.routeSlug}`;
     const price = formatEur(route.basePriceEur);
+    const localePrefix = locale === "en" ? "" : `/${locale}`;
 
     return buildHead({
       locale,
       path,
       title: t.seo.airportRouteTitle(route.fromName, route.toName),
-      description: `Private transfer from ${route.fromName} to ${route.toName}. ${route.distanceKm} km in about ${route.durationMin} min. Fixed prices, flight tracking, free cancellation. From ${price}.`,
+      description: t.airportPages.routeDescription(
+        route.fromName,
+        route.toName,
+        String(route.distanceKm),
+        String(route.durationMin),
+        price,
+      ),
       ogImage: airport.heroImage,
       jsonLd: {
         "@context": "https://schema.org",
         "@graph": [
           {
             "@type": "TaxiService",
-            name: `Transfer from ${route.fromName} to ${route.toName}`,
+            name: t.airportPages.transferFromTo(route.fromName, route.toName),
             provider: { "@type": "LocalBusiness", name: SITE_NAME },
-            areaServed: airport.cityName + ", Greece",
+            areaServed: t.airportPages.areaServed(airport.cityName, airport.country),
             offers: {
               "@type": "Offer",
               price: route.basePriceEur,
@@ -73,24 +83,29 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
           {
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: t.nav.home,
+                item: `${SITE_URL}${localePrefix || "/"}`,
+              },
               {
                 "@type": "ListItem",
                 position: 2,
-                name: "Airports",
-                item: `${SITE_URL}/airports`,
+                name: t.nav.airports,
+                item: `${SITE_URL}${localePrefix}/airports`,
               },
               {
                 "@type": "ListItem",
                 position: 3,
                 name: airport.name,
-                item: `${SITE_URL}/airports/${airport.slug}`,
+                item: `${SITE_URL}${localePrefix}/airports/${airport.slug}`,
               },
               {
                 "@type": "ListItem",
                 position: 4,
                 name: route.toName,
-                item: `${SITE_URL}${path}`,
+                item: `${SITE_URL}${localePrefix}${path}`,
               },
             ],
           },
@@ -111,7 +126,7 @@ function RouteNotFound() {
         to="/{-$locale}/airports"
         className="mt-6 inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground"
       >
-        All airports
+        {t.airportPages.viewAllAirports}
       </Link>
     </div>
   );
@@ -119,6 +134,7 @@ function RouteNotFound() {
 
 function AirportRoutePage() {
   const { airport, route, siblings } = Route.useLoaderData();
+  const t = useT();
   const vehicles = vehicleFromPrices(airport, route);
 
   return (
@@ -132,11 +148,11 @@ function AirportRoutePage() {
         <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-16 md:pt-24">
           <nav className="mb-4 flex flex-wrap gap-2 text-xs text-primary-foreground/70">
             <Link to="/{-$locale}" className="hover:text-accent">
-              Home
+              {t.nav.home}
             </Link>
             <span>/</span>
             <Link to="/{-$locale}/airports" className="hover:text-accent">
-              Airports
+              {t.nav.airports}
             </Link>
             <span>/</span>
             <Link
@@ -150,15 +166,18 @@ function AirportRoutePage() {
             <span>{route.toName}</span>
           </nav>
           <h1 className="max-w-3xl text-3xl font-display md:text-5xl">
-            Transfer from {route.fromName} to {route.toName}
+            {t.airportPages.transferFromTo(route.fromName, route.toName)}
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-primary-foreground/85">
-            {route.distanceKm} km · about {route.durationMin} min · from{" "}
-            {formatEur(route.basePriceEur)}
+            {t.airportPages.distanceSummary(
+              String(route.distanceKm),
+              String(route.durationMin),
+              formatEur(route.basePriceEur),
+            )}
           </p>
           <div className="mt-6">
             <AskTouristasInline
-              prompt={`Book ${route.fromName} to ${route.toName} tomorrow for 2 passengers`}
+              prompt={t.airportPages.routeAiPrompt(route.fromName, route.toName)}
             />
           </div>
           <div className="mt-8" id="react-picker">
@@ -181,21 +200,30 @@ function AirportRoutePage() {
       <section id="key-transfer-facts" className="bg-secondary/40 py-14">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="text-2xl font-display text-primary sm:text-3xl">
-            Essential facts for transfers from {route.fromName} to {route.toName}
+            {t.airportPages.routeFactsTitle(route.fromName, route.toName)}
           </h2>
           <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { label: "Route", value: `${route.fromName} to ${route.toName}` },
-              { label: "Distance", value: `${route.distanceKm} km` },
-              { label: "Average travel time", value: `${route.durationMin} min` },
-              { label: "Starting price", value: formatEur(route.basePriceEur) },
               {
-                label: "Flight monitoring",
-                value: "Real-time — driver adjusts if delayed",
+                label: t.airportPages.route,
+                value: `${route.fromName} → ${route.toName}`,
+              },
+              { label: t.routesPages.factDistance, value: `${route.distanceKm} km` },
+              {
+                label: t.airportPages.averageTravelTime,
+                value: `${route.durationMin} min`,
               },
               {
-                label: "Waiting time",
-                value: "60 min free wait at arrivals",
+                label: t.airportPages.startingPrice,
+                value: formatEur(route.basePriceEur),
+              },
+              {
+                label: t.routesPages.factTracking,
+                value: t.airportPages.routeFlightValue,
+              },
+              {
+                label: t.airportPages.waitingTime,
+                value: t.airportPages.routeWaitValue,
               },
             ].map((f) => (
               <div key={f.label} className="rounded-xl border border-border bg-card p-5">
@@ -210,7 +238,7 @@ function AirportRoutePage() {
       <section id="airport-operational-info" className="bg-background py-14">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="text-2xl font-display text-primary sm:text-3xl">
-            What to know about the {route.fromName} → {route.toName} route
+            {t.airportPages.routeKnowTitle(route.fromName, route.toName)}
           </h2>
           <div className="mt-10 grid gap-8 sm:grid-cols-3">
             {route.tips.map((tip) => (
@@ -227,22 +255,22 @@ function AirportRoutePage() {
       <AirportVehicles airport={airport} vehicles={vehicles} />
 
       <AirportFaqs
-        title={`Book your transport from ${route.fromName} to ${route.toName}`}
-        subtitle={`Answers about pickup, timing, pricing and drop-off for this corridor.`}
+        title={t.airportPages.routeFaqTitle(route.fromName, route.toName)}
+        subtitle={t.airportPages.routeFaqSubtitle}
         faqs={route.faqs}
       />
 
       <section className="bg-secondary/40 py-14">
         <div className="mx-auto max-w-7xl px-6">
           <h2 className="text-2xl font-display text-primary">
-            Popular alternatives from {airport.name}
+            {t.airportPages.alternativesTitle(airport.name)}
           </h2>
           <Link
             to="/{-$locale}/airports/$slug"
             params={{ slug: airport.slug }}
             className="mt-2 inline-flex text-sm font-semibold text-accent-deep hover:underline"
           >
-            View all {airport.name} transfers →
+            {t.airportPages.viewAllTransfers(airport.name)} <span aria-hidden>→</span>
           </Link>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {siblings.slice(0, 6).map((r) => (

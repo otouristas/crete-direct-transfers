@@ -42,19 +42,19 @@ export default function AccountScreen() {
         </View>
       </Card>
 
-      <SectionLabel>Manage</SectionLabel>
+      <SectionLabel>{t("mobile.manage")}</SectionLabel>
       <Card padded={false}>
         <ListRow
           icon="receipt-outline"
           title={t("mobile.tab.trips")}
-          subtitle="Bookings & receipts"
+          subtitle={t("mobile.bookingsReceipts")}
           onPress={() => router.push("/(tabs)/trips")}
         />
         <Divider inset={space.lg} />
         <ListRow
           icon="help-buoy-outline"
-          title="Help & support"
-          subtitle="Get help with a booking"
+          title={t("mobile.helpSupport")}
+          subtitle={t("mobile.bookingHelp")}
           iconColor={colors.accentDeep}
           iconBg={colors.accentSoft}
           onPress={() => void Linking.openURL(`${API_URL}/faq`)}
@@ -62,7 +62,7 @@ export default function AccountScreen() {
         <Divider inset={space.lg} />
         <ListRow
           icon="document-text-outline"
-          title="Terms & privacy"
+          title={t("mobile.termsPrivacy")}
           onPress={() => void Linking.openURL(`${API_URL}/legal/terms`)}
         />
       </Card>
@@ -71,7 +71,7 @@ export default function AccountScreen() {
         <Card padded style={styles.demo}>
           <Icon name="information-circle-outline" size={20} color={colors.accentDeep} />
           <Text variant="body" color={colors.textMuted} style={{ flex: 1 }}>
-            Demo mode — sign-in is skipped for this preview.
+            {t("mobile.demoMode")}
           </Text>
         </Card>
       ) : (

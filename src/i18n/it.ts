@@ -2,6 +2,8 @@
 // Native-speaker QA recommended on high-traffic pages before launch.
 import type { Dict } from "./en";
 import { legalDocsIt } from "./legal/it";
+import { airportPages } from "./airport-pages";
+import { opsCopy } from "./ops-copy";
 
 export const it: Dict = {
   common: {
@@ -75,6 +77,42 @@ export const it: Dict = {
     language: "Lingua",
     currency: "Valuta",
     close: "Chiudi",
+    viewSiteIn: "Vedi questo sito in italiano",
+  },
+  ui: {
+    close: "Chiudi",
+    dismiss: "Ignora",
+    breadcrumb: "Percorso di navigazione",
+    more: "Altro",
+    pagination: "Paginazione",
+    previousPage: "Vai alla pagina precedente",
+    previous: "Precedente",
+    nextPage: "Vai alla pagina successiva",
+    next: "Successiva",
+    morePages: "Altre pagine",
+    previousSlide: "Diapositiva precedente",
+    nextSlide: "Diapositiva successiva",
+    sidebar: "Barra laterale",
+    sidebarDescription: "Mostra la barra laterale sui dispositivi mobili.",
+    toggleSidebar: "Mostra o nascondi la barra laterale",
+    decrease: "Diminuisci",
+    increase: "Aumenta",
+  },
+  forms: {
+    name: "Nome",
+    email: "Email",
+    phoneOptional: "Telefono (facoltativo)",
+    companyOptional: "Hotel / azienda (facoltativo)",
+    message: "Messaggio",
+    sendMessage: "Invia messaggio",
+    sending: "Invio…",
+    messageSent: "Messaggio inviato",
+    thankYou: "Grazie.",
+    replyHours: "Rispondiamo entro poche ore durante l’orario 08:00–22:00 EET.",
+    sendAnother: "Invia un altro messaggio",
+    validationName: "Inserisci il tuo nome",
+    validationEmail: "Inserisci un indirizzo email valido",
+    validationMessage: "Fornisci qualche dettaglio in più",
   },
   footer: {
     tagline:
@@ -201,6 +239,8 @@ export const it: Dict = {
     dropoffLocation: "Luogo di destinazione",
     customRouteHint:
       "Posizione personalizzata. Punti di prelievo e destinazione impostati sulla mappa.",
+    serviceType: "Tipo di servizio",
+    time: "Ora",
   },
   home: {
     metaTitle: "TransferAround — Transfer aeroporto e porto a Creta a prezzo fisso",
@@ -1038,6 +1078,8 @@ export const it: Dict = {
 
     contextPrefix: "Contesto:",
   },
+  airportPages: airportPages.it,
+  ops: opsCopy.it,
   notFound: {
     title: "Pagina non trovata",
     body: "La pagina che cerchi non esiste o è stata spostata.",

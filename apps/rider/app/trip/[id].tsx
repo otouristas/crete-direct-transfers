@@ -18,6 +18,7 @@ import {
   radius,
   space,
 } from "@transferaround/mobile-shared/ui";
+import { useI18n } from "../../lib/i18n";
 import { supabase } from "../../lib/supabase";
 
 const STEPS = [
@@ -50,6 +51,7 @@ function DetailRow({ icon, label, value }: { icon: any; label: string; value: st
 export default function TripDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { t } = useI18n();
   const [booking, setBooking] = useState<Awaited<ReturnType<typeof fetchBooking>>>(null);
   const [loading, setLoading] = useState(true);
 
@@ -95,8 +97,13 @@ export default function TripDetailScreen() {
       <View style={styles.center}>
         {header}
         <Icon name="alert-circle-outline" size={40} color={colors.textFaint} />
-        <Text variant="title">Trip not found</Text>
-        <Button title="Go back" variant="outline" icon="arrow-back" onPress={() => router.back()} />
+        <Text variant="title">{t("mobile.tripNotFound")}</Text>
+        <Button
+          title={t("mobile.goBack")}
+          variant="outline"
+          icon="arrow-back"
+          onPress={() => router.back()}
+        />
       </View>
     );
   }
@@ -107,8 +114,16 @@ export default function TripDetailScreen() {
   return (
     <View style={styles.root}>
       {header}
-      <ScrollView contentContainerStyle={{ paddingBottom: space.xxxl }} showsVerticalScrollIndicator={false}>
-        <RouteMap from={booking.pickup_address} to={booking.dropoff_address} height={220} interactive />
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: space.xxxl }}
+        showsVerticalScrollIndicator={false}
+      >
+        <RouteMap
+          from={booking.pickup_address}
+          to={booking.dropoff_address}
+          height={220}
+          interactive
+        />
 
         <View style={styles.body}>
           <Card padded>
@@ -122,23 +137,43 @@ export default function TripDetailScreen() {
           </Card>
 
           <Card padded>
-            <RouteRail from={booking.pickup_address || "Pickup"} to={booking.dropoff_address || "Drop-off"} />
+            <RouteRail
+              from={booking.pickup_address || t("mobile.pickup")}
+              to={booking.dropoff_address || t("mobile.dropoff")}
+            />
             <Divider inset={0} />
             <View style={{ gap: space.sm, marginTop: space.md }}>
-              <DetailRow icon="calendar-outline" label="Pickup" value={new Date(booking.pickup_at).toLocaleString()} />
-              <DetailRow icon="card-outline" label="Payment" value={String(booking.payment_status)} />
-              <DetailRow icon="people-outline" label="Passengers" value={String(booking.passengers ?? 1)} />
+              <DetailRow
+                icon="calendar-outline"
+                label={t("mobile.pickup")}
+                value={new Date(booking.pickup_at).toLocaleString()}
+              />
+              <DetailRow
+                icon="card-outline"
+                label={t("mobile.payment")}
+                value={String(booking.payment_status)}
+              />
+              <DetailRow
+                icon="people-outline"
+                label={t("mobile.passengers")}
+                value={String(booking.passengers ?? 1)}
+              />
             </View>
           </Card>
 
           {hasDriver ? (
             <Card padded>
               <View style={styles.driverRow}>
-                <Avatar name="Your Driver" size={52} bg={colors.accentSoft} fg={colors.accentDeep} />
+                <Avatar
+                  name={t("mobile.yourDriver")}
+                  size={52}
+                  bg={colors.accentSoft}
+                  fg={colors.accentDeep}
+                />
                 <View style={{ flex: 1 }}>
-                  <Text variant="subtitle">Driver assigned</Text>
+                  <Text variant="subtitle">{t("mobile.driverAssigned")}</Text>
                   <Text variant="caption" color={colors.textMuted}>
-                    Contact details are in your confirmation email.
+                    {t("mobile.contactEmail")}
                   </Text>
                 </View>
                 <Icon name="checkmark-circle" size={24} color={colors.accent} />
@@ -148,9 +183,9 @@ export default function TripDetailScreen() {
             <Card padded style={styles.waiting}>
               <ActivityIndicator color={colors.accent} />
               <View style={{ flex: 1 }}>
-                <Text variant="subtitle">Finding your driver…</Text>
+                <Text variant="subtitle">{t("mobile.findingDriver")}</Text>
                 <Text variant="caption" color={colors.textMuted}>
-                  We’re matching you with a nearby transfer partner.
+                  {t("mobile.matchingPartner")}
                 </Text>
               </View>
             </Card>
@@ -163,7 +198,13 @@ export default function TripDetailScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
-  center: { flex: 1, backgroundColor: colors.bg, alignItems: "center", justifyContent: "center", gap: space.md },
+  center: {
+    flex: 1,
+    backgroundColor: colors.bg,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: space.md,
+  },
   body: { padding: space.lg, gap: space.lg },
   statusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   price: { fontFamily: fonts.display, fontSize: 24, color: colors.text, letterSpacing: -0.5 },

@@ -24,7 +24,7 @@ export function PageHero({
       <div className="mx-auto max-w-7xl px-6 py-14 md:py-20">
         {crumbs && crumbs.length > 0 && (
           <nav
-            aria-label="Breadcrumb"
+            aria-label={t.ui.breadcrumb}
             className="mb-5 flex flex-wrap items-center gap-1 text-xs text-muted-foreground"
           >
             <Link to="/{-$locale}" className="hover:text-accent-deep">

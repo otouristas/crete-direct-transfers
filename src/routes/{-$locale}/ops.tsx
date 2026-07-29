@@ -24,11 +24,12 @@ import { expireOffersAndEscalate } from "@/functions/dispatch";
 export const Route = createFileRoute("/{-$locale}/ops")({
   head: ({ params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     return buildHead({
       locale,
       path: "/ops",
-      title: "Ops · TransferAround",
-      description: "Operations queue",
+      title: t.ops.metaTitle,
+      description: t.ops.metaDescription,
       noindex: true,
     });
   },
@@ -52,9 +53,9 @@ function OpsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ops-incidents"] });
       queryClient.invalidateQueries({ queryKey: ["ops-refunds"] });
-      toast.success("Resolved");
+      toast.success(t.ops.resolved);
     },
-    onError: () => toast.error("Could not resolve — are you an admin?"),
+    onError: () => toast.error(t.ops.resolveFailed),
   });
 
   const pausePartner = useMutation({
@@ -62,7 +63,7 @@ function OpsPage() {
       setPartnerStatusAdmin(id, status),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ops-partners"] });
-      toast.success("Partner updated");
+      toast.success(t.ops.partnerUpdated);
     },
     onError: (err: Error) => toast.error(err.message),
   });
@@ -72,7 +73,7 @@ function OpsPage() {
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ["ops-unassigned"] });
       toast.success(
-        res && "escalate" in res ? `Escalated ${res.escalate ?? 0}` : "Expiry pass done",
+        res && "escalate" in res ? `${t.ops.escalated} ${res.escalate ?? 0}` : t.ops.expiryDone,
       );
     },
   });
@@ -81,16 +82,16 @@ function OpsPage() {
     mutationFn: reviewDriverDocumentAdmin,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ops-driver-onboarding"] });
-      toast.success("Document updated");
+      toast.success(t.ops.documentUpdated);
     },
-    onError: () => toast.error("Document review failed"),
+    onError: () => toast.error(t.ops.documentReviewFailed),
   });
 
   const reviewOnboarding = useMutation({
     mutationFn: reviewDriverOnboardingAdmin,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ops-driver-onboarding"] });
-      toast.success("Application updated");
+      toast.success(t.ops.applicationUpdated);
     },
     onError: (error: Error) => toast.error(error.message),
   });
@@ -100,8 +101,8 @@ function OpsPage() {
   if (!profile.data || profile.data.role !== "admin") {
     return (
       <div className="mx-auto max-w-lg px-6 py-20 text-center">
-        <h1 className="font-display text-2xl text-primary">Ops</h1>
-        <p className="mt-3 text-sm text-muted-foreground">Admin access required.</p>
+        <h1 className="font-display text-2xl text-primary">{t.ops.shortTitle}</h1>
+        <p className="mt-3 text-sm text-muted-foreground">{t.ops.adminRequired}</p>
         <Link
           to="/{-$locale}/account"
           className="mt-6 inline-block text-sm text-accent-deep underline"
@@ -116,11 +117,8 @@ function OpsPage() {
     <div className="mx-auto max-w-5xl space-y-10 px-6 py-12">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl text-primary">Operations</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Unassigned jobs, partners, incidents and refunds. DNS strikes auto-apply on confirmed
-            driver no-shows.
-          </p>
+          <h1 className="font-display text-3xl text-primary">{t.ops.title}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{t.ops.description}</p>
         </div>
         <button
           type="button"
@@ -128,16 +126,16 @@ function OpsPage() {
           disabled={escalate.isPending}
           className="rounded-xl border border-border px-4 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50"
         >
-          Run offer expiry / escalate
+          {t.ops.escalate}
         </button>
       </div>
 
       <section>
-        <h2 className="font-display text-xl text-primary">Driver onboarding review</h2>
+        <h2 className="font-display text-xl text-primary">{t.ops.onboardingReview}</h2>
         {onboarding.isPending ? (
           <Skeleton className="mt-4 h-40 w-full rounded-2xl" />
         ) : onboarding.data?.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">No applications awaiting review.</p>
+          <p className="mt-4 text-sm text-muted-foreground">{t.ops.noApplications}</p>
         ) : (
           <ul className="mt-4 space-y-4">
             {onboarding.data?.map((application) => (
@@ -159,17 +157,17 @@ function OpsPage() {
                         reviewOnboarding.mutate({
                           driverId: application.driver_id,
                           status: "approved",
-                          notes: "All required documents verified.",
+                          notes: t.ops.approvalNote,
                         })
                       }
                     >
-                      Approve
+                      {t.ops.approve}
                     </button>
                     <button
                       type="button"
                       className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium"
                       onClick={() => {
-                        const notes = window.prompt("Required changes");
+                        const notes = window.prompt(t.ops.requiredChanges);
                         if (notes?.trim()) {
                           reviewOnboarding.mutate({
                             driverId: application.driver_id,
@@ -179,7 +177,7 @@ function OpsPage() {
                         }
                       }}
                     >
-                      Request changes
+                      {t.ops.requestChanges}
                     </button>
                   </div>
                 </div>
@@ -201,7 +199,7 @@ function OpsPage() {
                       </div>
                       {document.expires_on && (
                         <p className="mt-1 text-xs text-muted-foreground">
-                          Expires {new Date(document.expires_on).toLocaleDateString(locale)}
+                          {t.ops.expires} {new Date(document.expires_on).toLocaleDateString(locale)}
                         </p>
                       )}
                       <div className="mt-3 flex gap-2">
@@ -215,13 +213,13 @@ function OpsPage() {
                             })
                           }
                         >
-                          Verify
+                          {t.ops.verify}
                         </button>
                         <button
                           type="button"
                           className="rounded-lg border border-destructive/30 px-2.5 py-1 text-xs text-destructive"
                           onClick={() => {
-                            const reason = window.prompt("Rejection reason");
+                            const reason = window.prompt(t.ops.rejectionReason);
                             if (reason?.trim()) {
                               reviewDocument.mutate({
                                 documentId: document.id,
@@ -231,7 +229,7 @@ function OpsPage() {
                             }
                           }}
                         >
-                          Reject
+                          {t.ops.reject}
                         </button>
                       </div>
                     </li>
@@ -247,11 +245,11 @@ function OpsPage() {
       </section>
 
       <section>
-        <h2 className="font-display text-xl text-primary">Unassigned bookings</h2>
+        <h2 className="font-display text-xl text-primary">{t.ops.unassignedBookings}</h2>
         {unassigned.isPending ? (
           <Skeleton className="mt-4 h-32 w-full rounded-2xl" />
         ) : unassigned.data?.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">No stuck unassigned bookings.</p>
+          <p className="mt-4 text-sm text-muted-foreground">{t.ops.noUnassigned}</p>
         ) : (
           <ul className="mt-4 space-y-2">
             {unassigned.data?.map((b) => (
@@ -266,7 +264,7 @@ function OpsPage() {
                 <span className="text-muted-foreground">
                   {formatEur(b.price_cents / 100)} ·{" "}
                   <Link to="/{-$locale}/partner" className="text-accent-deep underline">
-                    Partner inbox
+                    {t.ops.partnerInbox}
                   </Link>
                 </span>
               </li>
@@ -276,7 +274,7 @@ function OpsPage() {
       </section>
 
       <section>
-        <h2 className="font-display text-xl text-primary">Partners</h2>
+        <h2 className="font-display text-xl text-primary">{t.ops.partners}</h2>
         {partners.isPending ? (
           <Skeleton className="mt-4 h-24 w-full rounded-2xl" />
         ) : (
@@ -299,7 +297,7 @@ function OpsPage() {
                     })
                   }
                 >
-                  {p.status === "active" ? "Pause" : "Activate"}
+                  {p.status === "active" ? t.ops.pause : t.ops.activate}
                 </button>
               </li>
             ))}
@@ -308,11 +306,11 @@ function OpsPage() {
       </section>
 
       <section>
-        <h2 className="font-display text-xl text-primary">Open incidents</h2>
+        <h2 className="font-display text-xl text-primary">{t.ops.openIncidents}</h2>
         {incidents.isPending ? (
           <Skeleton className="mt-4 h-40 w-full rounded-2xl" />
         ) : incidents.data?.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">No open incidents.</p>
+          <p className="mt-4 text-sm text-muted-foreground">{t.ops.noOpenIncidents}</p>
         ) : (
           <ul className="mt-4 space-y-3">
             {incidents.data?.map((inc) => (
@@ -321,7 +319,7 @@ function OpsPage() {
                   <div>
                     <p className="font-medium">{inc.type}</p>
                     <p className="text-xs text-muted-foreground">
-                      Booking {inc.booking_id.slice(0, 8)} · {inc.status}
+                      {t.ops.booking} {inc.booking_id.slice(0, 8)} · {inc.status}
                     </p>
                     {inc.note && <p className="mt-2 text-sm text-muted-foreground">{inc.note}</p>}
                     {inc.booking && (
@@ -333,10 +331,10 @@ function OpsPage() {
                   <div className="flex flex-wrap gap-2">
                     {(
                       [
-                        ["full_refund", "Full refund"],
-                        ["credit", "Credit"],
-                        ["partial_refund", "50%"],
-                        ["rebook", "Rebook"],
+                        ["full_refund", t.ops.fullRefund],
+                        ["credit", t.ops.credit],
+                        ["partial_refund", t.ops.halfRefund],
+                        ["rebook", t.ops.rebook],
                       ] as const
                     ).map(([resolution, label]) => (
                       <button
@@ -359,7 +357,7 @@ function OpsPage() {
                         })
                       }
                     >
-                      Reject
+                      {t.ops.reject}
                     </button>
                   </div>
                 </div>
@@ -370,11 +368,11 @@ function OpsPage() {
       </section>
 
       <section>
-        <h2 className="font-display text-xl text-primary">Pending refunds</h2>
+        <h2 className="font-display text-xl text-primary">{t.ops.pendingRefunds}</h2>
         {refunds.isPending ? (
           <Skeleton className="mt-4 h-32 w-full rounded-2xl" />
         ) : refunds.data?.length === 0 ? (
-          <p className="mt-4 text-sm text-muted-foreground">No pending refunds.</p>
+          <p className="mt-4 text-sm text-muted-foreground">{t.ops.noPendingRefunds}</p>
         ) : (
           <ul className="mt-4 space-y-2">
             {refunds.data?.map((b) => (

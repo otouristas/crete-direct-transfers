@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from "react-lea
 import { divIcon, type Marker as LeafletMarker } from "leaflet";
 import { Navigation, Loader2 } from "lucide-react";
 import "leaflet/dist/leaflet.css";
+import { useT } from "@/i18n";
 import type { PickedLocation } from "./location-picker";
 
 const PIN_ICON = divIcon({
@@ -46,6 +47,7 @@ function Recenter({ value }: { value?: PickedLocation | null }) {
 }
 
 function GpsControl({ onSelect }: { onSelect: (p: PickedLocation) => void }) {
+  const t = useT();
   const map = useMap();
   const [loading, setLoading] = useState(false);
 
@@ -73,7 +75,7 @@ function GpsControl({ onSelect }: { onSelect: (p: PickedLocation) => void }) {
         type="button"
         onClick={handleGps}
         disabled={loading}
-        title="Use my location (GPS)"
+        title={t.widget.useGps}
         className="flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground shadow-md hover:bg-muted focus:outline-none"
       >
         {loading ? (

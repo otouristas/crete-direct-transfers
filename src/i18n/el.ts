@@ -1,5 +1,7 @@
 import type { Dict } from "./en";
 import { legalDocsEl } from "./legal/el";
+import { airportPages } from "./airport-pages";
+import { opsCopy } from "./ops-copy";
 
 export const el: Dict = {
   common: {
@@ -73,6 +75,42 @@ export const el: Dict = {
     language: "Γλώσσα",
     currency: "Νόμισμα",
     close: "Κλείσιμο",
+    viewSiteIn: "Δείτε αυτόν τον ιστότοπο στα Ελληνικά",
+  },
+  ui: {
+    close: "Κλείσιμο",
+    dismiss: "Απόρριψη",
+    breadcrumb: "Διαδρομή πλοήγησης",
+    more: "Περισσότερα",
+    pagination: "Σελιδοποίηση",
+    previousPage: "Μετάβαση στην προηγούμενη σελίδα",
+    previous: "Προηγούμενο",
+    nextPage: "Μετάβαση στην επόμενη σελίδα",
+    next: "Επόμενο",
+    morePages: "Περισσότερες σελίδες",
+    previousSlide: "Προηγούμενη διαφάνεια",
+    nextSlide: "Επόμενη διαφάνεια",
+    sidebar: "Πλευρική γραμμή",
+    sidebarDescription: "Εμφανίζει την πλευρική γραμμή για κινητά.",
+    toggleSidebar: "Εναλλαγή πλευρικής γραμμής",
+    decrease: "Μείωση",
+    increase: "Αύξηση",
+  },
+  forms: {
+    name: "Όνομα",
+    email: "Email",
+    phoneOptional: "Τηλέφωνο (προαιρετικό)",
+    companyOptional: "Ξενοδοχείο / εταιρεία (προαιρετικό)",
+    message: "Μήνυμα",
+    sendMessage: "Αποστολή μηνύματος",
+    sending: "Αποστολή…",
+    messageSent: "Το μήνυμα στάλθηκε",
+    thankYou: "Ευχαριστούμε.",
+    replyHours: "Απαντάμε εντός λίγων ωρών κατά το ωράριο 08:00–22:00 EET.",
+    sendAnother: "Αποστολή νέου μηνύματος",
+    validationName: "Συμπληρώστε το όνομά σας",
+    validationEmail: "Συμπληρώστε έγκυρο email",
+    validationMessage: "Γράψτε μας λίγες περισσότερες πληροφορίες",
   },
   footer: {
     tagline:
@@ -199,6 +237,8 @@ export const el: Dict = {
     dropoffLocation: "Σημείο αποβίβασης",
     customRouteHint:
       "Προσαρμοσμένο σημείο. Τα σημεία παραλαβής και αποβίβασης έχουν οριστεί στο χάρτη.",
+    serviceType: "Τύπος υπηρεσίας",
+    time: "Ώρα",
   },
   home: {
     metaTitle: "TransferAround — Μεταφορές με Σταθερή Τιμή από Αεροδρόμια & Λιμάνια Κρήτης",
@@ -1037,6 +1077,8 @@ export const el: Dict = {
 
     contextPrefix: "Πλαίσιο:",
   },
+  airportPages: airportPages.el,
+  ops: opsCopy.el,
   notFound: {
     title: "Η σελίδα δεν βρέθηκε",
     body: "Η σελίδα που ψάχνετε δεν υπάρχει ή έχει μετακινηθεί.",

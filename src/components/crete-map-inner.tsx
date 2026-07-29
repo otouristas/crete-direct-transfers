@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { divIcon, type LatLngBoundsExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useT } from "@/i18n";
 
 const CRETE_BOUNDS: LatLngBoundsExpression = [
   [34.75, 23.3],
@@ -127,6 +128,7 @@ function hubIcon(kind: Hub["kind"]) {
 }
 
 export default function CreteMapInner() {
+  const t = useT();
   return (
     <MapContainer
       bounds={CRETE_BOUNDS}
@@ -151,7 +153,7 @@ export default function CreteMapInner() {
                     params={{ slug: hub.routeSlug }}
                     style={{ color: "#0F766E", fontWeight: 600 }}
                   >
-                    See transfers →
+                    {t.marketsDirectory.explore} <span aria-hidden>→</span>
                   </Link>
                 </div>
               )}

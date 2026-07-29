@@ -2,6 +2,8 @@
 // Native-speaker QA recommended on high-traffic pages before launch.
 import type { Dict } from "./en";
 import { legalDocsEs } from "./legal/es";
+import { airportPages } from "./airport-pages";
+import { opsCopy } from "./ops-copy";
 
 export const es: Dict = {
   common: {
@@ -75,6 +77,42 @@ export const es: Dict = {
     language: "Idioma",
     currency: "Moneda",
     close: "Cerrar",
+    viewSiteIn: "Ver este sitio en español",
+  },
+  ui: {
+    close: "Cerrar",
+    dismiss: "Descartar",
+    breadcrumb: "Ruta de navegación",
+    more: "Más",
+    pagination: "Paginación",
+    previousPage: "Ir a la página anterior",
+    previous: "Anterior",
+    nextPage: "Ir a la página siguiente",
+    next: "Siguiente",
+    morePages: "Más páginas",
+    previousSlide: "Diapositiva anterior",
+    nextSlide: "Diapositiva siguiente",
+    sidebar: "Barra lateral",
+    sidebarDescription: "Muestra la barra lateral en móviles.",
+    toggleSidebar: "Mostrar u ocultar la barra lateral",
+    decrease: "Reducir",
+    increase: "Aumentar",
+  },
+  forms: {
+    name: "Nombre",
+    email: "Correo electrónico",
+    phoneOptional: "Teléfono (opcional)",
+    companyOptional: "Hotel / empresa (opcional)",
+    message: "Mensaje",
+    sendMessage: "Enviar mensaje",
+    sending: "Enviando…",
+    messageSent: "Mensaje enviado",
+    thankYou: "Gracias.",
+    replyHours: "Respondemos en pocas horas durante el horario 08:00–22:00 EET.",
+    sendAnother: "Enviar otro mensaje",
+    validationName: "Introduce tu nombre",
+    validationEmail: "Introduce un correo electrónico válido",
+    validationMessage: "Cuéntanos un poco más",
   },
   footer: {
     tagline:
@@ -200,6 +238,8 @@ export const es: Dict = {
     pickupLocation: "Lugar de recogida",
     dropoffLocation: "Lugar de destino",
     customRouteHint: "Ubicación personalizada. Puntos de recogida y destino fijados en el mapa.",
+    serviceType: "Tipo de servicio",
+    time: "Hora",
   },
   home: {
     metaTitle: "TransferAround — Traslados aeropuerto y puerto en Creta a precio fijo",
@@ -1044,6 +1084,8 @@ export const es: Dict = {
 
     contextPrefix: "Contexto:",
   },
+  airportPages: airportPages.es,
+  ops: opsCopy.es,
   notFound: {
     title: "Página no encontrada",
     body: "La página que buscas no existe o ha sido movida.",

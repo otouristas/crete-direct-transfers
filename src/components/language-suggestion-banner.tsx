@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Globe, X } from "lucide-react";
-import { isLocale, useLocale, type Locale } from "@/i18n";
+import { getDict, isLocale, useLocale, useT, type Locale } from "@/i18n";
 import { cn } from "@/lib/utils";
 
 /**
@@ -15,19 +15,9 @@ import { cn } from "@/lib/utils";
 
 const DISMISS_KEY = "ta-lang-suggestion-dismissed";
 
-/** "View this site in <language>" written in each target language. */
-const VIEW_IN: Record<Locale, string> = {
-  en: "View this site in English",
-  el: "Δείτε αυτόν τον ιστότοπο στα Ελληνικά",
-  de: "Diese Website auf Deutsch ansehen",
-  fr: "Voir ce site en français",
-  it: "Vedi questo sito in italiano",
-  nl: "Bekijk deze site in het Nederlands",
-  es: "Ver este sitio en español",
-};
-
 export function LanguageSuggestionBanner() {
   const locale = useLocale();
+  const t = useT();
   const navigate = useNavigate();
   const [suggested, setSuggested] = useState<Locale | null>(null);
 
@@ -87,14 +77,14 @@ export function LanguageSuggestionBanner() {
         >
           <Globe className="h-4 w-4 shrink-0" />
           <span>
-            {VIEW_IN[suggested]}
+            {getDict(suggested).settings.viewSiteIn}
             <span aria-hidden="true"> →</span>
           </span>
         </button>
         <button
           type="button"
           onClick={dismiss}
-          aria-label="Dismiss"
+          aria-label={t.ui.dismiss}
           className="rounded-full p-1 transition-colors hover:bg-white/10"
         >
           <X className="h-4 w-4" />
