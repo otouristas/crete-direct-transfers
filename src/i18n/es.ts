@@ -37,6 +37,8 @@ export const es: Dict = {
     airports: "Aeropuertos",
     cities: "Ciudades",
     greece: "Grecia",
+    destinations: "Destinos",
+    allDestinations: "Todos los destinos",
     services: "Servicios",
     fleet: "Flota",
     blog: "Blog",
@@ -406,6 +408,17 @@ export const es: Dict = {
     serviceAside: "Precio fijo, conductores con licencia y seguimiento del vuelo.",
     getQuote: "Solicitar presupuesto",
     otherServices: "Otros servicios",
+  },
+  marketsDirectory: {
+    metaTitle: "Destinos de traslados privados | TransferAround",
+    metaDescription:
+      "Traslados privados desde aeropuertos, puertos y ciudades en Grecia, España, Italia, Portugal, Chipre y Turquía.",
+    title: "Dónde te llevamos",
+    subtitle:
+      "Seis países, un servicio claro. Reserva al instante donde haya disponibilidad o solicita un presupuesto confirmado a un colaborador local autorizado.",
+    instantCrete: "Inmediato en Creta",
+    quoteFirst: "Primero presupuesto",
+    explore: "Explorar traslados",
   },
   about: {
     metaTitle: "Sobre TransferAround | Precios fijos, conductores locales, una isla",

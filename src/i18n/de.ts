@@ -35,6 +35,8 @@ export const de: Dict = {
     airports: "Flughäfen",
     cities: "Städte",
     greece: "Griechenland",
+    destinations: "Reiseziele",
+    allDestinations: "Alle Reiseziele",
     services: "Leistungen",
     fleet: "Fuhrpark",
     blog: "Blog",
@@ -401,6 +403,17 @@ export const de: Dict = {
     serviceAside: "Festpreis, lizenzierte Fahrer und Flugüberwachung.",
     getQuote: "Angebot erhalten",
     otherServices: "Andere Services",
+  },
+  marketsDirectory: {
+    metaTitle: "Reiseziele für private Transfers | TransferAround",
+    metaDescription:
+      "Private Flughafen-, Hafen- und Stadttransfers in Griechenland, Spanien, Italien, Portugal, Zypern und der Türkei.",
+    title: "Wohin wir Sie bringen",
+    subtitle:
+      "Sechs Länder, ein klares Servicemodell. Sofort buchen, wo Fahrer verfügbar sind, oder ein bestätigtes Angebot von einem lizenzierten Partner anfordern.",
+    instantCrete: "Sofort auf Kreta",
+    quoteFirst: "Zuerst Angebot",
+    explore: "Transfers entdecken",
   },
   about: {
     metaTitle: "Über TransferAround | Festpreise, lokale Fahrer, eine Insel",

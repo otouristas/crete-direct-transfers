@@ -36,6 +36,8 @@ export const en = {
     airports: "Airports",
     cities: "Cities",
     greece: "Greece",
+    destinations: "Destinations",
+    allDestinations: "All destinations",
     services: "Services",
     fleet: "Fleet",
     blog: "Blog",
@@ -399,6 +401,17 @@ export const en = {
     serviceAside: "Fixed price, licensed drivers, flight tracked.",
     getQuote: "Get a quote",
     otherServices: "Other services",
+  },
+  marketsDirectory: {
+    metaTitle: "Private Transfer Destinations | TransferAround",
+    metaDescription:
+      "Explore private airport, port and city transfers across Greece, Spain, Italy, Portugal, Cyprus and Turkey.",
+    title: "Where we take you",
+    subtitle:
+      "Six countries, one clear service model. Book instantly where supply is live or request a confirmed quote from a licensed local partner.",
+    instantCrete: "Instant in Crete",
+    quoteFirst: "Quote first",
+    explore: "Explore transfers",
   },
   about: {
     metaTitle: "About TransferAround | Fixed-Price, Local Drivers, One Island",

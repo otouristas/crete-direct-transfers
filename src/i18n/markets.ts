@@ -60,6 +60,10 @@ const countryNames: Record<Locale, Record<string, string>> = {
   },
 };
 
+export function getCountryName(locale: Locale, slug: string): string {
+  return countryNames[locale][slug] ?? slug;
+}
+
 const templates: Record<
   Locale,
   {
@@ -190,7 +194,7 @@ function fill(template: string, country: string) {
 }
 
 export function localizeMarket(market: Market, locale: Locale): Market {
-  const country = countryNames[locale][market.slug] ?? market.name;
+  const country = getCountryName(locale, market.slug);
   const copy = templates[locale];
   return {
     ...market,

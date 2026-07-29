@@ -40,11 +40,7 @@ export function CountryHubPage({ market }: { market: Market }) {
         pageType="country"
         entityLabel={market.name}
         entitySlug={market.slug}
-        market={
-          market.slug === "greece" || market.slug === "spain" || market.slug === "italy"
-            ? market.slug
-            : undefined
-        }
+        market={market.slug as "greece" | "spain" | "italy" | "portugal" | "cyprus" | "turkey"}
       />
 
       <section className="mx-auto max-w-7xl px-6 py-14">

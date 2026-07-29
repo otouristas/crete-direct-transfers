@@ -106,7 +106,7 @@ export function derivePageType(pathname: string): TouristasPageType {
   if (/^\/airports\/[^/]+\/[^/]+/.test(p)) return "corridor";
   if (p.startsWith("/airports/")) return "airport";
   if (p.startsWith("/cities/")) return "city";
-  if (/^\/(greece|spain|italy)\/?$/.test(p)) return "country";
+  if (/^\/(greece|spain|italy|portugal|cyprus|turkey)\/?$/.test(p)) return "country";
   if (p.startsWith("/routes")) return "routes";
   if (p.startsWith("/account")) return "account";
   return "other";
@@ -179,7 +179,7 @@ export function deriveEntityFromPath(pathname: string): {
     };
   }
 
-  const country = p.match(/^\/(greece|spain|italy)\/?$/);
+  const country = p.match(/^\/(greece|spain|italy|portugal|cyprus|turkey)\/?$/);
   if (country) {
     const slug = country[1] as TouristasMarketSlug;
     const market = getMarket(slug);

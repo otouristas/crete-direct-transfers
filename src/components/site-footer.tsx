@@ -19,6 +19,7 @@ import {
 import { AVG_RATING } from "@/data/reviews";
 import { Logo } from "@/components/logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { getMarketNavigation } from "@/lib/market-navigation";
 
 const TOP_ROUTE_SLUGS = new Set([
   "heraklion-airport-to-elounda",
@@ -100,6 +101,7 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
   const topRoutes = getLocalizedRoutes(locale).filter((route) => TOP_ROUTE_SLUGS.has(route.slug));
   const services = getLocalizedServices(locale);
+  const markets = getMarketNavigation(locale);
   const hasSocial = Boolean(SOCIAL_FACEBOOK || SOCIAL_INSTAGRAM || SOCIAL_X);
 
   return (
@@ -152,7 +154,7 @@ export function SiteFooter() {
       </div>
 
       {/* Columns */}
-      <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-12 px-6 pb-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-16 lg:px-10">
+      <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-12 px-6 pb-4 md:grid-cols-2 lg:grid-cols-5 lg:gap-10 lg:px-10">
         {/* Support */}
         <div>
           <p className="text-lg font-semibold">{t.footer.supportTitle}</p>
@@ -205,6 +207,32 @@ export function SiteFooter() {
                 className="font-medium text-accent transition hover:opacity-80"
               >
                 {t.nav.allRoutes} →
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* Destinations */}
+        <nav aria-label={t.nav.destinations}>
+          <h3 className="text-lg font-semibold">{t.nav.destinations}</h3>
+          <ul className="mt-4 space-y-2 text-sm leading-relaxed">
+            {markets.map((market) => (
+              <li key={market.slug}>
+                <Link
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  to={`/{-$locale}/${market.slug}` as any}
+                  className={linkClass}
+                >
+                  <span aria-hidden>{market.flag}</span> {market.name}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                to="/{-$locale}/countries"
+                className="font-medium text-accent transition hover:opacity-80"
+              >
+                {t.nav.allDestinations} →
               </Link>
             </li>
           </ul>

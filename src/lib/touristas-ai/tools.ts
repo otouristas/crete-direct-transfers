@@ -2,6 +2,7 @@ import { getIataAirport } from "@/data/iata-airports";
 import { VEHICLE_CLASSES, type VehicleClass, getRoute } from "@/data/routes";
 import { getAirport } from "@/data/airports";
 import { getDestination, listCityDestinations } from "@/data/destinations";
+import { getMarket } from "@/data/markets";
 import { computeQuotePrice } from "@/lib/quote-engine";
 import { explainPolicy } from "@/lib/booking-policy";
 import { matchRouteSlug, searchLocalPlaces, type PlaceResult } from "@/lib/place-search";
@@ -361,9 +362,8 @@ export function toolExplainPolicy() {
 
 export function enrichEntityLabel(slug?: string): string | undefined {
   if (!slug) return undefined;
-  if (slug === "greece" || slug === "spain" || slug === "italy") {
-    return slug[0].toUpperCase() + slug.slice(1);
-  }
+  const market = getMarket(slug);
+  if (market) return market.name;
   const airport = getAirport(slug);
   if (airport) return `${airport.name} (${airport.iata})`;
   const dest = getDestination(slug);

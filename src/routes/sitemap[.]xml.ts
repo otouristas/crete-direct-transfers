@@ -18,6 +18,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const paths: string[] = [
           "/",
           "/touristas-ai",
+          "/countries",
           ...listLiveMarkets().map((m) => `/${m.slug}`),
           "/airports",
           "/cities",

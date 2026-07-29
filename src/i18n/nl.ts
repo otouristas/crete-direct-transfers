@@ -37,6 +37,8 @@ export const nl: Dict = {
     airports: "Luchthavens",
     cities: "Steden",
     greece: "Griekenland",
+    destinations: "Bestemmingen",
+    allDestinations: "Alle bestemmingen",
     services: "Diensten",
     fleet: "Wagenpark",
     blog: "Blog",
@@ -405,6 +407,17 @@ export const nl: Dict = {
     serviceAside: "Vaste prijs, chauffeurs met vergunning en vluchtbewaking.",
     getQuote: "Offerte aanvragen",
     otherServices: "Andere diensten",
+  },
+  marketsDirectory: {
+    metaTitle: "Bestemmingen voor privétransfers | TransferAround",
+    metaDescription:
+      "Privétransfers vanaf luchthavens, havens en steden in Griekenland, Spanje, Italië, Portugal, Cyprus en Turkije.",
+    title: "Waar wij u brengen",
+    subtitle:
+      "Zes landen, één duidelijk servicemodel. Boek direct waar aanbod beschikbaar is of vraag een bevestigde offerte aan bij een erkende lokale partner.",
+    instantCrete: "Direct op Kreta",
+    quoteFirst: "Eerst een offerte",
+    explore: "Bekijk transfers",
   },
   about: {
     metaTitle: "Over TransferAround | Vaste prijzen, lokale chauffeurs, één eiland",

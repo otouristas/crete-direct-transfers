@@ -1,14 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Briefcase, Building2, X } from "lucide-react";
-import { useT } from "@/i18n";
+import { Briefcase, Building2, Globe2, X } from "lucide-react";
+import { useLocale, useT } from "@/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { MobileAccountLinks } from "@/components/auth/account-menu";
 import { Logo } from "@/components/logo";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { cn } from "@/lib/utils";
 import { BUSINESS_METRICS_VERIFIED, REVIEWS_VERIFIED } from "@/lib/site";
+import { getMarketNavigation } from "@/lib/market-navigation";
 
 const HEADER_H = "h-16";
 
@@ -26,12 +27,13 @@ type MobileMenuProps = {
 
 export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const t = useT();
+  const locale = useLocale();
   const heroCtaRef = useRef<HTMLDivElement>(null);
   const [stickyVisible, setStickyVisible] = useState(false);
+  const markets = getMarketNavigation(locale);
 
   const primaryLinks: NavLink[] = [
     { label: t.nav.airports, to: "/{-$locale}/airports", hint: t.navHints.airports },
-    { label: t.nav.greece, to: "/{-$locale}/greece", hint: t.navHints.greece },
     { label: t.nav.routes, to: "/{-$locale}/routes", hint: t.navHints.routes },
     { label: t.nav.fleet, to: "/{-$locale}/fleet", hint: t.navHints.fleet },
     { label: t.nav.faq, to: "/{-$locale}/faq", hint: t.navHints.faq },
@@ -140,7 +142,47 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           </p>
         </div>
 
-        <nav className="mt-8 space-y-1" aria-label="Global">
+        <nav className="mt-8" aria-label={t.nav.destinations}>
+          <div className="flex items-center justify-between gap-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary-foreground/50">
+              {t.nav.destinations}
+            </p>
+            <Link
+              to="/{-$locale}/countries"
+              onClick={onClose}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-accent"
+            >
+              <Globe2 className="h-3.5 w-3.5" aria-hidden />
+              {t.nav.allDestinations}
+            </Link>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {markets.map((market, index) => (
+              <Link
+                key={market.slug}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                to={`/{-$locale}/${market.slug}` as any}
+                onClick={onClose}
+                className="animate-in fade-in slide-in-from-bottom-2 fill-mode-both rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 px-3 py-3 transition hover:border-accent/60 hover:bg-primary-foreground/10"
+                style={{ animationDelay: `${60 + index * 35}ms`, animationDuration: "300ms" }}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="text-xl" aria-hidden>
+                    {market.flag}
+                  </span>
+                  <span className="text-base font-semibold">{market.name}</span>
+                </span>
+                <span className="mt-1 block text-[11px] text-primary-foreground/50">
+                  {market.slug === "greece"
+                    ? t.marketsDirectory.instantCrete
+                    : t.marketsDirectory.quoteFirst}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        <nav className="mt-8 space-y-1" aria-label={t.nav.menu}>
           {primaryLinks.map((item, i) => (
             <Link
               key={item.label}

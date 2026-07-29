@@ -1,12 +1,13 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Briefcase, Building2, Car, ChevronDown, Menu, X } from "lucide-react";
-import { PREFIX_LOCALES, useT } from "@/i18n";
+import { Briefcase, Building2, Car, ChevronDown, Globe2, Menu, X } from "lucide-react";
+import { PREFIX_LOCALES, useLocale, useT } from "@/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { AccountMenu } from "@/components/auth/account-menu";
 import { Logo } from "@/components/logo";
 import { MobileMenu } from "@/components/mobile-menu";
 import { cn } from "@/lib/utils";
+import { getMarketNavigation } from "@/lib/market-navigation";
 
 const HEADER_H = "h-16";
 
@@ -24,12 +25,16 @@ type NavLink = {
 
 export function SiteHeader() {
   const t = useT();
+  const locale = useLocale();
   const isHome = useIsHome();
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [destinationsOpen, setDestinationsOpen] = useState(false);
   const [partnersOpen, setPartnersOpen] = useState(false);
+  const destinationsRef = useRef<HTMLDivElement>(null);
   const partnersRef = useRef<HTMLDivElement>(null);
+  const markets = getMarketNavigation(locale);
 
   const overlay = isHome && !scrolled;
   const solid = !overlay;
@@ -39,7 +44,6 @@ export function SiteHeader() {
       label: t.nav.airports,
       to: "/{-$locale}/airports",
     },
-    { label: t.nav.greece, to: "/{-$locale}/greece" },
     { label: t.nav.routes, to: "/{-$locale}/routes" },
     { label: t.nav.fleet, to: "/{-$locale}/fleet" },
     { label: t.nav.faq, to: "/{-$locale}/faq" },
@@ -65,14 +69,20 @@ export function SiteHeader() {
   }, [mobileOpen]);
 
   useEffect(() => {
-    if (!partnersOpen) return;
+    if (!partnersOpen && !destinationsOpen) return;
     const onPointer = (e: MouseEvent) => {
+      if (destinationsRef.current && !destinationsRef.current.contains(e.target as Node)) {
+        setDestinationsOpen(false);
+      }
       if (partnersRef.current && !partnersRef.current.contains(e.target as Node)) {
         setPartnersOpen(false);
       }
     };
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setPartnersOpen(false);
+      if (e.key === "Escape") {
+        setDestinationsOpen(false);
+        setPartnersOpen(false);
+      }
     };
     document.addEventListener("mousedown", onPointer);
     document.addEventListener("keydown", onKey);
@@ -80,7 +90,7 @@ export function SiteHeader() {
       document.removeEventListener("mousedown", onPointer);
       document.removeEventListener("keydown", onKey);
     };
-  }, [partnersOpen]);
+  }, [destinationsOpen, partnersOpen]);
 
   const navLinkClass = cn(
     "rounded-full px-3 py-2 text-sm font-medium transition",
@@ -109,7 +119,84 @@ export function SiteHeader() {
           </Link>
 
           {/* Center — flat nav */}
-          <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Global">
+          <nav className="hidden items-center gap-0.5 lg:flex" aria-label={t.nav.menu}>
+            <div
+              ref={destinationsRef}
+              className="relative"
+              onMouseEnter={() => {
+                setDestinationsOpen(true);
+                setPartnersOpen(false);
+              }}
+              onMouseLeave={() => setDestinationsOpen(false)}
+            >
+              <button
+                type="button"
+                className={cn(navLinkClass, "inline-flex items-center gap-1")}
+                aria-haspopup="true"
+                aria-expanded={destinationsOpen}
+                aria-controls="destinations-menu"
+                onClick={() => {
+                  setDestinationsOpen((value) => !value);
+                  setPartnersOpen(false);
+                }}
+              >
+                <span>{t.nav.destinations}</span>
+                <ChevronDown
+                  className={cn(
+                    "h-3.5 w-3.5 opacity-70 transition-transform",
+                    destinationsOpen && "rotate-180",
+                  )}
+                  aria-hidden
+                />
+              </button>
+              {destinationsOpen ? (
+                <div
+                  id="destinations-menu"
+                  role="menu"
+                  aria-label={t.nav.destinations}
+                  className="absolute left-1/2 top-full z-50 w-[34rem] -translate-x-1/2 pt-2"
+                >
+                  <div className="origin-top rounded-2xl bg-card p-3 text-foreground shadow-xl ring-1 ring-black/5">
+                    <div className="grid grid-cols-2 gap-1">
+                      {markets.map((market) => (
+                        <Link
+                          key={market.slug}
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                          to={`/{-$locale}/${market.slug}` as any}
+                          role="menuitem"
+                          onClick={() => setDestinationsOpen(false)}
+                          className="group flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-muted"
+                        >
+                          <span className="text-2xl" aria-hidden>
+                            {market.flag}
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block text-sm font-semibold text-foreground">
+                              {market.name}
+                            </span>
+                            <span className="block text-xs text-muted-foreground">
+                              {market.slug === "greece"
+                                ? t.marketsDirectory.instantCrete
+                                : t.marketsDirectory.quoteFirst}
+                            </span>
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                    <Link
+                      to="/{-$locale}/countries"
+                      role="menuitem"
+                      onClick={() => setDestinationsOpen(false)}
+                      className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-accent-deep transition hover:border-accent hover:bg-accent/5"
+                    >
+                      <Globe2 className="h-4 w-4" aria-hidden />
+                      {t.nav.allDestinations}
+                    </Link>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
             {primaryLinks.map((item) => (
               <Link
                 key={item.label}
@@ -126,7 +213,10 @@ export function SiteHeader() {
             <div
               ref={partnersRef}
               className="relative"
-              onMouseEnter={() => setPartnersOpen(true)}
+              onMouseEnter={() => {
+                setPartnersOpen(true);
+                setDestinationsOpen(false);
+              }}
               onMouseLeave={() => setPartnersOpen(false)}
             >
               <button
