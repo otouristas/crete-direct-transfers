@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { quote, formatEur } from "@/lib/pricing";
 import { Check } from "lucide-react";
-import { getDict, useLocale, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 
@@ -20,34 +20,48 @@ export const Route = createFileRoute("/{-$locale}/fleet/$class")({
     const t = getDict(locale);
     if (!loaderData)
       return {
-        meta: [{ title: t.seo.notFound("Vehicle") }, { name: "robots", content: "noindex" }],
+        meta: [
+          { title: t.seo.notFound(t.directoryPages.vehicleEntity) },
+          { name: "robots", content: "noindex" },
+        ],
       };
     const v = loaderData.vc;
     return buildHead({
       locale,
       path: `/fleet/${params.class}`,
       title: t.seo.fleetTitle(v.label),
-      description: `${v.description} ${v.capacity}, ${v.bags}. Fixed-price ${v.label.toLowerCase()} transfers across Crete.`,
+      description: t.directoryPages.vehicleMetaDescription(
+        v.description,
+        v.capacity,
+        v.bags,
+        v.label,
+      ),
       ogImage: v.image,
     });
   },
   component: FleetDetail,
-  notFoundComponent: () => (
+  notFoundComponent: FleetNotFound,
+});
+
+function FleetNotFound() {
+  const t = useT();
+  return (
     <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-      <h1 className="font-display text-3xl text-primary">Vehicle class not found</h1>
+      <h1 className="font-display text-3xl text-primary">{t.directoryPages.vehicleNotFound}</h1>
       <Link
         to="/{-$locale}/fleet"
         className="inline-flex mt-6 rounded-xl bg-accent px-5 py-2 text-sm text-accent-foreground"
       >
-        All classes
+        {t.directoryPages.allClasses}
       </Link>
     </div>
-  ),
-});
+  );
+}
 
 function FleetDetail() {
   const { vc } = Route.useLoaderData();
   const locale = useLocale();
+  const t = useT();
   const others = getLocalizedVehicles(locale).filter((v) => v.id !== vc.id);
   const popular = getLocalizedRoutes(locale).slice(0, 6);
   return (
@@ -61,17 +75,19 @@ function FleetDetail() {
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-6 pb-10 md:pb-14 text-primary-foreground">
           <nav className="flex gap-2 text-xs text-primary-foreground/70 mb-3">
             <Link to="/{-$locale}" className="hover:text-accent">
-              Home
+              {t.nav.home}
             </Link>
             <span>/</span>
             <Link to="/{-$locale}/fleet" className="hover:text-accent">
-              Fleet
+              {t.nav.fleet}
             </Link>
             <span>/</span>
             <span>{vc.label}</span>
           </nav>
           <div className="text-xs uppercase tracking-[0.2em] text-accent">{vc.example}</div>
-          <h1 className="mt-2 text-4xl md:text-6xl font-display">{vc.label} class</h1>
+          <h1 className="mt-2 text-4xl md:text-6xl font-display">
+            {t.directoryPages.className(vc.label)}
+          </h1>
           <p className="mt-3 text-lg text-primary-foreground/85">
             {vc.capacity} · {vc.bags}
           </p>
@@ -84,37 +100,34 @@ function FleetDetail() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <div className="rounded-2xl bg-card border border-border p-6">
-              <h3 className="font-display text-lg text-primary">Specifications</h3>
+              <h3 className="font-display text-lg text-primary">
+                {t.directoryPages.specifications}
+              </h3>
               <ul className="mt-4 space-y-2 text-sm">
                 <li className="flex justify-between">
-                  <span className="text-muted-foreground">Capacity</span>
+                  <span className="text-muted-foreground">{t.directoryPages.capacity}</span>
                   <span>{vc.capacity}</span>
                 </li>
                 <li className="flex justify-between">
-                  <span className="text-muted-foreground">Luggage</span>
+                  <span className="text-muted-foreground">{t.directoryPages.luggage}</span>
                   <span>{vc.bags}</span>
                 </li>
                 <li className="flex justify-between">
-                  <span className="text-muted-foreground">Example</span>
+                  <span className="text-muted-foreground">{t.directoryPages.example}</span>
                   <span>{vc.example}</span>
                 </li>
                 <li className="flex justify-between">
-                  <span className="text-muted-foreground">Max age</span>
-                  <span>7 years</span>
+                  <span className="text-muted-foreground">{t.directoryPages.maxAge}</span>
+                  <span>{t.directoryPages.maxAgeValue}</span>
                 </li>
               </ul>
             </div>
             <div className="rounded-2xl bg-card border border-border p-6">
-              <h3 className="font-display text-lg text-primary">All classes include</h3>
+              <h3 className="font-display text-lg text-primary">
+                {t.directoryPages.allClassesInclude}
+              </h3>
               <ul className="mt-4 space-y-2 text-sm">
-                {[
-                  "Air conditioning",
-                  "Bottled water",
-                  "Free flight tracking",
-                  "Free waiting 60 min",
-                  "Licensed local driver",
-                  "Named driver + WhatsApp",
-                ].map((x) => (
+                {t.directoryPages.vehicleIncludedItems.map((x) => (
                   <li key={x} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-accent mt-0.5 shrink-0" /> {x}
                   </li>
@@ -124,7 +137,9 @@ function FleetDetail() {
           </div>
 
           <div className="mt-12">
-            <h2 className="font-display text-2xl text-primary">Prices on popular routes</h2>
+            <h2 className="font-display text-2xl text-primary">
+              {t.directoryPages.pricesOnPopularRoutes}
+            </h2>
             <div className="mt-6 grid gap-3 md:grid-cols-2">
               {popular.map((r) => {
                 const q = quote({ routeSlug: r.slug, vehicleClass: vc.id });
@@ -147,19 +162,21 @@ function FleetDetail() {
         </div>
 
         <aside className="lg:sticky lg:top-24 h-fit rounded-2xl bg-primary text-primary-foreground p-6">
-          <div className="text-xs uppercase tracking-widest text-accent">Book {vc.label}</div>
+          <div className="text-xs uppercase tracking-widest text-accent">
+            {t.directoryPages.bookVehicle(vc.label)}
+          </div>
           <Link
             to="/{-$locale}/book"
             search={{ class: vc.id }}
             className="mt-5 block text-center rounded-xl bg-accent px-5 py-3 text-accent-foreground text-sm hover:opacity-90"
           >
-            Get a fixed price
+            {t.directoryPages.getFixedPrice}
           </Link>
         </aside>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24">
-        <h2 className="font-display text-2xl text-primary mb-6">Other vehicle classes</h2>
+        <h2 className="font-display text-2xl text-primary mb-6">{t.directoryPages.otherClasses}</h2>
         <div className="grid gap-4 md:grid-cols-3">
           {others.map((v) => (
             <Link

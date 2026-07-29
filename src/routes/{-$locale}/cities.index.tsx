@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { listCityDestinations } from "@/data/destinations";
 import { buildHead } from "@/lib/seo";
-import { getDict, useLocale, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedAirports } from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
 
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/{-$locale}/cities/")({
 
 function CitiesIndexPage() {
   const locale = useLocale();
+  const t = useT();
   const cities = listCityDestinations();
   const airports = getLocalizedAirports(locale);
 
@@ -28,10 +29,12 @@ function CitiesIndexPage() {
     <>
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Greece</p>
-          <h1 className="mt-3 text-4xl font-display md:text-6xl">Cities</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            {t.directoryPages.greece}
+          </p>
+          <h1 className="mt-3 text-4xl font-display md:text-6xl">{t.directoryPages.citiesTitle}</h1>
           <p className="mt-4 max-w-2xl text-lg text-primary-foreground/80">
-            Private transfers and airport pickups for cities and towns across Greece.
+            {t.directoryPages.citiesSubtitle}
           </p>
         </div>
       </section>

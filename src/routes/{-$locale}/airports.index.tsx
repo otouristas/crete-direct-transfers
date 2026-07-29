@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
-import { getDict, useLocale, type Locale } from "@/i18n";
+import { getDict, localePath, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedAirports, getLocalizedAirportRoutes } from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
 import { Plane } from "lucide-react";
@@ -18,13 +18,13 @@ export const Route = createFileRoute("/{-$locale}/airports/")({
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        name: "Airport transfers in Greece",
+        name: t.directoryPages.airportListName,
         numberOfItems: getLocalizedAirports(locale).length,
         itemListElement: getLocalizedAirports(locale).map((a, i) => ({
           "@type": "ListItem",
           position: i + 1,
-          name: `${a.name} Transfers (${a.iata})`,
-          url: `https://transferaround.com/airports/${a.slug}`,
+          name: t.directoryPages.airportListItemName(a.name, a.iata),
+          url: `https://transferaround.com${localePath(locale, `/airports/${a.slug}`)}`,
         })),
       },
     });
@@ -34,6 +34,7 @@ export const Route = createFileRoute("/{-$locale}/airports/")({
 
 function AirportsIndexPage() {
   const locale = useLocale();
+  const t = useT();
   const airports = getLocalizedAirports(locale);
   const allRoutes = getLocalizedAirportRoutes(locale);
 
@@ -41,11 +42,14 @@ function AirportsIndexPage() {
     <>
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Greece</p>
-          <h1 className="mt-3 text-4xl font-display md:text-6xl">Airport transfers</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+            {t.directoryPages.greece}
+          </p>
+          <h1 className="mt-3 text-4xl font-display md:text-6xl">
+            {t.directoryPages.airportTransfersTitle}
+          </h1>
           <p className="mt-4 max-w-2xl text-lg text-primary-foreground/80">
-            Private fixed-price transfers from {airports.length} Greek airports — meet & greet,
-            flight tracking, licensed local chauffeurs.
+            {t.directoryPages.airportTransfersSubtitle(airports.length)}
           </p>
         </div>
       </section>
@@ -71,11 +75,11 @@ function AirportsIndexPage() {
                     <span className="text-xs font-semibold uppercase tracking-wide">{a.iata}</span>
                     {a.bookable === "instant" ? (
                       <span className="rounded-full bg-accent/20 px-2 py-0.5 text-[10px] font-bold uppercase text-accent-deep">
-                        Instant book
+                        {t.directoryPages.instantBook}
                       </span>
                     ) : (
                       <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold uppercase text-muted-foreground">
-                        Quote
+                        {t.directoryPages.quote}
                       </span>
                     )}
                   </div>
@@ -87,7 +91,7 @@ function AirportsIndexPage() {
                     {a.island ? ` · ${a.island}` : ""}
                   </p>
                   <p className="mt-3 text-sm font-semibold text-foreground">
-                    From {formatEur(a.fromPriceEur)} · {routes.length} popular routes
+                    {t.directoryPages.fromPopularRoutes(formatEur(a.fromPriceEur), routes.length)}
                   </p>
                 </div>
               </Link>
@@ -97,8 +101,8 @@ function AirportsIndexPage() {
       </section>
 
       <CtaBand
-        title="Ready to book your Greek airport transfer?"
-        subtitle="Pick your airport, choose a destination, get a fixed price."
+        title={t.directoryPages.airportCtaTitle}
+        subtitle={t.directoryPages.airportCtaSubtitle}
       />
     </>
   );

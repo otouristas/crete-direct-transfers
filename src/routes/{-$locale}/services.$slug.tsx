@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ROUTES, routesByService } from "@/data/routes";
 import { quote, formatEur } from "@/lib/pricing";
 import { Check } from "lucide-react";
-import { getDict, useLocale, type Locale } from "@/i18n";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedService, getLocalizedServices } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 
@@ -18,7 +18,10 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [{ title: t.seo.notFound("Service") }, { name: "robots", content: "noindex" }],
+        meta: [
+          { title: t.seo.notFound(t.directoryPages.serviceEntity) },
+          { name: "robots", content: "noindex" },
+        ],
       };
     }
     const s = loaderData.service;
@@ -33,28 +36,34 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
         "@type": "Service",
         serviceType: s.name,
         provider: { "@type": "LocalBusiness", name: "TransferAround" },
-        areaServed: "Crete, Greece",
+        areaServed: t.directoryPages.areaServed,
         description: s.body,
       },
     });
   },
   component: ServicePage,
-  notFoundComponent: () => (
+  notFoundComponent: ServiceNotFound,
+});
+
+function ServiceNotFound() {
+  const t = useT();
+  return (
     <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-      <h1 className="font-display text-3xl text-primary">Service not found</h1>
+      <h1 className="font-display text-3xl text-primary">{t.directoryPages.serviceNotFound}</h1>
       <Link
         to="/{-$locale}/services"
         className="inline-flex mt-6 rounded-xl bg-accent px-5 py-2 text-sm text-accent-foreground"
       >
-        All services
+        {t.directoryPages.allServices}
       </Link>
     </div>
-  ),
-});
+  );
+}
 
 function ServicePage() {
   const { service } = Route.useLoaderData();
   const locale = useLocale();
+  const t = useT();
   const routes =
     service.slug === "airport-transfers"
       ? routesByService("airport")
@@ -81,11 +90,11 @@ function ServicePage() {
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-6 pb-10 md:pb-14 text-primary-foreground">
           <nav className="flex gap-2 text-xs text-primary-foreground/70 mb-3">
             <Link to="/{-$locale}" className="hover:text-accent">
-              Home
+              {t.nav.home}
             </Link>
             <span>/</span>
             <Link to="/{-$locale}/services" className="hover:text-accent">
-              Services
+              {t.nav.services}
             </Link>
             <span>/</span>
             <span>{service.name}</span>
@@ -102,7 +111,7 @@ function ServicePage() {
 
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <div className="rounded-2xl bg-card border border-border p-6">
-              <h3 className="font-display text-lg text-primary">Included</h3>
+              <h3 className="font-display text-lg text-primary">{t.directoryPages.included}</h3>
               <ul className="mt-4 space-y-2 text-sm">
                 {service.whatsIncluded.map((x: string) => (
                   <li key={x} className="flex items-start gap-2">
@@ -112,7 +121,7 @@ function ServicePage() {
               </ul>
             </div>
             <div className="rounded-2xl bg-card border border-border p-6">
-              <h3 className="font-display text-lg text-primary">Best for</h3>
+              <h3 className="font-display text-lg text-primary">{t.directoryPages.bestFor}</h3>
               <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                 {service.bestFor.map((x: string) => (
                   <li key={x}>· {x}</li>
@@ -124,7 +133,7 @@ function ServicePage() {
           {routes.length > 0 && (
             <div className="mt-12">
               <h2 className="font-display text-2xl text-primary">
-                Popular {service.name.toLowerCase()} routes
+                {t.directoryPages.popularServiceRoutes(service.name)}
               </h2>
               <div className="mt-6 grid gap-3 md:grid-cols-2">
                 {routes.slice(0, 8).map((r) => {
@@ -140,7 +149,7 @@ function ServicePage() {
                         {r.from} → {r.to}
                       </span>
                       <span className="text-sm text-accent">
-                        from {price ? formatEur(price.totalEur) : "—"}
+                        {t.directoryPages.fromPrice(price ? formatEur(price.totalEur) : "—")}
                       </span>
                     </Link>
                   );
@@ -151,21 +160,23 @@ function ServicePage() {
         </div>
 
         <aside className="lg:sticky lg:top-24 h-fit rounded-2xl bg-primary text-primary-foreground p-6">
-          <div className="text-xs uppercase tracking-widest text-accent">Book {service.name}</div>
-          <p className="mt-3 text-sm text-primary-foreground/80">
-            Fixed price, licensed drivers, flight tracked.
-          </p>
+          <div className="text-xs uppercase tracking-widest text-accent">
+            {t.directoryPages.bookService(service.name)}
+          </div>
+          <p className="mt-3 text-sm text-primary-foreground/80">{t.directoryPages.serviceAside}</p>
           <Link
             to="/{-$locale}/book"
             className="mt-5 block text-center rounded-xl bg-accent px-5 py-3 text-accent-foreground text-sm hover:opacity-90"
           >
-            Get a quote
+            {t.directoryPages.getQuote}
           </Link>
         </aside>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 pb-24">
-        <h2 className="font-display text-2xl text-primary mb-6">Other services</h2>
+        <h2 className="font-display text-2xl text-primary mb-6">
+          {t.directoryPages.otherServices}
+        </h2>
         <div className="grid gap-4 md:grid-cols-3">
           {others.map((s) => (
             <Link

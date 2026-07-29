@@ -24,7 +24,10 @@ export const Route = createFileRoute("/{-$locale}/cities/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [{ title: t.seo.notFound("City") }, { name: "robots", content: "noindex" }],
+        meta: [
+          { title: t.seo.notFound(t.directoryPages.cityEntity) },
+          { name: "robots", content: "noindex" },
+        ],
       };
     }
     const { city } = loaderData;
@@ -32,7 +35,7 @@ export const Route = createFileRoute("/{-$locale}/cities/$slug")({
       locale,
       path: `/cities/${city.slug}`,
       title: t.seo.cityTitle(city.name),
-      description: `Book private chauffeur and airport transfers in ${city.name}, Greece. Fixed prices, licensed local drivers, meet & greet.`,
+      description: t.directoryPages.cityMetaDescription(city.name),
     });
   },
   component: CityPage,
@@ -48,7 +51,7 @@ function CityNotFound() {
         to="/{-$locale}/cities"
         className="mt-6 inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground"
       >
-        All cities
+        {t.directoryPages.allCities}
       </Link>
     </div>
   );
@@ -57,6 +60,7 @@ function CityNotFound() {
 function CityPage() {
   const { city } = Route.useLoaderData();
   const locale = useLocale();
+  const t = useT();
   const airports = getLocalizedAirports(locale).filter((a) => a.citySlug === city.slug);
   const routesTo = getLocalizedAirportRoutes(locale).filter((r) => r.toSlug === city.slug);
   const nearbyCities = DESTINATIONS.filter(
@@ -72,25 +76,26 @@ function CityPage() {
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
           <nav className="mb-4 flex gap-2 text-xs text-primary-foreground/70">
             <Link to="/{-$locale}" className="hover:text-accent">
-              Home
+              {t.nav.home}
             </Link>
             <span>/</span>
             <Link to="/{-$locale}/cities" className="hover:text-accent">
-              Cities
+              {t.nav.cities}
             </Link>
             <span>/</span>
             <span>{city.name}</span>
           </nav>
-          <h1 className="text-4xl font-display md:text-6xl">Private transfers in {city.name}</h1>
+          <h1 className="text-4xl font-display md:text-6xl">
+            {t.directoryPages.privateTransfersIn(city.name)}
+          </h1>
           <p className="mt-4 max-w-2xl text-lg text-primary-foreground/80">
-            Fixed-price airport pickups and local chauffeur rides in {city.name}
-            {city.island ? `, ${city.island}` : ""}
-            {city.region && !city.island ? `, ${city.region}` : ""}.
+            {t.directoryPages.cityHeroSubtitle(
+              city.name,
+              city.island ? `, ${city.island}` : city.region ? `, ${city.region}` : "",
+            )}
           </p>
           <div className="mt-6">
-            <AskTouristasInline
-              prompt={`Airport transfer to ${city.name} tomorrow for 2 passengers`}
-            />
+            <AskTouristasInline prompt={t.directoryPages.cityAiPrompt(city.name)} />
           </div>
         </div>
       </section>
@@ -99,15 +104,14 @@ function CityPage() {
 
       <section className="mx-auto max-w-7xl px-6 py-14">
         <p className="max-w-3xl text-lg leading-relaxed text-foreground/90">
-          Arriving in <strong>{city.name}</strong> is easier when your driver is already waiting.
-          TransferAround arranges licensed local chauffeurs with meet & greet, flight monitoring,
-          and a price agreed before you travel — whether you need an airport run or a hotel transfer
-          across town.
+          {t.directoryPages.cityIntro(city.name)}
         </p>
 
         {airports.length > 0 ? (
           <div className="mt-12">
-            <h2 className="text-2xl font-display text-primary">Airports for {city.name}</h2>
+            <h2 className="text-2xl font-display text-primary">
+              {t.directoryPages.airportsFor(city.name)}
+            </h2>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {airports.map((a) => (
                 <li key={a.slug}>
@@ -120,7 +124,7 @@ function CityPage() {
                       {a.name} ({a.iata})
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      from {formatEur(a.fromPriceEur)}
+                      {t.common.from} {formatEur(a.fromPriceEur)}
                     </span>
                   </Link>
                 </li>
@@ -131,7 +135,9 @@ function CityPage() {
 
         {routesTo.length > 0 ? (
           <div className="mt-12">
-            <h2 className="text-2xl font-display text-primary">Popular transfers to {city.name}</h2>
+            <h2 className="text-2xl font-display text-primary">
+              {t.directoryPages.popularTransfersTo(city.name)}
+            </h2>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {routesTo.map((r) => (
                 <li key={r.routeSlug}>
@@ -153,7 +159,9 @@ function CityPage() {
 
         {nearbyCities.length > 0 ? (
           <div className="mt-12">
-            <h2 className="text-2xl font-display text-primary">Nearby destinations</h2>
+            <h2 className="text-2xl font-display text-primary">
+              {t.directoryPages.nearbyDestinations}
+            </h2>
             <ul className="mt-4 flex flex-wrap gap-2">
               {nearbyCities.map((c) => (
                 <li key={c.slug}>
@@ -175,7 +183,7 @@ function CityPage() {
             to="/{-$locale}/greece"
             className="text-sm font-semibold text-accent-deep hover:underline"
           >
-            ← All transfers in Greece
+            ← {t.directoryPages.allTransfersInGreece}
           </Link>
         </div>
       </section>
