@@ -14,11 +14,133 @@ export type Database = {
   }
   public: {
     Tables: {
+      booking_incidents: {
+        Row: {
+          booking_id: string
+          claimed_wait_until: string | null
+          created_at: string
+          evidence_urls: string[]
+          id: string
+          note: string | null
+          opened_by: string
+          opened_by_user_id: string | null
+          resolution: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          booking_id: string
+          claimed_wait_until?: string | null
+          created_at?: string
+          evidence_urls?: string[]
+          id?: string
+          note?: string | null
+          opened_by: string
+          opened_by_user_id?: string | null
+          resolution?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          booking_id?: string
+          claimed_wait_until?: string | null
+          created_at?: string
+          evidence_urls?: string[]
+          id?: string
+          note?: string | null
+          opened_by?: string
+          opened_by_user_id?: string | null
+          resolution?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_incidents_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_incidents_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "open_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      booking_referrals: {
+        Row: {
+          booking_id: string
+          commission_cents: number
+          created_at: string
+          id: string
+          partner_id: string
+          status: string
+        }
+        Insert: {
+          booking_id: string
+          commission_cents?: number
+          created_at?: string
+          id?: string
+          partner_id: string
+          status?: string
+        }
+        Update: {
+          booking_id?: string
+          commission_cents?: number
+          created_at?: string
+          id?: string
+          partner_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_referrals_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_referrals_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "open_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_referrals_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partner_referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           assigned_at: string | null
           bags_cabin: number
           bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
           created_at: string
           currency: string
           customer_email: string
@@ -29,17 +151,25 @@ export type Database = {
           dropoff_point: Json | null
           extras: Json
           flight_number: string | null
+          goodwill_credit_cents: number
           id: string
           notes: string | null
           passengers: number
+          payment_status: string
           pickup_address: string | null
           pickup_at: string
           pickup_point: Json | null
+          prefer_credit: boolean
           price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
           user_id: string | null
@@ -49,6 +179,10 @@ export type Database = {
           assigned_at?: string | null
           bags_cabin?: number
           bags_checked?: number
+          cancellation_note?: string | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
           created_at?: string
           currency?: string
           customer_email: string
@@ -59,17 +193,25 @@ export type Database = {
           dropoff_point?: Json | null
           extras?: Json
           flight_number?: string | null
+          goodwill_credit_cents?: number
           id?: string
           notes?: string | null
           passengers: number
+          payment_status?: string
           pickup_address?: string | null
           pickup_at: string
           pickup_point?: Json | null
+          prefer_credit?: boolean
           price_cents: number
+          quote_id?: string | null
+          refund_amount_cents?: number | null
+          refund_percent?: number | null
+          refund_status?: string
           return_at?: string | null
           return_flight_number?: string | null
           route_slug: string
           status?: string
+          stripe_payment_intent_id?: string | null
           trip_type?: string
           updated_at?: string
           user_id?: string | null
@@ -79,6 +221,10 @@ export type Database = {
           assigned_at?: string | null
           bags_cabin?: number
           bags_checked?: number
+          cancellation_note?: string | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          cancelled_by?: string | null
           created_at?: string
           currency?: string
           customer_email?: string
@@ -89,17 +235,25 @@ export type Database = {
           dropoff_point?: Json | null
           extras?: Json
           flight_number?: string | null
+          goodwill_credit_cents?: number
           id?: string
           notes?: string | null
           passengers?: number
+          payment_status?: string
           pickup_address?: string | null
           pickup_at?: string
           pickup_point?: Json | null
+          prefer_credit?: boolean
           price_cents?: number
+          quote_id?: string | null
+          refund_amount_cents?: number | null
+          refund_percent?: number | null
+          refund_status?: string
           return_at?: string | null
           return_flight_number?: string | null
           route_slug?: string
           status?: string
+          stripe_payment_intent_id?: string | null
           trip_type?: string
           updated_at?: string
           user_id?: string | null
@@ -111,6 +265,13 @@ export type Database = {
             columns: ["driver_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
             referencedColumns: ["id"]
           },
         ]
@@ -152,6 +313,7 @@ export type Database = {
         Row: {
           approval_status: string
           created_at: string
+          dns_strikes: number
           id: string
           id_document_number: string | null
           insurance_number: string | null
@@ -165,6 +327,7 @@ export type Database = {
         Insert: {
           approval_status?: string
           created_at?: string
+          dns_strikes?: number
           id: string
           id_document_number?: string | null
           insurance_number?: string | null
@@ -178,6 +341,7 @@ export type Database = {
         Update: {
           approval_status?: string
           created_at?: string
+          dns_strikes?: number
           id?: string
           id_document_number?: string | null
           insurance_number?: string | null
@@ -197,6 +361,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      partner_referrals: {
+        Row: {
+          active: boolean
+          code: string
+          commission_percent: number
+          created_at: string
+          id: string
+          partner_email: string | null
+          partner_name: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          commission_percent?: number
+          created_at?: string
+          id?: string
+          partner_email?: string | null
+          partner_name: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          commission_percent?: number
+          created_at?: string
+          id?: string
+          partner_email?: string | null
+          partner_name?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -222,6 +416,105 @@ export type Database = {
           phone?: string | null
           role?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      quotes: {
+        Row: {
+          bookable_mode: string
+          breakdown: Json
+          created_at: string
+          currency: string
+          distance_km: number | null
+          expires_at: string
+          extras: Json
+          hours: number | null
+          id: string
+          inputs_hash: string
+          market: string
+          pickup_at: string | null
+          price_cents: number
+          return_at: string | null
+          route_slug: string
+          service: string
+          trip_type: string
+          vehicle_class: string
+        }
+        Insert: {
+          bookable_mode?: string
+          breakdown?: Json
+          created_at?: string
+          currency?: string
+          distance_km?: number | null
+          expires_at: string
+          extras?: Json
+          hours?: number | null
+          id?: string
+          inputs_hash: string
+          market?: string
+          pickup_at?: string | null
+          price_cents: number
+          return_at?: string | null
+          route_slug: string
+          service?: string
+          trip_type?: string
+          vehicle_class: string
+        }
+        Update: {
+          bookable_mode?: string
+          breakdown?: Json
+          created_at?: string
+          currency?: string
+          distance_km?: number | null
+          expires_at?: string
+          extras?: Json
+          hours?: number | null
+          id?: string
+          inputs_hash?: string
+          market?: string
+          pickup_at?: string | null
+          price_cents?: number
+          return_at?: string | null
+          route_slug?: string
+          service?: string
+          trip_type?: string
+          vehicle_class?: string
+        }
+        Relationships: []
+      }
+      saved_travelers: {
+        Row: {
+          child_seat_needed: boolean
+          created_at: string
+          email: string | null
+          full_name: string
+          id: string
+          notes: string | null
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          child_seat_needed?: boolean
+          created_at?: string
+          email?: string | null
+          full_name: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          child_seat_needed?: boolean
+          created_at?: string
+          email?: string | null
+          full_name?: string
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -293,12 +586,24 @@ export type Database = {
           vehicle_plate: string
         }[]
       }
+      booking_wait_minutes: {
+        Args: {
+          p_flight_number: string
+          p_pickup_address: string
+          p_route_slug: string
+        }
+        Returns: number
+      }
       claim_job: {
         Args: { p_booking_id: string }
         Returns: {
           assigned_at: string | null
           bags_cabin: number
           bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
           created_at: string
           currency: string
           customer_email: string
@@ -309,17 +614,25 @@ export type Database = {
           dropoff_point: Json | null
           extras: Json
           flight_number: string | null
+          goodwill_credit_cents: number
           id: string
           notes: string | null
           passengers: number
+          payment_status: string
           pickup_address: string | null
           pickup_at: string
           pickup_point: Json | null
+          prefer_credit: boolean
           price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
           user_id: string | null
@@ -332,7 +645,227 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      create_quote_record: {
+        Args: {
+          p_bookable_mode: string
+          p_breakdown: Json
+          p_distance_km: number
+          p_extras: Json
+          p_hours: number
+          p_inputs_hash: string
+          p_market: string
+          p_pickup_at: string
+          p_price_cents: number
+          p_return_at: string
+          p_route_slug: string
+          p_service: string
+          p_trip_type: string
+          p_ttl_minutes?: number
+          p_vehicle_class: string
+        }
+        Returns: {
+          bookable_mode: string
+          breakdown: Json
+          created_at: string
+          currency: string
+          distance_km: number | null
+          expires_at: string
+          extras: Json
+          hours: number | null
+          id: string
+          inputs_hash: string
+          market: string
+          pickup_at: string | null
+          price_cents: number
+          return_at: string | null
+          route_slug: string
+          service: string
+          trip_type: string
+          vehicle_class: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "quotes"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      is_admin: { Args: never; Returns: boolean }
       is_approved_driver: { Args: never; Returns: boolean }
+      open_incident: {
+        Args: {
+          p_booking_id: string
+          p_claimed_wait_until?: string
+          p_evidence_urls?: string[]
+          p_note?: string
+          p_type: string
+        }
+        Returns: {
+          booking_id: string
+          claimed_wait_until: string | null
+          created_at: string
+          evidence_urls: string[]
+          id: string
+          note: string | null
+          opened_by: string
+          opened_by_user_id: string | null
+          resolution: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          type: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_incidents"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      owns_booking: {
+        Args: { p_booking: Database["public"]["Tables"]["bookings"]["Row"] }
+        Returns: boolean
+      }
+      request_cancellation: {
+        Args: {
+          p_booking_id: string
+          p_note?: string
+          p_prefer_credit?: boolean
+          p_reason: string
+        }
+        Returns: {
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
+          extras: Json
+          flight_number: string | null
+          goodwill_credit_cents: number
+          id: string
+          notes: string | null
+          passengers: number
+          payment_status: string
+          pickup_address: string | null
+          pickup_at: string
+          pickup_point: Json | null
+          prefer_credit: boolean
+          price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
+          return_at: string | null
+          return_flight_number: string | null
+          route_slug: string
+          status: string
+          stripe_payment_intent_id: string | null
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+          vehicle_class: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      resolve_incident: {
+        Args: {
+          p_incident_id: string
+          p_notes?: string
+          p_reject?: boolean
+          p_resolution: string
+        }
+        Returns: {
+          booking_id: string
+          claimed_wait_until: string | null
+          created_at: string
+          evidence_urls: string[]
+          id: string
+          note: string | null
+          opened_by: string
+          opened_by_user_id: string | null
+          resolution: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string
+          type: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "booking_incidents"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      update_job_status: {
+        Args: { p_booking_id: string; p_status: string }
+        Returns: {
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
+          extras: Json
+          flight_number: string | null
+          goodwill_credit_cents: number
+          id: string
+          notes: string | null
+          passengers: number
+          payment_status: string
+          pickup_address: string | null
+          pickup_at: string
+          pickup_point: Json | null
+          prefer_credit: boolean
+          price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
+          return_at: string | null
+          return_flight_number: string | null
+          route_slug: string
+          status: string
+          stripe_payment_intent_id: string | null
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+          vehicle_class: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
     }
     Enums: {
       [_ in never]: never
