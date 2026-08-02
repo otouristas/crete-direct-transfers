@@ -69,14 +69,16 @@ function defaultsFromRoute(routeSlug?: string): {
 }
 
 function defaultPickupLocal(): string {
+  // Deterministic default: +2 days at 12:00. The hour must NOT derive from the
+  // current clock — the SSR host and the browser sit in different timezones,
+  // which produced a hydration mismatch on the pickup field.
   const d = new Date();
   d.setDate(d.getDate() + 2);
-  d.setMinutes(0, 0, 0);
-  if (d.getHours() < 10) d.setHours(13);
-  else if (d.getHours() > 20) d.setHours(13);
+  d.setHours(12, 0, 0, 0);
   const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T12:00`;
 }
+
 
 function formatPickupLabel(value: string, locale: string): string {
   if (!value) return "—";
