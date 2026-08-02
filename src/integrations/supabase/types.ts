@@ -78,6 +78,13 @@ export type Database = {
             foreignKeyName: "booking_incidents_booking_id_fkey"
             columns: ["booking_id"]
             isOneToOne: false
+            referencedRelation: "my_job_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_incidents_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
             referencedRelation: "open_jobs"
             referencedColumns: ["id"]
           },
@@ -120,6 +127,13 @@ export type Database = {
             foreignKeyName: "booking_referrals_booking_id_fkey"
             columns: ["booking_id"]
             isOneToOne: false
+            referencedRelation: "my_job_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_referrals_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
             referencedRelation: "open_jobs"
             referencedColumns: ["id"]
           },
@@ -146,6 +160,8 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
           driver_id: string | null
           dropoff_address: string | null
           dropoff_point: Json | null
@@ -153,7 +169,10 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          market: string | null
           notes: string | null
+          offered_at: string | null
+          partner_id: string | null
           passengers: number
           payment_status: string
           pickup_address: string | null
@@ -174,6 +193,7 @@ export type Database = {
           updated_at: string
           user_id: string | null
           vehicle_class: string
+          zone_id: string | null
         }
         Insert: {
           assigned_at?: string | null
@@ -188,6 +208,8 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string
+          dispatch_batch?: number
+          dispatch_mode?: string | null
           driver_id?: string | null
           dropoff_address?: string | null
           dropoff_point?: Json | null
@@ -195,7 +217,10 @@ export type Database = {
           flight_number?: string | null
           goodwill_credit_cents?: number
           id?: string
+          market?: string | null
           notes?: string | null
+          offered_at?: string | null
+          partner_id?: string | null
           passengers: number
           payment_status?: string
           pickup_address?: string | null
@@ -216,6 +241,7 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           vehicle_class: string
+          zone_id?: string | null
         }
         Update: {
           assigned_at?: string | null
@@ -230,6 +256,8 @@ export type Database = {
           customer_email?: string
           customer_name?: string
           customer_phone?: string
+          dispatch_batch?: number
+          dispatch_mode?: string | null
           driver_id?: string | null
           dropoff_address?: string | null
           dropoff_point?: Json | null
@@ -237,7 +265,10 @@ export type Database = {
           flight_number?: string | null
           goodwill_credit_cents?: number
           id?: string
+          market?: string | null
           notes?: string | null
+          offered_at?: string | null
+          partner_id?: string | null
           passengers?: number
           payment_status?: string
           pickup_address?: string | null
@@ -258,6 +289,7 @@ export type Database = {
           updated_at?: string
           user_id?: string | null
           vehicle_class?: string
+          zone_id?: string | null
         }
         Relationships: [
           {
@@ -268,10 +300,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bookings_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "bookings_quote_id_fkey"
             columns: ["quote_id"]
             isOneToOne: false
             referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "service_zones"
             referencedColumns: ["id"]
           },
         ]
@@ -317,7 +363,11 @@ export type Database = {
           id: string
           id_document_number: string | null
           insurance_number: string | null
+          is_online: boolean
           license_number: string | null
+          online_at: string | null
+          partner_id: string | null
+          primary_zone_id: string | null
           updated_at: string
           vehicle_class: string | null
           vehicle_make_model: string | null
@@ -331,7 +381,11 @@ export type Database = {
           id: string
           id_document_number?: string | null
           insurance_number?: string | null
+          is_online?: boolean
           license_number?: string | null
+          online_at?: string | null
+          partner_id?: string | null
+          primary_zone_id?: string | null
           updated_at?: string
           vehicle_class?: string | null
           vehicle_make_model?: string | null
@@ -345,7 +399,11 @@ export type Database = {
           id?: string
           id_document_number?: string | null
           insurance_number?: string | null
+          is_online?: boolean
           license_number?: string | null
+          online_at?: string | null
+          partner_id?: string | null
+          primary_zone_id?: string | null
           updated_at?: string
           vehicle_class?: string | null
           vehicle_make_model?: string | null
@@ -357,6 +415,118 @@ export type Database = {
             foreignKeyName: "driver_profiles_id_fkey"
             columns: ["id"]
             isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_profiles_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_profiles_primary_zone_id_fkey"
+            columns: ["primary_zone_id"]
+            isOneToOne: false
+            referencedRelation: "service_zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_offers: {
+        Row: {
+          batch: number
+          booking_id: string
+          created_at: string
+          driver_id: string
+          expires_at: string
+          id: string
+          responded_at: string | null
+          status: string
+        }
+        Insert: {
+          batch?: number
+          booking_id: string
+          created_at?: string
+          driver_id: string
+          expires_at: string
+          id?: string
+          responded_at?: string | null
+          status?: string
+        }
+        Update: {
+          batch?: number
+          booking_id?: string
+          created_at?: string
+          driver_id?: string
+          expires_at?: string
+          id?: string
+          responded_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_offers_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_offers_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "my_job_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_offers_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "open_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "job_offers_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_members: {
+        Row: {
+          created_at: string
+          partner_id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          partner_id: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          partner_id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_members_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -389,6 +559,72 @@ export type Database = {
           id?: string
           partner_email?: string | null
           partner_name?: string
+        }
+        Relationships: []
+      }
+      partner_zones: {
+        Row: {
+          partner_id: string
+          zone_id: string
+        }
+        Insert: {
+          partner_id: string
+          zone_id: string
+        }
+        Update: {
+          partner_id?: string
+          zone_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_zones_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "partner_zones_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "service_zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partners: {
+        Row: {
+          created_at: string
+          dispatch_email: string
+          dispatch_mode: string | null
+          id: string
+          market: string
+          name: string
+          slug: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dispatch_email: string
+          dispatch_mode?: string | null
+          id?: string
+          market: string
+          name: string
+          slug: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dispatch_email?: string
+          dispatch_mode?: string | null
+          id?: string
+          market?: string
+          name?: string
+          slug?: string
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -518,17 +754,53 @@ export type Database = {
         }
         Relationships: []
       }
+      service_zones: {
+        Row: {
+          created_at: string
+          id: string
+          lat: number
+          lng: number
+          market: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lat: number
+          lng: number
+          market: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lat?: number
+          lng?: number
+          market?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      open_jobs: {
+      my_job_offers: {
         Row: {
           bags_cabin: number | null
           bags_checked: number | null
-          created_at: string | null
+          batch: number | null
           currency: string | null
           dropoff_address: string | null
+          expires_at: string | null
           extras: Json | null
           id: string | null
+          market: string | null
+          offer_id: string | null
+          offer_status: string | null
+          offered_at: string | null
+          partner_id: string | null
           passengers: number | null
           pickup_address: string | null
           pickup_at: string | null
@@ -537,15 +809,58 @@ export type Database = {
           route_slug: string | null
           trip_type: string | null
           vehicle_class: string | null
+          zone_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "service_zones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      open_jobs: {
+        Row: {
+          bags_cabin: number | null
+          bags_checked: number | null
+          created_at: string | null
+          currency: string | null
+          dispatch_mode: string | null
+          dropoff_address: string | null
+          extras: Json | null
+          id: string | null
+          market: string | null
+          partner_id: string | null
+          passengers: number | null
+          pickup_address: string | null
+          pickup_at: string | null
+          price_cents: number | null
+          return_at: string | null
+          route_slug: string | null
+          trip_type: string | null
+          vehicle_class: string | null
+          zone_id: string | null
         }
         Insert: {
           bags_cabin?: number | null
           bags_checked?: number | null
           created_at?: string | null
           currency?: string | null
+          dispatch_mode?: string | null
           dropoff_address?: string | null
           extras?: Json | null
           id?: string | null
+          market?: string | null
+          partner_id?: string | null
           passengers?: number | null
           pickup_address?: string | null
           pickup_at?: string | null
@@ -554,15 +869,19 @@ export type Database = {
           route_slug?: string | null
           trip_type?: string | null
           vehicle_class?: string | null
+          zone_id?: string | null
         }
         Update: {
           bags_cabin?: number | null
           bags_checked?: number | null
           created_at?: string | null
           currency?: string | null
+          dispatch_mode?: string | null
           dropoff_address?: string | null
           extras?: Json | null
           id?: string | null
+          market?: string | null
+          partner_id?: string | null
           passengers?: number | null
           pickup_address?: string | null
           pickup_at?: string | null
@@ -571,11 +890,84 @@ export type Database = {
           route_slug?: string | null
           trip_type?: string | null
           vehicle_class?: string | null
+          zone_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bookings_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_zone_id_fkey"
+            columns: ["zone_id"]
+            isOneToOne: false
+            referencedRelation: "service_zones"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
+      assign_job_to_driver: {
+        Args: { p_booking_id: string; p_driver_id: string }
+        Returns: {
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
+          extras: Json
+          flight_number: string | null
+          goodwill_credit_cents: number
+          id: string
+          market: string | null
+          notes: string | null
+          offered_at: string | null
+          partner_id: string | null
+          passengers: number
+          payment_status: string
+          pickup_address: string | null
+          pickup_at: string
+          pickup_point: Json | null
+          prefer_credit: boolean
+          price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
+          return_at: string | null
+          return_flight_number: string | null
+          route_slug: string
+          status: string
+          stripe_payment_intent_id: string | null
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+          vehicle_class: string
+          zone_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       booking_driver_info: {
         Args: { p_booking_id: string }
         Returns: {
@@ -609,6 +1001,8 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
           driver_id: string | null
           dropoff_address: string | null
           dropoff_point: Json | null
@@ -616,7 +1010,10 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          market: string | null
           notes: string | null
+          offered_at: string | null
+          partner_id: string | null
           passengers: number
           payment_status: string
           pickup_address: string | null
@@ -637,6 +1034,7 @@ export type Database = {
           updated_at: string
           user_id: string | null
           vehicle_class: string
+          zone_id: string | null
         }
         SetofOptions: {
           from: "*"
@@ -644,6 +1042,73 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      create_dispatch_for_booking: {
+        Args: {
+          p_booking_id: string
+          p_lat?: number
+          p_lng?: number
+          p_market?: string
+          p_preferred_partner_id?: string
+        }
+        Returns: {
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
+          extras: Json
+          flight_number: string | null
+          goodwill_credit_cents: number
+          id: string
+          market: string | null
+          notes: string | null
+          offered_at: string | null
+          partner_id: string | null
+          passengers: number
+          payment_status: string
+          pickup_address: string | null
+          pickup_at: string
+          pickup_point: Json | null
+          prefer_credit: boolean
+          price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
+          return_at: string | null
+          return_flight_number: string | null
+          route_slug: string
+          status: string
+          stripe_payment_intent_id: string | null
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+          vehicle_class: string
+          zone_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      create_offer_batch: {
+        Args: { p_booking_id: string; p_limit?: number }
+        Returns: number
       }
       create_quote_record: {
         Args: {
@@ -690,8 +1155,19 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      default_dispatch_mode: { Args: { p_market: string }; Returns: string }
+      expire_job_offers: { Args: never; Returns: Json }
+      haversine_km: {
+        Args: { lat1: number; lat2: number; lng1: number; lng2: number }
+        Returns: number
+      }
       is_admin: { Args: never; Returns: boolean }
       is_approved_driver: { Args: never; Returns: boolean }
+      is_partner_dispatcher: {
+        Args: { p_partner_id: string }
+        Returns: boolean
+      }
+      my_partner_ids: { Args: never; Returns: string[] }
       open_incident: {
         Args: {
           p_booking_id: string
@@ -728,6 +1204,7 @@ export type Database = {
         Args: { p_booking: Database["public"]["Tables"]["bookings"]["Row"] }
         Returns: boolean
       }
+      pick_partner_for_zone: { Args: { p_zone_id: string }; Returns: string }
       request_cancellation: {
         Args: {
           p_booking_id: string
@@ -748,6 +1225,8 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
           driver_id: string | null
           dropoff_address: string | null
           dropoff_point: Json | null
@@ -755,7 +1234,10 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          market: string | null
           notes: string | null
+          offered_at: string | null
+          partner_id: string | null
           passengers: number
           payment_status: string
           pickup_address: string | null
@@ -776,6 +1258,7 @@ export type Database = {
           updated_at: string
           user_id: string | null
           vehicle_class: string
+          zone_id: string | null
         }
         SetofOptions: {
           from: "*"
@@ -815,8 +1298,12 @@ export type Database = {
           isSetofReturn: false
         }
       }
-      update_job_status: {
-        Args: { p_booking_id: string; p_status: string }
+      resolve_zone_id: {
+        Args: { p_lat: number; p_lng: number; p_market: string }
+        Returns: string
+      }
+      respond_to_offer: {
+        Args: { p_accept: boolean; p_offer_id: string }
         Returns: {
           assigned_at: string | null
           bags_cabin: number
@@ -830,6 +1317,8 @@ export type Database = {
           customer_email: string
           customer_name: string
           customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
           driver_id: string | null
           dropoff_address: string | null
           dropoff_point: Json | null
@@ -837,7 +1326,10 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          market: string | null
           notes: string | null
+          offered_at: string | null
+          partner_id: string | null
           passengers: number
           payment_status: string
           pickup_address: string | null
@@ -858,6 +1350,111 @@ export type Database = {
           updated_at: string
           user_id: string | null
           vehicle_class: string
+          zone_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      set_driver_online: {
+        Args: { p_online: boolean }
+        Returns: {
+          approval_status: string
+          created_at: string
+          dns_strikes: number
+          id: string
+          id_document_number: string | null
+          insurance_number: string | null
+          is_online: boolean
+          license_number: string | null
+          online_at: string | null
+          partner_id: string | null
+          primary_zone_id: string | null
+          updated_at: string
+          vehicle_class: string | null
+          vehicle_make_model: string | null
+          vehicle_plate: string | null
+          vehicle_registration_number: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "driver_profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      set_partner_status: {
+        Args: { p_partner_id: string; p_status: string }
+        Returns: {
+          created_at: string
+          dispatch_email: string
+          dispatch_mode: string | null
+          id: string
+          market: string
+          name: string
+          slug: string
+          status: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "partners"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      update_job_status: {
+        Args: { p_booking_id: string; p_status: string }
+        Returns: {
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
+          extras: Json
+          flight_number: string | null
+          goodwill_credit_cents: number
+          id: string
+          market: string | null
+          notes: string | null
+          offered_at: string | null
+          partner_id: string | null
+          passengers: number
+          payment_status: string
+          pickup_address: string | null
+          pickup_at: string
+          pickup_point: Json | null
+          prefer_credit: boolean
+          price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
+          return_at: string | null
+          return_flight_number: string | null
+          route_slug: string
+          status: string
+          stripe_payment_intent_id: string | null
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+          vehicle_class: string
+          zone_id: string | null
         }
         SetofOptions: {
           from: "*"
