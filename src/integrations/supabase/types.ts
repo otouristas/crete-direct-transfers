@@ -16,57 +16,104 @@ export type Database = {
     Tables: {
       bookings: {
         Row: {
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
           created_at: string
           currency: string
           customer_email: string
           customer_name: string
           customer_phone: string
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
           extras: Json
           flight_number: string | null
           id: string
           notes: string | null
           passengers: number
+          pickup_address: string | null
           pickup_at: string
+          pickup_point: Json | null
           price_cents: number
+          return_at: string | null
+          return_flight_number: string | null
           route_slug: string
           status: string
+          trip_type: string
+          updated_at: string
+          user_id: string | null
           vehicle_class: string
         }
         Insert: {
+          assigned_at?: string | null
+          bags_cabin?: number
+          bags_checked?: number
           created_at?: string
           currency?: string
           customer_email: string
           customer_name: string
           customer_phone: string
+          driver_id?: string | null
+          dropoff_address?: string | null
+          dropoff_point?: Json | null
           extras?: Json
           flight_number?: string | null
           id?: string
           notes?: string | null
           passengers: number
+          pickup_address?: string | null
           pickup_at: string
+          pickup_point?: Json | null
           price_cents: number
+          return_at?: string | null
+          return_flight_number?: string | null
           route_slug: string
           status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id?: string | null
           vehicle_class: string
         }
         Update: {
+          assigned_at?: string | null
+          bags_cabin?: number
+          bags_checked?: number
           created_at?: string
           currency?: string
           customer_email?: string
           customer_name?: string
           customer_phone?: string
+          driver_id?: string | null
+          dropoff_address?: string | null
+          dropoff_point?: Json | null
           extras?: Json
           flight_number?: string | null
           id?: string
           notes?: string | null
           passengers?: number
+          pickup_address?: string | null
           pickup_at?: string
+          pickup_point?: Json | null
           price_cents?: number
+          return_at?: string | null
+          return_flight_number?: string | null
           route_slug?: string
           status?: string
+          trip_type?: string
+          updated_at?: string
+          user_id?: string | null
           vehicle_class?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "bookings_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       contact_messages: {
         Row: {
@@ -101,12 +148,191 @@ export type Database = {
         }
         Relationships: []
       }
+      driver_profiles: {
+        Row: {
+          approval_status: string
+          created_at: string
+          id: string
+          id_document_number: string | null
+          insurance_number: string | null
+          license_number: string | null
+          updated_at: string
+          vehicle_class: string | null
+          vehicle_make_model: string | null
+          vehicle_plate: string | null
+          vehicle_registration_number: string | null
+        }
+        Insert: {
+          approval_status?: string
+          created_at?: string
+          id: string
+          id_document_number?: string | null
+          insurance_number?: string | null
+          license_number?: string | null
+          updated_at?: string
+          vehicle_class?: string | null
+          vehicle_make_model?: string | null
+          vehicle_plate?: string | null
+          vehicle_registration_number?: string | null
+        }
+        Update: {
+          approval_status?: string
+          created_at?: string
+          id?: string
+          id_document_number?: string | null
+          insurance_number?: string | null
+          license_number?: string | null
+          updated_at?: string
+          vehicle_class?: string | null
+          vehicle_make_model?: string | null
+          vehicle_plate?: string | null
+          vehicle_registration_number?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          role?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      open_jobs: {
+        Row: {
+          bags_cabin: number | null
+          bags_checked: number | null
+          created_at: string | null
+          currency: string | null
+          dropoff_address: string | null
+          extras: Json | null
+          id: string | null
+          passengers: number | null
+          pickup_address: string | null
+          pickup_at: string | null
+          price_cents: number | null
+          return_at: string | null
+          route_slug: string | null
+          trip_type: string | null
+          vehicle_class: string | null
+        }
+        Insert: {
+          bags_cabin?: number | null
+          bags_checked?: number | null
+          created_at?: string | null
+          currency?: string | null
+          dropoff_address?: string | null
+          extras?: Json | null
+          id?: string | null
+          passengers?: number | null
+          pickup_address?: string | null
+          pickup_at?: string | null
+          price_cents?: number | null
+          return_at?: string | null
+          route_slug?: string | null
+          trip_type?: string | null
+          vehicle_class?: string | null
+        }
+        Update: {
+          bags_cabin?: number | null
+          bags_checked?: number | null
+          created_at?: string | null
+          currency?: string | null
+          dropoff_address?: string | null
+          extras?: Json | null
+          id?: string | null
+          passengers?: number | null
+          pickup_address?: string | null
+          pickup_at?: string | null
+          price_cents?: number | null
+          return_at?: string | null
+          route_slug?: string | null
+          trip_type?: string | null
+          vehicle_class?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      booking_driver_info: {
+        Args: { p_booking_id: string }
+        Returns: {
+          full_name: string
+          phone: string
+          vehicle_class: string
+          vehicle_make_model: string
+          vehicle_plate: string
+        }[]
+      }
+      claim_job: {
+        Args: { p_booking_id: string }
+        Returns: {
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
+          extras: Json
+          flight_number: string | null
+          id: string
+          notes: string | null
+          passengers: number
+          pickup_address: string | null
+          pickup_at: string
+          pickup_point: Json | null
+          price_cents: number
+          return_at: string | null
+          return_flight_number: string | null
+          route_slug: string
+          status: string
+          trip_type: string
+          updated_at: string
+          user_id: string | null
+          vehicle_class: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      is_approved_driver: { Args: never; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
