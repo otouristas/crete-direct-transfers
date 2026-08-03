@@ -117,7 +117,7 @@ export async function resolveIncidentAdmin(input: {
   const { error } = await supabase.rpc("resolve_incident", {
     p_incident_id: input.incidentId,
     p_resolution: input.resolution,
-    p_notes: input.notes ?? null,
+    p_notes: input.notes ?? undefined,
     p_reject: input.reject ?? false,
   });
   if (error) throw error;
@@ -160,7 +160,7 @@ export async function reviewDriverDocumentAdmin(input: {
   const { data, error } = await supabase.rpc("review_driver_document", {
     p_document_id: input.documentId,
     p_status: input.status,
-    p_rejection_reason: input.reason ?? null,
+    p_rejection_reason: input.reason ?? undefined,
   });
   if (error) throw error;
   return data as unknown as DriverDocument;
@@ -174,7 +174,7 @@ export async function reviewDriverOnboardingAdmin(input: {
   const { data, error } = await supabase.rpc("review_driver_onboarding", {
     p_driver_id: input.driverId,
     p_status: input.status,
-    p_notes: input.notes ?? null,
+    p_notes: input.notes ?? undefined,
   });
   if (error) throw error;
   return data as unknown as DriverOnboardingSubmission;

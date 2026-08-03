@@ -1,3 +1,5 @@
+import type { AirportData } from "@/data/airports";
+import type { AirportRouteData } from "@/data/airport-routes";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { vehicleFromPrices, formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
@@ -28,7 +30,11 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
     const siblings = getLocalizedAirportRoutes(locale).filter(
       (r) => r.airportSlug === airport.slug && r.routeSlug !== route.routeSlug,
     );
-    return { airport, route, siblings };
+    return { airport, route, siblings } as {
+      airport: AirportData;
+      route: AirportRouteData;
+      siblings: AirportRouteData[];
+    };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
@@ -133,7 +139,11 @@ function RouteNotFound() {
 }
 
 function AirportRoutePage() {
-  const { airport, route, siblings } = Route.useLoaderData();
+  const { airport, route, siblings } = Route.useLoaderData() as {
+    airport: AirportData;
+    route: AirportRouteData;
+    siblings: AirportRouteData[];
+  };
   const t = useT();
   const vehicles = vehicleFromPrices(airport, route);
 

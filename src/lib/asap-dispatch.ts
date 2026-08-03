@@ -121,11 +121,11 @@ export async function createAsapBooking(input: AsapCreateInput): Promise<{
     p_dropoff_address: input.to.label,
     p_price_cents: priced.priceCents,
     p_eta_hint_minutes: etaHint,
-    p_notes: input.notes ?? null,
-    p_pickup_lat: input.from.lat ?? null,
-    p_pickup_lng: input.from.lng ?? null,
-    p_dropoff_lat: input.to.lat ?? null,
-    p_dropoff_lng: input.to.lng ?? null,
+    p_notes: input.notes ?? undefined,
+    p_pickup_lat: input.from.lat ?? undefined,
+    p_pickup_lng: input.from.lng ?? undefined,
+    p_dropoff_lat: input.to.lat ?? undefined,
+    p_dropoff_lng: input.to.lng ?? undefined,
   });
 
   if (error) throw error;

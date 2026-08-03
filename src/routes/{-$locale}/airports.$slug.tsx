@@ -8,6 +8,8 @@ import {
   getLocalizedAirports,
   getLocalizedAirportRoutes,
 } from "@/i18n/content";
+import type { AirportData } from "@/data/airports";
+import type { AirportRouteData } from "@/data/airport-routes";
 import { getIataAirport } from "@/data/iata-airports";
 import { CtaBand } from "@/components/sections/cta-band";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
@@ -34,7 +36,11 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
     const airport = getLocalizedAirport(locale, params.slug);
     if (!airport) throw notFound();
     const routes = getLocalizedAirportRoutes(locale).filter((r) => r.airportSlug === airport.slug);
-    return { airport, routes, curated };
+    return { airport, routes, curated } as {
+      airport: AirportData;
+      routes: AirportRouteData[];
+      curated: boolean;
+    };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
@@ -145,7 +151,10 @@ function AirportNotFound() {
 }
 
 function AirportHubPage() {
-  const { airport, routes } = Route.useLoaderData();
+  const { airport, routes } = Route.useLoaderData() as {
+    airport: AirportData;
+    routes: AirportRouteData[];
+  };
   const t = useT();
   const vehicles = vehicleFromPrices(airport);
   const defaultLegacy = routes.find((r) => r.legacyRouteSlug)?.legacyRouteSlug;

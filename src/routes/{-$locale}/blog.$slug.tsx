@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Clock } from "lucide-react";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedPost } from "@/i18n/content";
+import type { Post } from "@/data/posts";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
 import { CtaBand } from "@/components/sections/cta-band";
@@ -11,7 +12,7 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
     const locale = (params.locale ?? "en") as Locale;
     const post = getLocalizedPost(locale, params.slug);
     if (!post) throw notFound();
-    return { post };
+    return { post } as { post: Post };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
@@ -87,7 +88,7 @@ function PostNotFound() {
 }
 
 function BlogPost() {
-  const { post } = Route.useLoaderData();
+  const { post } = Route.useLoaderData() as { post: Post };
   const t = useT();
   const locale = useLocale();
   const related = post.related

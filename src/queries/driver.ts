@@ -103,8 +103,8 @@ export async function reportUnableToComplete(bookingId: string, note?: string): 
   const { error } = await supabase.rpc("open_incident", {
     p_booking_id: bookingId,
     p_type: "unable_to_complete",
-    p_note: note ?? null,
-    p_claimed_wait_until: null,
+    p_note: note ?? undefined,
+    p_claimed_wait_until: undefined,
     p_evidence_urls: [],
   });
   if (error) throw error;
