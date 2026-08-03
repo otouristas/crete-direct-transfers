@@ -8,7 +8,8 @@ import {
   getLocalizedAirports,
   getLocalizedAirportRoutes,
 } from "@/i18n/content";
-import type { AirportData, AirportRouteData } from "@/data/airports";
+import type { AirportData } from "@/data/airports";
+import type { AirportRouteData } from "@/data/airport-routes";
 import { getIataAirport } from "@/data/iata-airports";
 import { CtaBand } from "@/components/sections/cta-band";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
