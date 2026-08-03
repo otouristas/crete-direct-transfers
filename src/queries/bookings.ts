@@ -142,7 +142,7 @@ export async function requestCancellation(input: {
   const { data, error } = await supabase.rpc("request_cancellation", {
     p_booking_id: input.id,
     p_reason: input.reason,
-    p_note: input.note ?? null,
+    p_note: input.note ?? undefined,
     p_prefer_credit: input.preferCredit ?? true,
   });
   if (error) throw error;
@@ -164,8 +164,8 @@ export async function openIncident(input: {
   const { data, error } = await supabase.rpc("open_incident", {
     p_booking_id: input.bookingId,
     p_type: input.type,
-    p_note: input.note ?? null,
-    p_claimed_wait_until: input.claimedWaitUntil ?? null,
+    p_note: input.note ?? undefined,
+    p_claimed_wait_until: input.claimedWaitUntil ?? undefined,
     p_evidence_urls: [],
   });
   if (error) throw error;
