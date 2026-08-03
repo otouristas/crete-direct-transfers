@@ -88,7 +88,7 @@ function PostNotFound() {
 }
 
 function BlogPost() {
-  const { post } = Route.useLoaderData();
+  const { post } = Route.useLoaderData() as { post: Post };
   const t = useT();
   const locale = useLocale();
   const related = post.related

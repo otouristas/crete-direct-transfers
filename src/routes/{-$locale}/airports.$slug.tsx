@@ -151,7 +151,10 @@ function AirportNotFound() {
 }
 
 function AirportHubPage() {
-  const { airport, routes } = Route.useLoaderData();
+  const { airport, routes } = Route.useLoaderData() as {
+    airport: AirportData;
+    routes: AirportRouteData[];
+  };
   const t = useT();
   const vehicles = vehicleFromPrices(airport);
   const defaultLegacy = routes.find((r) => r.legacyRouteSlug)?.legacyRouteSlug;
