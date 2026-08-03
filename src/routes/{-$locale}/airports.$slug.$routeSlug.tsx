@@ -28,7 +28,11 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
     const siblings = getLocalizedAirportRoutes(locale).filter(
       (r) => r.airportSlug === airport.slug && r.routeSlug !== route.routeSlug,
     );
-    return { airport, route, siblings };
+    return { airport, route, siblings } as {
+      airport: AirportData;
+      route: AirportRouteData;
+      siblings: AirportRouteData[];
+    };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;

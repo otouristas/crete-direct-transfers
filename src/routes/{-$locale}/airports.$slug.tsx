@@ -8,6 +8,7 @@ import {
   getLocalizedAirports,
   getLocalizedAirportRoutes,
 } from "@/i18n/content";
+import type { AirportData, AirportRouteData } from "@/data/airports";
 import { getIataAirport } from "@/data/iata-airports";
 import { CtaBand } from "@/components/sections/cta-band";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
@@ -34,7 +35,11 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
     const airport = getLocalizedAirport(locale, params.slug);
     if (!airport) throw notFound();
     const routes = getLocalizedAirportRoutes(locale).filter((r) => r.airportSlug === airport.slug);
-    return { airport, routes, curated };
+    return { airport, routes, curated } as {
+      airport: AirportData;
+      routes: AirportRouteData[];
+      curated: boolean;
+    };
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
