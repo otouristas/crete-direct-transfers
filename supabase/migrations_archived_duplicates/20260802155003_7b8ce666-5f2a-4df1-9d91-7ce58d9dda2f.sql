@@ -1,4 +1,4 @@
--- Return trips, luggage and pickup/drop-off locations on bookings (widget v2)
+-- Archived duplicate snapshot. Return trips, luggage and pickup/drop-off locations on bookings (widget v2)
 ALTER TABLE public.bookings
   ADD COLUMN IF NOT EXISTS trip_type text NOT NULL DEFAULT 'oneway',
   ADD COLUMN IF NOT EXISTS return_at timestamptz,

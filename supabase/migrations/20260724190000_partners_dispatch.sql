@@ -421,7 +421,6 @@ returns public.bookings
 language plpgsql security definer set search_path = public as $$
 declare
   v_offer public.job_offers;
-  v_booking public.bookings;
 begin
   if not public.is_approved_driver() then
     raise exception 'not_approved_driver';
@@ -685,7 +684,7 @@ language plpgsql security definer set search_path = public as $$
 declare
   v_expired integer := 0;
   v_next integer := 0;
-  v_escalate uuid[] := '{}';
+  v_escalate uuid[] := array[]::uuid[];
   r record;
   v_added integer;
 begin

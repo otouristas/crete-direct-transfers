@@ -17,7 +17,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getRoute, VEHICLE_CLASSES } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
 import { supabase } from "@/integrations/supabase/client";
-import { notifyDriverAssigned } from "@/functions/dispatch";
 import {
   listAsapDispatchEvents,
   subscribeAsapDispatch,
@@ -265,11 +264,6 @@ function OfferCard({ offer }: { offer: MyJobOffer }) {
       }
       toast.success(t.driver.claimedToast);
       if (booking?.id) {
-        try {
-          await notifyDriverAssigned({ data: { bookingId: booking.id, locale } });
-        } catch {
-          /* best-effort */
-        }
         navigate({
           to: "/{-$locale}/driver/jobs/$id",
           params: { id: booking.id },
@@ -345,11 +339,6 @@ function OpenJobCard({ job, asap = false }: { job: OpenJob; asap?: boolean }) {
       queryClient.invalidateQueries({ queryKey: ["my-job-offers"] });
       queryClient.invalidateQueries({ queryKey: ["driver-jobs"] });
       toast.success(t.driver.claimedToast);
-      try {
-        await notifyDriverAssigned({ data: { bookingId: booking.id, locale } });
-      } catch {
-        /* best-effort */
-      }
       navigate({
         to: "/{-$locale}/driver/jobs/$id",
         params: { id: booking.id },
@@ -429,11 +418,6 @@ function AsapEventCard({ event }: { event: AsapDispatchEvent }) {
       queryClient.invalidateQueries({ queryKey: ["open-jobs"] });
       queryClient.invalidateQueries({ queryKey: ["driver-jobs"] });
       toast.success(t.driver.claimedToast);
-      try {
-        await notifyDriverAssigned({ data: { bookingId: booking.id, locale } });
-      } catch {
-        /* best-effort */
-      }
       navigate({
         to: "/{-$locale}/driver/jobs/$id",
         params: { id: booking.id },

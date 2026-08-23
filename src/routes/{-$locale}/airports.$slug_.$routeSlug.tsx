@@ -20,7 +20,7 @@ import {
   AirportVehicles,
 } from "@/components/airports/airport-page-sections";
 
-export const Route = createFileRoute("/{-$locale}/airports/$slug/$routeSlug")({
+export const Route = createFileRoute("/{-$locale}/airports/$slug_/$routeSlug")({
   loader: ({ params }) => {
     const locale = (params.locale ?? "en") as Locale;
     const airport = getLocalizedAirport(locale, params.slug);

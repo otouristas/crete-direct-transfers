@@ -39,7 +39,6 @@ export const partnerInboxQuery = (partnerId: string) =>
   queryOptions({
     queryKey: ["partner-inbox", partnerId],
     queryFn: async (): Promise<Booking[]> => {
-      await supabase.rpc("expire_job_offers");
       const { data, error } = await supabase
         .from("bookings")
         .select("*")

@@ -10,6 +10,11 @@ Disallow: /account
 Disallow: /*/account
 Disallow: /driver
 Disallow: /*/driver
+Disallow: /partner
+Disallow: /*/partner
+Disallow: /ops
+Disallow: /*/ops
+Disallow: /api/
 Disallow: /login
 Disallow: /*/login
 Disallow: /signup
@@ -35,6 +40,11 @@ Disallow: /account
 Disallow: /*/account
 Disallow: /driver
 Disallow: /*/driver
+Disallow: /partner
+Disallow: /*/partner
+Disallow: /ops
+Disallow: /*/ops
+Disallow: /api/
 Disallow: /login
 Disallow: /*/login
 Disallow: /signup

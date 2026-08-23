@@ -90,6 +90,7 @@ function HomePage() {
             </p>
             <h1 className="mt-5 text-4xl font-display leading-[1.05] md:text-5xl lg:text-6xl">
               {t.home.heroTitle1}
+              <span className="sr-only"> </span>
               <br />
               <span className="font-accent text-[1.08em] text-accent">
                 {t.home.heroTitleAccent}

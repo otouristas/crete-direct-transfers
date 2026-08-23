@@ -1,3 +1,4 @@
+-- Archived duplicate snapshot.
 create table public.partners (
   id uuid primary key default gen_random_uuid(),
   slug text not null unique,

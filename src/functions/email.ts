@@ -1,5 +1,6 @@
-import { createServerFn } from "@tanstack/react-start";
 import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/site";
+import { getServiceSupabase } from "@/integrations/supabase/service";
+import { formatEur } from "@/lib/pricing";
 
 type EmailPayload = {
   to: string;
@@ -41,9 +42,78 @@ export async function sendEmailDirect(payload: EmailPayload) {
   return sendViaResend(payload);
 }
 
-export const sendTransactionalEmail = createServerFn({ method: "POST" })
-  .validator((d: EmailPayload) => d)
-  .handler(async ({ data }) => sendViaResend(data));
+async function loadBooking(bookingId: string) {
+  const admin = getServiceSupabase();
+  if (!admin) throw new Error("Booking service is not configured");
+  const { data, error } = await admin.from("bookings").select("*").eq("id", bookingId).single();
+  if (error || !data) throw new Error("Booking not found");
+  return data;
+}
+
+export async function notifyBookingCreated(bookingId: string) {
+  const booking = await loadBooking(bookingId);
+  const routeLabel =
+    [booking.pickup_address, booking.dropoff_address].filter(Boolean).join(" → ") ||
+    booking.route_slug;
+  return sendViaResend(
+    bookingCreatedEmail({
+      to: booking.customer_email,
+      name: booking.customer_name,
+      bookingId: booking.id,
+      routeLabel,
+      pickupAt: new Date(booking.pickup_at).toLocaleString(),
+      priceLabel: formatEur(booking.price_cents / 100),
+      locale: "locale" in booking ? String(booking.locale) : "en",
+    }),
+  );
+}
+
+export async function notifyBookingCancelled(bookingId: string) {
+  const booking = await loadBooking(bookingId);
+  const refundSummary =
+    booking.refund_status === "credit_issued"
+      ? "A 100% booking credit has been issued."
+      : booking.refund_percent === 100
+        ? "A full refund was approved."
+        : booking.refund_percent === 50
+          ? "A 50% refund is pending review / processing."
+          : "No prepaid refund applies.";
+  return sendViaResend(
+    bookingCancelledEmail({
+      to: booking.customer_email,
+      name: booking.customer_name,
+      bookingId: booking.id,
+      refundSummary,
+    }),
+  );
+}
+
+export async function notifyIncidentOpened(incidentId: string) {
+  const admin = getServiceSupabase();
+  if (!admin) throw new Error("Booking service is not configured");
+  const { data: incident, error } = await admin
+    .from("booking_incidents")
+    .select("id, booking_id, type, note")
+    .eq("id", incidentId)
+    .single();
+  if (error || !incident) throw new Error("Incident not found");
+  const booking = await loadBooking(incident.booking_id);
+  const typeLabel = incident.type.slice(0, 120);
+  await sendViaResend(
+    incidentOpenedEmail({
+      to: booking.customer_email,
+      name: booking.customer_name,
+      bookingId: booking.id,
+      typeLabel,
+    }),
+  );
+  return sendViaResend(
+    opsNotifyEmail({
+      subject: `Incident ${typeLabel} · ${booking.id.slice(0, 8)}`,
+      body: `${typeLabel}\n${(incident.note ?? "").slice(0, 2_000)}\nBooking ${booking.id}`,
+    }),
+  );
+}
 
 export function bookingCreatedEmail(input: {
   to: string;
@@ -58,12 +128,12 @@ export function bookingCreatedEmail(input: {
   const url = `${SITE_URL}${path}/account/bookings/${input.bookingId}`;
   return {
     to: input.to,
-    subject: `${SITE_NAME} booking confirmed · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
-<p>Your transfer <strong>${input.routeLabel}</strong> on <strong>${input.pickupAt}</strong> is confirmed.</p>
-<p>Total: <strong>${input.priceLabel}</strong></p>
+    subject: `${SITE_NAME} booking received · ${input.bookingId.slice(0, 8)}`,
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
+<p>We received your transfer request for <strong>${escapeHtml(input.routeLabel)}</strong> on <strong>${escapeHtml(input.pickupAt)}</strong>.</p>
+<p>Total: <strong>${escapeHtml(input.priceLabel)}</strong></p>
 <p><a href="${url}">View booking</a></p>
-<p>Free cancel up to 24h before pickup. Free waiting: 60 min airports/ports, 30 min elsewhere.</p>
+<p>We will send another update when a driver is assigned.</p>
 <p>— ${SITE_NAME}</p>`,
   };
 }
@@ -77,9 +147,9 @@ export function bookingCancelledEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} booking cancelled · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
 <p>Your booking <strong>${input.bookingId.slice(0, 8)}</strong> has been cancelled.</p>
-<p>${input.refundSummary}</p>
+<p>${escapeHtml(input.refundSummary)}</p>
 <p>— ${SITE_NAME}</p>`,
   };
 }
@@ -93,8 +163,8 @@ export function incidentOpenedEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} we received your report · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
-<p>We received your report (<strong>${input.typeLabel}</strong>) for booking ${input.bookingId.slice(0, 8)}. Our team will review and follow up.</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
+<p>We received your report (<strong>${escapeHtml(input.typeLabel)}</strong>) for booking ${input.bookingId.slice(0, 8)}. Our team will review and follow up.</p>
 <p>— ${SITE_NAME}</p>`,
   };
 }
@@ -108,8 +178,8 @@ export function refundProcessedEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} refund processed · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
-<p>A refund of <strong>${input.amountLabel}</strong> for booking ${input.bookingId.slice(0, 8)} has been processed.</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
+<p>A refund of <strong>${escapeHtml(input.amountLabel)}</strong> for booking ${input.bookingId.slice(0, 8)} has been processed.</p>
 <p>— ${SITE_NAME}</p>`,
   };
 }
@@ -119,8 +189,21 @@ export function opsNotifyEmail(input: { subject: string; body: string }) {
   return {
     to: CONTACT_EMAIL,
     subject: input.subject,
-    html: `<pre style="font-family:sans-serif;white-space:pre-wrap">${input.body}</pre>`,
+    html: `<pre style="font-family:sans-serif;white-space:pre-wrap">${escapeHtml(input.body)}</pre>`,
   };
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function safeSubject(value: string) {
+  return value.replace(/[\r\n]+/g, " ").slice(0, 200);
 }
 
 export function driverJobOfferEmail(input: {
@@ -137,10 +220,10 @@ export function driverJobOfferEmail(input: {
   const url = `${SITE_URL}${path}/driver`;
   return {
     to: input.to,
-    subject: `${SITE_NAME} new job offer · ${input.routeLabel}`,
-    html: `<p>Hi ${input.driverName},</p>
-<p>New transfer offer: <strong>${input.routeLabel}</strong> on <strong>${input.pickupAt}</strong>.</p>
-<p>Fare: <strong>${input.priceLabel}</strong>. Expires in about ${Math.round(input.expiresInSec / 60)} min.</p>
+    subject: safeSubject(`${SITE_NAME} new job offer · ${input.routeLabel}`),
+    html: `<p>Hi ${escapeHtml(input.driverName)},</p>
+<p>New transfer offer: <strong>${escapeHtml(input.routeLabel)}</strong> on <strong>${escapeHtml(input.pickupAt)}</strong>.</p>
+<p>Fare: <strong>${escapeHtml(input.priceLabel)}</strong>. Expires in about ${Math.round(input.expiresInSec / 60)} min.</p>
 <p>Customer details unlock after you accept.</p>
 <p><a href="${url}">Open driver dashboard</a></p>
 <p>— ${SITE_NAME}</p>`,
@@ -161,9 +244,9 @@ export function partnerNewJobEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} assign driver · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.partnerName},</p>
-<p>New booking needs a driver: <strong>${input.routeLabel}</strong> on <strong>${input.pickupAt}</strong>.</p>
-<p>Fare: <strong>${input.priceLabel}</strong></p>
+    html: `<p>Hi ${escapeHtml(input.partnerName)},</p>
+<p>New booking needs a driver: <strong>${escapeHtml(input.routeLabel)}</strong> on <strong>${escapeHtml(input.pickupAt)}</strong>.</p>
+<p>Fare: <strong>${escapeHtml(input.priceLabel)}</strong></p>
 <p><a href="${url}">Open partner inbox</a></p>
 <p>— ${SITE_NAME}</p>`,
   };
@@ -183,12 +266,12 @@ export function driverAssignedCustomerEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} driver assigned · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
 <p>Your driver is confirmed:</p>
 <ul>
-<li><strong>${input.driverName}</strong></li>
-<li>Phone: ${input.driverPhone}</li>
-<li>Vehicle: ${input.vehicleLabel}</li>
+<li><strong>${escapeHtml(input.driverName)}</strong></li>
+<li>Phone: ${escapeHtml(input.driverPhone)}</li>
+<li>Vehicle: ${escapeHtml(input.vehicleLabel)}</li>
 </ul>
 <p><a href="${url}">View booking</a></p>
 <p>— ${SITE_NAME}</p>`,

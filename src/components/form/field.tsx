@@ -12,10 +12,12 @@ export function Field({
 }) {
   return (
     <div>
-      <label className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-        {label}
+      <label className="block">
+        <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          {label}
+        </span>
+        <div className="mt-1">{children}</div>
       </label>
-      <div className="mt-1">{children}</div>
       {error && <div className="mt-1 text-xs text-destructive">{error}</div>}
     </div>
   );

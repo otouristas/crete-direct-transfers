@@ -97,8 +97,8 @@ export function InpageNav({ items }: { items: InpageNavItem[] }) {
                       isCta
                         ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 focus-visible:ring-primary"
                         : isActive
-                          ? "font-bold text-highlight focus-visible:ring-highlight"
-                          : "text-slate-600 hover:text-highlight focus-visible:ring-highlight",
+                          ? "font-bold text-accent-deep focus-visible:ring-accent-deep"
+                          : "text-slate-600 hover:text-accent-deep focus-visible:ring-accent-deep",
                     )}
                   >
                     <span className="relative z-10 flex items-center gap-1">

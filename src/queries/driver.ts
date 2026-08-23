@@ -34,8 +34,6 @@ export const openJobsQuery = queryOptions({
 export const myJobOffersQuery = queryOptions({
   queryKey: ["my-job-offers"],
   queryFn: async (): Promise<MyJobOffer[]> => {
-    // Expire / cascade before reading so drivers see fresh offers.
-    await supabase.rpc("expire_job_offers");
     const { data, error } = await supabase
       .from("my_job_offers")
       .select("*")

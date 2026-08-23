@@ -9,13 +9,13 @@ import { AIRPORT_ROUTES } from "@/data/airport-routes";
 import { listCityDestinations } from "@/data/destinations";
 import { listLiveMarkets } from "@/data/markets";
 import { REVIEWS_VERIFIED, SITE_URL } from "@/lib/site";
-import { LOCALES, localePath } from "@/i18n";
+import { PUBLIC_LOCALES, localePath } from "@/i18n";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const paths: string[] = [
+        const paths = new Set([
           "/",
           "/touristas-ai",
           "/countries",
@@ -49,22 +49,22 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...AIRPORTS.map((a) => `/airports/${a.slug}`),
           ...AIRPORT_ROUTES.map((r) => `/airports/${r.airportSlug}/${r.routeSlug}`),
           ...listCityDestinations().map((c) => `/cities/${c.slug}`),
-        ];
+        ]);
 
         const alternates = (path: string) =>
           [
-            ...LOCALES.map(
+            ...PUBLIC_LOCALES.map(
               (l) =>
                 `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE_URL}${localePath(l, path)}"/>`,
             ),
             `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${localePath("en", path)}"/>`,
           ].join("\n");
 
-        const urls = paths
+        const urls = [...paths]
           .flatMap((path) =>
-            LOCALES.map(
+            PUBLIC_LOCALES.map(
               (locale) =>
-                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>\n${alternates(path)}\n    <lastmod>2026-07-28</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>`,
+                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>\n${alternates(path)}\n  </url>`,
             ),
           )
           .join("\n");

@@ -32,6 +32,10 @@ apps/*/.env.*
 .wrangler/
 .dev.vars
 
+# Supabase CLI state
+supabase/.branches/
+supabase/.temp/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

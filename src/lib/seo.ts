@@ -1,5 +1,5 @@
 import { SITE_URL, SITE_NAME, OG_DEFAULT_IMAGE } from "./site";
-import { LOCALES, localePath, type Locale } from "@/i18n";
+import { PUBLIC_LOCALES, localePath, type Locale } from "@/i18n";
 
 type JsonLd = Record<string, unknown>;
 
@@ -12,6 +12,22 @@ export interface BuildHeadArgs {
   ogImage?: string;
   noindex?: boolean;
   jsonLd?: JsonLd | JsonLd[];
+}
+
+const TITLE_LIMIT = 65;
+const DESCRIPTION_LIMIT = 160;
+
+function trimAtWord(value: string, limit: number): string {
+  if (value.length <= limit) return value;
+  const slice = value.slice(0, limit - 1);
+  const boundary = slice.lastIndexOf(" ");
+  return `${slice.slice(0, boundary > limit * 0.7 ? boundary : undefined).trimEnd()}…`;
+}
+
+function fitTitle(value: string): string {
+  if (value.length <= TITLE_LIMIT) return value;
+  const withoutBrand = value.replace(/\s+(?:\||·)\s+TransferAround(?: Blog)?$/u, "");
+  return trimAtWord(withoutBrand, TITLE_LIMIT);
 }
 
 /**
@@ -30,25 +46,29 @@ export function buildHead({
   jsonLd,
 }: BuildHeadArgs) {
   const canonical = `${SITE_URL}${localePath(locale, path)}`;
+  const isPublicLocale = (PUBLIC_LOCALES as readonly string[]).includes(locale);
+  const seoTitle = fitTitle(title);
+  const seoDescription = trimAtWord(description, DESCRIPTION_LIMIT);
+  const shouldNoindex = Boolean(noindex || !isPublicLocale);
 
   const meta: Record<string, string>[] = [
-    { title },
-    { name: "description", content: description },
-    { property: "og:title", content: title },
-    { property: "og:description", content: description },
+    { title: seoTitle },
+    { name: "description", content: seoDescription },
+    { property: "og:title", content: seoTitle },
+    { property: "og:description", content: seoDescription },
     { property: "og:url", content: canonical },
     { property: "og:site_name", content: SITE_NAME },
   ];
   const image = ogImage ?? OG_DEFAULT_IMAGE;
   meta.push({ property: "og:image", content: image });
   meta.push({ name: "twitter:image", content: image });
-  if (noindex) meta.push({ name: "robots", content: "noindex, nofollow" });
+  if (shouldNoindex) meta.push({ name: "robots", content: "noindex, nofollow" });
 
-  const links = noindex
+  const links = shouldNoindex
     ? []
     : [
         { rel: "canonical", href: canonical },
-        ...LOCALES.map((l) => ({
+        ...PUBLIC_LOCALES.map((l) => ({
           rel: "alternate",
           hrefLang: l,
           href: `${SITE_URL}${localePath(l, path)}`,
@@ -61,7 +81,7 @@ export function buildHead({
       ];
 
   const scripts =
-    jsonLd && !noindex
+    jsonLd && !shouldNoindex
       ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((obj) => ({
           type: "application/ld+json",
           children: JSON.stringify(obj),

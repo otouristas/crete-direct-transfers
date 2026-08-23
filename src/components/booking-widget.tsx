@@ -79,7 +79,6 @@ function defaultPickupLocal(): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T12:00`;
 }
 
-
 function formatPickupLabel(value: string, locale: string): string {
   if (!value) return "—";
   try {
@@ -939,11 +938,11 @@ function BookingWidgetCard({
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="min-w-0">
-      <label className="line-clamp-1 text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
+    <label className="block min-w-0">
+      <span className="line-clamp-1 text-[10px] font-medium uppercase tracking-[0.15em] text-muted-foreground">
         {label}
-      </label>
+      </span>
       <div className="mt-1.5">{children}</div>
-    </div>
+    </label>
   );
 }

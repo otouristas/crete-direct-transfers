@@ -98,31 +98,10 @@ function BookingDetailPage() {
         note: cancelNote || undefined,
         preferCredit,
       }),
-    onSuccess: async (updated) => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["booking", id] });
       queryClient.invalidateQueries({ queryKey: ["my-bookings"] });
       toast.success(t.account.cancelled);
-      try {
-        const { bookingCancelledEmail, sendTransactionalEmail } = await import("@/functions/email");
-        const summary =
-          updated.refund_status === "credit_issued"
-            ? "A 100% booking credit has been issued."
-            : updated.refund_percent === 100
-              ? "A full refund was approved."
-              : updated.refund_percent === 50
-                ? "A 50% refund is pending review / processing."
-                : "No prepaid refund applies.";
-        await sendTransactionalEmail({
-          data: bookingCancelledEmail({
-            to: updated.customer_email,
-            name: updated.customer_name,
-            bookingId: updated.id,
-            refundSummary: summary,
-          }),
-        });
-      } catch {
-        /* best-effort */
-      }
     },
     onError: () => toast.error(t.account.cancelFailed),
   });
@@ -143,28 +122,6 @@ function BookingDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["booking-incidents", id] });
       setIncidentNote("");
       toast.success(t.account.incidentOpened);
-      if (b) {
-        try {
-          const { incidentOpenedEmail, opsNotifyEmail, sendTransactionalEmail } =
-            await import("@/functions/email");
-          await sendTransactionalEmail({
-            data: incidentOpenedEmail({
-              to: b.customer_email,
-              name: b.customer_name,
-              bookingId: b.id,
-              typeLabel: t.account.incidentTypes[incidentType],
-            }),
-          });
-          await sendTransactionalEmail({
-            data: opsNotifyEmail({
-              subject: `Incident ${incidentType} · ${b.id.slice(0, 8)}`,
-              body: `${incidentType}\n${incidentNote}\nBooking ${b.id}`,
-            }),
-          });
-        } catch {
-          /* best-effort */
-        }
-      }
     },
     onError: () => toast.error(t.account.incidentFailed),
   });

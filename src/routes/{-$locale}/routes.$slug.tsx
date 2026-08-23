@@ -9,7 +9,7 @@ import { InpageNav } from "@/components/inpage-nav";
 import { getDict, useLocale, useT, type Locale, type Dict } from "@/i18n";
 import { getLocalizedRoute, getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
-import { SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 import { Check, Clock, MapPin, Plane, Radar } from "lucide-react";
 
 function localInfoCopy(route: RouteData, t: Dict): string {
@@ -23,6 +23,110 @@ function localInfoCopy(route: RouteData, t: Dict): string {
     default:
       return t.routesPages.localInfoCrossIsland;
   }
+}
+
+function routeFaqs(locale: Locale, route: RouteData, price: string) {
+  const values = {
+    en: [
+      [
+        `How much is a transfer from ${route.from} to ${route.to}?`,
+        `From ${price} for an Economy vehicle. The confirmed fare is fixed for the vehicle, not per passenger.`,
+      ],
+      [
+        "How long does the drive take?",
+        `About ${route.durationMin} minutes for ${route.distanceKm} km. Journey time can change with traffic and road conditions.`,
+      ],
+      [
+        "What if my flight is delayed?",
+        "Add your flight number when booking. The pickup team monitors the arrival and adjusts the meeting time for a verified delay.",
+      ],
+    ],
+    el: [
+      [
+        `Πόσο κοστίζει η μεταφορά από ${route.from} προς ${route.to};`,
+        `Από ${price} για όχημα Economy. Η επιβεβαιωμένη τιμή είναι σταθερή ανά όχημα, όχι ανά επιβάτη.`,
+      ],
+      [
+        "Πόσο διαρκεί η διαδρομή;",
+        `Περίπου ${route.durationMin} λεπτά για ${route.distanceKm} χλμ. Ο χρόνος μπορεί να αλλάξει ανάλογα με την κίνηση και τις συνθήκες του δρόμου.`,
+      ],
+      [
+        "Τι γίνεται αν καθυστερήσει η πτήση μου;",
+        "Προσθέστε τον αριθμό πτήσης στην κράτηση. Η ομάδα παραλαβής παρακολουθεί την άφιξη και προσαρμόζει την ώρα συνάντησης σε επιβεβαιωμένη καθυστέρηση.",
+      ],
+    ],
+    de: [
+      [
+        `Wie viel kostet der Transfer von ${route.from} nach ${route.to}?`,
+        `Ab ${price} für ein Economy-Fahrzeug. Der bestätigte Preis gilt fest pro Fahrzeug, nicht pro Person.`,
+      ],
+      [
+        "Wie lange dauert die Fahrt?",
+        `Etwa ${route.durationMin} Minuten für ${route.distanceKm} km. Verkehr und Straßenverhältnisse können die Fahrzeit verändern.`,
+      ],
+      [
+        "Was passiert bei einer Flugverspätung?",
+        "Geben Sie bei der Buchung Ihre Flugnummer an. Das Abholteam verfolgt die Ankunft und passt die Treffzeit bei bestätigter Verspätung an.",
+      ],
+    ],
+    fr: [
+      [
+        `Combien coûte le transfert de ${route.from} à ${route.to} ?`,
+        `À partir de ${price} pour un véhicule Economy. Le tarif confirmé est fixe par véhicule, et non par passager.`,
+      ],
+      [
+        "Combien de temps dure le trajet ?",
+        `Environ ${route.durationMin} minutes pour ${route.distanceKm} km. La circulation et l'état des routes peuvent modifier cette durée.`,
+      ],
+      [
+        "Que se passe-t-il si mon vol est retardé ?",
+        "Ajoutez votre numéro de vol lors de la réservation. L'équipe de prise en charge suit l'arrivée et adapte l'heure de rendez-vous en cas de retard confirmé.",
+      ],
+    ],
+    it: [
+      [
+        `Quanto costa il trasferimento da ${route.from} a ${route.to}?`,
+        `Da ${price} per un veicolo Economy. La tariffa confermata è fissa per veicolo, non per passeggero.`,
+      ],
+      [
+        "Quanto dura il viaggio?",
+        `Circa ${route.durationMin} minuti per ${route.distanceKm} km. Traffico e condizioni stradali possono modificare la durata.`,
+      ],
+      [
+        "Cosa succede se il mio volo è in ritardo?",
+        "Aggiungi il numero del volo alla prenotazione. Il team di accoglienza monitora l'arrivo e adegua l'orario di incontro in caso di ritardo confermato.",
+      ],
+    ],
+    nl: [
+      [
+        `Hoeveel kost de transfer van ${route.from} naar ${route.to}?`,
+        `Vanaf ${price} voor een Economy-voertuig. De bevestigde prijs is vast per voertuig, niet per passagier.`,
+      ],
+      [
+        "Hoe lang duurt de rit?",
+        `Ongeveer ${route.durationMin} minuten voor ${route.distanceKm} km. Verkeer en wegomstandigheden kunnen de reistijd beïnvloeden.`,
+      ],
+      [
+        "Wat gebeurt er als mijn vlucht vertraging heeft?",
+        "Voeg bij het boeken je vluchtnummer toe. Het ophaalteam volgt de aankomst en past de afspraaktijd aan bij een bevestigde vertraging.",
+      ],
+    ],
+    es: [
+      [
+        `¿Cuánto cuesta el traslado de ${route.from} a ${route.to}?`,
+        `Desde ${price} por un vehículo Economy. La tarifa confirmada es fija por vehículo, no por pasajero.`,
+      ],
+      [
+        "¿Cuánto dura el trayecto?",
+        `Aproximadamente ${route.durationMin} minutos para ${route.distanceKm} km. El tráfico y el estado de la carretera pueden alterar la duración.`,
+      ],
+      [
+        "¿Qué ocurre si mi vuelo se retrasa?",
+        "Añade el número de vuelo al reservar. El equipo de recogida sigue la llegada y ajusta la hora de encuentro cuando el retraso está confirmado.",
+      ],
+    ],
+  } as const;
+  return values[locale].map(([q, a]) => ({ q, a }));
 }
 
 export const Route = createFileRoute("/{-$locale}/routes/$slug")({
@@ -44,30 +148,26 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
     const q = quote({ routeSlug: r.slug, vehicleClass: "economy" });
     const price = q ? formatEur(q.totalEur) : "";
     const path = `/routes/${params.slug}`;
-    const faqs = [
-      {
-        q: `How much is a transfer from ${r.from} to ${r.to}?`,
-        a: `From ${price} for Economy — fixed price, no bidding.`,
-      },
-      { q: `How long is the drive?`, a: `Around ${r.durationMin} minutes for ${r.distanceKm} km.` },
-      {
-        q: `What if my flight is delayed?`,
-        a: `We track your flight number automatically. Driver adjusts pickup, no extra charge.`,
-      },
-    ];
+    const faqs = routeFaqs(locale, r, price);
     return buildHead({
       locale,
       path,
       title: t.seo.routeTitle(r.from, r.to),
-      description: `Fixed-price transfer from ${r.from} to ${r.to}. ${r.durationMin} min, ${r.distanceKm} km. Licensed local drivers, flight tracked. From ${price}.`,
+      description: t.airportPages.routeDescription(
+        r.from,
+        r.to,
+        String(r.distanceKm),
+        String(r.durationMin),
+        price,
+      ),
       ogImage: r.heroImage,
       jsonLd: {
         "@context": "https://schema.org",
         "@graph": [
           {
             "@type": "TaxiService",
-            name: `${r.from} to ${r.to} Transfer`,
-            provider: { "@type": "LocalBusiness", name: "TransferAround" },
+            name: t.airportPages.transferFromTo(r.from, r.to),
+            provider: { "@type": "LocalBusiness", name: SITE_NAME },
             areaServed: "Crete, Greece",
             offers: { "@type": "Offer", price: q?.totalEur, priceCurrency: "EUR" },
           },
@@ -122,7 +222,7 @@ function RoutePage() {
   const locale = useLocale();
   const vehicles = getLocalizedVehicles(locale);
   const q = quote({ routeSlug: route.slug, vehicleClass: "economy" })!;
-  const vanQ = quote({ routeSlug: route.slug, vehicleClass: "minivan" });
+  const faqs = routeFaqs(locale, route, formatEur(q.totalEur));
   const others = getLocalizedRoutes(locale)
     .filter((r) => r.slug !== route.slug && r.region === route.region)
     .slice(0, 3);
@@ -353,28 +453,7 @@ function RoutePage() {
           <section id="faq" className="scroll-mt-32">
             <h2 className="text-2xl font-display text-primary">{t.routesPages.faqTitle}</h2>
             <div className="mt-6 space-y-6 text-sm">
-              {[
-                {
-                  q: `How much is a transfer from ${route.from} to ${route.to}?`,
-                  a: `From ${formatEur(q.totalEur)} for Economy class${vanQ ? `, ${formatEur(vanQ.totalEur)} for Van Standard` : ""}. Fixed price — no bidding, no surge.`,
-                },
-                {
-                  q: "How long does the drive take?",
-                  a: `Around ${route.durationMin} minutes for ${route.distanceKm} km. We build a buffer for peak-season traffic.`,
-                },
-                {
-                  q: "What if my flight is delayed?",
-                  a: "We track your flight number — the driver adjusts pickup automatically. No extra charge.",
-                },
-                {
-                  q: "Can I pay cash or by card?",
-                  a: "Both. Every driver carries a card terminal (Visa, Mastercard, Amex) and accepts cash in EUR.",
-                },
-                {
-                  q: "Can I cancel for free?",
-                  a: "Yes — free cancellation up to 24 hours before pickup. Inside 24h a 50% fee applies.",
-                },
-              ].map((f) => (
+              {faqs.map((f) => (
                 <div key={f.q}>
                   <div className="font-semibold text-foreground">{f.q}</div>
                   <p className="mt-1 text-muted-foreground">{f.a}</p>

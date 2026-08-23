@@ -53,10 +53,10 @@
   --secondary: oklch(0.968 0.007 247.9); /* #F1F5F9 */
   --secondary-foreground: oklch(0.28 0.07 262);
   --muted: oklch(0.968 0.007 247.9);
-  --muted-foreground: oklch(0.554 0.046 257.4); /* #64748B */
+  --muted-foreground: oklch(0.45 0.046 257.4); /* accessible slate on white */
   --accent: oklch(0.704 0.14 182.5); /* #14B8A6 turquoise */
   --accent-foreground: oklch(0.28 0.07 262); /* navy on turquoise (AA) */
-  --accent-deep: oklch(0.511 0.096 186.4); /* #0F766E teal-700 — links on white */
+  --accent-deep: oklch(0.45 0.096 186.4); /* accessible deep teal on white */
   --highlight: oklch(0.769 0.188 70.08); /* #F59E0B amber — stars/badges only */
   --highlight-foreground: oklch(0.28 0.07 262);
   --destructive: oklch(0.55 0.22 25);
