@@ -5,9 +5,10 @@ import { buildHead } from "@/lib/seo";
 import { Reveal } from "@/components/reveal";
 import { StatsBand } from "@/components/sections/stats-band";
 import { CtaBand } from "@/components/sections/cta-band";
+import { getRegionImage, imageUrl } from "@/lib/place-image";
 
-const ABOUT_IMAGE =
-  "https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?auto=format&fit=crop&w=1400&q=75";
+const ABOUT_PHOTO = getRegionImage("chania");
+const ABOUT_IMAGE = imageUrl(ABOUT_PHOTO, { width: 1400 });
 
 export const Route = createFileRoute("/{-$locale}/about")({
   head: (ctx) => {

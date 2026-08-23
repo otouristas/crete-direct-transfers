@@ -11,8 +11,10 @@ import { localizeMarket } from "@/i18n/markets";
 import { getMarketAirportDetails } from "@/i18n/market-airport-details";
 import { AIRPORT_ROUTES, type AirportRouteData } from "@/data/airport-routes";
 import { POSTS, type Post } from "@/data/posts";
+import { COUNTRY_GUIDES, type CountryGuide } from "@/data/country-guides";
 import type {
   AirportOverlay,
+  CountryGuideOverlay,
   AirportRouteOverlay,
   ContentOverlays,
   FaqOverlay,
@@ -225,3 +227,14 @@ export function getLocalizedPost(locale: Locale, slug: string): Post | undefined
 }
 
 // Keep async loader available for future lazy splitting
+
+/**
+ * Country guide copy, English merged with any locale overlay. Overlays are
+ * partial, so a locale can translate the prose and inherit the rest.
+ */
+export function getLocalizedCountryGuide(locale: Locale, slug: string): CountryGuide | undefined {
+  const base = COUNTRY_GUIDES.find((guide) => guide.slug === slug);
+  if (!base) return undefined;
+  const o = overlay(locale).countryGuides as CountryGuideOverlay | undefined;
+  return o?.[slug] ? { ...base, ...o[slug] } : base;
+}

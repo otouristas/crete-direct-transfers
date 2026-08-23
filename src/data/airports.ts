@@ -1,3 +1,5 @@
+import { getAirportImage, imageUrl } from "@/lib/place-image";
+
 export type BookableMode = "instant" | "quote";
 
 export type AirportTip = { title: string; body: string };
@@ -42,7 +44,7 @@ export type AirportData = {
   faqs: AirportFaq[];
 };
 
-export const AIRPORTS: AirportData[] = [
+const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
   {
     iata: "HER",
     slug: "crete-heraklion-airport-transfers-her",
@@ -55,8 +57,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "716 01",
     country: "Greece",
     island: "Crete",
-    heroImage:
-      "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 40,
     bookable: "instant",
     terminals: "Single terminal for all arrivals and departures.",
@@ -168,8 +168,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "731 00",
     country: "Greece",
     island: "Crete",
-    heroImage:
-      "https://images.unsplash.com/photo-1571498664957-fde285d79857?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "instant",
     terminals: "Single terminal.",
@@ -280,8 +278,6 @@ export const AIRPORTS: AirportData[] = [
     cityName: "Athens",
     zip: "190 04",
     country: "Greece",
-    heroImage:
-      "https://images.unsplash.com/photo-1555993539-1732b0258235?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 45,
     bookable: "quote",
     terminals: "Main Terminal and Satellite Terminal linked by underground passage.",
@@ -399,8 +395,6 @@ export const AIRPORTS: AirportData[] = [
     cityName: "Thessaloniki",
     zip: "551 03",
     country: "Greece",
-    heroImage:
-      "https://images.unsplash.com/photo-1555993539-1732b0258235?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "T1 and T2 linked by internal corridor.",
@@ -512,8 +506,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Mykonos",
-    heroImage:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "Single compact terminal.",
@@ -625,8 +617,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Santorini",
-    heroImage:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 45,
     bookable: "quote",
     terminals: "Single terminal.",
@@ -738,8 +728,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Corfu",
-    heroImage:
-      "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 30,
     bookable: "quote",
     terminals: "Single terminal near town.",
@@ -851,8 +839,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Rhodes",
-    heroImage:
-      "https://images.unsplash.com/photo-1571498664957-fde285d79857?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "Single terminal.",
@@ -964,8 +950,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Zakynthos",
-    heroImage:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 30,
     bookable: "quote",
     terminals: "Single terminal.",
@@ -1077,8 +1061,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Kefalonia",
-    heroImage:
-      "https://images.unsplash.com/photo-1591019479261-1a103585c559?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 40,
     bookable: "quote",
     terminals: "Single terminal.",
@@ -1190,8 +1172,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Kos",
-    heroImage:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "Single terminal.",
@@ -1303,8 +1283,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Lefkada",
-    heroImage:
-      "https://images.unsplash.com/photo-1571498664957-fde285d79857?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 45,
     bookable: "quote",
     terminals: "Single terminal on mainland shore.",
@@ -1416,8 +1394,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Paros",
-    heroImage:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "Small single terminal.",
@@ -1529,8 +1505,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Naxos",
-    heroImage:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 30,
     bookable: "quote",
     terminals: "Small single terminal.",
@@ -1642,8 +1616,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Milos",
-    heroImage:
-      "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "Small single terminal.",
@@ -1755,8 +1727,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Lesbos",
-    heroImage:
-      "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "Single terminal.",
@@ -1868,8 +1838,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     island: "Crete",
-    heroImage:
-      "https://images.unsplash.com/photo-1571498664957-fde285d79857?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 40,
     bookable: "quote",
     terminals: "Small single terminal.",
@@ -1981,8 +1949,6 @@ export const AIRPORTS: AirportData[] = [
     zip: "",
     country: "Greece",
     region: "Peloponnese",
-    heroImage:
-      "https://images.unsplash.com/photo-1591019479261-1a103585c559?auto=format&fit=crop&w=1600&q=70",
     fromPriceEur: 35,
     bookable: "quote",
     terminals: "Single modern terminal.",
@@ -2083,6 +2049,15 @@ export const AIRPORTS: AirportData[] = [
     ],
   },
 ];
+
+/**
+ * Hero imagery comes from the Pexels manifest, resolved per airport with a
+ * city → country → generic fallback. See scripts/fetch-pexels-images.mjs.
+ */
+export const AIRPORTS: AirportData[] = AIRPORT_RECORDS.map((airport) => ({
+  ...airport,
+  heroImage: imageUrl(getAirportImage(airport), { width: 2000 }),
+}));
 
 export function getAirport(slug: string): AirportData | undefined {
   return AIRPORTS.find((a) => a.slug === slug || a.iata.toLowerCase() === slug.toLowerCase());

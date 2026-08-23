@@ -1,3 +1,5 @@
+import { getCityImage, getRegionImage, getServiceImage, imageUrl } from "@/lib/place-image";
+
 export type VehicleClass =
   | "economy"
   | "comfort"
@@ -119,21 +121,19 @@ export type RouteData = {
   service: "airport" | "port" | "cross-island" | "hotel";
 };
 
+/**
+ * Themed Crete imagery, resolved from the Pexels manifest rather than hardcoded
+ * URLs — see scripts/fetch-pexels-images.mjs.
+ */
 const IMG = {
-  road: "https://images.unsplash.com/photo-1601581875039-e899893d520c?auto=format&fit=crop&w=1600&q=70",
-  chania:
-    "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=1600&q=70",
-  harbour:
-    "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=1600&q=70",
-  coast:
-    "https://images.unsplash.com/photo-1571498664957-fde285d79857?auto=format&fit=crop&w=1600&q=70",
-  village:
-    "https://images.unsplash.com/photo-1602928321679-560bb453f190?auto=format&fit=crop&w=1600&q=70",
-  beach:
-    "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1600&q=70",
-  cove: "https://images.unsplash.com/photo-1595079676601-f1adf5be5dee?auto=format&fit=crop&w=1600&q=70",
-  hills:
-    "https://images.unsplash.com/photo-1591019479261-1a103585c559?auto=format&fit=crop&w=1600&q=70",
+  road: imageUrl(getServiceImage("long-distance"), { width: 1600 }),
+  chania: imageUrl(getRegionImage("chania"), { width: 1600 }),
+  harbour: imageUrl(getCityImage("heraklion"), { width: 1600 }),
+  coast: imageUrl(getRegionImage("rethymno"), { width: 1600 }),
+  village: imageUrl(getCityImage("hersonissos"), { width: 1600 }),
+  beach: imageUrl(getCityImage("malia"), { width: 1600 }),
+  cove: imageUrl(getCityImage("matala"), { width: 1600 }),
+  hills: imageUrl(getRegionImage("lasithi"), { width: 1600 }),
 };
 
 export const ROUTES: RouteData[] = [

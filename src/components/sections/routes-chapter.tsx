@@ -5,24 +5,26 @@ import { useLocale, useT } from "@/i18n";
 import { getFeaturedGateways } from "@/lib/featured-gateways";
 import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/utils";
+import {
+  getAirportImage,
+  getCityImage,
+  getRegionImage,
+  imageUrl,
+  type PlaceImage,
+} from "@/lib/place-image";
+import { PhotoCredit } from "@/components/photo-credit";
 
-const GATEWAY_IMAGES: Record<string, string> = {
-  "transfer-from-heraklion-airport-to-elounda":
-    "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?auto=format&fit=crop&w=1400&q=75",
-  "transfer-from-chania-airport-to-chania-old-town":
-    "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1400&q=75",
-  "rome-fiumicino-airport-transfers-fco":
-    "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1400&q=75",
-  "barcelona-el-prat-airport-transfers-bcn":
-    "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=1400&q=75",
-  "lisbon-airport-transfers-lis":
-    "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?auto=format&fit=crop&w=1400&q=75",
-  "antalya-airport-transfers-ayt":
-    "https://images.unsplash.com/photo-1589561253898-768105ca91a8?auto=format&fit=crop&w=1400&q=75",
+/** Featured-gateway imagery, resolved from the Pexels manifest by place. */
+const GATEWAY_PHOTOS: Record<string, PlaceImage> = {
+  "transfer-from-heraklion-airport-to-elounda": getCityImage("elounda"),
+  "transfer-from-chania-airport-to-chania-old-town": getCityImage("chania"),
+  "rome-fiumicino-airport-transfers-fco": getAirportImage({ iata: "FCO" }),
+  "barcelona-el-prat-airport-transfers-bcn": getAirportImage({ iata: "BCN" }),
+  "lisbon-airport-transfers-lis": getAirportImage({ iata: "LIS" }),
+  "antalya-airport-transfers-ayt": getAirportImage({ iata: "AYT" }),
 };
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=1400&q=75";
+const FALLBACK_PHOTO = getRegionImage("chania");
 
 export function RoutesChapter({ id }: { id?: string }) {
   const t = useT();
@@ -30,7 +32,8 @@ export function RoutesChapter({ id }: { id?: string }) {
   const gateways = getFeaturedGateways(locale);
   const [active, setActive] = useState(gateways[0]?.key ?? "");
   const activeGateway = gateways.find((g) => g.key === active) ?? gateways[0];
-  const image = (activeGateway && GATEWAY_IMAGES[activeGateway.key]) || FALLBACK_IMAGE;
+  const photo = (activeGateway && GATEWAY_PHOTOS[activeGateway.key]) || FALLBACK_PHOTO;
+  const image = imageUrl(photo, { width: 1400 });
 
   return (
     <section id={id} className="scroll-mt-32 border-y border-border bg-background">
@@ -55,9 +58,12 @@ export function RoutesChapter({ id }: { id?: string }) {
                 key={image}
                 src={image}
                 alt=""
+                loading="lazy"
+                style={{ backgroundColor: photo.avgColor }}
                 className="media-grade h-full w-full object-cover transition-opacity duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/55 via-transparent to-primary/10" />
+              <PhotoCredit image={photo} overlay className="bottom-1.5 right-2" />
               {activeGateway && (
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-primary-foreground">
                   <div className="text-xs uppercase tracking-[0.18em] text-primary-foreground/70">

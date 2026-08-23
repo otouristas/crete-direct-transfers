@@ -44,7 +44,7 @@ export function AccountMenu({ onDark = false }: { onDark?: boolean }) {
       <Link
         to="/{-$locale}/login"
         className={cn(
-          "hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition md:inline-flex",
+          "hidden items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition md:inline-flex",
           onDark ? "text-primary-foreground hover:bg-primary-foreground/10" : "hover:bg-muted",
         )}
       >

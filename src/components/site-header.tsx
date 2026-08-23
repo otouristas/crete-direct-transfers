@@ -9,13 +9,27 @@ import { MobileMenu } from "@/components/mobile-menu";
 import { cn } from "@/lib/utils";
 import { getMarketNavigation } from "@/lib/market-navigation";
 import { TRAVEL_AGENCY_COPY } from "@/lib/travel-agency-copy";
+import { getCountryImage, imageUrl } from "@/lib/place-image";
 
 const HEADER_H = "h-16";
 
 function useIsHome(): boolean {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pathname = usePathname();
   if (pathname === "/" || pathname === "") return true;
   return PREFIX_LOCALES.some((l) => pathname === `/${l}` || pathname === `/${l}/`);
+}
+
+function usePathname(): string {
+  return useRouterState({ select: (s) => s.location.pathname });
+}
+
+/** Strips any `/{locale}` prefix so nav matching works on every language. */
+function unlocalized(pathname: string): string {
+  for (const l of PREFIX_LOCALES) {
+    if (pathname === `/${l}`) return "/";
+    if (pathname.startsWith(`/${l}/`)) return pathname.slice(l.length + 1);
+  }
+  return pathname;
 }
 
 type NavLink = {
@@ -28,6 +42,7 @@ export function SiteHeader() {
   const t = useT();
   const locale = useLocale();
   const isHome = useIsHome();
+  const path = unlocalized(usePathname());
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -96,9 +111,16 @@ export function SiteHeader() {
   }, [destinationsOpen, partnersOpen]);
 
   const navLinkClass = cn(
-    "rounded-full px-3 py-2 text-sm font-medium transition",
-    "text-primary-foreground/90 hover:bg-primary-foreground/10 hover:text-primary-foreground",
+    "relative whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium transition-colors",
+    "text-primary-foreground/85 hover:text-primary-foreground",
+    "after:pointer-events-none after:absolute after:inset-x-3 after:bottom-1 after:h-px",
+    "after:origin-left after:scale-x-0 after:bg-accent after:transition-transform after:duration-300",
+    "hover:after:scale-x-100",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary",
   );
+
+  /** Lit underline + full-strength text for the section you're currently in. */
+  const activeClass = "text-primary-foreground after:scale-x-100";
 
   return (
     <>
@@ -161,30 +183,46 @@ export function SiteHeader() {
                 >
                   <div className="origin-top rounded-2xl bg-card p-3 text-foreground shadow-xl ring-1 ring-black/5">
                     <div className="grid grid-cols-2 gap-1">
-                      {markets.map((market) => (
-                        <Link
-                          key={market.slug}
-                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                          to={`/{-$locale}/${market.slug}` as any}
-                          role="menuitem"
-                          onClick={() => setDestinationsOpen(false)}
-                          className="group flex items-center gap-3 rounded-xl px-3 py-3 transition hover:bg-muted"
-                        >
-                          <span className="text-2xl" aria-hidden>
-                            {market.flag}
-                          </span>
-                          <span className="min-w-0">
-                            <span className="block text-sm font-semibold text-foreground">
-                              {market.name}
+                      {markets.map((market) => {
+                        const photo = getCountryImage(market.slug);
+                        return (
+                          <Link
+                            key={market.slug}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            to={`/{-$locale}/${market.slug}` as any}
+                            role="menuitem"
+                            onClick={() => setDestinationsOpen(false)}
+                            className="group flex items-center gap-3 rounded-xl p-2 transition hover:bg-muted"
+                          >
+                            <span className="relative h-12 w-16 shrink-0 overflow-hidden rounded-lg">
+                              <img
+                                src={imageUrl(photo, { width: 160, height: 120, dpr: 2 })}
+                                alt=""
+                                loading="lazy"
+                                decoding="async"
+                                style={{ backgroundColor: photo.avgColor }}
+                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              />
+                              <span
+                                aria-hidden
+                                className="absolute bottom-0.5 left-0.5 text-sm leading-none drop-shadow"
+                              >
+                                {market.flag}
+                              </span>
                             </span>
-                            <span className="block text-xs text-muted-foreground">
-                              {market.slug === "greece"
-                                ? t.marketsDirectory.instantCrete
-                                : t.marketsDirectory.quoteFirst}
+                            <span className="min-w-0">
+                              <span className="block text-sm font-semibold text-foreground">
+                                {market.name}
+                              </span>
+                              <span className="block text-xs text-muted-foreground">
+                                {market.slug === "greece"
+                                  ? t.marketsDirectory.instantCrete
+                                  : t.marketsDirectory.quoteFirst}
+                              </span>
                             </span>
-                          </span>
-                        </Link>
-                      ))}
+                          </Link>
+                        );
+                      })}
                     </div>
                     <Link
                       to="/{-$locale}/countries"
@@ -200,18 +238,23 @@ export function SiteHeader() {
               ) : null}
             </div>
 
-            {primaryLinks.map((item) => (
-              <Link
-                key={item.label}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                to={item.to as any}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                params={item.params as any}
-                className={navLinkClass}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {primaryLinks.map((item) => {
+              const href = item.to.replace("/{-$locale}", "");
+              const active = href !== "" && path.startsWith(href);
+              return (
+                <Link
+                  key={item.label}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  to={item.to as any}
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  params={item.params as any}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(navLinkClass, active && activeClass)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
 
             <div
               ref={partnersRef}
@@ -280,7 +323,7 @@ export function SiteHeader() {
             <AccountMenu onDark />
             <Link
               to="/{-$locale}/book"
-              className="hidden items-center rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition hover:opacity-90 md:inline-flex"
+              className="hidden items-center whitespace-nowrap rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground shadow-[0_1px_0_0_rgb(255_255_255/0.25)_inset] transition hover:brightness-105 hover:shadow-[0_6px_18px_-6px_var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary md:inline-flex"
             >
               {t.common.bookNow}
             </Link>

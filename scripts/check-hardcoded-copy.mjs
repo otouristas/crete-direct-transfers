@@ -22,7 +22,7 @@ const files = execFileSync("rg", ["--files", ...roots, "-g", "*.ts", "-g", "*.ts
 const visibleAttributes = new Set(["alt", "aria-label", "placeholder", "title"]);
 const allowed = [
   /^[\s.,:;!?+×/|()[\]{}'"’“”–—→←•·€$£¥%#&=-]*$/,
-  /^(TransferAround|Transfer|Around|Touristas AI|Google|Apple|Visa|Mastercard|PayPal|WhatsApp|Stripe|Supabase)$/,
+  /^(TransferAround|Transfer|Around|Touristas AI|Google|Apple|Visa|Mastercard|PayPal|WhatsApp|Stripe|Supabase|Pexels)$/,
   /^[A-Z0-9]{2,8}$/,
   /^(?:\+?\d|\+44|\+30|you@email\.com|YYYY-MM-DD(?:THH:mm)?|Ref:|km|min|24h|\/4|~|1\.|2\.)/,
 ];

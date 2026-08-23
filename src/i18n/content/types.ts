@@ -6,6 +6,7 @@ import type { Market } from "@/data/markets";
 import type { AirportData, AirportTip, AirportFaq, TransportOption } from "@/data/airports";
 import type { AirportRouteData, AirportRouteTip, AirportRouteFaq } from "@/data/airport-routes";
 import type { Post, PostSection } from "@/data/posts";
+import type { CountryGuide } from "@/data/country-guides";
 
 export type FaqOverlay = FaqGroup[];
 
@@ -70,6 +71,25 @@ export type PostOverlay = Record<
   }
 >;
 
+/** Per-country guide copy. Locales without an entry fall back to English. */
+export type CountryGuideOverlay = Record<
+  string,
+  Partial<
+    Pick<
+      CountryGuide,
+      | "tagline"
+      | "intro"
+      | "facts"
+      | "highlights"
+      | "seasons"
+      | "gettingAroundTitle"
+      | "gettingAround"
+      | "knowBefore"
+      | "faqs"
+    >
+  >
+>;
+
 export type ContentOverlays = {
   faqs: FaqOverlay;
   services: ServiceOverlay;
@@ -81,6 +101,9 @@ export type ContentOverlays = {
   airports: AirportOverlay;
   airportRoutes: AirportRouteOverlay;
   posts: PostOverlay;
+  /** Optional: the generated overlay files predate this key, and English is a
+      valid fallback until a locale's guide copy is translated. */
+  countryGuides?: CountryGuideOverlay;
 };
 
 export type VehicleClassId = VehicleClass;

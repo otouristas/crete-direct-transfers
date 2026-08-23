@@ -14,15 +14,28 @@ import { getLocalizedVehicles } from "@/i18n/content";
 import { getCountryName } from "@/i18n/markets";
 import { listLiveMarkets } from "@/data/markets";
 import { getMarketNavigation } from "@/lib/market-navigation";
-import { airportsInMarket } from "@/lib/coverage";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF, REVIEWS_VERIFIED } from "@/lib/site";
 import { Phone } from "lucide-react";
+import {
+  getCountryImage,
+  getHeroImage,
+  getServiceImage,
+  imageOgUrl,
+  imageUrl,
+} from "@/lib/place-image";
+import { PhotoCredit } from "@/components/photo-credit";
+import { DestinationCards } from "@/components/sections/destination-cards";
+import { ServicesRail } from "@/components/sections/services-rail";
+import { NewsletterBand } from "@/components/sections/newsletter-band";
+import { COVERAGE } from "@/lib/coverage";
 
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=2400&q=80";
-const MANIFESTO_IMAGE =
-  "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1600&q=75";
+const HERO_PHOTO = getHeroImage();
+const MANIFESTO_PHOTO = getCountryImage("greece");
+const CLOSING_PHOTO = getServiceImage("long-distance");
+
+const HERO_IMAGE = imageUrl(HERO_PHOTO, { width: 2400 });
+const MANIFESTO_IMAGE = imageUrl(MANIFESTO_PHOTO, { width: 1600 });
 
 export const Route = createFileRoute("/{-$locale}/")({
   head: (ctx) => {
@@ -33,7 +46,7 @@ export const Route = createFileRoute("/{-$locale}/")({
       path: "/",
       title: t.home.metaTitle,
       description: t.home.metaDescription,
-      ogImage: HERO_IMAGE.replace("w=2400", "w=1600").replace("q=80", "q=70"),
+      ogImage: imageOgUrl(HERO_PHOTO),
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "Organization",
@@ -70,6 +83,7 @@ function HomePage() {
 
   const navItems = [
     { id: "book", label: t.inpageNav.bookNow, cta: true },
+    { id: "services", label: t.home.servicesEyebrow },
     { id: "manifesto", label: t.inpageNav.howItWorks },
     { id: "routes", label: t.inpageNav.routes },
     { id: "fleet", label: t.inpageNav.fleet },
@@ -79,36 +93,58 @@ function HomePage() {
 
   return (
     <>
-      {/* 1. Hero — brand + horizontal booking bar; -mt-16 pulls under sticky transparent header */}
+      {/* 1. Hero — layered photo + booking bar; -mt-16 pulls under the sticky transparent header */}
       <section className="relative -mt-16 bg-primary pt-16">
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="pointer-events-none hero-stage" aria-hidden>
           <div
-            className="media-grade absolute inset-0 bg-cover bg-center opacity-40"
+            className="hero-photo media-grade"
             style={{ backgroundImage: `url(${HERO_IMAGE})` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/88 to-primary/65" />
+          <div className="hero-scrim" />
+          <div className="hero-grain" />
         </div>
-        <div className="relative mx-auto max-w-[1280px] px-6 pb-14 pt-14 md:pb-16 md:pt-16">
+
+        <div className="relative mx-auto max-w-[1280px] px-6 pb-14 pt-16 md:pb-16 md:pt-24">
           <div className="max-w-2xl text-primary-foreground">
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/70">
+            <p className="hero-rise hero-rise-1 inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-foreground/85 ring-1 ring-primary-foreground/15">
+              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
               {t.home.heroEyebrow}
             </p>
-            <h1 className="mt-5 text-4xl font-display leading-[1.05] md:text-5xl lg:text-6xl">
+            <h1 className="hero-rise hero-rise-2 mt-6 font-display text-[2.6rem] leading-[0.98] tracking-[-0.03em] sm:text-6xl lg:text-[4.5rem]">
               {t.home.heroTitle1}
               <span className="sr-only"> </span>
               <br />
-              <span className="font-accent text-[1.08em] text-accent">
+              <span className="font-accent text-[1.1em] font-normal tracking-[-0.01em] text-accent">
                 {t.home.heroTitleAccent}
               </span>
             </h1>
-            <p className="mt-6 max-w-md text-lg text-primary-foreground/80">
+            <p className="hero-rise hero-rise-3 mt-6 max-w-md text-lg leading-relaxed text-primary-foreground/80">
               {t.home.heroSubtitle}
             </p>
-            <TrustPills dark className="mt-8" />
+            <TrustPills dark className="hero-rise hero-rise-4 mt-8" />
           </div>
-          <div id="book" className="relative z-[35] mt-10 w-full scroll-mt-32">
+
+          <div
+            id="book"
+            className="hero-rise hero-rise-4 relative z-[35] mt-12 w-full scroll-mt-32"
+          >
             <BookingWidget variant="hbar" />
           </div>
+
+          {/* Coverage ribbon — the same reassurance Transfeero runs, on our real numbers. */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-primary-foreground/65">
+            <span>{t.home.countriesAirports(COVERAGE.airportPages)}</span>
+            <span aria-hidden className="text-primary-foreground/30">
+              ·
+            </span>
+            <span>{t.common.fixedPrice}</span>
+            <span aria-hidden className="text-primary-foreground/30">
+              ·
+            </span>
+            <span>{t.trust.freeCancel}</span>
+          </div>
+
+          <PhotoCredit image={HERO_PHOTO} overlay className="bottom-3" />
         </div>
       </section>
 
@@ -116,7 +152,25 @@ function HomePage() {
 
       <StatsBand />
 
-      {/* 2. Manifesto */}
+      {/* 2. Services — six live service pages the homepage previously linked to nowhere */}
+      <section id="services" className="scroll-mt-32 bg-background">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent-deep">
+              {t.home.servicesEyebrow}
+            </p>
+            <h2 className="mt-3 text-3xl font-display text-primary md:text-4xl">
+              {t.home.servicesTitle}
+            </h2>
+            <p className="mt-4 max-w-xl text-muted-foreground">{t.home.servicesSubtitle}</p>
+          </Reveal>
+          <Reveal delay={1} className="mt-10">
+            <ServicesRail />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 3. Manifesto */}
       <section id="manifesto" className="scroll-mt-32 bg-background">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-28">
           <Reveal>
@@ -144,12 +198,15 @@ function HomePage() {
               </Link>
             </Reveal>
             <Reveal delay={2} className="overflow-hidden rounded-2xl">
-              <div className="aspect-[4/3] overflow-hidden md:aspect-[5/4]">
+              <div className="relative aspect-[4/3] overflow-hidden md:aspect-[5/4]">
                 <img
                   src={MANIFESTO_IMAGE}
                   alt=""
+                  loading="lazy"
+                  style={{ backgroundColor: MANIFESTO_PHOTO.avgColor }}
                   className="media-grade h-full w-full object-cover"
                 />
+                <PhotoCredit image={MANIFESTO_PHOTO} overlay />
               </div>
             </Reveal>
           </div>
@@ -207,41 +264,27 @@ function HomePage() {
         </section>
       )}
 
+      {/* 5. Destinations — photo cards, imagery resolved from the Pexels manifest */}
       <section id="countries" className="scroll-mt-32 bg-primary text-primary-foreground">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
           <Reveal>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/55">
-              {t.nav.destinations}
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+              {t.home.destinationsEyebrow}
             </p>
-            <h2 className="mt-3 max-w-xl text-3xl font-display md:text-4xl">
-              {t.home.countriesTitle}
+            <h2 className="mt-3 max-w-xl text-3xl font-display md:text-5xl">
+              {t.home.destinationsTitle}
             </h2>
-            <p className="mt-4 max-w-lg text-primary-foreground/70">{t.home.countriesSubtitle}</p>
+            <p className="mt-4 max-w-lg text-primary-foreground/70">
+              {t.home.destinationsSubtitle}
+            </p>
           </Reveal>
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {markets.map((market) => (
-              <Link
-                key={market.slug}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                to={`/{-$locale}/${market.slug}` as any}
-                className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-5 transition hover:border-accent hover:bg-primary-foreground/10"
-              >
-                <div className="flex items-baseline gap-2">
-                  <span aria-hidden>{market.flag}</span>
-                  <span className="font-display text-xl">{market.name}</span>
-                </div>
-                <div className="mt-1 text-xs text-primary-foreground/55">
-                  {t.home.countriesAirports(airportsInMarket(market.slug))}
-                  {" · "}
-                  {market.mode === "instant" ? t.home.countriesInstant : t.home.countriesQuote}
-                </div>
-              </Link>
-            ))}
-          </div>
+          <Reveal delay={1} className="mt-10">
+            <DestinationCards markets={markets} />
+          </Reveal>
           <div className="mt-8">
             <Link
               to="/{-$locale}/countries"
-              className="text-sm font-semibold text-accent transition hover:opacity-80"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition hover:opacity-80"
             >
               {t.nav.allDestinations} →
             </Link>
@@ -249,13 +292,14 @@ function HomePage() {
         </div>
       </section>
 
+      <NewsletterBand />
+
       {/* 6. Closing CTA */}
       <section className="relative overflow-hidden bg-primary">
         <div
           className="media-grade absolute inset-0 bg-cover bg-center opacity-30"
           style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=2000&q=70)",
+            backgroundImage: `url(${imageUrl(CLOSING_PHOTO, { width: 2000 })})`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/90 to-primary/70" />

@@ -67,8 +67,9 @@ function FleetDetail() {
   return (
     <>
       <section className="relative">
+        {/* Studio cutout on white — contain, so a 16:7 crop doesn't slice the vehicle. */}
         <div
-          className="aspect-[16/7] bg-cover bg-center"
+          className="aspect-[16/7] bg-white bg-contain bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${vc.image})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-transparent" />

@@ -27,6 +27,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
+import { CookieBanner } from "../components/cookie-banner";
 import { LanguageSuggestionBanner } from "../components/language-suggestion-banner";
 import { AuthProvider } from "../hooks/use-auth";
 import { CurrencyProvider, useCurrency } from "../hooks/use-currency";
@@ -123,17 +124,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       // Site-wide Organization + WebSite entities (schema.org) — brand identity
       // for search + AI answer engines. Per-page schema references these by @id.
       ...SITE_JSONLD_SCRIPTS,
-      // Privacy-friendly analytics — only injected when VITE_PLAUSIBLE_DOMAIN is
-      // configured; nothing ships by default so no tracking without opt-in.
-      ...(import.meta.env.VITE_PLAUSIBLE_DOMAIN
-        ? [
-            {
-              src: "https://plausible.io/js/script.js",
-              defer: true,
-              "data-domain": import.meta.env.VITE_PLAUSIBLE_DOMAIN as string,
-            },
-          ]
-        : []),
+      // Analytics is deliberately absent here. Plausible is injected at runtime
+      // by src/lib/cookie-consent.ts, and only once the visitor has accepted —
+      // otherwise "Decline" in the cookie banner would mean nothing.
     ],
   }),
   shellComponent: RootShell,
@@ -186,6 +179,7 @@ function RootLayout() {
         </main>
         <SiteFooter />
       </div>
+      <CookieBanner />
       <Toaster position="top-center" />
     </>
   );

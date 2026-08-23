@@ -8,9 +8,7 @@ import { getIataAirport, airportsInCountry, type IataAirport } from "@/data/iata
 import { airportSlug, iataFromSlug, kebab } from "./airport-slug";
 import { MARKET_HUB_AIRPORTS } from "@/data/market-hubs";
 
-/** Neutral hero for generated airports until per-airport imagery is self-hosted (Phase 5). */
-const GENERIC_AIRPORT_HERO =
-  "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=70";
+import { getAirportImage, imageUrl } from "./place-image";
 
 /** IATA → curated slug, so related-airport links prefer the rich page when one exists. */
 const curatedSlugByIata = new Map<string, string>(
@@ -32,7 +30,11 @@ export function airportFromIata(ia: IataAirport): AirportData {
     cityName: city,
     zip: "",
     country: ia.countryName,
-    heroImage: GENERIC_AIRPORT_HERO,
+    // Best available: the hub's own photo, else its city, else its country.
+    heroImage: imageUrl(
+      getAirportImage({ iata: ia.iata, citySlug: kebab(city), countryCode: ia.countryCode }),
+      { width: 1600 },
+    ),
     fromPriceEur: 45,
     bookable: "quote",
     terminals: "Your driver meets you inside the arrivals hall with a name sign.",

@@ -1,4 +1,5 @@
 import { Users, Briefcase } from "lucide-react";
+import { FLEET_IMAGE_HEIGHT, FLEET_IMAGE_WIDTH, fleetSrcSet } from "@/lib/fleet-image";
 import type { VehicleClass } from "@/data/routes";
 import { formatEur, type TripQuote } from "@/lib/pricing";
 import { useLocale, useT } from "@/i18n";
@@ -77,9 +78,14 @@ export function BookingVehicleList({
               <figure className="h-14 w-20 shrink-0 sm:h-16 sm:w-28">
                 <img
                   src={vc.image}
+                  srcSet={fleetSrcSet(vc.image)}
+                  sizes="112px"
+                  width={FLEET_IMAGE_WIDTH}
+                  height={FLEET_IMAGE_HEIGHT}
                   alt=""
                   className="h-full w-full object-contain"
                   loading="lazy"
+                  decoding="async"
                 />
               </figure>
               <div className="min-w-0 flex-1 space-y-1">

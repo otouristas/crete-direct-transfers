@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { FLEET_IMAGE_HEIGHT, FLEET_IMAGE_WIDTH, fleetSrcSet } from "@/lib/fleet-image";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
@@ -57,11 +58,17 @@ function FleetHub() {
                 className="group grid items-center gap-8 lg:grid-cols-2"
               >
                 <div className={`overflow-hidden rounded-2xl ${reverse ? "lg:order-2" : ""}`}>
-                  <div className="aspect-[16/10] overflow-hidden">
+                  <div className="aspect-[16/10] overflow-hidden bg-white">
                     <img
                       src={v.image}
+                      srcSet={fleetSrcSet(v.image)}
+                      sizes="(min-width: 1024px) 600px, 100vw"
+                      width={FLEET_IMAGE_WIDTH}
+                      height={FLEET_IMAGE_HEIGHT}
                       alt=""
-                      className="media-grade h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-contain transition duration-700 group-hover:scale-105"
                     />
                   </div>
                 </div>

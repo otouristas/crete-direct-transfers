@@ -402,6 +402,17 @@ export function SiteFooter() {
               {year} {"©"} {SITE_NAME} | {t.footer.rights}
             </p>
             <p className="mt-1 text-primary-foreground/50">{t.footer.regions}</p>
+            {/* Required by the Pexels API guidelines: a prominent link back to Pexels. */}
+            <p className="mt-1 text-primary-foreground/50">
+              <a
+                href="https://www.pexels.com"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="underline-offset-2 hover:underline"
+              >
+                {t.common.photosProvidedBy}
+              </a>
+            </p>
           </div>
           <div
             className="flex flex-wrap items-center justify-start gap-3 lg:justify-end"

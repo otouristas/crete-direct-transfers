@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Users, Briefcase } from "lucide-react";
 import type { VEHICLE_CLASSES } from "@/data/routes";
+import { FLEET_IMAGE_HEIGHT, FLEET_IMAGE_WIDTH, fleetSrcSet } from "@/lib/fleet-image";
 
 export function FleetCard({ vehicle }: { vehicle: (typeof VEHICLE_CLASSES)[number] }) {
   return (
@@ -9,12 +10,17 @@ export function FleetCard({ vehicle }: { vehicle: (typeof VEHICLE_CLASSES)[numbe
       params={{ class: vehicle.id }}
       className="group overflow-hidden rounded-2xl border border-border bg-card transition-shadow hover:shadow-xl"
     >
-      <div className="h-36 overflow-hidden">
+      <div className="h-36 overflow-hidden bg-white">
         <img
           src={vehicle.image}
+          srcSet={fleetSrcSet(vehicle.image)}
+          sizes="(min-width: 1024px) 300px, (min-width: 640px) 50vw, 100vw"
+          width={FLEET_IMAGE_WIDTH}
+          height={FLEET_IMAGE_HEIGHT}
           alt={vehicle.example}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          decoding="async"
+          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
         />
       </div>
       <div className="p-5">

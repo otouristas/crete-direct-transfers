@@ -1,3 +1,5 @@
+import { getCityImage, getServiceImage, imageUrl } from "@/lib/place-image";
+
 export type PostSection = {
   id: string;
   heading: string;
@@ -28,8 +30,7 @@ export const POSTS: Post[] = [
     title: "Heraklion Airport to Chania: Every Way to Cross the Island",
     description:
       "Bus, rental car, taxi or pre-booked transfer — a local's honest comparison of every way to get from Heraklion Airport (HER) to Chania, with real prices and times.",
-    heroImage:
-      "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=1600&q=70",
+    heroImage: imageUrl(getServiceImage("long-distance"), { width: 1600 }),
     category: "guides",
     publishedAt: "2026-06-12",
     readingMinutes: 7,
@@ -92,8 +93,7 @@ export const POSTS: Post[] = [
     title: "Taxi vs Pre-Booked Transfer in Crete: What Locals Actually Recommend",
     description:
       "Airport taxi ranks, ride apps and pre-booked transfers in Crete compared — pricing transparency, night surcharges, luggage, and when each option makes sense.",
-    heroImage:
-      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1600&q=70",
+    heroImage: imageUrl(getServiceImage("group-transfers"), { width: 1600 }),
     category: "tips",
     publishedAt: "2026-06-02",
     readingMinutes: 5,
@@ -137,8 +137,7 @@ export const POSTS: Post[] = [
     title: "Arriving at Souda Port: A Local's Guide for Ferry and Cruise Passengers",
     description:
       "The overnight ferry from Piraeus docks at Souda at 6am. Here's exactly what happens next — port layout, taxis, transfers to Chania old town and beyond.",
-    heroImage:
-      "https://images.unsplash.com/photo-1587974928442-77dc3e0dba72?auto=format&fit=crop&w=1600&q=70",
+    heroImage: imageUrl(getServiceImage("port-transfers"), { width: 1600 }),
     category: "guides",
     publishedAt: "2026-05-20",
     readingMinutes: 6,
@@ -188,8 +187,7 @@ export const POSTS: Post[] = [
     title: "Crete with Kids: Car Seats, Transfers and the Logistics Nobody Warns You About",
     description:
       "Greek car seat law, why taxi ranks can't help you, and how to plan family transfers in Crete without dragging three car seats through an airport.",
-    heroImage:
-      "https://images.unsplash.com/photo-1602928321679-560bb453f190?auto=format&fit=crop&w=1600&q=70",
+    heroImage: imageUrl(getCityImage("georgioupoli"), { width: 1600 }),
     category: "tips",
     publishedAt: "2026-05-05",
     readingMinutes: 5,
@@ -232,8 +230,7 @@ export const POSTS: Post[] = [
     title: "Landing at Heraklion Airport After Midnight: What to Expect",
     description:
       "HER is one of Greece's busiest night airports in summer. How late arrivals work, what's open, night transfer surcharges, and how not to get stranded.",
-    heroImage:
-      "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=70",
+    heroImage: imageUrl(getServiceImage("airport-transfers"), { width: 1600 }),
     category: "airports",
     publishedAt: "2026-04-18",
     readingMinutes: 5,
@@ -285,8 +282,7 @@ export const POSTS: Post[] = [
     title: "Getting Into Chania Old Town: Why Your Car Can't Reach Your Hotel",
     description:
       "Chania's Venetian old town is largely car-free. Where transfers and taxis actually drop you, how far you'll walk, and how to make arrival painless.",
-    heroImage:
-      "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=1600&q=70",
+    heroImage: imageUrl(getCityImage("chania"), { width: 1600 }),
     category: "guides",
     publishedAt: "2026-04-02",
     readingMinutes: 4,

@@ -16,6 +16,7 @@
     "check": "npm run typecheck && npm run check:i18n && npm run lint && npm run build",
     "format": "prettier --write .",
     "generate:airports": "node scripts/generate-iata-airports.mjs",
+    "images:pexels": "node scripts/fetch-pexels-images.mjs",
     "verify:dispatch-push": "node scripts/verify-dispatch-push.mjs",
     "mobile:driver": "npm --prefix apps/driver start",
     "mobile:rider": "npm --prefix apps/rider start"
