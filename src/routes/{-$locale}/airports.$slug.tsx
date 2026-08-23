@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { vehicleFromPrices } from "@/lib/pricing";
+import { isIndexableAirport } from "@/lib/indexable-airports";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { getDict, useT, type Locale } from "@/i18n";
@@ -25,15 +26,16 @@ import {
   AirportVehicles,
   AirportFaqs,
   AirportPopularRoutes,
-  OtherAirportsInGreece,
+  OtherAirportsInCountry,
 } from "@/components/airports/airport-page-sections";
 
 export const Route = createFileRoute("/{-$locale}/airports/$slug")({
   loader: ({ params }) => {
     const locale = (params.locale ?? "en") as Locale;
-    const curated =
-      getLocalizedAirports(locale).some((airport) => airport.slug === params.slug) ||
-      Boolean(getMarketHubAirport(params.slug));
+    // `curated` gates indexing and non-English rendering. It is not "did we hand
+    // write this page" but "is this page good enough to publish" — see
+    // src/lib/indexable-airports.ts.
+    const curated = isIndexableAirport(params.slug);
     if (!curated && locale !== "en") throw notFound();
     const airport = getLocalizedAirport(locale, params.slug);
     if (!airport) throw notFound();
@@ -180,7 +182,7 @@ function AirportHubPage() {
       {airport.fromPriceEur > 0 ? <AirportVehicles airport={airport} vehicles={vehicles} /> : null}
       <AirportFaqs title={t.nav.faq} subtitle={airport.intro} faqs={airport.faqs} />
       <AirportPopularRoutes airport={airport} routes={routes} />
-      <OtherAirportsInGreece airport={airport} />
+      <OtherAirportsInCountry airport={airport} />
       <CtaBand />
     </>
   );

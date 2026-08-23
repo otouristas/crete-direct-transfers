@@ -162,8 +162,11 @@ export function getLocalizedAirport(locale: Locale, slug: string): AirportData |
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, ""),
-      fromPriceEur:
-        localizedHub.bookable === "quote" ? 0 : localizedHub.fromPriceEur || resolved.fromPriceEur,
+      // Quote-mode hubs still carry a real starting price: it comes from the same
+      // distance engine that prices the booking (airport → nearest city), so the
+      // facts card can show "from €X" instead of nothing. The quote step is where
+      // the exact fare is confirmed, and the page copy says so.
+      fromPriceEur: localizedHub.fromPriceEur || resolved.fromPriceEur,
       bookable: localizedHub.bookable,
       intro: localizedHub.intro,
     };

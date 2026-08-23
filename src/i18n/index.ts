@@ -15,8 +15,16 @@ export type { Locale };
 /** Locales that appear as a URL prefix — English lives at the root. */
 export const PREFIX_LOCALES = ["el", "de", "fr", "it", "nl", "es"] as const;
 
-/** Locales with complete long-form content overlays and approved for search/public navigation. */
-export const PUBLIC_LOCALES = ["en", "el", "de", "fr"] as const satisfies readonly Locale[];
+/**
+ * Locales with complete long-form content overlays and approved for search/public navigation.
+ *
+ * `it` joins en/el/de/fr: both its UI dictionary and its content overlay are fully
+ * translated. `nl` and `es` stay out — their UI dictionaries are translated but
+ * `src/i18n/content/overlays/{nl,es}.ts` are byte-identical English stubs, so
+ * publishing them would put duplicate English long-form content on two more
+ * hreflang clusters. Add them here once those overlays are actually translated.
+ */
+export const PUBLIC_LOCALES = ["en", "el", "de", "fr", "it"] as const satisfies readonly Locale[];
 
 const dicts: Record<Locale, Dict> = { en, el, de, fr, it, nl, es };
 

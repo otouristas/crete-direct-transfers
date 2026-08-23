@@ -157,8 +157,8 @@ export function CountryHubPage({ market }: { market: Market }) {
                     {a.name} {"iata" in a ? `(${a.iata})` : ""}
                   </span>
                   <span className="text-muted-foreground">
-                    {isGreece
-                      ? formatEur("fromPriceEur" in a ? a.fromPriceEur : 0)
+                    {"fromPriceEur" in a && a.fromPriceEur > 0
+                      ? formatEur(a.fromPriceEur)
                       : tr("market.quoteOnly")}
                   </span>
                 </Link>

@@ -153,6 +153,8 @@ export const es: Dict = {
     support: "Asistencia 24/7",
   },
   stats: {
+    countries: "Países cubiertos",
+    airports: "Aeropuertos",
     transfers: "Traslados completados",
     rating: "Valoración en Google",
     routes: "Rutas a precio fijo",
@@ -242,42 +244,48 @@ export const es: Dict = {
     time: "Hora",
   },
   home: {
-    metaTitle: "TransferAround — Traslados aeropuerto y puerto en Creta a precio fijo",
+    metaTitle: "TransferAround — Traslados privados de aeropuerto a precio fijo",
     metaDescription:
-      "Traslados a precio fijo por toda Creta. Conductores locales con licencia, seguimiento de vuelo, cancelacion gratuita.",
+      "Traslados privados a precio fijo en Grecia, España, Italia, Portugal, Chipre y Turquía. Conductores locales con licencia, seguimiento de vuelo, cancelación gratuita.",
     heroEyebrow: "Traslados privados a precio fijo",
-    heroTitle1: "Tu isla.",
+    heroTitle1: "Tu llegada.",
     heroTitleAccent: "Tu conductor.",
     heroSubtitle:
-      "En el aeropuerto o el puerto — precio fijo, seguimiento de vuelo, cancelacion gratuita.",
+      "En el aeropuerto o el puerto, en seis países — precio fijo, seguimiento de vuelo, cancelación gratuita.",
     manifestoLead: "Las mejores llegadas se sienten",
     manifestoAccent: "sin esfuerzo.",
     manifestoBody:
-      "No porque todo estuviera planeado a la perfeccion — porque alguien cuida en silencio los detalles. El cartel con tu nombre. El precio fijo que ya conoces. El conductor local que sabe que salida te mete en el trafico.",
-    manifestoClose: "Tu sigues Creta. Nosotros nos ocupamos del resto.",
+      "No porque todo estuviera planeado a la perfección — porque alguien cuida en silencio los detalles. El cartel con tu nombre. El precio fijo que ya conoces. El conductor local que sabe que salida te mete en el trafico.",
+    manifestoClose: "Tú sigues el viaje. Nosotros nos ocupamos del resto.",
     routesChapterTitle: "Te llevamos",
-    routesChapterAccent: "alli.",
+    routesChapterAccent: "allí.",
     routesChapterSubtitle:
-      "Treinta rutas a precio fijo. Pasa el cursor por una ruta para ver adonde lleva — y cuanto cuesta.",
+      "Aeropuertos con el precio conocido de antemano, de Creta a la Costa del Sol. Elige uno para ver adónde lleva — y cuánto cuesta.",
     fleetTitle: "Un coche para cada llegada",
     fleetSubtitle: "De Economy a Luxury — mismos conductores con licencia, mismos precios fijos.",
-    proofTitle: "Valoracion 4,9 de viajeros como tu",
-    proofSubtitle: "Resenas reales de recogidas reales en toda Creta.",
+    proofTitle: "Lo que dicen los viajeros",
+    proofSubtitle: "Reseñas reales de recogidas reales.",
     regionsTitle: "Una isla, cubierta de punta a punta",
     regionsSubtitle: "Dos aeropuertos internacionales, tres puertos, 260 km de costa.",
+    countriesTitle: "Dónde conducimos",
+    countriesSubtitle:
+      "Seis países, cientos de aeropuertos y puertos — un precio fijo por vehículo, no por persona.",
+    countriesInstant: "Reserva inmediata",
+    countriesQuote: "Presupuesto confirmado",
+    countriesAirports: (n: number) => `${n} aeropuertos`,
     closingTitle: "Tu exploras.",
     closingAccent: "Nosotros conducimos.",
     closingSubtitle:
-      "Precio fijo, conductor con licencia, cancelacion gratuita. Reserva en dos minutos.",
+      "Precio fijo, conductor con licencia, cancelación gratuita. Reserva en dos minutos.",
     popularTitle: "Rutas populares",
     popularSubtitle: "Precios fijos en las rutas que mas reservan los viajeros.",
-    reviewsTitle: "Valoracion 4,9 de viajeros como tu",
+    reviewsTitle: "Lo que dicen los viajeros",
     reviewsSubtitle: "Resenas reales de recogidas reales en toda Creta.",
     faqTitle: "Preguntas, respondidas",
     faqSubtitle: "Lo que preguntan los viajeros antes de reservar.",
     ctaTitle: "Listo para una llegada sin estres?",
     ctaSubtitle:
-      "Precio fijo, conductor con licencia, cancelacion gratuita. Reserva en dos minutos.",
+      "Precio fijo, conductor con licencia, cancelación gratuita. Reserva en dos minutos.",
   },
   inpageNav: {
     ariaLabel: "Navegación en la página",
@@ -299,7 +307,7 @@ export const es: Dict = {
     otherRegions: "Otras regiones",
   },
   routesPages: {
-    indexTitle: "Te llevamos alli.",
+    indexTitle: "Te llevamos allí.",
     indexSubtitle:
       "Cada ruta tiene un único precio fijo por vehículo — no por persona. Elige la tuya y ve el total al instante.",
     priceTableTitle: "Precios fijos para esta ruta",
@@ -370,8 +378,8 @@ export const es: Dict = {
     bookAsideBody: "Conductores locales que viven aquí — no traídos de otra parte de la isla.",
   },
   servicesPages: {
-    indexTitle: "Te llevamos alli.",
-    indexSubtitle: "Dinos por donde empezar — aeropuerto, puerto o un dia en la isla.",
+    indexTitle: "Te llevamos allí.",
+    indexSubtitle: "Dinos por dónde empezar — aeropuerto, puerto o un día en la isla.",
     routesFor: "Rutas populares para este servicio",
   },
   fleetPages: {
@@ -383,6 +391,10 @@ export const es: Dict = {
     bookClass: "Reservar este vehículo",
   },
   directoryPages: {
+    allCitiesTitle: "Ciudades en cada mercado",
+    allAirportsTitle: "Todos los aeropuertos que cubrimos",
+    allAirportsSubtitle: (n: number, c: number) =>
+      `${n} aeropuertos en ${c} países. Elige el tuyo para precios, puntos de recogida y rutas.`,
     greece: "Grecia",
     cityEntity: "Ciudad",
     vehicleEntity: "Vehículo",
@@ -468,15 +480,15 @@ export const es: Dict = {
     title: "Nuestro ADN.",
     intro: "TransferAround existe porque el mercado de traslados en nuestra isla estaba roto.",
     body1:
-      "Los viajeros que llegaban a Heraklion o La Canea tenian que comparar ofertas de desconocidos, negociar por WhatsApp o confiar en el taximetro tras un vuelo largo. Los precios se movian. Los conductores rotaban. La responsabilidad no era trabajo de nadie.",
+      "Los viajeros que llegaban a Heraklion o La Canea tenían que comparar ofertas de desconocidos, negociar por WhatsApp o confiar en el taxímetro tras un vuelo largo. Los precios se movian. Los conductores rotaban. La responsabilidad no era trabajo de nadie.",
     body2:
-      "Somos locales — un pequeno equipo de La Canea y Heraklion — y construimos lo que siempre quisimos: un precio fijo por ruta, un conductor con licencia por reserva, un numero al que llamar si algo falla.",
+      "Somos locales — un pequeño equipo de La Canea y Heraklion — y construimos lo que siempre quisimos: un precio fijo por ruta, un conductor con licencia por reserva, un número al que llamar si algo falla.",
     wontTitle: "Lo que no haremos",
     wontBody:
-      "Sin subastas inversas. Sin surge a las 2 de la madrugada. Sin un conductor al azar que nunca hemos conocido. Cada conductor de nuestra red tiene licencia, seguro y lleva al menos tres anos conduciendo en Creta.",
+      "Sin subastas inversas. Sin surge a las 2 de la madrugada. Sin un conductor al azar que nunca hemos conocido. Cada conductor de nuestra red tiene licencia, seguro y lleva al menos tres años conduciendo en Creta.",
     whyTitle: "Por que una sola isla",
     whyBody:
-      "Las plataformas globales cubren 180 paises y no entienden bien ninguno. Nosotros cubrimos 260 km de costa, dos aeropuertos internacionales, tres puertos y cada acceso a hotel que merece la pena conocer. Profundidad antes que amplitud.",
+      "Las plataformas globales cubren 180 países y no entienden bien ninguno. Nosotros cubrimos 260 km de costa, dos aeropuertos internacionales, tres puertos y cada acceso a hotel que merece la pena conocer. Profundidad antes que amplitud.",
     valuesTitle: "Lo que defendemos",
     value1Title: "Puntualidad",
     value1Body:
@@ -501,7 +513,7 @@ export const es: Dict = {
     formTitle: "Enviar un mensaje",
     emailTitle: "Correo electrónico",
     emailAction: "Enviar un email",
-    emailCopy: "Copiar direccion",
+    emailCopy: "Copiar dirección",
     phoneTitle: "Teléfono / WhatsApp",
     phoneAction: "Mensaje por WhatsApp",
     hoursTitle: "Horario",
@@ -573,6 +585,221 @@ export const es: Dict = {
     groupPorts: "Puertos",
     groupPopular: "Populares",
     groupInCountry: "En {country}",
+  },
+  hourlyPage: {
+    metaTitle: "Chófer por horas | Servicio con conductor · TransferAround",
+    metaDescription:
+      "Reserva un conductor privado por horas — de 2 a 12 horas, paradas ilimitadas, un precio fijo. Conductores con licencia en Grecia, España, Italia, Portugal, Chipre y Turquía.",
+    eyebrow: "Servicio por horas",
+    title: "Un conductor para el día, no solo para el trayecto",
+    subtitle:
+      "Reserva un chófer con licencia por horas — desde dos horas hasta doce. Paradas ilimitadas, tiempo de espera incluido, un precio acordado antes de empezar.",
+    bookTitle: "Calcula tus horas",
+    bookSubtitle:
+      "Elige el punto de recogida y cuánto tiempo necesitas el coche. El total se muestra desde el principio.",
+    useCasesTitle: "Para qué lo reservan",
+    useCases: [
+      {
+        title: "Jornadas de trabajo",
+        body: "Tres reuniones por la ciudad con el equipaje en el maletero. Tu conductor espera entre ellas: nada que volver a reservar, nada que volver a explicar.",
+      },
+      {
+        title: "Visitar a tu manera",
+        body: "Tu propia ruta y paradas donde quieras. Sin itinerario fijo, sin grupo, sin horario de autocar.",
+      },
+      {
+        title: "Bodas y eventos",
+        body: "El coche se queda con el grupo. Los invitados se mueven entre el lugar, el hotel y la cena sin una segunda reserva.",
+      },
+      {
+        title: "Escalas largas",
+        body: "Seis horas entre vuelos dan para una ciudad. Recogida en llegadas y vuelta con margen de sobra.",
+      },
+    ],
+    includedTitle: "Qué cubre la tarifa por hora",
+    included: [
+      "El vehículo y el conductor por cada hora reservada",
+      "Paradas ilimitadas dentro de tus horas",
+      "Todo el tiempo de espera entre paradas",
+      "Combustible, peajes y aparcamiento en la ruta",
+      "Un chófer local con licencia y asegurado",
+      "Cancelación gratuita hasta 24 horas antes de la recogida",
+    ],
+    howTitle: "Cómo funciona",
+    howSteps: [
+      {
+        title: "Elige tus horas",
+        body: "De dos a doce horas, desde cualquier dirección, aeropuerto u hotel. El precio se calcula por hora y por clase de vehículo.",
+      },
+      {
+        title: "Acuerdas primero el total",
+        body: "Ves el importe completo antes de confirmar. Las horas extra del mismo día se cobran a la misma tarifa, nunca con recargo.",
+      },
+      {
+        title: "El mismo conductor",
+        body: "Un solo chófer para toda la reserva, con sus datos de contacto antes de la recogida.",
+      },
+    ],
+    faqTitle: "Preguntas sobre el servicio por horas",
+    faqs: [
+      {
+        q: "¿Cuál es la reserva mínima?",
+        a: "Dos horas. Por debajo de eso, un traslado de punto a punto casi siempre sale más barato: compara ambos precios y quédate con el más bajo.",
+      },
+      {
+        q: "¿Qué pasa si me paso de horas?",
+        a: "El tiempo adicional se cobra a la misma tarifa por hora de tu clase de vehículo, confirmada contigo antes de empezar. Sin recargo y sin tarifa de penalización.",
+      },
+      {
+        q: "¿Puede el conductor salir de la ciudad?",
+        a: "Sí, dentro de las horas reservadas. Para trayectos largos de solo ida entre ciudades suele salir mejor un traslado de ciudad a ciudad.",
+      },
+      {
+        q: "¿Se incluyen combustible y aparcamiento?",
+        a: "Sí. Combustible, peajes y aparcamiento normal en tu ruta están dentro de la tarifa por hora. Las entradas y las cuentas de restaurante no.",
+      },
+    ],
+    ctaTitle: "¿Necesitas coche y conductor unas horas?",
+    ctaSubtitle: "De dos a doce horas, paradas ilimitadas, un precio acordado antes de empezar.",
+  },
+  cityToCityPage: {
+    metaTitle: "Traslados privados de ciudad a ciudad | Larga distancia · TransferAround",
+    metaDescription:
+      "Traslados privados de larga distancia entre ciudades — puerta a puerta, un precio fijo por el vehículo, no por persona. Conductores locales con licencia, cancelación gratuita.",
+    eyebrow: "Trayectos de ciudad a ciudad",
+    title: "Entre ciudades, de puerta a puerta",
+    subtitle:
+      "Sáltate el transbordo. Un coche privado te lleva de una ciudad a la siguiente según tu horario — un precio fijo por el vehículo, no por persona.",
+    bookTitle: "Calcula tu ruta",
+    bookSubtitle:
+      "Introduce las dos ciudades y consulta el total de tu clase de vehículo antes de reservar.",
+    whyTitle: "Por qué el coche privado gana al transbordo",
+    why: [
+      {
+        title: "Tu horario, no el del panel",
+        body: "Sal cuando te venga bien. Sin salidas a las 05:40 porque era la última plaza, sin cuatro horas muertas en una estación.",
+      },
+      {
+        title: "Un precio por el coche",
+        body: "Cuatro personas pagan lo mismo que una. En la mayoría de rutas entre ciudades, el coche privado sale más barato que cuatro billetes.",
+      },
+      {
+        title: "De puerta a puerta, con el equipaje",
+        body: "De la entrada del hotel a la entrada del hotel. Sin cambios de andén, sin portaequipajes, sin taxi en los dos extremos.",
+      },
+      {
+        title: "Una parada por el camino",
+        body: "Añade una parada para comer, un mirador o una segunda recogida. Indícalo al reservar y va incluido en el precio.",
+      },
+    ],
+    includedTitle: "Incluido en cada trayecto entre ciudades",
+    included: [
+      "Un precio fijo por todo el vehículo",
+      "Todos los peajes, el combustible y los costes del conductor",
+      "Recogida y llegada de puerta a puerta",
+      "Un conductor local con licencia que conoce la ruta",
+      "Cancelación gratuita hasta 24 horas antes de la recogida",
+      "Sillas infantiles bajo petición, sin coste adicional",
+    ],
+    faqTitle: "Preguntas sobre trayectos de ciudad a ciudad",
+    faqs: [
+      {
+        q: "¿El precio es por persona o por coche?",
+        a: "Por coche. El precio cubre el vehículo, el conductor y a todos los pasajeros, hasta la capacidad de la clase que elijas.",
+      },
+      {
+        q: "¿Hasta dónde llegáis?",
+        a: "No hay un límite fijo. La mayoría de los trayectos duran entre una y cinco horas; las rutas más largas se presupuestan igual, con una pausa del conductor prevista.",
+      },
+      {
+        q: "¿Puedo añadir una parada?",
+        a: "Sí. Añádela en las notas al reservar para que el precio y los tiempos la incluyan. Las paradas cortas en rutas largas suelen ser gratuitas.",
+      },
+      {
+        q: "¿Y el equipaje?",
+        a: "Elige la clase que se ajuste a tus maletas: cada clase indica su capacidad. Los trayectos entre ciudades usan por defecto la Standard Class o superior por el espacio extra.",
+      },
+    ],
+    ctaTitle: "¿Vas de una ciudad a otra?",
+    ctaSubtitle: "Un precio fijo por el coche, de puerta a puerta, según tu horario.",
+  },
+  portPages: {
+    indexMetaTitle: "Traslados desde puertos de ferry y crucero | TransferAround",
+    indexMetaDescription:
+      "Traslados privados desde puertos de ferry y terminales de crucero en Grecia, España, Italia, Chipre y Turquía. Precio fijo, recogida según tu llegada, cancelación gratuita.",
+    indexTitle: "Traslados desde puertos",
+    indexSubtitle: (n: number) =>
+      `${n} puertos de ferry y terminales de crucero con un conductor a la salida de la terminal: el precio se conoce antes de zarpar.`,
+    metaTitle: (port: string) => `Traslados ${port} | Precio fijo · TransferAround`,
+    metaDescription: (port: string, country: string) =>
+      `Traslados privados desde ${port}, ${country}. Precio fijo, conductor a la salida de la terminal, espera gratuita si tu barco se retrasa.`,
+    eyebrow: "Traslado desde el puerto",
+    title: (port: string) => `Traslados ${port}`,
+    intro: (port: string, country: string) =>
+      `Reserva un traslado privado a precio fijo desde ${port}, ${country}. Tu conductor te espera a la salida de la terminal con un cartel con tu nombre y te lleva de puerta a puerta, a un precio acordado antes de viajar.`,
+    factsTitle: "Datos clave",
+    factPort: "Puerto",
+    factCountry: "País",
+    factFrom: "Precio desde",
+    factNearestAirport: "Aeropuerto más cercano",
+    factPickup: "Punto de recogida",
+    factPickupValue: "Salida de la terminal, cartel con tu nombre",
+    factWaiting: "Espera gratuita",
+    factWaitingValue: "60 minutos, ajustados a tu llegada",
+    knowTitle: "Antes de atracar",
+    knowItems: [
+      {
+        title: "Seguimos la travesía, no el reloj",
+        body: "Los ferris y cruceros se retrasan más a menudo que los vuelos. Indica tu barco y la hora al reservar: la recogida se ajusta y la espera es gratuita.",
+      },
+      {
+        title: "Recepción a la salida de la terminal",
+        body: "Las terminales de crucero rara vez permiten coches junto a la pasarela. Tu conductor espera en el punto de recogida indicado con un cartel con tu nombre.",
+      },
+      {
+        title: "Un precio fijo, acordado de antemano",
+        body: "La tarifa cubre vehículo, equipaje, peajes y tasas de acceso al puerto. Los taxis del puerto van con taxímetro y suben cuando un barco grande desembarca de golpe.",
+      },
+    ],
+    compareTitle: (port: string) => `Formas de salir de ${port}`,
+    compareMode: "Opción",
+    compareTime: "Tiempo",
+    compareCost: "Coste",
+    comparePros: "Ventajas",
+    compareCons: "Inconvenientes",
+    compareRows: [
+      {
+        mode: "Parada de taxis del puerto",
+        time: "Inmediato + cola",
+        cost: "Con taxímetro / variable",
+        pros: "Sin reserva",
+        cons: "Colas largas cuando atraca un barco; tarifa variable",
+      },
+      {
+        mode: "Autobús lanzadera",
+        time: "Salidas fijas",
+        cost: "Bajo",
+        pros: "La opción más barata",
+        cons: "Horario fijo; no es puerta a puerta; incómodo con equipaje",
+      },
+      {
+        mode: "Traslado privado",
+        time: "Directo, de puerta a puerta",
+        cost: "Precio fijo",
+        pros: "Conductor esperando, travesía monitorizada, ayuda con el equipaje",
+        cons: "Reservar con antelación",
+      },
+    ],
+    airportsTitle: (port: string) => `Aeropuertos cerca de ${port}`,
+    airportsBody:
+      "¿Vuelas antes o después de la travesía? Estas son las puertas de entrada más cercanas.",
+    relatedTitle: (country: string) => `Otros puertos en ${country}`,
+    allPortsTitle: "Todos los puertos que cubrimos",
+    bookTitle: (port: string) => `Calcula tu traslado desde ${port}`,
+    bookSubtitle: "Introduce tu destino para ver el total antes de reservar.",
+    ctaTitle: "¿Llegas por mar?",
+    ctaSubtitle: "Precio fijo, conductor en la terminal, espera gratuita si tu barco se retrasa.",
+    distanceFromPort: (km: number) => `${km} km del puerto`,
   },
   faqPage: {
     metaTitle: "FAQ traslados en Creta | Precios, cancelación, recogidas nocturnas",
@@ -710,7 +937,7 @@ export const es: Dict = {
     fleetIndexTitle: "Flota | Clases de vehículos para traslados a Creta",
     fleetIndexDescription:
       "De económico a minibús: elija la clase de vehículo adecuada para su traslado a Creta. Precios fijos, conductores con licencia.",
-    servicesIndexTitle: "Servicios de traslado en Creta | Transferir alrededor",
+    servicesIndexTitle: "Servicios de traslado en Creta | TransferAround",
     servicesIndexDescription:
       "Servicios de chofer en aeropuertos, puertos, centros turísticos y por horas en Creta: precios fijos, conductores locales nombrados.",
     regionsIndexTitle: "Regiones de Creta | La Canea, Rétino, Heraklion, Lasithi",
@@ -719,10 +946,10 @@ export const es: Dict = {
     routesIndexTitle: "Rutas de transferencia de Creta | Precios Fijos · TransferAround",
     routesIndexDescription:
       "Explore todas las rutas de traslados privados de precio fijo en Creta: aeropuertos, puertos y centros turísticos.",
-    airportsIndexTitle: "Traslados al aeropuerto en Grecia | Transferir alrededor",
+    airportsIndexTitle: "Traslados al aeropuerto en Grecia | TransferAround",
     airportsIndexDescription:
       "Traslados privados al aeropuerto con conductores autorizados: Creta y más allá. Precios fijos, conocer y saludar.",
-    citiesIndexTitle: "Traslados Ciudad | Transferir alrededor",
+    citiesIndexTitle: "Traslados Ciudad | TransferAround",
     citiesIndexDescription:
       "Traslados privados a ciudades y resorts a través de nuestro mapa de cobertura.",
     cityTitle: (name: string) => `${name} traslados | TransferAround`,

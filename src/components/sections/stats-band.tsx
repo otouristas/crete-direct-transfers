@@ -1,5 +1,6 @@
 import { useT } from "@/i18n";
 import { BUSINESS_METRICS_VERIFIED, REVIEWS_VERIFIED } from "@/lib/site";
+import { COVERAGE } from "@/lib/coverage";
 
 export function StatsBand() {
   const t = useT();
@@ -10,12 +11,14 @@ export function StatsBand() {
     ...(REVIEWS_VERIFIED
       ? [{ value: t.stats.ratingValue, label: t.stats.rating, amber: true }]
       : []),
-    { value: t.stats.routesValue, label: t.stats.routes },
+    { value: String(COVERAGE.countries), label: t.stats.countries },
+    { value: String(COVERAGE.airportPages), label: t.stats.airports },
+    { value: String(COVERAGE.fixedPriceRoutes), label: t.stats.routes },
     { value: t.stats.supportValue, label: t.stats.support },
   ];
   return (
     <section className="border-y border-border bg-card">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-10">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-6 py-10 md:grid-cols-4">
         {stats.map((s) => (
           <div key={s.label} className="text-center">
             <div

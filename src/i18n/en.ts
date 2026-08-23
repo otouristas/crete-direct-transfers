@@ -156,6 +156,8 @@ export const en = {
     rating: "Google rating",
     routes: "Fixed-price routes",
     support: "Support & dispatch",
+    countries: "Countries served",
+    airports: "Airports covered",
     transfersValue: "12,000+",
     ratingValue: "4.9★",
     routesValue: "30",
@@ -240,36 +242,42 @@ export const en = {
     time: "Time",
   },
   home: {
-    metaTitle: "TransferAround — Fixed-Price Airport & Port Transfers in Crete",
+    metaTitle: "TransferAround — Fixed-Price Private Airport Transfers",
     metaDescription:
-      "Fixed-price transfers across Crete. Licensed local drivers, flight-tracked pickups, free cancellation. Book Heraklion, Chania and port routes in minutes.",
+      "Fixed-price private transfers in Greece, Spain, Italy, Portugal, Cyprus and Turkey. Licensed local drivers, flight-tracked pickups, free cancellation.",
     heroEyebrow: "Fixed-price private transfers",
-    heroTitle1: "Your island.",
+    heroTitle1: "Your arrival.",
     heroTitleAccent: "Your driver.",
     heroSubtitle:
-      "Met at the airport or port — fixed price, flight-tracked pickup, free cancellation.",
+      "Met at the airport or port across six countries — fixed price, flight-tracked pickup, free cancellation.",
     manifestoLead: "The best arrivals feel",
     manifestoAccent: "effortless.",
     manifestoBody:
       "Not because every detail was planned to perfection — because someone is quietly taking care of them. The name sign in arrivals. The fixed price you already know. The local driver who knows which gate dumps you into traffic.",
-    manifestoClose: "You follow Crete. We take care of the rest.",
+    manifestoClose: "You follow the trip. We take care of the rest.",
     routesChapterTitle: "We take you",
     routesChapterAccent: "there.",
     routesChapterSubtitle:
-      "Thirty fixed-price routes across the island. Hover a route to see where it leads — and what it costs.",
+      "Gateways priced up front, from Crete to the Costa del Sol. Pick one to see where it leads — and what it costs.",
     fleetTitle: "A car for every arrival",
     fleetSubtitle: "Economy to minibus — same licensed drivers, same fixed pricing.",
-    proofTitle: "Rated 4.9 by travellers like you",
-    proofSubtitle: "Real reviews from real pickups across Crete.",
+    proofTitle: "What travellers say",
+    proofSubtitle: "Real reviews from real pickups.",
     regionsTitle: "One island, covered end to end",
     regionsSubtitle: "Two international airports, three ferry ports, 260 km of coastline.",
+    countriesTitle: "Where we drive",
+    countriesSubtitle:
+      "Six countries, hundreds of airports and ports — one fixed price per vehicle, not per person.",
+    countriesInstant: "Instant booking",
+    countriesQuote: "Quote confirmed",
+    countriesAirports: (n: number) => `${n} airports`,
     closingTitle: "You explore.",
     closingAccent: "We drive.",
     closingSubtitle: "Fixed price, licensed driver, free cancellation. Book in two minutes.",
     popularTitle: "Popular routes",
     popularSubtitle: "Fixed prices on the routes travellers book most.",
-    reviewsTitle: "Rated 4.9 by travellers like you",
-    reviewsSubtitle: "Real reviews from real pickups across Crete.",
+    reviewsTitle: "What travellers say",
+    reviewsSubtitle: "Real reviews from real pickups.",
     faqTitle: "Questions, answered",
     faqSubtitle: "The things travellers ask before they book.",
     ctaTitle: "Ready for a stress-free arrival?",
@@ -377,6 +385,10 @@ export const en = {
     bookClass: "Book this vehicle",
   },
   directoryPages: {
+    allCitiesTitle: "Cities in every market",
+    allAirportsTitle: "Every airport we cover",
+    allAirportsSubtitle: (n: number, c: number) =>
+      `${n} airports across ${c} countries. Pick yours for prices, pickup points and routes.`,
     greece: "Greece",
     cityEntity: "City",
     vehicleEntity: "Vehicle",
@@ -564,6 +576,219 @@ export const en = {
     groupPorts: "Ports",
     groupPopular: "Popular",
     groupInCountry: "In {country}",
+  },
+  hourlyPage: {
+    metaTitle: "Chauffeur by the Hour | Hourly Car Service · TransferAround",
+    metaDescription:
+      "Book a private driver by the hour — 2 to 12 hours, unlimited stops, one fixed price. Licensed local chauffeurs across Greece, Spain, Italy, Portugal, Cyprus and Turkey.",
+    eyebrow: "Hourly service",
+    title: "A driver for the day, not just the ride",
+    subtitle:
+      "Book a licensed chauffeur by the hour — from two hours to a full twelve. Unlimited stops, waiting time included, one price agreed before you start.",
+    bookTitle: "Price your hours",
+    bookSubtitle:
+      "Pick your pickup point and how long you need the car. The total is shown up front.",
+    useCasesTitle: "What people book it for",
+    useCases: [
+      {
+        title: "Business days",
+        body: "Three meetings across a city with luggage in the boot. Your driver waits between them; you never re-book, never re-explain.",
+      },
+      {
+        title: "Sightseeing on your own terms",
+        body: "Set your own route and stop where you want. No fixed itinerary, no group, no coach timetable.",
+      },
+      {
+        title: "Weddings and events",
+        body: "The car stays with the party. Guests shuttled between venue, hotel and dinner without a second booking.",
+      },
+      {
+        title: "Long layovers",
+        body: "Six hours between flights is enough for a city. Get picked up at arrivals and dropped back with time to spare.",
+      },
+    ],
+    includedTitle: "What the hourly rate covers",
+    included: [
+      "The vehicle and driver for every booked hour",
+      "Unlimited stops within your hours",
+      "All waiting time between stops",
+      "Fuel, tolls and parking on the route",
+      "A licensed, insured local chauffeur",
+      "Free cancellation up to 24 hours before pickup",
+    ],
+    howTitle: "How it works",
+    howSteps: [
+      {
+        title: "Choose your hours",
+        body: "Two to twelve hours, from any address, airport or hotel. The price is calculated per hour and per vehicle class.",
+      },
+      {
+        title: "Agree the total first",
+        body: "You see the full amount before you confirm. Extra hours on the day are charged at the same rate, never a surge.",
+      },
+      {
+        title: "Keep the same driver",
+        body: "One chauffeur for the whole booking, with your contact details shared before pickup.",
+      },
+    ],
+    faqTitle: "Hourly service questions",
+    faqs: [
+      {
+        q: "What is the minimum booking?",
+        a: "Two hours. Below that a point-to-point transfer is almost always cheaper — price both and take whichever comes out lower.",
+      },
+      {
+        q: "What happens if I run over my hours?",
+        a: "Additional time is charged at the same hourly rate for your vehicle class, confirmed with you before it starts. There is no surge and no penalty rate.",
+      },
+      {
+        q: "Can the driver leave the city?",
+        a: "Yes, within the hours you have booked. Long one-way trips between cities are usually better value as a city-to-city transfer.",
+      },
+      {
+        q: "Is fuel and parking included?",
+        a: "Yes. Fuel, tolls and normal parking on your route are all inside the hourly rate. Entry tickets and restaurant bills are not.",
+      },
+    ],
+    ctaTitle: "Need a car and driver for a few hours?",
+    ctaSubtitle: "Two to twelve hours, unlimited stops, one price agreed before you start.",
+  },
+  cityToCityPage: {
+    metaTitle: "City-to-City Private Transfers | Long-Distance Rides · TransferAround",
+    metaDescription:
+      "Private long-distance transfers between cities — door to door, one fixed price for the car, no per-seat pricing. Licensed local drivers, free cancellation.",
+    eyebrow: "City-to-city rides",
+    title: "Between cities, door to door",
+    subtitle:
+      "Skip the connection. A private car takes you from one city to the next on your schedule — one fixed price for the vehicle, not per person.",
+    bookTitle: "Price your route",
+    bookSubtitle: "Enter both cities and see the total for your vehicle class before you book.",
+    whyTitle: "Why a private car beats the connection",
+    why: [
+      {
+        title: "Your schedule, not the timetable",
+        body: "Leave when it suits you. No 05:40 departure because it was the only seat left, no waiting out a four-hour gap in a station.",
+      },
+      {
+        title: "One price for the car",
+        body: "Four people pay the same as one. On most intercity routes a private car undercuts four train or coach tickets outright.",
+      },
+      {
+        title: "Door to door with the luggage",
+        body: "Hotel entrance to hotel entrance. No platform changes, no luggage racks, no taxi at either end.",
+      },
+      {
+        title: "Stop on the way",
+        body: "Add a stop for lunch, a viewpoint or a second pickup. Tell us when you book and it is priced in.",
+      },
+    ],
+    includedTitle: "Included on every intercity ride",
+    included: [
+      "One fixed price for the whole vehicle",
+      "All tolls, fuel and driver costs",
+      "Door-to-door pickup and drop-off",
+      "A licensed local driver who knows the route",
+      "Free cancellation up to 24 hours before pickup",
+      "Child seats on request at no extra charge on request",
+    ],
+    faqTitle: "City-to-city questions",
+    faqs: [
+      {
+        q: "Is it priced per person or per car?",
+        a: "Per car. The price covers the vehicle, the driver and everyone in it, up to the capacity of the class you pick.",
+      },
+      {
+        q: "How far can you go?",
+        a: "There is no fixed limit. Most intercity bookings run one to five hours; longer routes are quoted the same way, with a driver break built into the schedule.",
+      },
+      {
+        q: "Can I add a stop along the way?",
+        a: "Yes. Add it in the notes when you book so the price and timing include it. Short stops on long routes are usually free.",
+      },
+      {
+        q: "What about luggage?",
+        a: "Pick the vehicle class that fits your bags — each class lists its capacity. Intercity rides use Standard Class or above by default for the extra room.",
+      },
+    ],
+    ctaTitle: "Going city to city?",
+    ctaSubtitle: "One fixed price for the car, door to door, on your schedule.",
+  },
+  portPages: {
+    indexMetaTitle: "Ferry & Cruise Port Transfers | TransferAround",
+    indexMetaDescription:
+      "Private transfers from ferry and cruise ports across Greece, Spain, Italy, Cyprus and Turkey. Fixed price, sailing-time pickup, free cancellation.",
+    indexTitle: "Port transfers",
+    indexSubtitle: (n: number) =>
+      `${n} ferry and cruise ports with a driver waiting at the terminal exit — priced before you sail.`,
+    metaTitle: (port: string) => `${port} Transfers | Fixed Price · TransferAround`,
+    metaDescription: (port: string, country: string) =>
+      `Private transfers from ${port} in ${country}. Fixed price, driver at the terminal exit, free waiting if your ship or ferry is late.`,
+    eyebrow: "Port transfer",
+    title: (port: string) => `${port} transfers`,
+    intro: (port: string, country: string) =>
+      `Book a fixed-price private transfer from ${port} in ${country}. Your driver meets you at the terminal exit with a name sign and takes you door-to-door for a price agreed before you travel — no meters, no queue at the rank.`,
+    factsTitle: "Key facts",
+    factPort: "Port",
+    factCountry: "Country",
+    factFrom: "Starting price",
+    factNearestAirport: "Nearest airport",
+    factPickup: "Pickup point",
+    factPickupValue: "Terminal exit, name sign",
+    factWaiting: "Free waiting",
+    factWaitingValue: "60 minutes, tracked against your arrival",
+    knowTitle: "Before you dock",
+    knowItems: [
+      {
+        title: "We track the sailing, not the clock",
+        body: "Ferries and cruise ships run late more often than flights. Share your vessel and sailing time when you book and pickup moves with it — waiting is free.",
+      },
+      {
+        title: "Met at the terminal exit",
+        body: "Cruise terminals and ferry quays rarely allow cars at the gangway. Your driver waits at the designated pickup point with a sign carrying your name.",
+      },
+      {
+        title: "One fixed price, agreed up front",
+        body: "The fare covers the vehicle, luggage, tolls and port access charges. Port taxi ranks are metered and surge when a big ship empties at once.",
+      },
+    ],
+    compareTitle: (port: string) => `Ways to get from ${port}`,
+    compareMode: "Option",
+    compareTime: "Time",
+    compareCost: "Cost",
+    comparePros: "Pros",
+    compareCons: "Cons",
+    compareRows: [
+      {
+        mode: "Port taxi rank",
+        time: "On demand + queue",
+        cost: "Metered / variable",
+        pros: "No booking needed",
+        cons: "Long queues when a ship docks; fare varies",
+      },
+      {
+        mode: "Shuttle bus",
+        time: "Fixed departures",
+        cost: "Low",
+        pros: "Cheapest option",
+        cons: "Set timetable; not door-to-door; awkward with luggage",
+      },
+      {
+        mode: "Private transfer",
+        time: "Direct, door-to-door",
+        cost: "Fixed price",
+        pros: "Driver waiting, sailing tracked, luggage handled",
+        cons: "Book in advance",
+      },
+    ],
+    airportsTitle: (port: string) => `Airports near ${port}`,
+    airportsBody: "Flying in or out around your sailing? These are the closest gateways.",
+    relatedTitle: (country: string) => `Other ports in ${country}`,
+    allPortsTitle: "Every port we cover",
+    bookTitle: (port: string) => `Price your transfer from ${port}`,
+    bookSubtitle: "Enter your destination to see the total before you book.",
+    ctaTitle: "Arriving by sea?",
+    ctaSubtitle: "Fixed price, driver at the terminal, free waiting if your ship is late.",
+    distanceFromPort: (km: number) => `${km} km from the port`,
   },
   faqPage: {
     metaTitle: "Crete Transfer FAQ | Pricing, Cancellation, Night Pickups",

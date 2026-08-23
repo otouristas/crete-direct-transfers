@@ -93,7 +93,7 @@ export const it: Dict = {
     previousSlide: "Diapositiva precedente",
     nextSlide: "Diapositiva successiva",
     sidebar: "Barra laterale",
-    sidebarDescription: "Mostra la barra laterale sui dispositivi mobili.",
+    sidebarDescription: "Mostra la barra laterale sui dispositivi mobilì.",
     toggleSidebar: "Mostra o nascondi la barra laterale",
     decrease: "Diminuisci",
     increase: "Aumenta",
@@ -153,6 +153,8 @@ export const it: Dict = {
     support: "Assistenza 24/7",
   },
   stats: {
+    countries: "Paesi serviti",
+    airports: "Aeroporti coperti",
     transfers: "Transfer completati",
     rating: "Valutazione Google",
     routes: "Tratte a prezzo fisso",
@@ -243,36 +245,42 @@ export const it: Dict = {
     time: "Ora",
   },
   home: {
-    metaTitle: "TransferAround — Transfer aeroporto e porto a Creta a prezzo fisso",
+    metaTitle: "TransferAround — Transfer aeroportuali privati a prezzo fisso",
     metaDescription:
-      "Transfer a prezzo fisso in tutta Creta. Autisti locali con licenza, monitoraggio voli, cancellazione gratuita.",
+      "Transfer privati a prezzo fisso in Grecia, Spagna, Italia, Portogallo, Cipro e Turchia. Autisti locali con licenza, monitoraggio voli, cancellazione gratuita.",
     heroEyebrow: "Transfer privati a prezzo fisso",
-    heroTitle1: "La tua isola.",
+    heroTitle1: "Il tuo arrivo.",
     heroTitleAccent: "Il tuo autista.",
     heroSubtitle:
-      "All'aeroporto o al porto — prezzo fisso, monitoraggio volo, cancellazione gratuita.",
+      "All'aeroporto o al porto, in sei Paesi — prezzo fisso, monitoraggio volo, cancellazione gratuita.",
     manifestoLead: "I migliori arrivi sono",
     manifestoAccent: "senza sforzo.",
     manifestoBody:
-      "Non perche tutto sia stato pianificato alla perfezione — perche qualcuno si occupa silenziosamente dei dettagli. Il cartello con il nome. Il prezzo fisso che gia conosci. L'autista locale che sa quale uscita finisce nel traffico.",
-    manifestoClose: "Tu segui Creta. Noi ci occupiamo del resto.",
+      "Non perché tutto sia stato pianificato alla perfezione — perché qualcuno si occupa silenziosamente dei dettaglì. Il cartello con il nome. Il prezzo fisso che già conosci. L'autista locale che sa quale uscita finisce nel traffico.",
+    manifestoClose: "Tu segui il viaggio. Noi ci occupiamo del resto.",
     routesChapterTitle: "Ti portiamo",
-    routesChapterAccent: "li.",
+    routesChapterAccent: "lì.",
     routesChapterSubtitle:
-      "Trenta tratte a prezzo fisso. Passa su una tratta per vedere dove porta — e quanto costa.",
+      "Aeroporti con il prezzo noto in anticipo, da Creta alla Costa del Sol. Scegline uno per vedere dove porta — e quanto costa.",
     fleetTitle: "Un'auto per ogni arrivo",
     fleetSubtitle: "Da Economy a Luxury — stessi autisti con licenza, stessi prezzi fissi.",
-    proofTitle: "Valutato 4,9 da viaggiatori come te",
-    proofSubtitle: "Recensioni reali da ritiri reali in tutta Creta.",
+    proofTitle: "Cosa dicono i viaggiatori",
+    proofSubtitle: "Recensioni reali da ritiri realì.",
     regionsTitle: "Un'isola, coperta da capo a capo",
     regionsSubtitle: "Due aeroporti internazionali, tre porti, 260 km di costa.",
+    countriesTitle: "Dove guidiamo",
+    countriesSubtitle:
+      "Sei Paesi, centinaia di aeroporti e porti — un prezzo fisso per veicolo, non a persona.",
+    countriesInstant: "Prenotazione immediata",
+    countriesQuote: "Preventivo confermato",
+    countriesAirports: (n: number) => `${n} aeroporti`,
     closingTitle: "Tu esplori.",
     closingAccent: "Noi guidiamo.",
     closingSubtitle:
       "Prezzo fisso, autista con licenza, cancellazione gratuita. Prenota in due minuti.",
     popularTitle: "Tratte popolari",
-    popularSubtitle: "Prezzi fissi sulle tratte piu prenotate.",
-    reviewsTitle: "Valutato 4,9 da viaggiatori come te",
+    popularSubtitle: "Prezzi fissi sulle tratte più prenotate.",
+    reviewsTitle: "Cosa dicono i viaggiatori",
     reviewsSubtitle: "Recensioni reali da ritiri reali in tutta Creta.",
     faqTitle: "Domande, risposte",
     faqSubtitle: "Cio che i viaggiatori chiedono prima di prenotare.",
@@ -300,7 +308,7 @@ export const it: Dict = {
     otherRegions: "Altre regioni",
   },
   routesPages: {
-    indexTitle: "Ti portiamo li.",
+    indexTitle: "Ti portiamo lì.",
     indexSubtitle:
       "Ogni tratta ha un unico prezzo fisso per veicolo — non a persona. Scegli la tua e vedi subito il totale.",
     priceTableTitle: "Prezzi fissi per questa tratta",
@@ -371,7 +379,7 @@ export const it: Dict = {
     bookAsideBody: "Autisti locali che vivono qui — non spediti da altrove sull'isola.",
   },
   servicesPages: {
-    indexTitle: "Ti portiamo li.",
+    indexTitle: "Ti portiamo lì.",
     indexSubtitle: "Dicci da dove iniziare — aeroporto, porto o una giornata sull'isola.",
     routesFor: "Tratte popolari per questo servizio",
   },
@@ -384,6 +392,10 @@ export const it: Dict = {
     bookClass: "Prenota questo veicolo",
   },
   directoryPages: {
+    allCitiesTitle: "Città in ogni mercato",
+    allAirportsTitle: "Ogni aeroporto che copriamo",
+    allAirportsSubtitle: (n: number, c: number) =>
+      `${n} aeroporti in ${c} Paesi. Scegli il tuo per prezzi, punti di ritiro e tratte.`,
     greece: "Grecia",
     cityEntity: "Città",
     vehicleEntity: "Veicolo",
@@ -471,10 +483,10 @@ export const it: Dict = {
     body1:
       "I viaggiatori in arrivo a Heraklion o La Canea dovevano confrontare offerte di sconosciuti, negoziare su WhatsApp o fidarsi del tassametro dopo un lungo volo. I prezzi cambiavano. Gli autisti ruotavano. La responsabilita non era compito di nessuno.",
     body2:
-      "Siamo locali — un piccolo team da La Canea e Heraklion — e abbiamo costruito cio che abbiamo sempre desiderato: un prezzo fisso per tratta, un autista con licenza per prenotazione, un numero da chiamare se qualcosa va storto.",
+      "Siamo locali — un piccolo team da La Canea e Heraklion — e abbiamo costruito ciò che abbiamo sempre desiderato: un prezzo fisso per tratta, un autista con licenza per prenotazione, un numero da chiamare se qualcosa va storto.",
     wontTitle: "Cosa non faremo",
     wontBody:
-      "Niente aste al ribasso. Niente surge alle 2 di notte. Niente autisti a caso che non abbiamo mai incontrato. Ogni autista della nostra rete e' con licenza, assicurato e guida a Creta da almeno tre anni.",
+      "Niente aste al ribasso. Niente surge alle 2 di notte. Niente autisti a caso che non abbiamo mai incontrato. Ogni autista della nostra rete è con licenza, assicurato e guida a Creta da almeno tre anni.",
     whyTitle: "Perche' un'isola sola",
     whyBody:
       "Le piattaforme globali coprono 180 paesi e non ne capiscono davvero nessuno. Noi copriamo 260 km di costa, due aeroporti internazionali, tre porti e ogni accesso hotel che valga la pena conoscere. Profondita' invece di ampiezza.",
@@ -573,10 +585,224 @@ export const it: Dict = {
     groupPopular: "Popolari",
     groupInCountry: "In {country}",
   },
+  hourlyPage: {
+    metaTitle: "Autista a ore | Servizio con conducente · TransferAround",
+    metaDescription:
+      "Prenota un autista privato a ore — da 2 a 12 ore, fermate illimitate, un prezzo fisso. Autisti con licenza in Grecia, Spagna, Italia, Portogallo, Cipro e Turchia.",
+    eyebrow: "Servizio a ore",
+    title: "Un autista per la giornata, non solo per la corsa",
+    subtitle:
+      "Prenota un autista con licenza a ore — da due ore fino a dodici. Fermate illimitate, tempo di attesa incluso, un prezzo concordato prima di partire.",
+    bookTitle: "Calcola le tue ore",
+    bookSubtitle:
+      "Scegli il punto di ritiro e per quanto ti serve l'auto. Il totale è visibile da subito.",
+    useCasesTitle: "Perché lo prenotano",
+    useCases: [
+      {
+        title: "Giornate di lavoro",
+        body: "Tre appuntamenti in città con i bagagli nel bagagliaio. L'autista aspetta tra uno e l'altro: niente da riprenotare, niente da rispiegare.",
+      },
+      {
+        title: "Visite con le tue regole",
+        body: "Il tuo itinerario, le tue fermate. Nessun programma fisso, nessun gruppo, nessun orario del pullman.",
+      },
+      {
+        title: "Matrimoni ed eventi",
+        body: "L'auto resta con il gruppo. Gli ospiti si spostano tra location, hotel e cena senza una seconda prenotazione.",
+      },
+      {
+        title: "Scali lunghi",
+        body: "Sei ore tra due voli bastano per una città. Ritiro agli arrivi e rientro con il giusto margine.",
+      },
+    ],
+    includedTitle: "Cosa copre la tariffa oraria",
+    included: [
+      "Il veicolo e l'autista per ogni ora prenotata",
+      "Fermate illimitate entro le tue ore",
+      "Tutto il tempo di attesa tra una fermata e l'altra",
+      "Carburante, pedaggi e parcheggio sul percorso",
+      "Un autista locale con licenza e assicurato",
+      "Cancellazione gratuita fino a 24 ore prima del ritiro",
+    ],
+    howTitle: "Come funziona",
+    howSteps: [
+      {
+        title: "Scegli le ore",
+        body: "Da due a dodici ore, da qualsiasi indirizzo, aeroporto o hotel. Il prezzo si calcola per ora e per classe di veicolo.",
+      },
+      {
+        title: "Concordi prima il totale",
+        body: "Vedi l'importo completo prima di confermare. Le ore extra in giornata costano la stessa tariffa, mai una maggiorazione.",
+      },
+      {
+        title: "Sempre lo stesso autista",
+        body: "Un solo conducente per tutta la prenotazione, con i suoi contatti condivisi prima del ritiro.",
+      },
+    ],
+    faqTitle: "Domande sul servizio a ore",
+    faqs: [
+      {
+        q: "Qual è la prenotazione minima?",
+        a: "Due ore. Sotto quella soglia un transfer punto a punto costa quasi sempre meno: confronta i due prezzi e scegli il più basso.",
+      },
+      {
+        q: "Cosa succede se supero le ore?",
+        a: "Il tempo aggiuntivo è addebitato alla stessa tariffa oraria della tua classe, confermata con te prima di iniziare. Nessuna maggiorazione, nessuna penale.",
+      },
+      {
+        q: "L'autista può uscire dalla città?",
+        a: "Sì, entro le ore prenotate. Per lunghi tragitti di sola andata tra città conviene di solito un transfer da città a città.",
+      },
+      {
+        q: "Carburante e parcheggio sono inclusi?",
+        a: "Sì. Carburante, pedaggi e parcheggio ordinario sul tuo percorso rientrano nella tariffa oraria. Biglietti d'ingresso e conti al ristorante no.",
+      },
+    ],
+    ctaTitle: "Ti serve auto e autista per qualche ora?",
+    ctaSubtitle: "Da due a dodici ore, fermate illimitate, un prezzo concordato prima di partire.",
+  },
+  cityToCityPage: {
+    metaTitle: "Transfer privati da città a città | Lunghe distanze · TransferAround",
+    metaDescription:
+      "Transfer privati a lunga distanza tra città — porta a porta, un prezzo fisso per il veicolo, non a persona. Autisti locali con licenza, cancellazione gratuita.",
+    eyebrow: "Tratte da città a città",
+    title: "Da una città all'altra, porta a porta",
+    subtitle:
+      "Salta la coincidenza. Un'auto privata ti porta da una città alla successiva secondo i tuoi orari — un prezzo fisso per il veicolo, non a persona.",
+    bookTitle: "Calcola la tua tratta",
+    bookSubtitle:
+      "Inserisci le due città e vedi il totale per la tua classe di veicolo prima di prenotare.",
+    whyTitle: "Perché l'auto privata batte la coincidenza",
+    why: [
+      {
+        title: "I tuoi orari, non il tabellone",
+        body: "Parti quando ti conviene. Nessuna partenza alle 05:40 perché era l'unico posto rimasto, nessuna attesa di quattro ore in stazione.",
+      },
+      {
+        title: "Un prezzo per l'auto",
+        body: "In quattro si paga come in uno. Sulla maggior parte delle tratte tra città l'auto privata costa meno di quattro biglietti.",
+      },
+      {
+        title: "Porta a porta, con i bagagli",
+        body: "Dall'ingresso dell'hotel all'ingresso dell'hotel. Nessun cambio di binario, nessuna cappelliera, nessun taxi ai due capi.",
+      },
+      {
+        title: "Una sosta lungo il percorso",
+        body: "Aggiungi una sosta per pranzo, un punto panoramico o un secondo ritiro. Segnalalo in fase di prenotazione e viene incluso nel prezzo.",
+      },
+    ],
+    includedTitle: "Incluso in ogni tratta tra città",
+    included: [
+      "Un prezzo fisso per l'intero veicolo",
+      "Tutti i pedaggi, il carburante e i costi dell'autista",
+      "Ritiro e consegna porta a porta",
+      "Un autista locale con licenza che conosce il percorso",
+      "Cancellazione gratuita fino a 24 ore prima del ritiro",
+      "Seggiolini per bambini su richiesta, senza costi aggiuntivi",
+    ],
+    faqTitle: "Domande sulle tratte da città a città",
+    faqs: [
+      {
+        q: "Il prezzo è a persona o per auto?",
+        a: "Per auto. Il prezzo copre il veicolo, l'autista e tutti i passeggeri, fino alla capienza della classe che sceglì.",
+      },
+      {
+        q: "Fin dove arrivate?",
+        a: "Non c'è un limite fisso. La maggior parte delle tratte dura da una a cinque ore; i percorsi più lunghi si quotano allo stesso modo, con una pausa autista già prevista.",
+      },
+      {
+        q: "Posso aggiungere una sosta?",
+        a: "Sì. Indicala nelle note in fase di prenotazione così prezzo e tempi la includono. Le soste brevi su tratte lunghe di solito sono gratuite.",
+      },
+      {
+        q: "E i bagagli?",
+        a: "Scegli la classe adatta alle tue valigie: ogni classe indica la propria capienza. Le tratte tra città usano per impostazione predefinita la Standard Class o superiore per lo spazio in più.",
+      },
+    ],
+    ctaTitle: "Ti sposti da una città all'altra?",
+    ctaSubtitle: "Un prezzo fisso per l'auto, porta a porta, secondo i tuoi orari.",
+  },
+  portPages: {
+    indexMetaTitle: "Transfer da porti e terminal crociere | TransferAround",
+    indexMetaDescription:
+      "Transfer privati dai porti dei traghetti e dai terminal crociere in Grecia, Spagna, Italia, Cipro e Turchia. Prezzo fisso, ritiro sull'orario di arrivo, cancellazione gratuita.",
+    indexTitle: "Transfer dai porti",
+    indexSubtitle: (n: number) =>
+      `${n} porti e terminal crociere con un autista all'uscita del terminal — il prezzo si conosce prima di salpare.`,
+    metaTitle: (port: string) => `Transfer ${port} | Prezzo fisso · TransferAround`,
+    metaDescription: (port: string, country: string) =>
+      `Transfer privati da ${port}, ${country}. Prezzo fisso, autista all'uscita del terminal, attesa gratuita se la nave è in ritardo.`,
+    eyebrow: "Transfer dal porto",
+    title: (port: string) => `Transfer ${port}`,
+    intro: (port: string, country: string) =>
+      `Prenota un transfer privato a prezzo fisso da ${port}, ${country}. Il tuo autista ti aspetta all'uscita del terminal con un cartello nominativo e ti porta porta a porta, a un prezzo concordato prima di partire.`,
+    factsTitle: "Informazioni chiave",
+    factPort: "Porto",
+    factCountry: "Paese",
+    factFrom: "Prezzo da",
+    factNearestAirport: "Aeroporto più vicino",
+    factPickup: "Punto di ritiro",
+    factPickupValue: "Uscita del terminal, cartello nominativo",
+    factWaiting: "Attesa gratuita",
+    factWaitingValue: "60 minuti, calcolati sul tuo arrivo",
+    knowTitle: "Prima di attraccare",
+    knowItems: [
+      {
+        title: "Seguiamo la traversata, non l'orologio",
+        body: "Traghetti e navi da crociera ritardano più spesso degli aerei. Indica nave e orario in fase di prenotazione: il ritiro si adatta e l'attesa è gratuita.",
+      },
+      {
+        title: "Accoglienza all'uscita del terminal",
+        body: "I terminal crociere raramente permettono alle auto di arrivare alla passerella. Il tuo autista aspetta al punto di ritiro indicato con un cartello con il tuo nome.",
+      },
+      {
+        title: "Un prezzo fisso, concordato in anticipo",
+        body: "La tariffa copre veicolo, bagagli, pedaggi e diritti di accesso al porto. I taxi in porto vanno a tassametro e aumentano quando una nave grande sbarca tutta insieme.",
+      },
+    ],
+    compareTitle: (port: string) => `Come muoversi da ${port}`,
+    compareMode: "Opzione",
+    compareTime: "Tempo",
+    compareCost: "Costo",
+    comparePros: "Vantaggi",
+    compareCons: "Svantaggi",
+    compareRows: [
+      {
+        mode: "Posteggio taxi del porto",
+        time: "Subito + coda",
+        cost: "A tassametro / variabile",
+        pros: "Nessuna prenotazione",
+        cons: "Lunghe code quando attracca una nave; tariffa variabile",
+      },
+      {
+        mode: "Bus navetta",
+        time: "Partenze fisse",
+        cost: "Basso",
+        pros: "L'opzione più economica",
+        cons: "Orario fisso; non porta a porta; scomodo con i bagagli",
+      },
+      {
+        mode: "Transfer privato",
+        time: "Diretto, porta a porta",
+        cost: "Prezzo fisso",
+        pros: "Autista che aspetta, traversata monitorata, bagagli gestiti",
+        cons: "Prenotare in anticipo",
+      },
+    ],
+    airportsTitle: (port: string) => `Aeroporti vicino a ${port}`,
+    airportsBody: "Voli prima o dopo la traversata? Questi sono gli scali più vicini.",
+    relatedTitle: (country: string) => `Altri porti in ${country}`,
+    allPortsTitle: "Ogni porto che copriamo",
+    bookTitle: (port: string) => `Calcola il tuo transfer da ${port}`,
+    bookSubtitle: "Inserisci la destinazione per vedere il totale prima di prenotare.",
+    ctaTitle: "Arrivi via mare?",
+    ctaSubtitle: "Prezzo fisso, autista al terminal, attesa gratuita se la nave è in ritardo.",
+    distanceFromPort: (km: number) => `${km} km dal porto`,
+  },
   faqPage: {
     metaTitle: "FAQ transfer a Creta | Prezzi, cancellazione, prelievi notturni",
     metaDescription:
-      "Tutto sulla prenotazione di un transfer a prezzo fisso a Creta: pagamento, cancellazione, bagagli, seggiolini, supplementi notturni e ritardi dei voli.",
+      "Tutto sulla prenotazione di un transfer a prezzo fisso a Creta: pagamento, cancellazione, bagagli, seggiolini, supplementi notturni e ritardi dei volì.",
     eyebrow: "FAQ",
     title: "Domande, con risposta.",
     subtitle: "Se qui non trovi la risposta, la nostra centrale 24/7 è a un messaggio di distanza.",
@@ -914,7 +1140,7 @@ export const it: Dict = {
       "Stiamo esaminando la tua candidatura — la maggior parte viene approvata entro 48 ore. Domande? Chiama la centrale.",
     suspendedTitle: "Account sospeso",
     suspendedBody:
-      "Il tuo account autista è attualmente sospeso. Contatta la centrale per i dettagli.",
+      "Il tuo account autista è attualmente sospeso. Contatta la centrale per i dettaglì.",
     poolEmpty:
       "Nessun lavoro disponibile al momento. Le nuove prenotazioni appaiono qui automaticamente.",
     claim: "Prendi il lavoro",

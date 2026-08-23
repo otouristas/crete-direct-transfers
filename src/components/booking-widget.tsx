@@ -122,6 +122,7 @@ export function BookingWidget({
   defaultIata,
   defaultDestination,
   defaultClass = "economy",
+  defaultService = "transfer",
   compact = false,
   variant,
 }: {
@@ -131,6 +132,8 @@ export function BookingWidget({
   /** Prefill To with a country-specific city or resort on market hubs. */
   defaultDestination?: string;
   defaultClass?: VehicleClass;
+  /** Open on the hourly tab — used by the /hourly-service landing page. */
+  defaultService?: ServiceMode;
   compact?: boolean;
   /** Homepage uses horizontal bar; route pages keep the card. */
   variant?: "hbar" | "card";
@@ -151,6 +154,7 @@ export function BookingWidget({
       defaultClass={defaultClass}
       defaultIata={defaultIata}
       defaultDestination={defaultDestination}
+      defaultService={defaultService}
     />
   );
 }
@@ -159,17 +163,19 @@ function BookingWidgetBar({
   defaultClass = "economy",
   defaultIata,
   defaultDestination,
+  defaultService = "transfer",
 }: {
   defaultClass?: VehicleClass;
   defaultIata?: string;
   defaultDestination?: string;
+  defaultService?: ServiceMode;
 }) {
   const t = useT();
   const locale = useLocale();
   const navigate = useNavigate();
   const initialFrom = placeFromIata(defaultIata);
   const initialTo = defaultDestination ? placeFromLabel(defaultDestination) : null;
-  const [service, setService] = useState<ServiceMode>("transfer");
+  const [service, setService] = useState<ServiceMode>(defaultService);
   const [fromQuery, setFromQuery] = useState(initialFrom?.label ?? "");
   const [toQuery, setToQuery] = useState(initialTo?.label ?? "");
   const [fromPlace, setFromPlace] = useState<PlaceResult | null>(initialFrom);

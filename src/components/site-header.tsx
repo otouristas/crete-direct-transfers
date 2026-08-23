@@ -45,7 +45,8 @@ export function SiteHeader() {
       label: t.nav.airports,
       to: "/{-$locale}/airports",
     },
-    { label: t.nav.routes, to: "/{-$locale}/routes" },
+    { label: t.cityToCityPage.eyebrow, to: "/{-$locale}/city-to-city" },
+    { label: t.hourlyPage.eyebrow, to: "/{-$locale}/hourly-service" },
     { label: t.nav.fleet, to: "/{-$locale}/fleet" },
     { label: t.nav.faq, to: "/{-$locale}/faq" },
   ];

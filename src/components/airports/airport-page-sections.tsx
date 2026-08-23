@@ -567,7 +567,7 @@ export function AirportPopularRoutes({
   );
 }
 
-export function OtherAirportsInGreece({ airport }: { airport: AirportData }) {
+export function OtherAirportsInCountry({ airport }: { airport: AirportData }) {
   const t = useT();
   const locale = useLocale();
   // Country-aware: show other airports in the same country (curated slug where a

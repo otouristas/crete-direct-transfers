@@ -153,6 +153,8 @@ export const nl: Dict = {
     support: "24/7 ondersteuning",
   },
   stats: {
+    countries: "Landen",
+    airports: "Luchthavens",
     transfers: "Voltooide transfers",
     rating: "Google-beoordeling",
     routes: "Routes met vaste prijs",
@@ -243,36 +245,43 @@ export const nl: Dict = {
     time: "Tijd",
   },
   home: {
-    metaTitle: "TransferAround — Vaste-prijs luchthaven- & havenvervoer op Kreta",
+    metaTitle: "TransferAround — Privétransfers met vaste prijs",
     metaDescription:
-      "Vaste-prijs transfers over heel Kreta. Gelicenseerde lokale chauffeurs, vluchttracking, gratis annulering.",
-    heroEyebrow: "Privetransfers tegen vaste prijs",
-    heroTitle1: "Jouw eiland.",
+      "Privétransfers met vaste prijs in Griekenland, Spanje, Italië, Portugal, Cyprus en Turkije. Gelicenseerde lokale chauffeurs, vluchttracking, gratis annulering.",
+    heroEyebrow: "Privétransfers tegen vaste prijs",
+    heroTitle1: "Jouw aankomst.",
     heroTitleAccent: "Jouw chauffeur.",
-    heroSubtitle: "Op de luchthaven of haven — vaste prijs, vluchttracking, gratis annulering.",
+    heroSubtitle:
+      "Op de luchthaven of haven, in zes landen — vaste prijs, vluchttracking, gratis annulering.",
     manifestoLead: "De beste aankomsten voelen",
     manifestoAccent: "moeiteloos.",
     manifestoBody:
       "Niet omdat alles tot in de perfectie gepland was — omdat iemand stil de details regelt. Het naambordje in de aankomsthal. De vaste prijs die je al kent. De lokale chauffeur die weet welke poort je in de file zet.",
-    manifestoClose: "Jij volgt Kreta. Wij regelen de rest.",
+    manifestoClose: "Jij volgt de reis. Wij regelen de rest.",
     routesChapterTitle: "Wij brengen je",
     routesChapterAccent: "ernaartoe.",
     routesChapterSubtitle:
-      "Dertig routes tegen vaste prijs. Beweeg over een route om te zien waarheen — en wat het kost.",
+      "Luchthavens met de prijs vooraf bekend, van Kreta tot de Costa del Sol. Kies er een om te zien waarheen — en wat het kost.",
     fleetTitle: "Een auto voor elke aankomst",
     fleetSubtitle:
       "Economy tot Luxury — dezelfde gelicenseerde chauffeurs, dezelfde vaste prijzen.",
-    proofTitle: "Beoordeeld met 4,9 door reizigers zoals jij",
-    proofSubtitle: "Echte reviews van echte ophalingen over heel Kreta.",
+    proofTitle: "Wat reizigers zeggen",
+    proofSubtitle: "Echte reviews van echte ophalingen.",
     regionsTitle: "Een eiland, van eind tot eind",
     regionsSubtitle: "Twee internationale luchthavens, drie havens, 260 km kustlijn.",
+    countriesTitle: "Waar wij rijden",
+    countriesSubtitle:
+      "Zes landen, honderden luchthavens en havens — één vaste prijs per voertuig, niet per persoon.",
+    countriesInstant: "Direct boeken",
+    countriesQuote: "Offerte bevestigd",
+    countriesAirports: (n: number) => `${n} luchthavens`,
     closingTitle: "Jij verkent.",
     closingAccent: "Wij rijden.",
     closingSubtitle:
       "Vaste prijs, gelicenseerde chauffeur, gratis annulering. Boek in twee minuten.",
     popularTitle: "Populaire routes",
     popularSubtitle: "Vaste prijzen op de routes die reizigers het meest boeken.",
-    reviewsTitle: "Beoordeeld met 4,9 door reizigers zoals jij",
+    reviewsTitle: "Wat reizigers zeggen",
     reviewsSubtitle: "Echte reviews van echte ophalingen over heel Kreta.",
     faqTitle: "Vragen, beantwoord",
     faqSubtitle: "Wat reizigers vragen voordat ze boeken.",
@@ -382,6 +391,10 @@ export const nl: Dict = {
     bookClass: "Boek dit voertuig",
   },
   directoryPages: {
+    allCitiesTitle: "Steden in elke markt",
+    allAirportsTitle: "Elke luchthaven die we dekken",
+    allAirportsSubtitle: (n: number, c: number) =>
+      `${n} luchthavens in ${c} landen. Kies de jouwe voor prijzen, ophaalpunten en routes.`,
     greece: "Griekenland",
     cityEntity: "Stad",
     vehicleEntity: "Voertuig",
@@ -569,6 +582,218 @@ export const nl: Dict = {
     groupPorts: "Havens",
     groupPopular: "Populair",
     groupInCountry: "In {country}",
+  },
+  hourlyPage: {
+    metaTitle: "Chauffeur per uur | Uurservice · TransferAround",
+    metaDescription:
+      "Boek een privéchauffeur per uur — 2 tot 12 uur, onbeperkt stoppen, één vaste prijs. Gelicenseerde chauffeurs in Griekenland, Spanje, Italië, Portugal, Cyprus en Turkije.",
+    eyebrow: "Uurservice",
+    title: "Een chauffeur voor de dag, niet alleen voor de rit",
+    subtitle:
+      "Boek een gelicenseerde chauffeur per uur — van twee tot twaalf uur. Onbeperkt stoppen, wachttijd inbegrepen, één prijs die vooraf vaststaat.",
+    bookTitle: "Bereken je uren",
+    bookSubtitle: "Kies je ophaalpunt en hoelang je de auto nodig hebt. Het totaal zie je vooraf.",
+    useCasesTitle: "Waarvoor mensen het boeken",
+    useCases: [
+      {
+        title: "Werkdagen",
+        body: "Drie afspraken door de stad met de bagage in de kofferbak. Je chauffeur wacht ertussen — niets opnieuw boeken, niets opnieuw uitleggen.",
+      },
+      {
+        title: "Rondkijken op je eigen manier",
+        body: "Je eigen route, stoppen waar je wilt. Geen vast programma, geen groep, geen busdienstregeling.",
+      },
+      {
+        title: "Bruiloften en evenementen",
+        body: "De auto blijft bij het gezelschap. Gasten pendelen tussen locatie, hotel en diner zonder tweede boeking.",
+      },
+      {
+        title: "Lange overstaptijden",
+        body: "Zes uur tussen twee vluchten is genoeg voor een stad. Ophalen bij aankomst, terug met tijd over.",
+      },
+    ],
+    includedTitle: "Wat het uurtarief dekt",
+    included: [
+      "Het voertuig en de chauffeur voor elk geboekt uur",
+      "Onbeperkt stoppen binnen je uren",
+      "Alle wachttijd tussen de stops",
+      "Brandstof, tol en parkeren op de route",
+      "Een gelicenseerde, verzekerde lokale chauffeur",
+      "Gratis annuleren tot 24 uur voor ophalen",
+    ],
+    howTitle: "Hoe het werkt",
+    howSteps: [
+      {
+        title: "Kies je uren",
+        body: "Twee tot twaalf uur, vanaf elk adres, elke luchthaven of elk hotel. De prijs wordt per uur en per voertuigklasse berekend.",
+      },
+      {
+        title: "Eerst het totaal akkoord",
+        body: "Je ziet het volledige bedrag voordat je bevestigt. Extra uren op de dag zelf kosten hetzelfde tarief, nooit een toeslag.",
+      },
+      {
+        title: "Dezelfde chauffeur",
+        body: "Eén chauffeur voor de hele boeking, met zijn contactgegevens vóór het ophalen.",
+      },
+    ],
+    faqTitle: "Vragen over de uurservice",
+    faqs: [
+      {
+        q: "Wat is de minimale boeking?",
+        a: "Twee uur. Daaronder is een rit van punt naar punt bijna altijd goedkoper — vergelijk beide prijzen en neem de laagste.",
+      },
+      {
+        q: "Wat als ik over mijn uren ga?",
+        a: "Extra tijd wordt tegen hetzelfde uurtarief van je voertuigklasse berekend, vooraf met je afgestemd. Geen toeslag, geen boetetarief.",
+      },
+      {
+        q: "Mag de chauffeur de stad uit?",
+        a: "Ja, binnen de geboekte uren. Voor lange enkele reizen tussen steden is een stad-naar-stadrit meestal voordeliger.",
+      },
+      {
+        q: "Zijn brandstof en parkeren inbegrepen?",
+        a: "Ja. Brandstof, tol en gewoon parkeren op je route zitten in het uurtarief. Entreekaartjes en restaurantrekeningen niet.",
+      },
+    ],
+    ctaTitle: "Auto met chauffeur nodig voor een paar uur?",
+    ctaSubtitle: "Twee tot twaalf uur, onbeperkt stoppen, één prijs vooraf afgesproken.",
+  },
+  cityToCityPage: {
+    metaTitle: "Privétransfers van stad naar stad | Lange afstand · TransferAround",
+    metaDescription:
+      "Privétransfers over lange afstand tussen steden — van deur tot deur, één vaste prijs voor het voertuig, niet per persoon. Gelicenseerde lokale chauffeurs, gratis annuleren.",
+    eyebrow: "Stad-naar-stadritten",
+    title: "Van stad naar stad, van deur tot deur",
+    subtitle:
+      "Sla de overstap over. Een privéauto brengt je op jouw tijd van de ene stad naar de volgende — één vaste prijs voor het voertuig, niet per persoon.",
+    bookTitle: "Bereken je route",
+    bookSubtitle: "Vul beide steden in en zie het totaal voor je voertuigklasse vóór het boeken.",
+    whyTitle: "Waarom een privéauto de overstap verslaat",
+    why: [
+      {
+        title: "Jouw tijd, niet de dienstregeling",
+        body: "Vertrek wanneer het jou uitkomt. Geen vertrek om 05:40 omdat dat de laatste plek was, geen vier uur wachten op een station.",
+      },
+      {
+        title: "Eén prijs voor de auto",
+        body: "Met z'n vieren betaal je hetzelfde als alleen. Op de meeste verbindingen tussen steden is een privéauto goedkoper dan vier kaartjes.",
+      },
+      {
+        title: "Deur tot deur, met de bagage",
+        body: "Van hotelingang naar hotelingang. Geen perronwissel, geen bagagerek, geen taxi aan beide kanten.",
+      },
+      {
+        title: "Onderweg stoppen",
+        body: "Voeg een stop toe voor de lunch, een uitzichtpunt of een tweede ophaalpunt. Geef het door bij het boeken en het zit in de prijs.",
+      },
+    ],
+    includedTitle: "Inbegrepen bij elke rit tussen steden",
+    included: [
+      "Eén vaste prijs voor het hele voertuig",
+      "Alle tol, brandstof en chauffeurskosten",
+      "Ophalen en afzetten van deur tot deur",
+      "Een gelicenseerde lokale chauffeur die de route kent",
+      "Gratis annuleren tot 24 uur voor ophalen",
+      "Kinderzitjes op verzoek, zonder extra kosten",
+    ],
+    faqTitle: "Vragen over stad-naar-stadritten",
+    faqs: [
+      {
+        q: "Is de prijs per persoon of per auto?",
+        a: "Per auto. De prijs dekt het voertuig, de chauffeur en iedereen die meerijdt, tot de capaciteit van de gekozen klasse.",
+      },
+      {
+        q: "Hoe ver rijden jullie?",
+        a: "Er is geen vaste grens. De meeste ritten duren één tot vijf uur; langere routes worden op dezelfde manier geoffreerd, met een chauffeurspauze ingepland.",
+      },
+      {
+        q: "Kan ik onderweg een stop toevoegen?",
+        a: "Ja. Zet het bij het boeken in de opmerkingen zodat prijs en tijd kloppen. Korte stops op lange routes zijn meestal gratis.",
+      },
+      {
+        q: "En de bagage?",
+        a: "Kies de voertuigklasse die bij je koffers past — elke klasse vermeldt de capaciteit. Ritten tussen steden gebruiken standaard Standard Class of hoger voor de extra ruimte.",
+      },
+    ],
+    ctaTitle: "Ga je van stad naar stad?",
+    ctaSubtitle: "Eén vaste prijs voor de auto, van deur tot deur, op jouw tijd.",
+  },
+  portPages: {
+    indexMetaTitle: "Veerhaven- en cruisehaventransfers | TransferAround",
+    indexMetaDescription:
+      "Privétransfers vanaf veer- en cruisehavens in Griekenland, Spanje, Italië, Cyprus en Turkije. Vaste prijs, ophalen op aankomsttijd, gratis annuleren.",
+    indexTitle: "Haventransfers",
+    indexSubtitle: (n: number) =>
+      `${n} veer- en cruisehavens met een chauffeur bij de terminaluitgang — de prijs staat vast voor je uitvaart.`,
+    metaTitle: (port: string) => `${port} transfers | Vaste prijs · TransferAround`,
+    metaDescription: (port: string, country: string) =>
+      `Privétransfers vanaf ${port} in ${country}. Vaste prijs, chauffeur bij de terminaluitgang, gratis wachten als je schip vertraagd is.`,
+    eyebrow: "Haventransfer",
+    title: (port: string) => `${port} transfers`,
+    intro: (port: string, country: string) =>
+      `Boek een privétransfer met vaste prijs vanaf ${port} in ${country}. Je chauffeur wacht bij de terminaluitgang met een naambordje en brengt je van deur tot deur, tegen een prijs die vooraf vaststaat.`,
+    factsTitle: "Kerngegevens",
+    factPort: "Haven",
+    factCountry: "Land",
+    factFrom: "Vanafprijs",
+    factNearestAirport: "Dichtstbijzijnde luchthaven",
+    factPickup: "Ophaalpunt",
+    factPickupValue: "Terminaluitgang, naambordje",
+    factWaiting: "Gratis wachttijd",
+    factWaitingValue: "60 minuten, afgestemd op je aankomst",
+    knowTitle: "Voor je aanmeert",
+    knowItems: [
+      {
+        title: "Wij volgen de overtocht, niet de klok",
+        body: "Veerboten en cruiseschepen lopen vaker vertraging op dan vluchten. Geef je schip en tijd door bij het boeken: het ophalen schuift mee en wachten is gratis.",
+      },
+      {
+        title: "Ontvangst bij de terminaluitgang",
+        body: "Cruiseterminals laten zelden auto's tot aan de loopbrug. Je chauffeur wacht op het aangewezen ophaalpunt met een bordje met je naam.",
+      },
+      {
+        title: "Eén vaste prijs, vooraf afgesproken",
+        body: "Het tarief dekt voertuig, bagage, tol en havenkosten. Taxi's bij de haven rijden op de meter en worden duurder zodra een groot schip in één keer leegloopt.",
+      },
+    ],
+    compareTitle: (port: string) => `Manieren om vanaf ${port} weg te komen`,
+    compareMode: "Optie",
+    compareTime: "Tijd",
+    compareCost: "Kosten",
+    comparePros: "Voordelen",
+    compareCons: "Nadelen",
+    compareRows: [
+      {
+        mode: "Taxistandplaats haven",
+        time: "Direct + wachtrij",
+        cost: "Op de meter / wisselend",
+        pros: "Geen boeking nodig",
+        cons: "Lange rijen als een schip aanmeert; wisselend tarief",
+      },
+      {
+        mode: "Shuttlebus",
+        time: "Vaste vertrektijden",
+        cost: "Laag",
+        pros: "Goedkoopste optie",
+        cons: "Vaste dienstregeling; niet deur tot deur; lastig met bagage",
+      },
+      {
+        mode: "Privétransfer",
+        time: "Direct, deur tot deur",
+        cost: "Vaste prijs",
+        pros: "Chauffeur staat klaar, overtocht gevolgd, hulp met bagage",
+        cons: "Vooraf boeken",
+      },
+    ],
+    airportsTitle: (port: string) => `Luchthavens bij ${port}`,
+    airportsBody: "Vlieg je voor of na de overtocht? Dit zijn de dichtstbijzijnde luchthavens.",
+    relatedTitle: (country: string) => `Andere havens in ${country}`,
+    allPortsTitle: "Elke haven die we dekken",
+    bookTitle: (port: string) => `Bereken je transfer vanaf ${port}`,
+    bookSubtitle: "Vul je bestemming in en zie het totaal vóór het boeken.",
+    ctaTitle: "Kom je over zee aan?",
+    ctaSubtitle: "Vaste prijs, chauffeur bij de terminal, gratis wachten bij vertraging.",
+    distanceFromPort: (km: number) => `${km} km van de haven`,
   },
   faqPage: {
     metaTitle: "FAQ Kreta-transfers | Prijzen, annuleren, nachtelijk ophalen",

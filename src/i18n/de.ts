@@ -152,6 +152,8 @@ export const de: Dict = {
     support: "24/7 Support",
   },
   stats: {
+    countries: "Länder",
+    airports: "Flughäfen",
     transfers: "Durchgeführte Transfers",
     rating: "Google-Bewertung",
     routes: "Festpreis-Strecken",
@@ -242,36 +244,43 @@ export const de: Dict = {
     time: "Uhrzeit",
   },
   home: {
-    metaTitle: "TransferAround — Flughafen- & Hafentransfers auf Kreta zum Festpreis",
+    metaTitle: "TransferAround — Private Flughafentransfers zum Festpreis",
     metaDescription:
-      "Transfers zum Festpreis auf ganz Kreta. Lizenzierte lokale Fahrer, Flugverfolgung, kostenlose Stornierung. Heraklion, Chania und Häfen in Minuten buchen.",
+      "Private Transfers zum Festpreis in Griechenland, Spanien, Italien, Portugal, Zypern und der Türkei. Lizenzierte lokale Fahrer, Flugverfolgung, kostenlose Stornierung.",
     heroEyebrow: "Private Transfers zum Festpreis",
-    heroTitle1: "Ihre Insel.",
+    heroTitle1: "Ihre Ankunft.",
     heroTitleAccent: "Ihr Fahrer.",
-    heroSubtitle: "Am Flughafen oder Hafen — Festpreis, Flugverfolgung, kostenlose Stornierung.",
+    heroSubtitle:
+      "Am Flughafen oder Hafen in sechs Ländern — Festpreis, Flugverfolgung, kostenlose Stornierung.",
     manifestoLead: "Die besten Ankünfte fühlen sich",
     manifestoAccent: "mühelos an.",
     manifestoBody:
       "Nicht weil alles perfekt geplant wurde — sondern weil jemand leise die Details übernimmt. Das Namensschild in der Ankunftshalle. Der Festpreis, den Sie schon kennen. Der lokale Fahrer, der weiß, welches Tor Sie in den Stau führt.",
-    manifestoClose: "Sie folgen Kreta. Wir kümmern uns um den Rest.",
+    manifestoClose: "Sie folgen der Reise. Wir kümmern uns um den Rest.",
     routesChapterTitle: "Wir bringen Sie",
     routesChapterAccent: "hin.",
     routesChapterSubtitle:
-      "Dreißig Festpreis-Strecken über die Insel. Über eine Strecke fahren — und sehen, wohin sie führt und was sie kostet.",
+      "Ankunftsflughäfen mit Preis im Voraus, von Kreta bis zur Costa del Sol. Wählen Sie einen — und sehen Sie, wohin er führt und was er kostet.",
     fleetTitle: "Ein Fahrzeug für jede Ankunft",
     fleetSubtitle: "Economy bis Luxury — gleiche lizenzierte Fahrer, gleiche Festpreise.",
-    proofTitle: "4,9 von Reisenden wie Ihnen",
-    proofSubtitle: "Echte Bewertungen von echten Abholungen auf ganz Kreta.",
+    proofTitle: "Was Reisende sagen",
+    proofSubtitle: "Echte Bewertungen von echten Abholungen.",
     regionsTitle: "Eine Insel, komplett abgedeckt",
     regionsSubtitle: "Zwei internationale Flughäfen, drei Fährhäfen, 260 km Küste.",
+    countriesTitle: "Wo wir fahren",
+    countriesSubtitle:
+      "Sechs Länder, Hunderte Flughäfen und Häfen — ein Festpreis pro Fahrzeug, nicht pro Person.",
+    countriesInstant: "Sofort buchbar",
+    countriesQuote: "Angebot bestätigt",
+    countriesAirports: (n: number) => `${n} Flughäfen`,
     closingTitle: "Sie erkunden.",
     closingAccent: "Wir fahren.",
     closingSubtitle:
       "Festpreis, lizenzierter Fahrer, kostenlose Stornierung. Buchung in zwei Minuten.",
     popularTitle: "Beliebte Strecken",
     popularSubtitle: "Festpreise auf den Strecken, die Reisende am häufigsten buchen.",
-    reviewsTitle: "4,9 von Reisenden wie Ihnen",
-    reviewsSubtitle: "Echte Bewertungen von echten Abholungen auf ganz Kreta.",
+    reviewsTitle: "Was Reisende sagen",
+    reviewsSubtitle: "Echte Bewertungen von echten Abholungen.",
     faqTitle: "Fragen, beantwortet",
     faqSubtitle: "Was Reisende vor der Buchung wissen wollen.",
     ctaTitle: "Bereit für eine stressfreie Ankunft?",
@@ -380,6 +389,10 @@ export const de: Dict = {
     bookClass: "Dieses Fahrzeug buchen",
   },
   directoryPages: {
+    allCitiesTitle: "Städte in jedem Markt",
+    allAirportsTitle: "Jeder Flughafen, den wir abdecken",
+    allAirportsSubtitle: (n: number, c: number) =>
+      `${n} Flughäfen in ${c} Ländern. Wählen Sie Ihren für Preise, Abholpunkte und Strecken.`,
     greece: "Griechenland",
     cityEntity: "Stadt",
     vehicleEntity: "Fahrzeug",
@@ -566,6 +579,219 @@ export const de: Dict = {
     groupPorts: "Häfen",
     groupPopular: "Beliebt",
     groupInCountry: "In {country}",
+  },
+  hourlyPage: {
+    metaTitle: "Chauffeur stundenweise | Stundenservice · TransferAround",
+    metaDescription:
+      "Buchen Sie einen privaten Fahrer stundenweise — 2 bis 12 Stunden, unbegrenzte Stopps, ein Festpreis. Lizenzierte Chauffeure in Griechenland, Spanien, Italien, Portugal, Zypern und der Türkei.",
+    eyebrow: "Stundenservice",
+    title: "Ein Fahrer für den Tag, nicht nur für die Fahrt",
+    subtitle:
+      "Buchen Sie einen lizenzierten Chauffeur stundenweise — von zwei bis zwölf Stunden. Unbegrenzte Stopps, Wartezeit inklusive, ein Preis, der vor der Fahrt feststeht.",
+    bookTitle: "Stunden kalkulieren",
+    bookSubtitle: "Wählen Sie Abholort und Dauer. Der Gesamtpreis wird vorab angezeigt.",
+    useCasesTitle: "Wofür es gebucht wird",
+    useCases: [
+      {
+        title: "Geschäftstage",
+        body: "Drei Termine quer durch die Stadt, das Gepäck bleibt im Kofferraum. Ihr Fahrer wartet dazwischen — kein Neubuchen, kein Erklären.",
+      },
+      {
+        title: "Sightseeing nach Ihren Regeln",
+        body: "Eigene Route, Stopps wo Sie wollen. Kein festes Programm, keine Gruppe, kein Busfahrplan.",
+      },
+      {
+        title: "Hochzeiten und Events",
+        body: "Das Fahrzeug bleibt bei der Gesellschaft. Gäste pendeln zwischen Location, Hotel und Dinner — ohne zweite Buchung.",
+      },
+      {
+        title: "Lange Zwischenstopps",
+        body: "Sechs Stunden zwischen zwei Flügen reichen für eine Stadt. Abholung an der Ankunft, Rückfahrt mit Puffer.",
+      },
+    ],
+    includedTitle: "Was der Stundensatz abdeckt",
+    included: [
+      "Fahrzeug und Fahrer für jede gebuchte Stunde",
+      "Unbegrenzte Stopps innerhalb Ihrer Stunden",
+      "Sämtliche Wartezeit zwischen den Stopps",
+      "Kraftstoff, Maut und Parkgebühren auf der Strecke",
+      "Einen lizenzierten, versicherten lokalen Chauffeur",
+      "Kostenlose Stornierung bis 24 Stunden vor Abholung",
+    ],
+    howTitle: "So funktioniert es",
+    howSteps: [
+      {
+        title: "Stunden wählen",
+        body: "Zwei bis zwölf Stunden, ab jeder Adresse, jedem Flughafen oder Hotel. Der Preis richtet sich nach Stunde und Fahrzeugklasse.",
+      },
+      {
+        title: "Gesamtpreis vorab bestätigen",
+        body: "Sie sehen den vollen Betrag vor der Bestätigung. Zusatzstunden am Tag selbst kosten denselben Satz — nie einen Aufschlag.",
+      },
+      {
+        title: "Derselbe Fahrer durchgehend",
+        body: "Ein Chauffeur für die gesamte Buchung, Kontaktdaten erhalten Sie vor der Abholung.",
+      },
+    ],
+    faqTitle: "Fragen zum Stundenservice",
+    faqs: [
+      {
+        q: "Wie lang ist die Mindestbuchung?",
+        a: "Zwei Stunden. Darunter ist ein Punkt-zu-Punkt-Transfer fast immer günstiger — vergleichen Sie beide Preise und nehmen Sie den niedrigeren.",
+      },
+      {
+        q: "Was passiert, wenn ich überziehe?",
+        a: "Zusätzliche Zeit wird zum gleichen Stundensatz Ihrer Fahrzeugklasse berechnet und vorher mit Ihnen abgestimmt. Es gibt keinen Aufschlag und keinen Strafsatz.",
+      },
+      {
+        q: "Darf der Fahrer die Stadt verlassen?",
+        a: "Ja, innerhalb der gebuchten Stunden. Für lange einfache Strecken zwischen Städten ist ein Stadt-zu-Stadt-Transfer meist günstiger.",
+      },
+      {
+        q: "Sind Kraftstoff und Parken inklusive?",
+        a: "Ja. Kraftstoff, Maut und übliches Parken auf Ihrer Route sind im Stundensatz enthalten. Eintrittskarten und Restaurantrechnungen nicht.",
+      },
+    ],
+    ctaTitle: "Brauchen Sie Wagen und Fahrer für ein paar Stunden?",
+    ctaSubtitle: "Zwei bis zwölf Stunden, unbegrenzte Stopps, ein Preis vorab vereinbart.",
+  },
+  cityToCityPage: {
+    metaTitle: "Stadt-zu-Stadt-Transfers | Langstreckenfahrten · TransferAround",
+    metaDescription:
+      "Private Langstreckentransfers zwischen Städten — von Tür zu Tür, ein Festpreis für das Fahrzeug, nicht pro Person. Lizenzierte lokale Fahrer, kostenlose Stornierung.",
+    eyebrow: "Stadt-zu-Stadt-Fahrten",
+    title: "Von Stadt zu Stadt, von Tür zu Tür",
+    subtitle:
+      "Sparen Sie sich das Umsteigen. Ein privates Fahrzeug bringt Sie nach Ihrem Zeitplan von einer Stadt zur nächsten — ein Festpreis für den Wagen, nicht pro Person.",
+    bookTitle: "Strecke kalkulieren",
+    bookSubtitle:
+      "Beide Städte eingeben und den Gesamtpreis Ihrer Fahrzeugklasse vor der Buchung sehen.",
+    whyTitle: "Warum das eigene Fahrzeug die Verbindung schlägt",
+    why: [
+      {
+        title: "Ihr Zeitplan, nicht der Fahrplan",
+        body: "Losfahren, wann es Ihnen passt. Keine Abfahrt um 05:40, weil nur noch der Platz frei war, kein Vier-Stunden-Loch im Bahnhof.",
+      },
+      {
+        title: "Ein Preis für den Wagen",
+        body: "Vier Personen zahlen so viel wie eine. Auf den meisten Städteverbindungen liegt ein privater Wagen unter vier Zug- oder Bustickets.",
+      },
+      {
+        title: "Von Tür zu Tür, mit Gepäck",
+        body: "Vom Hoteleingang zum Hoteleingang. Kein Gleiswechsel, keine Gepäckablage, kein Taxi an beiden Enden.",
+      },
+      {
+        title: "Unterwegs anhalten",
+        body: "Ein Stopp zum Essen, für einen Aussichtspunkt oder eine zweite Abholung. Bei der Buchung angeben — dann ist er eingepreist.",
+      },
+    ],
+    includedTitle: "Bei jeder Städtefahrt inklusive",
+    included: [
+      "Ein Festpreis für das gesamte Fahrzeug",
+      "Alle Maut-, Kraftstoff- und Fahrerkosten",
+      "Abholung und Ankunft von Tür zu Tür",
+      "Einen lizenzierten lokalen Fahrer, der die Strecke kennt",
+      "Kostenlose Stornierung bis 24 Stunden vor Abholung",
+      "Kindersitze auf Wunsch ohne Aufpreis",
+    ],
+    faqTitle: "Fragen zu Stadt-zu-Stadt-Fahrten",
+    faqs: [
+      {
+        q: "Wird pro Person oder pro Fahrzeug abgerechnet?",
+        a: "Pro Fahrzeug. Der Preis deckt Wagen, Fahrer und alle Mitfahrenden ab, bis zur Kapazität der gewählten Klasse.",
+      },
+      {
+        q: "Wie weit fahren Sie?",
+        a: "Es gibt keine feste Grenze. Die meisten Städtefahrten dauern eine bis fünf Stunden; längere Strecken werden genauso kalkuliert, mit eingeplanter Fahrerpause.",
+      },
+      {
+        q: "Kann ich unterwegs einen Stopp einlegen?",
+        a: "Ja. Geben Sie ihn bei der Buchung in den Anmerkungen an, damit Preis und Zeit stimmen. Kurze Stopps auf langen Strecken sind in der Regel kostenlos.",
+      },
+      {
+        q: "Und das Gepäck?",
+        a: "Wählen Sie die Fahrzeugklasse, die zu Ihren Koffern passt — jede Klasse nennt ihre Kapazität. Städtefahrten laufen standardmäßig ab Standard Class für den zusätzlichen Platz.",
+      },
+    ],
+    ctaTitle: "Von Stadt zu Stadt unterwegs?",
+    ctaSubtitle: "Ein Festpreis für den Wagen, von Tür zu Tür, nach Ihrem Zeitplan.",
+  },
+  portPages: {
+    indexMetaTitle: "Fähr- & Kreuzfahrthafen-Transfers | TransferAround",
+    indexMetaDescription:
+      "Private Transfers ab Fähr- und Kreuzfahrthäfen in Griechenland, Spanien, Italien, Zypern und der Türkei. Festpreis, Abholung nach Ankunftszeit, kostenlose Stornierung.",
+    indexTitle: "Hafentransfers",
+    indexSubtitle: (n: number) =>
+      `${n} Fähr- und Kreuzfahrthäfen mit einem Fahrer am Terminalausgang — Preis steht vor dem Ablegen fest.`,
+    metaTitle: (port: string) => `${port} Transfers | Festpreis · TransferAround`,
+    metaDescription: (port: string, country: string) =>
+      `Private Transfers ab ${port} in ${country}. Festpreis, Fahrer am Terminalausgang, kostenlose Wartezeit bei verspätetem Schiff.`,
+    eyebrow: "Hafentransfer",
+    title: (port: string) => `${port} Transfers`,
+    intro: (port: string, country: string) =>
+      `Buchen Sie einen privaten Transfer zum Festpreis ab ${port} in ${country}. Ihr Fahrer erwartet Sie am Terminalausgang mit Namensschild und bringt Sie von Tür zu Tür — zu einem Preis, der vor der Fahrt feststeht.`,
+    factsTitle: "Wichtige Fakten",
+    factPort: "Hafen",
+    factCountry: "Land",
+    factFrom: "Preis ab",
+    factNearestAirport: "Nächster Flughafen",
+    factPickup: "Abholpunkt",
+    factPickupValue: "Terminalausgang, Namensschild",
+    factWaiting: "Kostenlose Wartezeit",
+    factWaitingValue: "60 Minuten, an Ihre Ankunft angepasst",
+    knowTitle: "Vor dem Anlegen",
+    knowItems: [
+      {
+        title: "Wir verfolgen die Fahrt, nicht die Uhr",
+        body: "Fähren und Kreuzfahrtschiffe verspäten sich häufiger als Flüge. Geben Sie Schiff und Ankunftszeit bei der Buchung an — die Abholung passt sich an, das Warten ist kostenlos.",
+      },
+      {
+        title: "Empfang am Terminalausgang",
+        body: "Kreuzfahrtterminals lassen Fahrzeuge selten an die Gangway. Ihr Fahrer wartet am ausgewiesenen Abholpunkt mit einem Schild mit Ihrem Namen.",
+      },
+      {
+        title: "Ein Festpreis, vorab vereinbart",
+        body: "Der Preis deckt Fahrzeug, Gepäck, Maut und Hafenzufahrtsgebühren. Taxis am Hafen fahren nach Taxameter und werden teurer, sobald ein großes Schiff auf einmal ausläuft.",
+      },
+    ],
+    compareTitle: (port: string) => `Wege ab ${port}`,
+    compareMode: "Option",
+    compareTime: "Dauer",
+    compareCost: "Kosten",
+    comparePros: "Vorteile",
+    compareCons: "Nachteile",
+    compareRows: [
+      {
+        mode: "Taxistand am Hafen",
+        time: "Sofort + Warteschlange",
+        cost: "Taxameter / variabel",
+        pros: "Keine Buchung nötig",
+        cons: "Lange Schlangen bei Schiffsankunft; Preis schwankt",
+      },
+      {
+        mode: "Shuttlebus",
+        time: "Feste Abfahrten",
+        cost: "Günstig",
+        pros: "Billigste Option",
+        cons: "Fester Fahrplan; nicht von Tür zu Tür; umständlich mit Gepäck",
+      },
+      {
+        mode: "Privater Transfer",
+        time: "Direkt, von Tür zu Tür",
+        cost: "Festpreis",
+        pros: "Fahrer wartet, Ankunft verfolgt, Gepäckhilfe",
+        cons: "Vorab buchen",
+      },
+    ],
+    airportsTitle: (port: string) => `Flughäfen nahe ${port}`,
+    airportsBody: "Fliegen Sie vor oder nach der Fahrt? Das sind die nächstgelegenen Drehkreuze.",
+    relatedTitle: (country: string) => `Weitere Häfen in ${country}`,
+    allPortsTitle: "Jeder Hafen, den wir abdecken",
+    bookTitle: (port: string) => `Transfer ab ${port} berechnen`,
+    bookSubtitle: "Ziel eingeben und den Gesamtpreis vor der Buchung sehen.",
+    ctaTitle: "Kommen Sie über See an?",
+    ctaSubtitle: "Festpreis, Fahrer am Terminal, kostenlose Wartezeit bei verspätetem Schiff.",
+    distanceFromPort: (km: number) => `${km} km vom Hafen`,
   },
   faqPage: {
     metaTitle: "Kreta-Transfer FAQ | Preise, Stornierung, Nachtabholungen",

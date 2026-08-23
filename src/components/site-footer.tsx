@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
 import { useLocale, useT } from "@/i18n";
-import { getLocalizedRoutes, getLocalizedServices } from "@/i18n/content";
+import { getLocalizedServices } from "@/i18n/content";
+import { getFeaturedGateways } from "@/lib/featured-gateways";
 import {
   APP_STORE_URL,
   CONTACT_EMAIL,
@@ -21,15 +22,6 @@ import { Logo } from "@/components/logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { getMarketNavigation } from "@/lib/market-navigation";
 import { TRAVEL_AGENCY_COPY } from "@/lib/travel-agency-copy";
-
-const TOP_ROUTE_SLUGS = new Set([
-  "heraklion-airport-to-elounda",
-  "heraklion-airport-to-chania",
-  "heraklion-airport-to-rethymno",
-  "chania-airport-to-chania-old-town",
-  "chania-airport-to-kissamos",
-  "souda-port-to-chania-old-town",
-]);
 
 const PAYMENT_LOGOS = [
   { src: "/footer/visa.svg", alt: "Visa", className: "h-6 w-auto lg:h-7" },
@@ -100,7 +92,7 @@ export function SiteFooter() {
   const t = useT();
   const locale = useLocale();
   const year = new Date().getFullYear();
-  const topRoutes = getLocalizedRoutes(locale).filter((route) => TOP_ROUTE_SLUGS.has(route.slug));
+  const topRoutes = getFeaturedGateways(locale);
   const services = getLocalizedServices(locale);
   const markets = getMarketNavigation(locale);
   const hasSocial = Boolean(SOCIAL_FACEBOOK || SOCIAL_INSTAGRAM || SOCIAL_X);
@@ -196,10 +188,24 @@ export function SiteFooter() {
           <h2 className="text-lg font-semibold">{t.footer.routesTitle}</h2>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed">
             {topRoutes.map((r) => (
-              <li key={r.slug}>
-                <Link to="/{-$locale}/routes/$slug" params={{ slug: r.slug }} className={linkClass}>
-                  {r.from} → {r.to}
-                </Link>
+              <li key={r.key}>
+                {r.link.kind === "airportRoute" ? (
+                  <Link
+                    to="/{-$locale}/airports/$slug/$routeSlug"
+                    params={{ slug: r.link.airportSlug, routeSlug: r.link.routeSlug }}
+                    className={linkClass}
+                  >
+                    {r.from} → {r.to}
+                  </Link>
+                ) : (
+                  <Link
+                    to="/{-$locale}/airports/$slug"
+                    params={{ slug: r.link.airportSlug }}
+                    className={linkClass}
+                  >
+                    {r.from} → {r.to}
+                  </Link>
+                )}
               </li>
             ))}
             <li>
@@ -228,6 +234,11 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link to="/{-$locale}/ports" className={linkClass}>
+                {t.portPages.indexTitle}
+              </Link>
+            </li>
             <li>
               <Link
                 to="/{-$locale}/countries"

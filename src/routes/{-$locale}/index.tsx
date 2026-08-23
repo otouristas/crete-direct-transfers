@@ -8,8 +8,13 @@ import { FleetCard } from "@/components/sections/fleet-card";
 import { RoutesChapter } from "@/components/sections/routes-chapter";
 import { InpageNav } from "@/components/inpage-nav";
 import { Reveal } from "@/components/reveal";
+import { StatsBand } from "@/components/sections/stats-band";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
-import { getLocalizedRegions, getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
+import { getLocalizedVehicles } from "@/i18n/content";
+import { getCountryName } from "@/i18n/markets";
+import { listLiveMarkets } from "@/data/markets";
+import { getMarketNavigation } from "@/lib/market-navigation";
+import { airportsInMarket } from "@/lib/coverage";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF, REVIEWS_VERIFIED } from "@/lib/site";
 import { Phone } from "lucide-react";
@@ -31,13 +36,16 @@ export const Route = createFileRoute("/{-$locale}/")({
       ogImage: HERO_IMAGE.replace("w=2400", "w=1600").replace("q=80", "q=70"),
       jsonLd: {
         "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "@id": `${SITE_URL}/#business`,
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
         name: "TransferAround",
         url: SITE_URL,
-        description: "Fixed-price private transfers across Crete.",
-        areaServed: { "@type": "Place", name: "Crete, Greece" },
-        priceRange: "€€",
+        description: t.home.metaDescription,
+        areaServed: listLiveMarkets().map((market) => ({
+          "@type": "Country",
+          name: getCountryName(locale, market.slug),
+          identifier: market.countryCode,
+        })),
         ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
         ...(REVIEWS_VERIFIED
           ? {
@@ -58,8 +66,7 @@ function HomePage() {
   const t = useT();
   const locale = useLocale();
   const vehicles = getLocalizedVehicles(locale);
-  const regions = getLocalizedRegions(locale);
-  const routes = getLocalizedRoutes(locale);
+  const markets = getMarketNavigation(locale).filter((market) => market.published);
 
   const navItems = [
     { id: "book", label: t.inpageNav.bookNow, cta: true },
@@ -67,7 +74,7 @@ function HomePage() {
     { id: "routes", label: t.inpageNav.routes },
     { id: "fleet", label: t.inpageNav.fleet },
     ...(REVIEWS_VERIFIED ? [{ id: "reviews", label: t.inpageNav.reviews }] : []),
-    { id: "regions", label: t.inpageNav.regions },
+    { id: "countries", label: t.nav.destinations },
   ];
 
   return (
@@ -106,6 +113,8 @@ function HomePage() {
       </section>
 
       <InpageNav items={navItems} />
+
+      <StatsBand />
 
       {/* 2. Manifesto */}
       <section id="manifesto" className="scroll-mt-32 bg-background">
@@ -198,32 +207,44 @@ function HomePage() {
         </section>
       )}
 
-      <section id="regions" className="scroll-mt-32 bg-primary text-primary-foreground">
+      <section id="countries" className="scroll-mt-32 bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
           <Reveal>
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-primary-foreground/55">
-              {t.nav.regions}
+              {t.nav.destinations}
             </p>
             <h2 className="mt-3 max-w-xl text-3xl font-display md:text-4xl">
-              {t.home.regionsTitle}
+              {t.home.countriesTitle}
             </h2>
-            <p className="mt-4 max-w-lg text-primary-foreground/70">{t.home.regionsSubtitle}</p>
+            <p className="mt-4 max-w-lg text-primary-foreground/70">{t.home.countriesSubtitle}</p>
           </Reveal>
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {regions.map((r) => (
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {markets.map((market) => (
               <Link
-                key={r.slug}
-                to="/{-$locale}/regions/$slug"
-                params={{ slug: r.slug }}
+                key={market.slug}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                to={`/{-$locale}/${market.slug}` as any}
                 className="rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-5 transition hover:border-accent hover:bg-primary-foreground/10"
               >
-                <div className="font-display text-xl">{r.name}</div>
+                <div className="flex items-baseline gap-2">
+                  <span aria-hidden>{market.flag}</span>
+                  <span className="font-display text-xl">{market.name}</span>
+                </div>
                 <div className="mt-1 text-xs text-primary-foreground/55">
-                  {routes.filter((route) => route.region === r.name).length}{" "}
-                  {t.nav.routes.toLowerCase()} · {r.gateway}
+                  {t.home.countriesAirports(airportsInMarket(market.slug))}
+                  {" · "}
+                  {market.mode === "instant" ? t.home.countriesInstant : t.home.countriesQuote}
                 </div>
               </Link>
             ))}
+          </div>
+          <div className="mt-8">
+            <Link
+              to="/{-$locale}/countries"
+              className="text-sm font-semibold text-accent transition hover:opacity-80"
+            >
+              {t.nav.allDestinations} →
+            </Link>
           </div>
         </div>
       </section>

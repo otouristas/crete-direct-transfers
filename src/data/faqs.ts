@@ -15,7 +15,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       },
       {
         q: "Can I book a return transfer at the same time?",
-        a: "Yes — book two separate transfers with the same customer details. We're building a combined round-trip booking flow for a future update.",
+        a: "Yes. Switch the trip to Return in the booking form, pick your return date and time, and both legs are priced together — a 5% return discount is applied automatically. You can add a separate return flight number at checkout.",
       },
     ],
   },
@@ -24,11 +24,11 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: "When do I pay?",
-        a: "Right now, we operate on a reserve-then-confirm model: you reserve online with no card required, we confirm within a few hours, and you pay the driver in cash or by card on arrival. Online payment via Stripe is coming shortly.",
+        a: "On instant-booking routes you pay by card at secure checkout the moment you confirm — the price is locked before payment. In quote-confirmed markets we send you the fixed price to approve first, and only take payment once you accept it.",
       },
       {
         q: "Do you accept cards?",
-        a: "Every driver carries a card terminal that accepts Visa, Mastercard and Amex. Cash in EUR is also fine.",
+        a: "Yes. Online checkout accepts Visa, Mastercard, Amex and the wallets your device supports. Where payment happens on arrival instead, every driver carries a card terminal, and cash in EUR is also fine.",
       },
       {
         q: "Do you charge a booking fee?",

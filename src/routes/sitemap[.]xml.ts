@@ -4,9 +4,10 @@ import { ROUTES, VEHICLE_CLASSES } from "@/data/routes";
 import { REGIONS } from "@/data/regions";
 import { SERVICES } from "@/data/services";
 import { POSTS } from "@/data/posts";
-import { AIRPORTS } from "@/data/airports";
 import { AIRPORT_ROUTES } from "@/data/airport-routes";
-import { MARKET_HUB_AIRPORTS, MARKET_HUB_CITIES } from "@/data/market-hubs";
+import { MARKET_HUB_CITIES } from "@/data/market-hubs";
+import { listIndexableAirports } from "@/lib/indexable-airports";
+import { listIndexablePorts } from "@/lib/port-resolve";
 import { listCityDestinations } from "@/data/destinations";
 import { listLiveMarkets } from "@/data/markets";
 import { REVIEWS_VERIFIED, SITE_URL } from "@/lib/site";
@@ -21,10 +22,13 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/countries",
           ...listLiveMarkets().map((m) => `/${m.slug}`),
           "/airports",
+          "/ports",
           "/cities",
           "/routes",
           "/regions",
           "/services",
+          "/hourly-service",
+          "/city-to-city",
           "/fleet",
           "/blog",
           "/about",
@@ -46,8 +50,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...SERVICES.map((s) => `/services/${s.slug}`),
           ...VEHICLE_CLASSES.map((v) => `/fleet/${v.id}`),
           ...POSTS.map((p) => `/blog/${p.slug}`),
-          ...AIRPORTS.map((a) => `/airports/${a.slug}`),
-          ...MARKET_HUB_AIRPORTS.map((a) => `/airports/${a.slug}`),
+          ...listIndexableAirports().map((a) => `/airports/${a.slug}`),
+          ...listIndexablePorts().map((p) => `/ports/${p.slug}`),
           ...AIRPORT_ROUTES.map((r) => `/airports/${r.airportSlug}/${r.routeSlug}`),
           ...listCityDestinations().map((c) => `/cities/${c.slug}`),
           ...MARKET_HUB_CITIES.map((c) => `/cities/${c.slug}`),

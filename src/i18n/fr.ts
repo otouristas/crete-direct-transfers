@@ -153,6 +153,8 @@ export const fr: Dict = {
     support: "Assistance 24h/24 et 7j/7",
   },
   stats: {
+    countries: "Pays desservis",
+    airports: "Aéroports couverts",
     transfers: "Transferts effectués",
     rating: "Note Google",
     routes: "Itinéraires à prix fixe",
@@ -244,40 +246,47 @@ export const fr: Dict = {
     time: "Heure",
   },
   home: {
-    metaTitle: "TransferAround — Transferts aeroport & port en Crete a prix fixe",
+    metaTitle: "TransferAround — Transferts aéroport privés à prix fixe",
     metaDescription:
-      "Transferts a prix fixe partout en Crete. Chauffeurs locaux licencies, suivi de vol, annulation gratuite.",
-    heroEyebrow: "Transferts prives a prix fixe",
-    heroTitle1: "Votre ile.",
+      "Transferts privés à prix fixe en Grèce, Espagne, Italie, Portugal, Chypre et Turquie. Chauffeurs locaux licenciés, suivi de vol, annulation gratuite.",
+    heroEyebrow: "Transferts privés à prix fixe",
+    heroTitle1: "Votre arrivée.",
     heroTitleAccent: "Votre chauffeur.",
-    heroSubtitle: "A l'aeroport ou au port — prix fixe, suivi de vol, annulation gratuite.",
-    manifestoLead: "Les meilleures arrivees sont",
+    heroSubtitle:
+      "À l'aéroport ou au port, dans six pays — prix fixe, suivi de vol, annulation gratuite.",
+    manifestoLead: "Les meilleures arrivées sont",
     manifestoAccent: "sans effort.",
     manifestoBody:
-      "Pas parce que tout a ete planifie a la perfection — parce que quelqu'un s'occupe discretement des details. Le panneau a votre nom. Le prix fixe que vous connaissez deja. Le chauffeur local qui sait quelle sortie mene aux embouteillages.",
-    manifestoClose: "Vous suivez la Crete. Nous nous occupons du reste.",
+      "Pas parce que tout a été planifié à la perfection — parce que quelqu'un s'occupe discrètement des détails. Le panneau à votre nom. Le prix fixe que vous connaissez déjà. Le chauffeur local qui sait quelle sortie mène aux embouteillages.",
+    manifestoClose: "Vous suivez le voyage. Nous nous occupons du reste.",
     routesChapterTitle: "Nous vous y",
     routesChapterAccent: "emmenons.",
     routesChapterSubtitle:
-      "Trente trajets a prix fixe. Survolez un trajet pour voir ou il mene — et ce qu'il coute.",
-    fleetTitle: "Une voiture pour chaque arrivee",
-    fleetSubtitle: "Economy a Luxury — memes chauffeurs licencies, memes prix fixes.",
-    proofTitle: "Note 4,9 par des voyageurs comme vous",
-    proofSubtitle: "Vrais avis de vraies prises en charge en Crete.",
-    regionsTitle: "Une ile, couverte de bout en bout",
-    regionsSubtitle: "Deux aeroports internationaux, trois ports, 260 km de cote.",
+      "Des aéroports au tarif connu d'avance, de la Crète à la Costa del Sol. Choisissez-en un pour voir où il mène — et ce qu'il coûte.",
+    fleetTitle: "Une voiture pour chaque arrivée",
+    fleetSubtitle: "Economy à Luxury — mêmes chauffeurs licenciés, mêmes prix fixes.",
+    proofTitle: "Ce que disent les voyageurs",
+    proofSubtitle: "De vrais avis, de vraies prises en charge.",
+    regionsTitle: "Une île, couverte de bout en bout",
+    regionsSubtitle: "Deux aéroports internationaux, trois ports, 260 km de côte.",
+    countriesTitle: "Où nous conduisons",
+    countriesSubtitle:
+      "Six pays, des centaines d'aéroports et de ports — un prix fixe par véhicule, pas par personne.",
+    countriesInstant: "Réservation immédiate",
+    countriesQuote: "Devis confirmé",
+    countriesAirports: (n: number) => `${n} aéroports`,
     closingTitle: "Vous explorez.",
     closingAccent: "Nous conduisons.",
     closingSubtitle:
-      "Prix fixe, chauffeur licencie, annulation gratuite. Reservez en deux minutes.",
+      "Prix fixe, chauffeur licencié, annulation gratuite. Réservez en deux minutes.",
     popularTitle: "Trajets populaires",
     popularSubtitle: "Prix fixes sur les trajets les plus reserves.",
-    reviewsTitle: "Note 4,9 par des voyageurs comme vous",
-    reviewsSubtitle: "Vrais avis de vraies prises en charge en Crete.",
+    reviewsTitle: "Ce que disent les voyageurs",
+    reviewsSubtitle: "De vrais avis, de vraies prises en charge.",
     faqTitle: "Questions, reponses",
-    faqSubtitle: "Ce que les voyageurs demandent avant de reserver.",
-    ctaTitle: "Pret pour une arrivee sans stress ?",
-    ctaSubtitle: "Prix fixe, chauffeur licencie, annulation gratuite. Reservez en deux minutes.",
+    faqSubtitle: "Ce que les voyageurs demandent avant de réserver.",
+    ctaTitle: "Prêt pour une arrivée sans stress ?",
+    ctaSubtitle: "Prix fixe, chauffeur licencié, annulation gratuite. Réservez en deux minutes.",
   },
   inpageNav: {
     ariaLabel: "Navigation dans la page",
@@ -371,7 +380,7 @@ export const fr: Dict = {
   },
   servicesPages: {
     indexTitle: "Nous vous y emmenons.",
-    indexSubtitle: "Dites-nous ou commencer — aeroport, port, ou une journee sur l'ile.",
+    indexSubtitle: "Dites-nous où commencer — aéroport, port, ou une journée sur l'île.",
     routesFor: "Itinéraires populaires pour ce service",
   },
   fleetPages: {
@@ -382,6 +391,10 @@ export const fr: Dict = {
     bookClass: "Réserver ce véhicule",
   },
   directoryPages: {
+    allCitiesTitle: "Villes dans chaque marché",
+    allAirportsTitle: "Tous les aéroports que nous couvrons",
+    allAirportsSubtitle: (n: number, c: number) =>
+      `${n} aéroports dans ${c} pays. Choisissez le vôtre pour les prix, points de prise en charge et trajets.`,
     greece: "Grèce",
     cityEntity: "Ville",
     vehicleEntity: "Véhicule",
@@ -468,15 +481,15 @@ export const fr: Dict = {
     title: "Notre ADN.",
     intro: "TransferAround existe parce que le marché du transfert sur notre île était défaillant.",
     body1:
-      "Les voyageurs arrivant a Heraklion ou La Cannee devaient comparer des offres d'inconnus, negocier sur WhatsApp, ou faire confiance au compteur apres un long vol. Les prix bougeaient. Les chauffeurs tournaient. La responsabilite n'etait le travail de personne.",
+      "Les voyageurs arrivant à Héraklion ou La Canée devaient comparer des offres d'inconnus, négocier sur WhatsApp, ou faire confiance au compteur après un long vol. Les prix bougeaient. Les chauffeurs tournaient. La responsabilité n'était le travail de personne.",
     body2:
-      "Nous sommes locaux — une petite equipe de La Cannee et Heraklion — et nous avons construit ce que nous avons toujours voulu : un prix fixe par trajet, un chauffeur licencie par reservation, un numero a appeler si quelque chose cloche.",
+      "Nous sommes locaux — une petite équipe de La Canée et Heraklion — et nous avons construit ce que nous avons toujours voulu : un prix fixe par trajet, un chauffeur licencié par réservation, un numero a appeler si quelque chose cloche.",
     wontTitle: "Ce que nous ne ferons pas",
     wontBody:
-      "Pas d'encheres inverses. Pas de surge a 2h du matin. Pas de chauffeur au hasard que nous n'avons jamais rencontre. Chaque chauffeur de notre reseau est licencie, assure, et conduit en Crete depuis au moins trois ans.",
+      "Pas d'enchères inverses. Pas de surge à 2h du matin. Pas de chauffeur au hasard que nous n'avons jamais rencontré. Chaque chauffeur de notre réseau est licencié, assuré, et conduit en Crète depuis au moins trois ans.",
     whyTitle: "Pourquoi une seule ile",
     whyBody:
-      "Les plateformes mondiales couvrent 180 pays et n'en comprennent vraiment aucun. Nous couvrons 260 km de cote, deux aeroports internationaux, trois ports, et chaque acces hotel digne d'etre connu. La profondeur plutot que l'etendue.",
+      "Les plateformes mondiales couvrent 180 pays et n'en comprennent vraiment aucun. Nous couvrons 260 km de côte, deux aéroports internationaux, trois ports, et chaque accès hôtel digne d'être connu. La profondeur plutot que l'etendue.",
     valuesTitle: "Nos valeurs",
     value1Title: "Ponctualité",
     value1Body:
@@ -576,6 +589,221 @@ export const fr: Dict = {
     groupPorts: "Ports",
     groupPopular: "Populaires",
     groupInCountry: "En {country}",
+  },
+  hourlyPage: {
+    metaTitle: "Chauffeur à l'heure | Mise à disposition · TransferAround",
+    metaDescription:
+      "Réservez un chauffeur privé à l'heure — de 2 à 12 heures, arrêts illimités, un prix fixe. Chauffeurs licenciés en Grèce, Espagne, Italie, Portugal, Chypre et Turquie.",
+    eyebrow: "Service à l'heure",
+    title: "Un chauffeur pour la journée, pas seulement pour le trajet",
+    subtitle:
+      "Réservez un chauffeur licencié à l'heure — de deux heures à douze. Arrêts illimités, temps d'attente compris, un prix convenu avant le départ.",
+    bookTitle: "Calculez vos heures",
+    bookSubtitle:
+      "Choisissez le point de départ et la durée. Le total s'affiche avant de réserver.",
+    useCasesTitle: "Pourquoi on le réserve",
+    useCases: [
+      {
+        title: "Journées professionnelles",
+        body: "Trois rendez-vous à travers la ville, les bagages restent dans le coffre. Votre chauffeur attend entre chaque — rien à re-réserver, rien à réexpliquer.",
+      },
+      {
+        title: "Visiter à votre rythme",
+        body: "Votre itinéraire, vos arrêts. Pas de programme imposé, pas de groupe, pas d'horaire d'autocar.",
+      },
+      {
+        title: "Mariages et événements",
+        body: "La voiture reste avec le groupe. Les invités circulent entre le lieu, l'hôtel et le dîner sans seconde réservation.",
+      },
+      {
+        title: "Longues escales",
+        body: "Six heures entre deux vols suffisent pour une ville. Prise en charge à l'arrivée, retour avec de la marge.",
+      },
+    ],
+    includedTitle: "Ce que couvre le tarif horaire",
+    included: [
+      "Le véhicule et le chauffeur pour chaque heure réservée",
+      "Des arrêts illimités pendant vos heures",
+      "Tout le temps d'attente entre les arrêts",
+      "Carburant, péages et stationnement sur le trajet",
+      "Un chauffeur local licencié et assuré",
+      "Annulation gratuite jusqu'à 24 heures avant la prise en charge",
+    ],
+    howTitle: "Comment ça marche",
+    howSteps: [
+      {
+        title: "Choisissez vos heures",
+        body: "De deux à douze heures, depuis n'importe quelle adresse, aéroport ou hôtel. Le prix dépend de la durée et de la classe de véhicule.",
+      },
+      {
+        title: "Validez le total d'abord",
+        body: "Vous voyez le montant complet avant de confirmer. Les heures supplémentaires le jour même sont au même tarif, jamais majorées.",
+      },
+      {
+        title: "Le même chauffeur",
+        body: "Un seul chauffeur pour toute la réservation, ses coordonnées vous sont transmises avant la prise en charge.",
+      },
+    ],
+    faqTitle: "Questions sur le service à l'heure",
+    faqs: [
+      {
+        q: "Quelle est la réservation minimum ?",
+        a: "Deux heures. En dessous, un transfert point à point revient presque toujours moins cher — comparez les deux et prenez le plus avantageux.",
+      },
+      {
+        q: "Que se passe-t-il si je dépasse mes heures ?",
+        a: "Le temps supplémentaire est facturé au même tarif horaire pour votre classe de véhicule, confirmé avec vous avant de commencer. Aucune majoration, aucun tarif de pénalité.",
+      },
+      {
+        q: "Le chauffeur peut-il quitter la ville ?",
+        a: "Oui, dans la limite des heures réservées. Pour un long trajet simple entre deux villes, un transfert ville à ville est généralement plus avantageux.",
+      },
+      {
+        q: "Le carburant et le stationnement sont-ils inclus ?",
+        a: "Oui. Carburant, péages et stationnement courant sur votre trajet sont compris dans le tarif horaire. Les billets d'entrée et les additions au restaurant ne le sont pas.",
+      },
+    ],
+    ctaTitle: "Besoin d'une voiture et d'un chauffeur pour quelques heures ?",
+    ctaSubtitle: "De deux à douze heures, arrêts illimités, un prix convenu avant le départ.",
+  },
+  cityToCityPage: {
+    metaTitle: "Transferts privés ville à ville | Longue distance · TransferAround",
+    metaDescription:
+      "Transferts privés longue distance entre villes — de porte à porte, un prix fixe pour le véhicule, pas par personne. Chauffeurs locaux licenciés, annulation gratuite.",
+    eyebrow: "Trajets ville à ville",
+    title: "D'une ville à l'autre, de porte à porte",
+    subtitle:
+      "Oubliez la correspondance. Une voiture privée vous emmène d'une ville à la suivante selon votre horaire — un prix fixe pour le véhicule, pas par personne.",
+    bookTitle: "Calculez votre trajet",
+    bookSubtitle:
+      "Indiquez les deux villes et voyez le total de votre classe de véhicule avant de réserver.",
+    whyTitle: "Pourquoi la voiture privée bat la correspondance",
+    why: [
+      {
+        title: "Votre horaire, pas celui du tableau",
+        body: "Partez quand cela vous arrange. Pas de départ à 05h40 parce que c'était la dernière place, pas de quatre heures d'attente en gare.",
+      },
+      {
+        title: "Un prix pour la voiture",
+        body: "Quatre personnes paient le prix d'une. Sur la plupart des liaisons entre villes, la voiture privée revient moins cher que quatre billets.",
+      },
+      {
+        title: "De porte à porte, avec les bagages",
+        body: "De l'entrée de l'hôtel à l'entrée de l'hôtel. Pas de changement de quai, pas de porte-bagages, pas de taxi aux deux bouts.",
+      },
+      {
+        title: "Un arrêt en chemin",
+        body: "Ajoutez un arrêt déjeuner, un point de vue ou une seconde prise en charge. Signalez-le à la réservation et c'est inclus dans le prix.",
+      },
+    ],
+    includedTitle: "Inclus sur chaque trajet entre villes",
+    included: [
+      "Un prix fixe pour tout le véhicule",
+      "Tous les péages, le carburant et les frais de chauffeur",
+      "Prise en charge et dépose de porte à porte",
+      "Un chauffeur local licencié qui connaît la route",
+      "Annulation gratuite jusqu'à 24 heures avant la prise en charge",
+      "Sièges enfant sur demande, sans supplément",
+    ],
+    faqTitle: "Questions sur les trajets ville à ville",
+    faqs: [
+      {
+        q: "Le prix est-il par personne ou par voiture ?",
+        a: "Par voiture. Le prix couvre le véhicule, le chauffeur et tous les passagers, dans la limite de la capacité de la classe choisie.",
+      },
+      {
+        q: "Jusqu'où allez-vous ?",
+        a: "Il n'y a pas de limite fixe. La plupart des trajets durent d'une à cinq heures ; les plus longs sont tarifés de la même façon, avec une pause chauffeur prévue.",
+      },
+      {
+        q: "Puis-je ajouter un arrêt en route ?",
+        a: "Oui. Indiquez-le dans les notes lors de la réservation pour que le prix et l'horaire en tiennent compte. Les arrêts courts sur les longs trajets sont généralement gratuits.",
+      },
+      {
+        q: "Et les bagages ?",
+        a: "Choisissez la classe adaptée à vos valises — chaque classe indique sa capacité. Les trajets entre villes utilisent par défaut la Standard Class ou supérieure pour l'espace supplémentaire.",
+      },
+    ],
+    ctaTitle: "Vous allez d'une ville à l'autre ?",
+    ctaSubtitle: "Un prix fixe pour la voiture, de porte à porte, selon votre horaire.",
+  },
+  portPages: {
+    indexMetaTitle: "Transferts port de ferry et de croisière | TransferAround",
+    indexMetaDescription:
+      "Transferts privés depuis les ports de ferry et de croisière en Grèce, Espagne, Italie, Chypre et Turquie. Prix fixe, prise en charge selon votre arrivée, annulation gratuite.",
+    indexTitle: "Transferts depuis les ports",
+    indexSubtitle: (n: number) =>
+      `${n} ports de ferry et de croisière avec un chauffeur à la sortie du terminal — le prix est connu avant d'embarquer.`,
+    metaTitle: (port: string) => `Transferts ${port} | Prix fixe · TransferAround`,
+    metaDescription: (port: string, country: string) =>
+      `Transferts privés depuis ${port}, ${country}. Prix fixe, chauffeur à la sortie du terminal, attente gratuite si votre navire a du retard.`,
+    eyebrow: "Transfert depuis le port",
+    title: (port: string) => `Transferts ${port}`,
+    intro: (port: string, country: string) =>
+      `Réservez un transfert privé à prix fixe depuis ${port}, ${country}. Votre chauffeur vous attend à la sortie du terminal avec un panneau à votre nom et vous conduit de porte à porte, à un prix convenu avant le départ.`,
+    factsTitle: "Informations clés",
+    factPort: "Port",
+    factCountry: "Pays",
+    factFrom: "Prix à partir de",
+    factNearestAirport: "Aéroport le plus proche",
+    factPickup: "Point de prise en charge",
+    factPickupValue: "Sortie du terminal, panneau nominatif",
+    factWaiting: "Attente gratuite",
+    factWaitingValue: "60 minutes, ajustées à votre arrivée",
+    knowTitle: "Avant d'accoster",
+    knowItems: [
+      {
+        title: "Nous suivons la traversée, pas l'horloge",
+        body: "Les ferries et les navires de croisière ont plus souvent du retard que les avions. Indiquez votre navire et votre heure à la réservation : la prise en charge s'adapte et l'attente est gratuite.",
+      },
+      {
+        title: "Accueil à la sortie du terminal",
+        body: "Les terminaux de croisière autorisent rarement les voitures à la passerelle. Votre chauffeur attend au point de prise en charge indiqué avec un panneau à votre nom.",
+      },
+      {
+        title: "Un prix fixe, convenu à l'avance",
+        body: "Le tarif couvre le véhicule, les bagages, les péages et les frais d'accès au port. Les taxis du port sont au compteur et augmentent dès qu'un gros navire se vide d'un coup.",
+      },
+    ],
+    compareTitle: (port: string) => `Comment partir de ${port}`,
+    compareMode: "Option",
+    compareTime: "Durée",
+    compareCost: "Coût",
+    comparePros: "Avantages",
+    compareCons: "Inconvénients",
+    compareRows: [
+      {
+        mode: "Station de taxis du port",
+        time: "Immédiat + file d'attente",
+        cost: "Au compteur / variable",
+        pros: "Aucune réservation",
+        cons: "Longues files à l'arrivée d'un navire ; tarif variable",
+      },
+      {
+        mode: "Navette",
+        time: "Départs fixes",
+        cost: "Faible",
+        pros: "Option la moins chère",
+        cons: "Horaire imposé ; pas de porte à porte ; peu pratique avec les bagages",
+      },
+      {
+        mode: "Transfert privé",
+        time: "Direct, de porte à porte",
+        cost: "Prix fixe",
+        pros: "Chauffeur qui attend, traversée suivie, bagages pris en charge",
+        cons: "Réserver à l'avance",
+      },
+    ],
+    airportsTitle: (port: string) => `Aéroports proches de ${port}`,
+    airportsBody:
+      "Vous prenez l'avion avant ou après ? Voici les portes d'entrée les plus proches.",
+    relatedTitle: (country: string) => `Autres ports en ${country}`,
+    allPortsTitle: "Tous les ports que nous couvrons",
+    bookTitle: (port: string) => `Calculez votre transfert depuis ${port}`,
+    bookSubtitle: "Indiquez votre destination pour voir le total avant de réserver.",
+    ctaTitle: "Vous arrivez par la mer ?",
+    ctaSubtitle: "Prix fixe, chauffeur au terminal, attente gratuite si votre navire a du retard.",
+    distanceFromPort: (km: number) => `${km} km du port`,
   },
   faqPage: {
     metaTitle: "FAQ transferts en Crète | Tarifs, annulation, prises en charge de nuit",
@@ -713,7 +941,7 @@ export const fr: Dict = {
     fleetIndexTitle: "Flotte | Classes de véhicules pour les transferts en Crète",
     fleetIndexDescription:
       "De la classe économique au minibus — choisissez la bonne classe de véhicule pour votre transfert en Crète. Tarifs fixes, chauffeurs agréés.",
-    servicesIndexTitle: "Services de transfert en Crète | TransfertAutour",
+    servicesIndexTitle: "Services de transfert en Crète | TransferAround",
     servicesIndexDescription:
       "Services de chauffeur aux aéroports, ports, centres de villégiature et horaires à travers la Crète — prix fixes, chauffeurs locaux nommés.",
     regionsIndexTitle: "Régions de Crète | La Canée, Réthymnon, Héraklion, Lassithi",
@@ -722,10 +950,10 @@ export const fr: Dict = {
     routesIndexTitle: "Itinéraires de transfert en Crète | Prix ​​fixes · TransferAround",
     routesIndexDescription:
       "Parcourez tous les itinéraires de transfert privés à prix fixe en Crète — aéroports, ports et centres de villégiature.",
-    airportsIndexTitle: "Transferts aéroport en Grèce | TransfertAutour",
+    airportsIndexTitle: "Transferts aéroport en Grèce | TransferAround",
     airportsIndexDescription:
       "Transferts aéroport privés avec chauffeurs agréés — Crète et au-delà. Prix ​​fixes, rencontre et accueil.",
-    citiesIndexTitle: "Transferts de ville | TransfertAutour",
+    citiesIndexTitle: "Transferts de ville | TransferAround",
     citiesIndexDescription:
       "Transferts privés vers les villes et stations balnéaires sur notre carte de couverture.",
     cityTitle: (name: string) => `${name} transferts | TransferAround`,
@@ -1080,7 +1308,7 @@ export const fr: Dict = {
     dispatchExpired: "Aucun chauffeur disponible",
     dispatchFailed: "Échec du dispatch",
     dispatchCancelled: "Demande annulée",
-    dispatchEta: "Arrive dans environ {min} minutes",
+    dispatchEta: "Arrivée dans environ {min} minutes",
     dispatchViewBooking: "Voir la réservation",
     dispatchSupport: "Contacter le support",
     dispatchPrice: "Tarif",
