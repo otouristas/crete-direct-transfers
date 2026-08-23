@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Briefcase, Building2, Car, ChevronDown, Globe2, Menu, X } from "lucide-react";
+import { Briefcase, Building2, Car, ChevronDown, Globe2, Menu, Plane, X } from "lucide-react";
 import { PREFIX_LOCALES, useLocale, useT } from "@/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { AccountMenu } from "@/components/auth/account-menu";
@@ -8,6 +8,7 @@ import { Logo } from "@/components/logo";
 import { MobileMenu } from "@/components/mobile-menu";
 import { cn } from "@/lib/utils";
 import { getMarketNavigation } from "@/lib/market-navigation";
+import { TRAVEL_AGENCY_COPY } from "@/lib/travel-agency-copy";
 
 const HEADER_H = "h-16";
 
@@ -52,6 +53,7 @@ export function SiteHeader() {
   const partnerLinks: NavLink[] = [
     { label: t.nav.forHotels, to: "/{-$locale}/for-hotels" },
     { label: t.nav.forDrivers, to: "/{-$locale}/for-drivers" },
+    { label: TRAVEL_AGENCY_COPY[locale].nav, to: "/{-$locale}/for-travel-agencies" },
   ];
 
   useEffect(() => {
@@ -256,6 +258,8 @@ export function SiteHeader() {
                         <span className="text-accent">
                           {item.to.includes("hotels") ? (
                             <Building2 className="h-4 w-4" aria-hidden />
+                          ) : item.to.includes("travel-agencies") ? (
+                            <Plane className="h-4 w-4" aria-hidden />
                           ) : (
                             <Briefcase className="h-4 w-4" aria-hidden />
                           )}

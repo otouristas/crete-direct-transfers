@@ -6,9 +6,13 @@ import type { AirportRouteData } from "@/data/airport-routes";
 import { relatedAirportsByCountry } from "@/lib/airport-resolve";
 import { formatEur } from "@/lib/pricing";
 import { BookingWidget } from "@/components/booking-widget";
-import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 import { cn } from "@/lib/utils";
-import { useT } from "@/i18n";
+import { useLocale, useT } from "@/i18n";
+import { getCountryName } from "@/i18n/markets";
+
+function displayCountry(airport: AirportData, locale: ReturnType<typeof useLocale>) {
+  return airport.countrySlug ? getCountryName(locale, airport.countrySlug) : airport.country;
+}
 
 export function AirportHero({
   airport,
@@ -18,6 +22,7 @@ export function AirportHero({
   bookingSlot: ReactNode;
 }) {
   const t = useT();
+  const locale = useLocale();
   return (
     <section className="relative bg-primary text-primary-foreground">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -29,7 +34,7 @@ export function AirportHero({
       </div>
       <div className="relative mx-auto max-w-7xl px-6 pb-10 pt-16 md:pb-14 md:pt-24">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-          {t.directoryPages.greece} <span aria-hidden>·</span> {airport.iata}
+          {displayCountry(airport, locale)} <span aria-hidden>·</span> {airport.iata}
         </p>
         <h1 className="mt-3 max-w-3xl text-4xl font-display md:text-5xl lg:text-6xl">
           {t.airportPages.transfersTitle(airport.name, airport.iata)}
@@ -38,9 +43,6 @@ export function AirportHero({
           {t.airportPages.heroDescription}
         </p>
         <p className="mt-4 text-sm text-primary-foreground/65">{t.airportPages.heroTrustLine}</p>
-        <div className="mt-5">
-          <AskTouristasInline prompt={t.airportPages.aiPrompt(airport.name, airport.iata)} />
-        </div>
         <div className="mt-8" id="react-picker">
           {bookingSlot}
         </div>
@@ -49,14 +51,14 @@ export function AirportHero({
   );
 }
 
-export function AirportInPageNav() {
+export function AirportInPageNav({ showVehicles = true }: { showVehicles?: boolean }) {
   const t = useT();
   const navItems = [
     { id: "key-transfer-facts", label: t.inpageNav.keyFacts },
     { id: "airport-operational-info", label: t.inpageNav.localInfo },
     { id: "transfer-overview", label: t.inpageNav.overview },
     { id: "transport-comparison", label: t.inpageNav.compare },
-    { id: "vehicles-available", label: t.inpageNav.vehicles },
+    ...(showVehicles ? [{ id: "vehicles-available", label: t.inpageNav.vehicles }] : []),
     { id: "airport-faq", label: t.inpageNav.faqs },
     { id: "related-routes", label: t.inpageNav.related },
   ];
@@ -98,7 +100,9 @@ export function AirportBookingSlot({
     <div className="relative z-20 rounded-2xl bg-card p-4 text-foreground shadow-xl md:p-6">
       {airport.bookable !== "instant" && (
         <p className="mb-4 text-sm text-muted-foreground">
-          {t.airportPages.quoteNote(formatEur(airport.fromPriceEur))}
+          {airport.fromPriceEur > 0
+            ? t.airportPages.quoteNote(formatEur(airport.fromPriceEur))
+            : t.marketsDirectory.quoteFirst}
         </p>
       )}
       <BookingWidget defaultIata={airport.iata} defaultRoute={defaultRouteSlug} compact />
@@ -108,11 +112,16 @@ export function AirportBookingSlot({
 
 export function AirportFacts({ airport }: { airport: AirportData }) {
   const t = useT();
+  const locale = useLocale();
   const facts = [
     { label: t.airportPages.airportName, value: `${airport.name} (${airport.iata})` },
     { label: t.airportPages.primaryCity, value: airport.cityName },
-    { label: t.airportPages.country, value: airport.country },
-    { label: t.airportPages.startingPrice, value: formatEur(airport.fromPriceEur) },
+    { label: t.airportPages.country, value: displayCountry(airport, locale) },
+    {
+      label: t.airportPages.startingPrice,
+      value:
+        airport.fromPriceEur > 0 ? formatEur(airport.fromPriceEur) : t.marketsDirectory.quoteFirst,
+    },
     {
       label: t.routesPages.factTracking,
       value: t.airportPages.flightMonitoringValue,
@@ -223,6 +232,7 @@ export function AirportKnowBefore({ airport }: { airport: AirportData }) {
 
 export function AirportInsights({ airport }: { airport: AirportData }) {
   const t = useT();
+  const locale = useLocale();
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -292,10 +302,11 @@ export function AirportInsights({ airport }: { airport: AirportData }) {
             <div className="flex flex-col gap-1 rounded-2xl bg-secondary/60 px-4 py-3 sm:flex-row sm:justify-between">
               <span className="font-bold text-muted-foreground">{t.airportPages.country}</span>
               <Link
-                to="/{-$locale}/greece"
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                to={`/{-$locale}/${airport.countrySlug ?? "greece"}` as any}
                 className="font-bold text-accent-deep hover:underline sm:text-right"
               >
-                {t.directoryPages.greece}
+                {displayCountry(airport, locale)}
               </Link>
             </div>
             {airport.zip ? <InfoRow label={t.airportPages.zipcode} value={airport.zip} /> : null}
@@ -558,11 +569,12 @@ export function AirportPopularRoutes({
 
 export function OtherAirportsInGreece({ airport }: { airport: AirportData }) {
   const t = useT();
+  const locale = useLocale();
   // Country-aware: show other airports in the same country (curated slug where a
   // rich page exists, generated slug otherwise). Falls back to nothing if none.
   const others = relatedAirportsByCountry(airport.iata, 9);
   if (others.length === 0) return null;
-  const country = airport.country;
+  const country = displayCountry(airport, locale);
   return (
     <section className="bg-secondary/40 py-14 sm:py-20">
       <div className="mx-auto max-w-7xl px-6">

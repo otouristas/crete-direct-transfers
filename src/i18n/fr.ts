@@ -943,7 +943,7 @@ export const fr: Dict = {
     offersEmpty: "Aucune offre active. Restez en ligne.",
     asapTitle: "MAINTENANT / ASAP",
     asapEmpty:
-      "Aucune demande MAINTENANT. Quand un passager demande un transfert immédiat à Touristas, elle apparaît ici.",
+      "Aucune demande MAINTENANT. Les nouvelles demandes de transfert immédiat apparaîtront ici.",
     asapBadge: "MAINTENANT",
     asapExpires: "Expire dans {sec}s",
     asapNewToast: "Nouvelle demande de transfert MAINTENANT",

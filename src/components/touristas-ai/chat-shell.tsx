@@ -105,7 +105,7 @@ export function TouristasChatShell({
             {variant === "panel" && (
               <>
                 <Link
-                  to="/{-$locale}/touristas-ai"
+                  to="/{-$locale}/book"
                   className="rounded-xl p-2 transition hover:bg-primary-foreground/10"
                   aria-label={t.openFullPage}
                   title={t.openFullPage}

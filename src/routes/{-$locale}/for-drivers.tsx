@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { getDict, useT, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
-import { ContactForm } from "@/components/contact-form";
+import { PartnerInquiryForm } from "@/components/partner-inquiry-form";
 import { ArrowRight, Check } from "lucide-react";
 
 export const Route = createFileRoute("/{-$locale}/for-drivers")({
@@ -68,11 +68,7 @@ export const Route = createFileRoute("/{-$locale}/for-drivers")({
               </Link>{" "}
               {t.forDrivers.applyIntroAfter}
             </p>
-            <ContactForm
-              topic="driver"
-              submitLabel={t.forDrivers.submitLabel}
-              placeholder={t.forDrivers.placeholder}
-            />
+            <PartnerInquiryForm kind="driver" />
           </div>
         </section>
       </>

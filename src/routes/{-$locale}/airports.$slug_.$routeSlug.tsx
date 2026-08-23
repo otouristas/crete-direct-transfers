@@ -11,8 +11,6 @@ import {
   getLocalizedAirportRoutes,
 } from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
-import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
-import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 import {
   AirportBookingSlot,
   AirportFaqs,
@@ -185,11 +183,6 @@ function AirportRoutePage() {
               formatEur(route.basePriceEur),
             )}
           </p>
-          <div className="mt-6">
-            <AskTouristasInline
-              prompt={t.airportPages.routeAiPrompt(route.fromName, route.toName)}
-            />
-          </div>
           <div className="mt-8" id="react-picker">
             <AirportBookingSlot
               airport={{ ...airport, bookable: route.bookable, fromPriceEur: route.basePriceEur }}
@@ -198,12 +191,6 @@ function AirportRoutePage() {
           </div>
         </div>
       </section>
-
-      <AskTouristasBand
-        pageType="corridor"
-        entityLabel={`${airport.name} (${airport.iata})`}
-        secondaryLabel={route.toName}
-      />
 
       <AirportTrustStrip />
 

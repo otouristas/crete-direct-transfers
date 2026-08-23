@@ -9,8 +9,78 @@ import {
   getLocalizedMarketHubCities,
 } from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
-import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
+import { BookingWidget } from "@/components/booking-widget";
 import { translate } from "@transferaround/i18n";
+
+const HERO_IATA: Record<string, string> = {
+  greece: "HER",
+  spain: "MAD",
+  italy: "FCO",
+  portugal: "LIS",
+  cyprus: "LCA",
+  turkey: "IST",
+};
+
+const HERO_DESTINATIONS = {
+  en: [
+    "Elounda",
+    "Madrid city centre",
+    "Rome city centre",
+    "Lisbon city centre",
+    "Limassol",
+    "Istanbul city centre",
+  ],
+  el: [
+    "Ελούντα",
+    "Κέντρο Μαδρίτης",
+    "Κέντρο Ρώμης",
+    "Κέντρο Λισαβόνας",
+    "Λεμεσός",
+    "Κέντρο Κωνσταντινούπολης",
+  ],
+  de: [
+    "Elounda",
+    "Stadtzentrum Madrid",
+    "Stadtzentrum Rom",
+    "Stadtzentrum Lissabon",
+    "Limassol",
+    "Stadtzentrum Istanbul",
+  ],
+  fr: [
+    "Elounda",
+    "Centre de Madrid",
+    "Centre de Rome",
+    "Centre de Lisbonne",
+    "Limassol",
+    "Centre d’Istanbul",
+  ],
+  it: [
+    "Elounda",
+    "Centro di Madrid",
+    "Centro di Roma",
+    "Centro di Lisbona",
+    "Limassol",
+    "Centro di Istanbul",
+  ],
+  nl: [
+    "Elounda",
+    "Centrum van Madrid",
+    "Centrum van Rome",
+    "Centrum van Lissabon",
+    "Limassol",
+    "Centrum van Istanbul",
+  ],
+  es: [
+    "Elounda",
+    "Centro de Madrid",
+    "Centro de Roma",
+    "Centro de Lisboa",
+    "Limasol",
+    "Centro de Estambul",
+  ],
+} as const;
+
+const HERO_MARKETS = ["greece", "spain", "italy", "portugal", "cyprus", "turkey"] as const;
 
 export function CountryHubPage({ market }: { market: Market }) {
   const t = useT();
@@ -23,6 +93,11 @@ export function CountryHubPage({ market }: { market: Market }) {
   const cities = isGreece
     ? listCityDestinations().slice(0, 18)
     : getLocalizedMarketHubCities(locale, market.slug);
+  const heroIndex = HERO_MARKETS.indexOf(market.slug as (typeof HERO_MARKETS)[number]);
+  const heroDefault =
+    heroIndex >= 0
+      ? { iata: HERO_IATA[market.slug], destination: HERO_DESTINATIONS[locale][heroIndex] }
+      : undefined;
 
   return (
     <>
@@ -33,15 +108,17 @@ export function CountryHubPage({ market }: { market: Market }) {
           </p>
           <h1 className="mt-3 text-4xl font-display md:text-6xl">{market.heroTitle}</h1>
           <p className="mt-4 max-w-2xl text-lg text-primary-foreground/80">{market.heroBody}</p>
+          {heroDefault ? (
+            <div className="relative z-20 mt-10">
+              <BookingWidget
+                variant="hbar"
+                defaultIata={heroDefault.iata}
+                defaultDestination={heroDefault.destination}
+              />
+            </div>
+          ) : null}
         </div>
       </section>
-
-      <AskTouristasBand
-        pageType="country"
-        entityLabel={market.name}
-        entitySlug={market.slug}
-        market={market.slug as "greece" | "spain" | "italy" | "portugal" | "cyprus" | "turkey"}
-      />
 
       <section className="mx-auto max-w-7xl px-6 py-14">
         <h2 className="text-2xl font-display text-primary">{t.seo.searchIntents}</h2>
@@ -71,27 +148,20 @@ export function CountryHubPage({ market }: { market: Market }) {
           <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {airports.map((a) => (
               <li key={a.slug}>
-                {isGreece ? (
-                  <Link
-                    to="/{-$locale}/airports/$slug"
-                    params={{ slug: a.slug }}
-                    className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium hover:border-accent"
-                  >
-                    <span>
-                      {a.name} {"iata" in a ? `(${a.iata})` : ""}
-                    </span>
-                    <span className="text-muted-foreground">
-                      {formatEur("fromPriceEur" in a ? a.fromPriceEur : 0)}
-                    </span>
-                  </Link>
-                ) : (
-                  <div className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium">
-                    <span>
-                      {a.name} ({a.iata})
-                    </span>
-                    <span className="text-muted-foreground">{tr("market.quoteOnly")}</span>
-                  </div>
-                )}
+                <Link
+                  to="/{-$locale}/airports/$slug"
+                  params={{ slug: a.slug }}
+                  className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium transition hover:border-accent hover:shadow-sm"
+                >
+                  <span>
+                    {a.name} {"iata" in a ? `(${a.iata})` : ""}
+                  </span>
+                  <span className="text-muted-foreground">
+                    {isGreece
+                      ? formatEur("fromPriceEur" in a ? a.fromPriceEur : 0)
+                      : tr("market.quoteOnly")}
+                  </span>
+                </Link>
               </li>
             ))}
           </ul>
@@ -112,19 +182,13 @@ export function CountryHubPage({ market }: { market: Market }) {
           <ul className="mt-6 flex flex-wrap gap-2">
             {cities.map((c) => (
               <li key={c.slug}>
-                {isGreece ? (
-                  <Link
-                    to="/{-$locale}/cities/$slug"
-                    params={{ slug: c.slug }}
-                    className="inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm hover:border-accent"
-                  >
-                    {c.name}
-                  </Link>
-                ) : (
-                  <span className="inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm">
-                    {c.name}
-                  </span>
-                )}
+                <Link
+                  to="/{-$locale}/cities/$slug"
+                  params={{ slug: c.slug }}
+                  className="inline-flex rounded-full border border-border bg-card px-4 py-2 text-sm transition hover:border-accent hover:shadow-sm"
+                >
+                  {c.name}
+                </Link>
               </li>
             ))}
           </ul>

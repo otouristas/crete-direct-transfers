@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ContactForm } from "@/components/contact-form";
+import { PartnerInquiryForm } from "@/components/partner-inquiry-form";
 import { Check } from "lucide-react";
 import { getDict, useT, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
@@ -48,12 +48,7 @@ export const Route = createFileRoute("/{-$locale}/for-hotels")({
           </div>
           <div>
             <h2 className="font-display text-2xl text-primary mb-6">{t.forHotels.formTitle}</h2>
-            <ContactForm
-              topic="hotel"
-              showCompany
-              submitLabel={t.forHotels.submitLabel}
-              placeholder={t.forHotels.placeholder}
-            />
+            <PartnerInquiryForm kind="hotel" />
           </div>
         </section>
       </>
