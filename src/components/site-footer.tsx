@@ -157,7 +157,7 @@ export function SiteFooter() {
       <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-12 px-6 pb-4 md:grid-cols-2 lg:grid-cols-5 lg:gap-10 lg:px-10">
         {/* Support */}
         <div>
-          <p className="text-lg font-semibold">{t.footer.supportTitle}</p>
+          <h2 className="text-lg font-semibold">{t.footer.supportTitle}</h2>
           <div className="mt-5 space-y-4 text-sm">
             {CONTACT_PHONE && CONTACT_PHONE_HREF && (
               <div>
@@ -192,7 +192,7 @@ export function SiteFooter() {
 
         {/* Top routes */}
         <nav aria-label={t.footer.routesTitle}>
-          <h3 className="text-lg font-semibold">{t.footer.routesTitle}</h3>
+          <h2 className="text-lg font-semibold">{t.footer.routesTitle}</h2>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed">
             {topRoutes.map((r) => (
               <li key={r.slug}>
@@ -214,7 +214,7 @@ export function SiteFooter() {
 
         {/* Destinations */}
         <nav aria-label={t.nav.destinations}>
-          <h3 className="text-lg font-semibold">{t.nav.destinations}</h3>
+          <h2 className="text-lg font-semibold">{t.nav.destinations}</h2>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed">
             {markets.map((market) => (
               <li key={market.slug}>
@@ -240,7 +240,7 @@ export function SiteFooter() {
 
         {/* Services */}
         <nav aria-label={t.footer.servicesTitle}>
-          <h3 className="text-lg font-semibold">{t.footer.servicesTitle}</h3>
+          <h2 className="text-lg font-semibold">{t.footer.servicesTitle}</h2>
           <ul className="mt-4 space-y-2 text-sm leading-relaxed">
             {services.map((s) => (
               <li key={s.slug}>
@@ -273,7 +273,7 @@ export function SiteFooter() {
 
         {/* Company */}
         <div>
-          <h3 className="mb-4 text-lg font-semibold">{t.footer.companyTitle}</h3>
+          <h2 className="mb-4 text-lg font-semibold">{t.footer.companyTitle}</h2>
           <ul className="space-y-2 text-sm leading-relaxed">
             <li>
               <Link to="/{-$locale}/about" className={linkClass}>

@@ -107,7 +107,10 @@ create trigger bookings_asap_fanout
   for each row execute function public.asap_booking_fanout();
 
 -- Open pool: include ASAP (expires_at in future) even when pickup_at ~= now().
-create or replace view public.open_jobs as
+-- PostgreSQL cannot use CREATE OR REPLACE VIEW when the projected column list
+-- changes. Drop the earlier migration's view so fresh database builds work.
+drop view if exists public.open_jobs;
+create view public.open_jobs as
   select id, route_slug, vehicle_class, passengers, pickup_at, trip_type, return_at,
          bags_checked, bags_cabin, pickup_address, dropoff_address,
          extras, price_cents, currency, created_at,
@@ -224,7 +227,7 @@ returns table (
   driver_first_name text,
   expired boolean
 )
-language plpgsql stable security definer set search_path = public as $$
+language plpgsql volatile security definer set search_path = public as $$
 declare
   v_b public.bookings;
   v_name text;
@@ -243,12 +246,12 @@ begin
   );
 
   if v_expired then
-    update public.bookings
+    update public.bookings as booking
        set status = 'cancelled',
-           notes = coalesce(notes || E'\n', '') || 'ASAP expired — no driver claimed.'
-     where id = v_b.id and status = 'pending';
+           notes = coalesce(booking.notes || E'\n', '') || 'ASAP expired — no driver claimed.'
+     where booking.id = v_b.id and booking.status = 'pending';
     v_b.status := 'cancelled';
-    delete from public.asap_dispatch_events where booking_id = v_b.id;
+    delete from public.asap_dispatch_events as event where event.booking_id = v_b.id;
   end if;
 
   if v_b.driver_id is not null then

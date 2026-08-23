@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Check, Coins, Globe, X } from "lucide-react";
-import { LOCALES, LOCALE_LABELS, useLocale, useT, type Locale } from "@/i18n";
+import { LOCALE_LABELS, PUBLIC_LOCALES, useLocale, useT, type Locale } from "@/i18n";
 import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
 import { useCurrency } from "@/hooks/use-currency";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -94,7 +94,7 @@ export function LanguageSwitcher({
               </h3>
             </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-              {LOCALES.map((l) => {
+              {PUBLIC_LOCALES.map((l) => {
                 const selected = l === locale;
                 return (
                   <button

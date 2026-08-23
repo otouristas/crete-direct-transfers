@@ -15,6 +15,9 @@ export type { Locale };
 /** Locales that appear as a URL prefix — English lives at the root. */
 export const PREFIX_LOCALES = ["el", "de", "fr", "it", "nl", "es"] as const;
 
+/** Locales with complete long-form content overlays and approved for search/public navigation. */
+export const PUBLIC_LOCALES = ["en", "el", "de", "fr"] as const satisfies readonly Locale[];
+
 const dicts: Record<Locale, Dict> = { en, el, de, fr, it, nl, es };
 
 export function getDict(locale: Locale): Dict {

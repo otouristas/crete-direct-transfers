@@ -19,7 +19,6 @@ import { formatEur } from "@/lib/pricing";
 import { Skeleton } from "@/components/ui/skeleton";
 import { buildHead } from "@/lib/seo";
 import type { Locale } from "@/i18n";
-import { expireOffersAndEscalate } from "@/functions/dispatch";
 
 export const Route = createFileRoute("/{-$locale}/ops")({
   head: ({ params }) => {
@@ -68,16 +67,6 @@ function OpsPage() {
     onError: (err: Error) => toast.error(err.message),
   });
 
-  const escalate = useMutation({
-    mutationFn: () => expireOffersAndEscalate({ data: { locale } }),
-    onSuccess: (res) => {
-      queryClient.invalidateQueries({ queryKey: ["ops-unassigned"] });
-      toast.success(
-        res && "escalate" in res ? `${t.ops.escalated} ${res.escalate ?? 0}` : t.ops.expiryDone,
-      );
-    },
-  });
-
   const reviewDocument = useMutation({
     mutationFn: reviewDriverDocumentAdmin,
     onSuccess: () => {
@@ -115,19 +104,9 @@ function OpsPage() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-10 px-6 py-12">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="font-display text-3xl text-primary">{t.ops.title}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">{t.ops.description}</p>
-        </div>
-        <button
-          type="button"
-          onClick={() => escalate.mutate()}
-          disabled={escalate.isPending}
-          className="rounded-xl border border-border px-4 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50"
-        >
-          {t.ops.escalate}
-        </button>
+      <div>
+        <h1 className="font-display text-3xl text-primary">{t.ops.title}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{t.ops.description}</p>
       </div>
 
       <section>

@@ -66,7 +66,7 @@ import { Route as Char123LocaleChar125AirportsSlugRouteImport } from './routes/{
 import { Route as Char123LocaleChar125AccountProfileRouteImport } from './routes/{-$locale}/account.profile'
 import { Route as Char123LocaleChar125DriverJobsIndexRouteImport } from './routes/{-$locale}/driver.jobs.index'
 import { Route as Char123LocaleChar125DriverJobsIdRouteImport } from './routes/{-$locale}/driver.jobs.$id'
-import { Route as Char123LocaleChar125AirportsSlugRouteSlugRouteImport } from './routes/{-$locale}/airports.$slug.$routeSlug'
+import { Route as Char123LocaleChar125AirportsSlugRouteSlugRouteImport } from './routes/{-$locale}/airports.$slug_.$routeSlug'
 import { Route as Char123LocaleChar125AccountBookingsIdRouteImport } from './routes/{-$locale}/account.bookings.$id'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -410,9 +410,9 @@ const Char123LocaleChar125DriverJobsIdRoute =
   } as any)
 const Char123LocaleChar125AirportsSlugRouteSlugRoute =
   Char123LocaleChar125AirportsSlugRouteSlugRouteImport.update({
-    id: '/$routeSlug',
-    path: '/$routeSlug',
-    getParentRoute: () => Char123LocaleChar125AirportsSlugRoute,
+    id: '/airports/$slug_/$routeSlug',
+    path: '/airports/$slug/$routeSlug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125AccountBookingsIdRoute =
   Char123LocaleChar125AccountBookingsIdRouteImport.update({
@@ -450,7 +450,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
-  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRouteWithChildren
+  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRoute
   '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
   '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
@@ -507,7 +507,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
-  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRouteWithChildren
+  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRoute
   '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
   '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
@@ -569,7 +569,7 @@ export interface FileRoutesById {
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
-  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRouteWithChildren
+  '/{-$locale}/airports/$slug': typeof Char123LocaleChar125AirportsSlugRoute
   '/{-$locale}/blog/$slug': typeof Char123LocaleChar125BlogSlugRoute
   '/{-$locale}/book/success': typeof Char123LocaleChar125BookSuccessRoute
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
@@ -597,7 +597,7 @@ export interface FileRoutesById {
   '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
   '/{-$locale}/services/': typeof Char123LocaleChar125ServicesIndexRoute
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
-  '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
+  '/{-$locale}/airports/$slug_/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
   '/{-$locale}/driver/jobs/': typeof Char123LocaleChar125DriverJobsIndexRoute
 }
@@ -778,7 +778,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/routes/'
     | '/{-$locale}/services/'
     | '/{-$locale}/account/bookings/$id'
-    | '/{-$locale}/airports/$slug/$routeSlug'
+    | '/{-$locale}/airports/$slug_/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
     | '/{-$locale}/driver/jobs/'
   fileRoutesById: FileRoutesById
@@ -1189,12 +1189,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125DriverJobsIdRouteImport
       parentRoute: typeof Char123LocaleChar125DriverRoute
     }
-    '/{-$locale}/airports/$slug/$routeSlug': {
-      id: '/{-$locale}/airports/$slug/$routeSlug'
-      path: '/$routeSlug'
+    '/{-$locale}/airports/$slug_/$routeSlug': {
+      id: '/{-$locale}/airports/$slug_/$routeSlug'
+      path: '/airports/$slug/$routeSlug'
       fullPath: '/{-$locale}/airports/$slug/$routeSlug'
       preLoaderRoute: typeof Char123LocaleChar125AirportsSlugRouteSlugRouteImport
-      parentRoute: typeof Char123LocaleChar125AirportsSlugRoute
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/account/bookings/$id': {
       id: '/{-$locale}/account/bookings/$id'
@@ -1279,21 +1279,6 @@ const Char123LocaleChar125PartnerRouteWithChildren =
     Char123LocaleChar125PartnerRouteChildren,
   )
 
-interface Char123LocaleChar125AirportsSlugRouteChildren {
-  Char123LocaleChar125AirportsSlugRouteSlugRoute: typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
-}
-
-const Char123LocaleChar125AirportsSlugRouteChildren: Char123LocaleChar125AirportsSlugRouteChildren =
-  {
-    Char123LocaleChar125AirportsSlugRouteSlugRoute:
-      Char123LocaleChar125AirportsSlugRouteSlugRoute,
-  }
-
-const Char123LocaleChar125AirportsSlugRouteWithChildren =
-  Char123LocaleChar125AirportsSlugRoute._addFileChildren(
-    Char123LocaleChar125AirportsSlugRouteChildren,
-  )
-
 interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125AboutRoute: typeof Char123LocaleChar125AboutRoute
   Char123LocaleChar125AccountRoute: typeof Char123LocaleChar125AccountRouteWithChildren
@@ -1320,7 +1305,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125TouristasAiRoute: typeof Char123LocaleChar125TouristasAiRoute
   Char123LocaleChar125TurkeyRoute: typeof Char123LocaleChar125TurkeyRoute
   Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
-  Char123LocaleChar125AirportsSlugRoute: typeof Char123LocaleChar125AirportsSlugRouteWithChildren
+  Char123LocaleChar125AirportsSlugRoute: typeof Char123LocaleChar125AirportsSlugRoute
   Char123LocaleChar125BlogSlugRoute: typeof Char123LocaleChar125BlogSlugRoute
   Char123LocaleChar125CitiesSlugRoute: typeof Char123LocaleChar125CitiesSlugRoute
   Char123LocaleChar125DriverApplyRoute: typeof Char123LocaleChar125DriverApplyRoute
@@ -1342,6 +1327,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125RegionsIndexRoute: typeof Char123LocaleChar125RegionsIndexRoute
   Char123LocaleChar125RoutesIndexRoute: typeof Char123LocaleChar125RoutesIndexRoute
   Char123LocaleChar125ServicesIndexRoute: typeof Char123LocaleChar125ServicesIndexRoute
+  Char123LocaleChar125AirportsSlugRouteSlugRoute: typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
 }
 
 const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
@@ -1377,7 +1363,7 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125TurkeyRoute: Char123LocaleChar125TurkeyRoute,
     Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
     Char123LocaleChar125AirportsSlugRoute:
-      Char123LocaleChar125AirportsSlugRouteWithChildren,
+      Char123LocaleChar125AirportsSlugRoute,
     Char123LocaleChar125BlogSlugRoute: Char123LocaleChar125BlogSlugRoute,
     Char123LocaleChar125CitiesSlugRoute: Char123LocaleChar125CitiesSlugRoute,
     Char123LocaleChar125DriverApplyRoute: Char123LocaleChar125DriverApplyRoute,
@@ -1408,6 +1394,8 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125RoutesIndexRoute: Char123LocaleChar125RoutesIndexRoute,
     Char123LocaleChar125ServicesIndexRoute:
       Char123LocaleChar125ServicesIndexRoute,
+    Char123LocaleChar125AirportsSlugRouteSlugRoute:
+      Char123LocaleChar125AirportsSlugRouteSlugRoute,
   }
 
 const Char123LocaleChar125RouteRouteWithChildren =
@@ -1422,3 +1410,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

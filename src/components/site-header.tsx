@@ -134,7 +134,7 @@ export function SiteHeader() {
                 className={cn(navLinkClass, "inline-flex items-center gap-1")}
                 aria-haspopup="true"
                 aria-expanded={destinationsOpen}
-                aria-controls="destinations-menu"
+                aria-controls={destinationsOpen ? "destinations-menu" : undefined}
                 onClick={() => {
                   setDestinationsOpen((value) => !value);
                   setPartnersOpen(false);
@@ -224,7 +224,7 @@ export function SiteHeader() {
                 className={cn(navLinkClass, "inline-flex items-center gap-1")}
                 aria-haspopup="true"
                 aria-expanded={partnersOpen}
-                aria-controls="partners-menu"
+                aria-controls={partnersOpen ? "partners-menu" : undefined}
                 onClick={() => setPartnersOpen((v) => !v)}
               >
                 <span>{t.nav.partners}</span>

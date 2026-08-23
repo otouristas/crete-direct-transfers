@@ -40,12 +40,10 @@ import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { ArrowLeftRight, ChevronUp, Info } from "lucide-react";
 import { createAndPersistQuote } from "@/lib/quote-engine";
-import { bookingCreatedEmail, sendTransactionalEmail } from "@/functions/email";
 import { createCheckoutSession } from "@/functions/stripe";
 import { attachReferral } from "@/lib/referrals";
 import { cn } from "@/lib/utils";
 import { marketFromCountryCode } from "@/lib/dispatch";
-import { dispatchNewBooking } from "@/functions/dispatch";
 
 const vehicleClassEnum = z.enum([
   "economy",
@@ -500,6 +498,7 @@ function BookPage() {
       quote_id: quoteId,
       payment_status: "unpaid" as const,
       market,
+      locale,
     };
     const v2 = {
       trip_type: isHourly ? "oneway" : tripType,
@@ -542,59 +541,15 @@ function BookPage() {
       /* referral is best-effort */
     }
 
-    try {
-      await dispatchNewBooking({
-        data: {
-          bookingId: data.id,
-          market,
-          countryCode: countryCode ?? null,
-          lat: fromCoords?.lat ?? fromPlace?.lat ?? null,
-          lng: fromCoords?.lng ?? fromPlace?.lng ?? null,
-          locale,
-        },
-      });
-    } catch (err) {
-      console.error("[book] dispatch failed", err);
-    }
-
-    const routeLabel = isHourly
-      ? `Hourly · ${hours}h`
-      : `${fromQuery.trim() || fromPlace?.label || "Pickup"} → ${toQuery.trim() || toPlace?.label || "Drop-off"}`;
-
-    try {
-      await sendTransactionalEmail({
-        data: bookingCreatedEmail({
-          to: parsed.data.customer_email,
-          name: parsed.data.customer_name,
-          bookingId: data.id,
-          routeLabel,
-          pickupAt: new Date(pickupAt).toLocaleString(),
-          priceLabel: formatEur(lockedPriceCents / 100),
-          locale,
-        }),
-      });
-    } catch {
-      // Email is best-effort
-    }
-
     if (bookableMode === "instant") {
       try {
         const checkout = await createCheckoutSession({
           data: {
             bookingId: data.id,
-            priceCents: lockedPriceCents,
-            customerEmail: parsed.data.customer_email,
-            description: routeLabel,
             locale,
           },
         });
         if (!checkout.skipped && checkout.url) {
-          if (checkout.paymentIntentId) {
-            await supabase
-              .from("bookings")
-              .update({ stripe_payment_intent_id: checkout.paymentIntentId } as never)
-              .eq("id", data.id);
-          }
           window.location.href = checkout.url;
           return;
         }
@@ -657,6 +612,7 @@ function BookPage() {
 
   return (
     <div className="w-full bg-muted/30 pb-28 md:pb-14 md:pt-8">
+      <h1 className="sr-only">{bp.metaTitle}</h1>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-center gap-3 pt-4 text-sm text-muted-foreground md:pt-0">
           <span className={step >= 1 ? "font-semibold text-accent-deep" : ""}>

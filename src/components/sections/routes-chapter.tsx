@@ -87,7 +87,7 @@ export function RoutesChapter({ id }: { id?: string }) {
                     onFocus={() => setActive(route.slug)}
                     className={cn(
                       "group flex items-start gap-4 py-5 transition md:gap-6",
-                      isActive ? "opacity-100" : "opacity-70 hover:opacity-100",
+                      isActive ? "opacity-100" : "hover:bg-muted/40",
                     )}
                   >
                     <span

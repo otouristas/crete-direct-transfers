@@ -1,4 +1,4 @@
--- ============ ASAP realtime dispatch ============
+-- Archived duplicate snapshot. ============ ASAP realtime dispatch ============
 alter table public.driver_profiles
   add column if not exists is_online boolean not null default false,
   add column if not exists online_at timestamptz;

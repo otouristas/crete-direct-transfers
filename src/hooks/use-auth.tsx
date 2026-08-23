@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 
 type AuthContextValue = {
   session: Session | null;
@@ -20,21 +20,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+    if (!isSupabaseConfigured) {
+      setSession(null);
+      setReady(true);
+      return;
+    }
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
       setSession(newSession);
       setReady(true);
     });
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setReady(true);
-    });
+    void supabase.auth
+      .getSession()
+      .then(({ data }) => setSession(data.session))
+      .finally(() => setReady(true));
     return () => subscription.unsubscribe();
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    if (isSupabaseConfigured) await supabase.auth.signOut();
     queryClient.clear();
   };
 

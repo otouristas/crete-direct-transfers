@@ -99,18 +99,18 @@ export async function runDispatchNewBooking(input: DispatchNewBookingInput) {
     return { ok: false as const, reason: "booking_not_found" as const };
   }
 
+  const locale = input.locale ?? booking.locale;
+
   const point = parsePickupPoint(booking.pickup_point);
   const market: DispatchMarket =
-    input.market ??
-    (booking.market as DispatchMarket | null) ??
-    marketFromCountryCode(input.countryCode);
+    (booking.market as DispatchMarket | null) ?? marketFromCountryCode(input.countryCode);
 
   const { data: dispatched, error: dErr } = await admin.rpc("create_dispatch_for_booking", {
     p_booking_id: input.bookingId,
     p_market: market,
-    p_lat: input.lat ?? point?.lat ?? undefined,
-    p_lng: input.lng ?? point?.lng ?? undefined,
-    p_preferred_partner_id: input.preferredPartnerId ?? undefined,
+    p_lat: point?.lat ?? undefined,
+    p_lng: point?.lng ?? undefined,
+    p_preferred_partner_id: booking.partner_id ?? undefined,
   });
 
   if (dErr || !dispatched) {
@@ -145,7 +145,7 @@ export async function runDispatchNewBooking(input: DispatchNewBookingInput) {
           routeLabel,
           pickupAt,
           priceLabel,
-          locale: input.locale,
+          locale,
         }),
       );
     }
@@ -164,7 +164,7 @@ export async function runDispatchNewBooking(input: DispatchNewBookingInput) {
     routeLabel,
     pickupAt,
     priceLabel,
-    locale: input.locale,
+    locale,
   });
 
   if ((offers ?? []).length === 0 && row.partner_id) {
@@ -182,7 +182,7 @@ export async function runDispatchNewBooking(input: DispatchNewBookingInput) {
           routeLabel,
           pickupAt,
           priceLabel,
-          locale: input.locale,
+          locale,
         }),
       );
     }
@@ -293,6 +293,7 @@ export async function notifyCustomerDriverAssigned(bookingId: string, locale?: s
 
   const { data: booking } = await admin.from("bookings").select("*").eq("id", bookingId).single();
   if (!booking?.driver_id) return;
+  const resolvedLocale = locale ?? booking.locale;
 
   const { data: info } = await admin.rpc("booking_driver_info", { p_booking_id: bookingId });
   const driver = Array.isArray(info) ? info[0] : null;
@@ -306,7 +307,7 @@ export async function notifyCustomerDriverAssigned(bookingId: string, locale?: s
       driverName: driver.full_name,
       driverPhone: driver.phone,
       vehicleLabel: [driver.vehicle_make_model, driver.vehicle_plate].filter(Boolean).join(" · "),
-      locale,
+      locale: resolvedLocale,
     }),
   );
 

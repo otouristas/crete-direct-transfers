@@ -11,7 +11,6 @@ import {
   partnerDriversQuery,
   partnerInboxQuery,
 } from "@/queries/partner";
-import { notifyDriverAssigned } from "@/functions/dispatch";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatEur } from "@/lib/pricing";
 import { getRoute } from "@/data/routes";
@@ -53,14 +52,9 @@ function PartnerInboxPage() {
   const assign = useMutation({
     mutationFn: ({ bookingId, driverId }: { bookingId: string; driverId: string }) =>
       assignJobToDriver(bookingId, driverId),
-    onSuccess: async (booking) => {
+    onSuccess: async () => {
       queryClient.invalidateQueries({ queryKey: ["partner-inbox"] });
       toast.success(t.partner.assignedToast);
-      try {
-        await notifyDriverAssigned({ data: { bookingId: booking.id, locale } });
-      } catch {
-        /* best-effort */
-      }
     },
     onError: (err: Error) => toast.error(err.message),
   });

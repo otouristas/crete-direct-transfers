@@ -52,7 +52,6 @@ export const pendingRefundsQuery = queryOptions({
 export const unassignedBookingsQuery = queryOptions({
   queryKey: ["ops-unassigned"],
   queryFn: async (): Promise<Booking[]> => {
-    await supabase.rpc("expire_job_offers");
     const cutoff = new Date(Date.now() - 5 * 60_000).toISOString();
     const { data, error } = await supabase
       .from("bookings")
