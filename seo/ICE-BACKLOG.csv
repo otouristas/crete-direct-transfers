@@ -1,0 +1,12 @@
+initiative,impact_1_5,confidence_1_5,effort_1_5,ice_score,status,evidence
+Deploy repository sitemap and robots policy,5,5,2,12.5,BLOCKED_EXTERNAL,"Live sitemap contains only /lander"
+Submit sitemap and inspect processing in GSC,5,5,1,25.0,BLOCKED_EXTERNAL,"GSC access NOT AVAILABLE"
+Collect landing-page conversion baseline,5,4,2,10.0,BLOCKED_EXTERNAL,"Production analytics access NOT AVAILABLE"
+Monitor 22 overlapping route pairs,4,4,2,8.0,READY_AFTER_DEPLOY,"Exact pair inventory created"
+Verify all public prices and operational policies,5,4,4,5.0,OWNER_REVIEW,"Repository and SERP evidence cannot verify every claim"
+Human QA Dutch and Spanish route set,4,5,5,4.0,READY_FOR_REVIEW,"Locales remain noindex by design"
+Refresh six existing guides with official sources,4,4,4,4.0,IN_PROGRESS,"One legal source added; remaining schedules and prices need sources"
+Create Crete airport transfer pillar,4,3,4,3.0,BRIEF_READY,"Distinct researched cluster; metrics NOT AVAILABLE"
+Add verified author profile evidence,3,3,3,3.0,INVESTIGATE,"Named authors exist; identity evidence NOT AVAILABLE"
+Evaluate generated airport pages in GSC,4,4,3,5.3,READY_AFTER_DEPLOY,"Quote-safe native templates implemented"
+Code-split locale and airport data bundles,4,5,4,5.0,READY,"Build warns about 523 KB gzip main bundle plus large i18n and IATA chunks"

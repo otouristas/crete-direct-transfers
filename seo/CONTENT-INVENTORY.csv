@@ -1,0 +1,37 @@
+url_or_pattern,page_family,repository_scope,indexability,primary_intent,recommendation,priority,confidence,gsc_metrics,ga4_metrics,ahrefs_metrics,evidence
+/,Home,1 path x 5 public locales,Indexable,private transfers overview,Improve,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/{-$locale}/index.tsx
+/countries,Directory,1 x 5,Indexable,country transfer directory,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:22
+/{greece|spain|italy|portugal|cyprus|turkey},Country hubs,6 x 5,Conditional/indexable,private transfers by country,Improve before scaling,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/data/markets.ts:22-191
+/airports,Airport directory,1 x 5,Indexable,airport transfer directory,Keep/improve,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:24
+/airports/{authored-slug},Airport hubs,18 curated plus market/indexable airports x 5,Conditional,indexable airport transfer,Keep authored; quality-gate generated,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/lib/indexable-airports.ts:1-88
+/airports/{airport}/{route},Airport route pages,77 records x 5,Indexable,exact airport-to-destination transfer,Improve; resolve overlap,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/data/airport-routes.ts
+/ports,Port directory,1 x 5,Indexable,port transfer directory,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:25
+/ports/{slug},Port hubs,Indexable ports x 5,Conditional,port transfer,Improve,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/{-$locale}/ports.$slug.tsx
+/cities,City directory,1 x 5,Indexable,city/resort transfer directory,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:26
+/cities/{slug},City hubs,city destinations and market hubs x 5,Indexable/private-locale noindex,private transfers in destination,Quality-gate thin templates,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/{-$locale}/cities.$slug.tsx:55-61
+/routes,Route directory,1 x 5,Indexable,Crete transfer routes,Keep/improve,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:27
+/routes/{slug},Fixed-price route pages,32 x 5,Indexable,exact route price/time/booking,Keep/improve; define primary URL,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/data/routes.ts:139-572
+/regions,Region directory,1 x 5,Indexable,Crete coverage regions,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:28
+/regions/{slug},Region hubs,4 x 5,Indexable,transfers by Crete region,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/data/regions.ts
+/services,Service directory,1 x 5,Indexable,transfer service types,Keep/improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:29
+/services/{slug},Service pages,6 x 5,Indexable,airport/port/hotel/tour/distance/group,Keep/improve,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/data/services.ts:14-112
+/hourly-service,Service landing,1 x 5,Indexable,hourly driver service,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:30
+/city-to-city,Service landing,1 x 5,Indexable,city-to-city transfers,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:31
+/fleet,Fleet directory,1 x 5,Indexable,vehicle choices,Keep/improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:32
+/fleet/{class},Vehicle pages,8 x 5,Indexable,vehicle capacity/class,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/data/routes.ts:13-106
+/blog,Blog index,1 x 5,Indexable,travel/transfer guides,Keep/improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:33
+/blog/{slug},Articles,6 x 5,Indexable,how-to/comparison/logistics,Keep; source facts,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/data/posts.ts:27-322
+/about,Trust page,1 x 5,Indexable,brand/company information,Improve trust evidence,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:34
+/how-it-works,Process page,1 x 5,Indexable,booking process,Keep/improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:35
+/faq,FAQ,1 x 5,Indexable,service questions,Keep; reconcile claims,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:36
+/contact,Contact,1 x 5,Indexable,contact/support,Keep,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:37
+/reviews,Reviews,1 x 5,Conditional on verification,reviews/social proof,Keep conditional,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:38
+/for-hotels,B2B landing,1 x 5,Indexable,hotel transfer partnership,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:39
+/for-travel-agencies,B2B landing,1 x 5,Indexable,travel agency partnership,Improve,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:58
+/for-drivers,Recruitment,1 x 5,Indexable,driver recruitment,Review search value,P2,Medium,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:40
+/legal/{terms|privacy|cookies|refunds|imprint|driver-partnership|kyc},Legal,7 x 5,Indexable,policy/trust,Keep; link as evidence,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/sitemap[.]xml.ts:41-47
+/{book|book/success},Transactional,2 x all app locales,Noindex/private,booking flow,Keep noindex,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/{-$locale}/book.tsx:93-99
+/{touristas-ai},Assistant utility,1 x all app locales,Noindex,booking assistance,Keep noindex,P2,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/{-$locale}/touristas-ai.tsx
+/{login|signup|forgot-password|reset-password},Auth,4 x all app locales,Noindex/private,user authentication,Keep noindex,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/routes/{-$locale}/login.tsx:23-29
+/{account|driver|partner|ops}/*,Private/operations,Multiple,Noindex and/or robots blocked,private workflows,Keep private,P0,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,public/robots.txt:7-25
+/{nl|es}/*,Non-public locale variants,All route templates,Noindex nofollow,localized experiences,Do not index until native QA,P1,High,NOT AVAILABLE,NOT AVAILABLE,NOT AVAILABLE,src/i18n/index.ts:19-29

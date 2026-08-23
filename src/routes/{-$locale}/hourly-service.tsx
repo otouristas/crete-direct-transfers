@@ -6,14 +6,15 @@ import { FaqAccordion } from "@/components/faq-accordion";
 import { PageHero } from "@/components/sections/page-hero";
 import { Reveal } from "@/components/reveal";
 import { getDict, useT, type Locale } from "@/i18n";
-import { buildHead } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 
 export const Route = createFileRoute("/{-$locale}/hourly-service")({
   head: (ctx) => {
     const locale = (ctx.params.locale ?? "en") as Locale;
     const t = getDict(locale);
     const p = t.hourlyPage;
+    const canonical = buildCanonicalUrl(locale, "/hourly-service");
     return buildHead({
       locale,
       path: "/hourly-service",
@@ -24,11 +25,11 @@ export const Route = createFileRoute("/{-$locale}/hourly-service")({
         "@graph": [
           {
             "@type": "Service",
-            "@id": `${SITE_URL}/hourly-service#service`,
+            "@id": `${canonical}#service`,
             name: p.title,
             serviceType: p.eyebrow,
             description: p.metaDescription,
-            provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+            provider: { "@id": ORGANIZATION_ID },
           },
           {
             "@type": "FAQPage",

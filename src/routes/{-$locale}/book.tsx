@@ -43,6 +43,7 @@ import { createAndPersistQuote } from "@/lib/quote-engine";
 import { createCheckoutSession } from "@/functions/stripe";
 import { attachReferral } from "@/lib/referrals";
 import { cn } from "@/lib/utils";
+import { trackAnalyticsEvent } from "@/lib/cookie-consent";
 import { marketFromCountryCode } from "@/lib/dispatch";
 
 const vehicleClassEnum = z.enum([
@@ -541,6 +542,16 @@ function BookPage() {
       /* referral is best-effort */
     }
 
+    trackAnalyticsEvent(
+      bookableMode === "instant" ? "Booking Submitted" : "Quote Request Submitted",
+      {
+        locale,
+        market,
+        trip_type: isHourly ? "hourly" : tripType,
+        vehicle_class: vehicleClass,
+      },
+    );
+
     if (bookableMode === "instant") {
       try {
         const checkout = await createCheckoutSession({
@@ -550,6 +561,7 @@ function BookPage() {
           },
         });
         if (!checkout.skipped && checkout.url) {
+          trackAnalyticsEvent("Checkout Started", { locale, market, vehicle_class: vehicleClass });
           window.location.href = checkout.url;
           return;
         }

@@ -4,6 +4,7 @@
 
 User-agent: *
 Allow: /
+LLM-Policy: /llms.txt
 Disallow: /book
 Disallow: /*/book
 Disallow: /account

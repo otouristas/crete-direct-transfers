@@ -124,9 +124,15 @@ export function CountryHubPage({ market }: { market: Market }) {
       {/* Hero — country photography, the same layered treatment as the homepage */}
       <section className="relative bg-primary text-primary-foreground">
         <div className="pointer-events-none hero-stage" aria-hidden>
-          <div
-            className="hero-photo media-grade"
-            style={{ backgroundImage: `url(${imageUrl(heroPhoto, { width: 2400 })})` }}
+          <img
+            src={imageUrl(heroPhoto, { width: 2400 })}
+            alt=""
+            width={2400}
+            height={1350}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="hero-photo media-grade h-full w-full object-cover object-[center_42%]"
           />
           <div className="hero-scrim" />
           <div className="hero-grain" />
@@ -219,7 +225,9 @@ export function CountryHubPage({ market }: { market: Market }) {
                         <div className="aspect-[16/10] overflow-hidden">
                           <img
                             src={imageUrl(photo, { width: 700 })}
-                            alt=""
+                            alt={`${highlight.title}, ${market.name}`}
+                            width={700}
+                            height={438}
                             loading="lazy"
                             decoding="async"
                             style={{ backgroundColor: photo.avgColor }}

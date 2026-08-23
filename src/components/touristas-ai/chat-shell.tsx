@@ -48,6 +48,7 @@ export function TouristasChatShell({
   } = chat;
 
   const fullPageHref = localePath(locale, "/touristas-ai");
+  const TitleTag = variant === "page" ? "h1" : "p";
 
   return (
     <div
@@ -81,9 +82,9 @@ export function TouristasChatShell({
                 <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-highlight ring-2 ring-primary" />
               </span>
               <div>
-                <p className="font-accent text-xl leading-none tracking-tight md:text-2xl">
+                <TitleTag className="font-accent text-xl leading-none tracking-tight md:text-2xl">
                   {t.title}
-                </p>
+                </TitleTag>
                 <p className="mt-1 text-xs text-primary-foreground/70">{t.subtitle}</p>
               </div>
             </div>
@@ -105,7 +106,7 @@ export function TouristasChatShell({
             {variant === "panel" && (
               <>
                 <Link
-                  to="/{-$locale}/book"
+                  to="/{-$locale}/touristas-ai"
                   className="rounded-xl p-2 transition hover:bg-primary-foreground/10"
                   aria-label={t.openFullPage}
                   title={t.openFullPage}

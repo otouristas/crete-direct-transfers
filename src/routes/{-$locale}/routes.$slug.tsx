@@ -6,9 +6,14 @@ import { RouteCard } from "@/components/sections/route-card";
 import { CtaBand } from "@/components/sections/cta-band";
 import { InpageNav } from "@/components/inpage-nav";
 import { getDict, useLocale, useT, type Locale, type Dict } from "@/i18n";
-import { getLocalizedRoute, getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
-import { buildHead } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import {
+  getLocalizedAirportRoutes,
+  getLocalizedRoute,
+  getLocalizedRoutes,
+  getLocalizedVehicles,
+} from "@/i18n/content";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 import { Check, Clock, MapPin, Plane, Radar } from "lucide-react";
 
 function localInfoCopy(route: RouteData, t: Dict): string {
@@ -164,10 +169,11 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": "TaxiService",
+            "@type": "Service",
             name: t.airportPages.transferFromTo(r.from, r.to),
-            provider: { "@type": "LocalBusiness", name: SITE_NAME },
-            areaServed: "Crete, Greece",
+            serviceType: t.nav.airportTransfers,
+            provider: { "@id": ORGANIZATION_ID },
+            areaServed: t.directoryPages.areaServed,
             offers: { "@type": "Offer", price: q?.totalEur, priceCurrency: "EUR" },
           },
           {
@@ -181,13 +187,23 @@ export const Route = createFileRoute("/{-$locale}/routes/$slug")({
           {
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-              { "@type": "ListItem", position: 2, name: "Routes", item: `${SITE_URL}/routes` },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: t.nav.home,
+                item: buildCanonicalUrl(locale, "/"),
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: t.nav.routes,
+                item: buildCanonicalUrl(locale, "/routes"),
+              },
               {
                 "@type": "ListItem",
                 position: 3,
-                name: `${r.from} to ${r.to}`,
-                item: `${SITE_URL}${path}`,
+                name: t.airportPages.transferFromTo(r.from, r.to),
+                item: buildCanonicalUrl(locale, path),
               },
             ],
           },
@@ -222,6 +238,9 @@ function RoutePage() {
   const vehicles = getLocalizedVehicles(locale);
   const q = quote({ routeSlug: route.slug, vehicleClass: "economy" })!;
   const faqs = routeFaqs(locale, route, formatEur(q.totalEur));
+  const airportArrivalPage = getLocalizedAirportRoutes(locale).find(
+    (airportRoute) => airportRoute.legacyRouteSlug === route.slug,
+  );
   const others = getLocalizedRoutes(locale)
     .filter((r) => r.slug !== route.slug && r.region === route.region)
     .slice(0, 3);
@@ -331,6 +350,22 @@ function RoutePage() {
             <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">
               {t.routesPages.localInfoDropoff}
             </p>
+            {airportArrivalPage ? (
+              <Link
+                to="/{-$locale}/airports/$slug/$routeSlug"
+                params={{
+                  slug: airportArrivalPage.airportSlug,
+                  routeSlug: airportArrivalPage.routeSlug,
+                }}
+                className="mt-5 inline-flex text-sm font-semibold text-accent-deep hover:underline"
+              >
+                {t.airportPages.routeKnowTitle(
+                  airportArrivalPage.fromName,
+                  airportArrivalPage.toName,
+                )}{" "}
+                <span aria-hidden>→</span>
+              </Link>
+            ) : null}
           </section>
 
           <section id="overview" className="scroll-mt-32">

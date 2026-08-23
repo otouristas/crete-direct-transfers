@@ -2,8 +2,8 @@ import type { AirportData } from "@/data/airports";
 import type { AirportRouteData } from "@/data/airport-routes";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { vehicleFromPrices, formatEur } from "@/lib/pricing";
-import { buildHead } from "@/lib/seo";
-import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 import { getDict, useT, type Locale } from "@/i18n";
 import {
   getLocalizedAirport,
@@ -48,7 +48,6 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug_/$routeSlug")({
     const { airport, route } = loaderData;
     const path = `/airports/${airport.slug}/${route.routeSlug}`;
     const price = formatEur(route.basePriceEur);
-    const localePrefix = locale === "en" ? "" : `/${locale}`;
 
     return buildHead({
       locale,
@@ -66,9 +65,10 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug_/$routeSlug")({
         "@context": "https://schema.org",
         "@graph": [
           {
-            "@type": "TaxiService",
+            "@type": "Service",
             name: t.airportPages.transferFromTo(route.fromName, route.toName),
-            provider: { "@type": "LocalBusiness", name: SITE_NAME },
+            serviceType: t.nav.airportTransfers,
+            provider: { "@id": ORGANIZATION_ID },
             areaServed: t.airportPages.areaServed(airport.cityName, airport.country),
             offers: {
               "@type": "Offer",
@@ -91,25 +91,25 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug_/$routeSlug")({
                 "@type": "ListItem",
                 position: 1,
                 name: t.nav.home,
-                item: `${SITE_URL}${localePrefix || "/"}`,
+                item: buildCanonicalUrl(locale, "/"),
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: t.nav.airports,
-                item: `${SITE_URL}${localePrefix}/airports`,
+                item: buildCanonicalUrl(locale, "/airports"),
               },
               {
                 "@type": "ListItem",
                 position: 3,
                 name: airport.name,
-                item: `${SITE_URL}${localePrefix}/airports/${airport.slug}`,
+                item: buildCanonicalUrl(locale, `/airports/${airport.slug}`),
               },
               {
                 "@type": "ListItem",
                 position: 4,
                 name: route.toName,
-                item: `${SITE_URL}${localePrefix}${path}`,
+                item: buildCanonicalUrl(locale, path),
               },
             ],
           },
@@ -246,6 +246,16 @@ function AirportRoutePage() {
             ))}
           </div>
           <p className="mt-10 max-w-3xl leading-relaxed text-muted-foreground">{route.body}</p>
+          {route.legacyRouteSlug ? (
+            <Link
+              to="/{-$locale}/routes/$slug"
+              params={{ slug: route.legacyRouteSlug }}
+              className="mt-5 inline-flex text-sm font-semibold text-accent-deep hover:underline"
+            >
+              {t.routesPages.localInfoTitle}: {route.fromName} → {route.toName}{" "}
+              <span aria-hidden>→</span>
+            </Link>
+          ) : null}
         </div>
       </section>
 

@@ -206,12 +206,15 @@ export function useTouristasChat() {
     [],
   );
 
-  const speechSupported = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    return Boolean(
-      (window as unknown as { SpeechRecognition?: unknown; webkitSpeechRecognition?: unknown })
-        .SpeechRecognition ||
-      (window as unknown as { webkitSpeechRecognition?: unknown }).webkitSpeechRecognition,
+  const [speechSupported, setSpeechSupported] = useState(false);
+
+  useEffect(() => {
+    const speechWindow = window as unknown as {
+      SpeechRecognition?: unknown;
+      webkitSpeechRecognition?: unknown;
+    };
+    setSpeechSupported(
+      Boolean(speechWindow.SpeechRecognition || speechWindow.webkitSpeechRecognition),
     );
   }, []);
 

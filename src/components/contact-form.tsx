@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { useT } from "@/i18n";
+import { useLocale, useT } from "@/i18n";
+import { trackAnalyticsEvent } from "@/lib/cookie-consent";
 
 export function ContactForm({
   topic,
@@ -15,6 +16,7 @@ export function ContactForm({
   placeholder?: string;
 }) {
   const t = useT();
+  const locale = useLocale();
   const schema = z.object({
     name: z.string().trim().min(2, t.forms.validationName).max(100),
     email: z.string().trim().email(t.forms.validationEmail).max(255),
@@ -59,6 +61,7 @@ export function ContactForm({
     }
     setState("sent");
     setValues({ name: "", email: "", phone: "", company: "", message: "" });
+    trackAnalyticsEvent("Contact Form Submitted", { locale, topic });
   };
 
   if (state === "sent") {

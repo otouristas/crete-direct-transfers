@@ -1,8 +1,8 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { vehicleFromPrices } from "@/lib/pricing";
 import { isIndexableAirport } from "@/lib/indexable-airports";
-import { buildHead } from "@/lib/seo";
-import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 import { getDict, useT, type Locale } from "@/i18n";
 import {
   getLocalizedAirport,
@@ -56,6 +56,7 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
     }
     const { airport, routes, curated } = loaderData;
     const path = `/airports/${airport.slug}`;
+    const canonical = buildCanonicalUrl(locale, path);
     return buildHead({
       locale,
       path,
@@ -68,8 +69,8 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
         "@graph": [
           {
             "@type": "WebPage",
-            "@id": `${SITE_URL}${path}#webpage`,
-            url: `${SITE_URL}${path}`,
+            "@id": `${canonical}#webpage`,
+            url: canonical,
             name: t.seo.airportTitle(airport.name, airport.iata),
             description: airport.intro,
           },
@@ -77,7 +78,7 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
             "@type": "Service",
             name: t.seo.airportTitle(airport.name, airport.iata),
             serviceType: t.nav.airportTransfers,
-            provider: { "@type": "Organization", name: SITE_NAME },
+            provider: { "@id": ORGANIZATION_ID },
             areaServed: {
               "@type": "Airport",
               name: airport.officialName,
@@ -107,31 +108,40 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
               acceptedAnswer: { "@type": "Answer", text: f.a },
             })),
           },
-          {
-            "@type": "ItemList",
-            name: airport.name,
-            itemListElement: routes.map((r, i) => ({
-              "@type": "ListItem",
-              position: i + 1,
-              name: `${r.fromName} → ${r.toName}`,
-              url: `${SITE_URL}/airports/${airport.slug}/${r.routeSlug}`,
-            })),
-          },
+          ...(routes.length > 0
+            ? [
+                {
+                  "@type": "ItemList",
+                  name: airport.name,
+                  itemListElement: routes.map((r, i) => ({
+                    "@type": "ListItem",
+                    position: i + 1,
+                    name: `${r.fromName} → ${r.toName}`,
+                    url: buildCanonicalUrl(locale, `/airports/${airport.slug}/${r.routeSlug}`),
+                  })),
+                },
+              ]
+            : []),
           {
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: t.nav.home, item: `${SITE_URL}/` },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: t.nav.home,
+                item: buildCanonicalUrl(locale, "/"),
+              },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: t.nav.airports,
-                item: `${SITE_URL}/airports`,
+                item: buildCanonicalUrl(locale, "/airports"),
               },
               {
                 "@type": "ListItem",
                 position: 3,
                 name: `${airport.name} (${airport.iata})`,
-                item: `${SITE_URL}${path}`,
+                item: canonical,
               },
             ],
           },

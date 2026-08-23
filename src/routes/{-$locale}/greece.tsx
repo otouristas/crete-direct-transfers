@@ -1,8 +1,9 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { CountryHubPage } from "@/components/country-hub-page";
-import { buildHead } from "@/lib/seo";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
 import { getDict, type Locale } from "@/i18n";
 import { getLocalizedMarket } from "@/i18n/content";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 
 export const Route = createFileRoute("/{-$locale}/greece")({
   loader: ({ params }) => {
@@ -28,8 +29,9 @@ export const Route = createFileRoute("/{-$locale}/greece")({
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "Service",
+        "@id": `${buildCanonicalUrl(locale, "/greece")}#service`,
         name: market.heroTitle,
-        provider: { "@type": "Organization", name: "TransferAround" },
+        provider: { "@id": ORGANIZATION_ID },
         areaServed: { "@type": "Country", name: market.name },
       },
     });

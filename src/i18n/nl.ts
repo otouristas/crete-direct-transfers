@@ -181,35 +181,35 @@ export const nl: Dict = {
       "De transfermarkt op Kreta was kapot — biedoorlogen, dynamische prijzen, geen verantwoording. Wij bouwden de oplossing.",
     fixedTitle: "Altijd vaste prijzen",
     fixedBody:
-      "De prijs die u ziet, is de prijs die u betaalt. Geen toeslag om 2 uur 's nachts, geen meterstress, geen afdingen bij de standplaats.",
+      "Het totaal wordt vóór bevestiging getoond. Gekozen extra’s en route- of tijdsgebonden kosten zijn vooraf opgenomen — zonder meter of biedingen.",
     flightTitle: "Ophalen met vluchtvolging",
     flightBody:
-      "Wij volgen uw vlucht en passen het ophalen automatisch aan. Vertraagd? Uw chauffeur wacht — gratis.",
+      "Voeg uw vluchtnummer toe, zodat het ophalen op schemawijzigingen kan worden afgestemd. De wachtvoorwaarden staan in uw bevestiging.",
     licensedTitle: "Lokale chauffeurs met vergunning",
     licensedBody:
-      "Elke chauffeur heeft een vergunning, is verzekerd en rijdt al minstens drie jaar op de wegen van Kreta.",
-    cancelTitle: "Gratis annuleren",
+      "Boekingen worden toegewezen aan lokale vervoerders met vergunning en verzekering. Offertetritten worden vóór betaling bevestigd.",
+    cancelTitle: "Duidelijke annuleringsvoorwaarden",
     cancelBody:
-      "Plannen veranderen. Annuleer tot 24 uur voor het ophalen en betaal helemaal niets.",
-    payTitle: "Betalen bij aankomst",
+      "De annuleringstermijn en eventuele kosten staan vóór het boeken en in het restitutiebeleid.",
+    payTitle: "Betaling afgestemd op de route",
     payBody:
-      "Boek nu, betaal de chauffeur bij aankomst met kaart of contant. Geen vooruitbetaling, geen risico.",
-    meetTitle: "Meet & greet inbegrepen",
+      "Direct boekbare routes kunnen doorgaan naar de beveiligde online betaling. Offertetritten worden vóór betaling bevestigd.",
+    meetTitle: "Bevestigde ophaalinstructies",
     meetBody:
-      "Uw chauffeur wacht bij de aankomsthal met een naambordje, helpt met de bagage en kent de snelste weg naar buiten.",
+      "Uw bevestiging vermeldt het ontmoetingspunt, de contactwijze en of een fysiek naambordje is inbegrepen of gekozen.",
   },
   steps: {
     title: "Hoe het werkt",
-    subtitle: "Drie stappen tussen u en een chauffeur die al klaarstaat.",
+    subtitle: "Drie stappen van routegegevens naar een bevestigde ophaling.",
     step1Title: "Kies uw route en prijs",
     step1Body:
-      "Kies uit 30 routes met vaste prijs, selecteer een voertuig en zie direct uw totaal — geen offerteformulieren, geen wachten.",
+      "Routes op Kreta kunnen direct een totaal tonen. Voor andere markten verstuurt u route- en passagiersgegevens voor een bevestigde offerte.",
     step2Title: "Boek in twee minuten",
     step2Body:
-      "Geef ons uw vlucht en hotel door. U krijgt direct bevestiging en de gegevens van uw chauffeur vóór het ophalen.",
+      "Voeg vlucht, bestemming, passagiers en bagage toe. Directe boekingen gaan online verder; offerteaanvragen worden eerst beoordeeld.",
     step3Title: "Ontmoet uw chauffeur",
     step3Body:
-      "Naambordje bij aankomst, hulp met de bagage, vaste prijs betaald bij aankomst. Dat is het hele verhaal.",
+      "Volg de bevestigde ontmoetingsinstructies. Route, voertuig, betaalwijze en totaal worden vóór het ophalen vastgelegd.",
   },
   widget: {
     title: "Boek uw transfer",
@@ -501,22 +501,23 @@ export const nl: Dict = {
     explore: "Bekijk transfers",
   },
   about: {
-    metaTitle: "Over TransferAround | Vaste prijzen, lokale chauffeurs, één eiland",
+    metaTitle: "Over TransferAround | Privétransfers, geworteld op Kreta",
     metaDescription:
-      "TransferAround is opgericht door locals om te repareren wat er mis is met luchthaventransfers: bieden, dynamische prijzen en geen verantwoording. Eén eiland, vaste prijzen, chauffeurs met vergunning.",
+      "Een boekingsplatform voor privétransfers met wortels op Kreta: direct boeken tegen een vaste prijs op Kreta en door lokale partners bevestigde offertes in zes landen.",
     eyebrow: "Over ons",
     title: "Ons DNA.",
-    intro: "TransferAround bestaat omdat de transfermarkt op ons eiland kapot was.",
+    intro:
+      "TransferAround begon op Kreta met een eenvoudigere manier om een luchthaventransfer te regelen.",
     body1:
-      "Reizigers die in Heraklion of Chania aankwamen moesten biedingen van vreemden vergelijken, onderhandelen via WhatsApp, of na een lange vlucht de taximeter vertrouwen. Prijzen schommelden. Chauffeurs wisselden. Verantwoordelijkheid was niemands taak.",
+      "Reizigers die in Heraklion of Chania aankwamen, moesten vaak biedingen vergelijken, na de landing onderhandelen of een ritprijs accepteren die ze vooraf niet konden bevestigen. Voor onze service op Kreta staan daarom één route, één afgesproken totaalprijs en één boekingsdossier centraal.",
     body2:
-      "Wij zijn locals — een klein team uit Chania en Heraklion — en bouwden wat we altijd wilden: een vaste prijs per route, een gelicenseerde chauffeur per boeking, een nummer om te bellen als er iets misgaat.",
+      "Op Kreta boek je nog altijd direct via ons lokale netwerk. Voor ritten elders in Griekenland en in Spanje, Italië, Portugal, Cyprus en Turkije nemen we de reis door met een lokale partner met vergunning en bevestigen we de offerte voordat je betaalt.",
     wontTitle: "Wat we niet doen",
     wontBody:
-      "Geen reverse auctions. Geen surge om 2 uur 's nachts. Geen willekeurige chauffeur die we nooit hebben ontmoet. Elke chauffeur in ons netwerk is gelicenseerd, verzekerd en rijdt minstens drie jaar op Kreta.",
-    whyTitle: "Waarom een eiland",
+      "Geen omgekeerde veilingen en geen onbevestigde prijs bij het ophalen. Voor reizen op offertebasis laten we je pas betalen nadat de route, het totaalbedrag en de lokale vervoerder met vergunning zijn bevestigd.",
+    whyTitle: "Waarom lokale kennis vooropstaat",
     whyBody:
-      "Wereldwijde platforms dekken 180 landen en begrijpen er geen echt. Wij dekken 260 km kustlijn, twee internationale luchthavens, drie havens en elke hoteltoegang die de moeite waard is. Diepte boven breedte.",
+      "Kreta is onze operationele thuisbasis en de markt die we tot in detail kennen. Bij uitbreiding hanteren we dezelfde norm: we publiceren een bestemming pas als we duidelijk kunnen uitleggen hoe je er boekt en elke offerte samen met een lokale vervoerder kunnen beoordelen.",
     valuesTitle: "Waar we voor staan",
     value1Title: "Stiptheid",
     value1Body: "Ophalen met vluchtvolging en chauffeurs die vroeg vertrekken, niet op tijd.",
@@ -525,8 +526,9 @@ export const nl: Dict = {
     value3Title: "Verantwoording",
     value3Body: "Eén bedrijf, één nummer om te bellen, een chauffeur met naam bij elke boeking.",
     value4Title: "Lokale diepgang",
-    value4Body: "We dekken één eiland en kennen elke toegangsweg naar de hotels erop.",
-    ctaTitle: "Ervaar het verschil bij uw volgende aankomst",
+    value4Body:
+      "Eerst diepgaande kennis van Kreta, met in elke extra markt dekking die door lokale partners wordt bevestigd.",
+    ctaTitle: "Ervaar het verschil bij je volgende aankomst",
   },
   contact: {
     metaTitle: "Contact met TransferAround | 24/7 centrale, telefoon, e-mail",
@@ -939,6 +941,7 @@ export const nl: Dict = {
     subtitle: "Geschreven door de mensen die deze wegen elke dag rijden.",
     relatedTitle: "Lees verder",
     tocTitle: "In deze gids",
+    sourcesTitle: "Bronnen",
     categories: {
       guides: "Gidsen",
       tips: "Tips",
@@ -952,7 +955,7 @@ export const nl: Dict = {
     regionTitle: (name: string) => `${name}, Kreta transfers | TransferAround`,
     routeTitle: (from: string, to: string) => `${from} naar ${to} | Vaste prijs · TransferAround`,
     airportTitle: (name: string, iata: string) =>
-      `${name} (${iata}) transfers | Vaste prijs · TransferAround`,
+      `Privétransfer · ${name} (${iata}) | TransferAround`,
     airportRouteTitle: (from: string, to: string) =>
       `${from} naar ${to} privétransfer | TransferAround`,
     fleetTitle: (label: string) => `${label} transfers op Kreta | TransferAround`,

@@ -1,0 +1,22 @@
+locale,intent_cluster,primary_term,target_url,status,confidence,external_metrics
+en,Crete private transfers,private airport transfers Crete,/,EXISTING,HIGH,NOT AVAILABLE
+el,Crete private transfers,ιδιωτική μεταφορά αεροδρόμιο Κρήτη,/el,EXISTING,HIGH,NOT AVAILABLE
+de,Crete private transfers,privater Flughafentransfer Kreta,/de,EXISTING,HIGH,NOT AVAILABLE
+fr,Crete private transfers,transfert privé aéroport Crète,/fr,EXISTING,HIGH,NOT AVAILABLE
+it,Crete private transfers,transfer privato aeroporto Creta,/it,EXISTING,HIGH,NOT AVAILABLE
+nl,Crete private transfers,privé transfer luchthaven Kreta,/nl,HOLD_NOINDEX,HIGH,NOT AVAILABLE
+es,Crete private transfers,traslado privado aeropuerto Creta,/es,HOLD_NOINDEX,HIGH,NOT AVAILABLE
+en,Heraklion airport,Heraklion airport transfer,/airports/crete-heraklion-airport-transfers-her,EXISTING,HIGH,NOT AVAILABLE
+en,Chania airport,Chania airport transfer,/airports/chania-international-airport-transfers-chq,EXISTING,HIGH,NOT AVAILABLE
+en,Heraklion to Elounda,Heraklion airport to Elounda transfer,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-elounda,EXISTING,HIGH,NOT AVAILABLE
+en,Heraklion to Chania,Heraklion airport to Chania transfer,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-chania,EXISTING,HIGH,NOT AVAILABLE
+en,Chania to Rethymno,Chania airport to Rethymno transfer,/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-rethymno,EXISTING,HIGH,NOT AVAILABLE
+en,Souda port,Souda Port transfer,/ports/souda-port-transfers,EXISTING,HIGH,NOT AVAILABLE
+en,Airport service,private airport transfer Crete,/services/airport-transfers,EXISTING,HIGH,NOT AVAILABLE
+en,Group/minivan,minivan transfer Crete,/services/group-transfers,EXISTING,MEDIUM,NOT AVAILABLE
+en,City to city,private city to city transfer Crete,/city-to-city,EXISTING,MEDIUM,NOT AVAILABLE
+en,Hourly chauffeur,hourly chauffeur Crete,/hourly-service,EXISTING,MEDIUM,NOT AVAILABLE
+en,Taxi comparison,Crete taxi vs private transfer,/blog/taxi-vs-prebooked-transfer-crete,EXISTING,HIGH,NOT AVAILABLE
+en,Family logistics,Crete airport transfer child seat,/blog/crete-with-kids-child-seats,EXISTING,HIGH,NOT AVAILABLE
+en,Late arrivals,Heraklion airport transfer late night,/blog/night-arrivals-heraklion-airport,EXISTING,HIGH,NOT AVAILABLE
+en,Crete airport pillar,Crete airport transfers,/blog/crete-airport-transfers-guide,BRIEF_ONLY,MEDIUM,NOT AVAILABLE

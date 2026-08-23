@@ -6,8 +6,7 @@ import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getCountryName } from "@/i18n/markets";
 import { MARKETS } from "@/data/markets";
 import { formatEur } from "@/lib/pricing";
-import { buildHead } from "@/lib/seo";
-import { SITE_URL } from "@/lib/site";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
 import { listIndexablePorts, listIndexablePortsByCountry } from "@/lib/port-resolve";
 
 export const Route = createFileRoute("/{-$locale}/ports/")({
@@ -30,7 +29,7 @@ export const Route = createFileRoute("/{-$locale}/ports/")({
           "@type": "ListItem",
           position: i + 1,
           name: port.name,
-          url: `${SITE_URL}/ports/${port.slug}`,
+          url: buildCanonicalUrl(locale, `/ports/${port.slug}`),
         })),
       },
     });

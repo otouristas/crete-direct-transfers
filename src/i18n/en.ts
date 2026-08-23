@@ -179,33 +179,35 @@ export const en = {
       "The transfer market on Crete was broken — bidding wars, surge pricing, no accountability. We built the fix.",
     fixedTitle: "Fixed prices, always",
     fixedBody:
-      "The price you see is the price you pay. No surge at 2am, no meter anxiety, no haggling at the rank.",
+      "The total is shown before you confirm. Selected extras and any route or time-based charge are included up front — no meter or bidding.",
     flightTitle: "Flight-tracked pickups",
     flightBody:
-      "We monitor your flight and adjust the pickup automatically. Delayed? Your driver waits — free.",
+      "Add your flight number so the pickup can follow schedule changes. Waiting conditions are stated in your confirmation.",
     licensedTitle: "Licensed local drivers",
     licensedBody:
-      "Every driver is licensed, insured and has driven Crete's roads for at least three years.",
-    cancelTitle: "Free cancellation",
-    cancelBody: "Plans change. Cancel up to 24 hours before pickup and pay nothing at all.",
-    payTitle: "Pay on arrival",
-    payBody: "Book now, pay the driver by card or cash when you arrive. No prepayment, no risk.",
-    meetTitle: "Meet & greet included",
+      "Bookings are assigned to licensed, insured local operators. Quote-mode journeys are confirmed before payment.",
+    cancelTitle: "Clear cancellation terms",
+    cancelBody:
+      "The cancellation window and any applicable charge are shown before booking and in the refunds policy.",
+    payTitle: "Payment matched to the route",
+    payBody:
+      "Instant routes can proceed to secure online checkout. Quote-mode journeys are confirmed before payment.",
+    meetTitle: "Confirmed pickup instructions",
     meetBody:
-      "Your driver waits in arrivals with a name sign, helps with bags and knows the fastest way out.",
+      "Your confirmation states the terminal meeting point, contact method and whether a physical name sign is included or selected.",
   },
   steps: {
     title: "How it works",
-    subtitle: "Three steps between you and a driver who's already waiting.",
+    subtitle: "Three steps from route details to a confirmed pickup.",
     step1Title: "Pick your route & price",
     step1Body:
-      "Choose from 30 fixed-price routes, pick a vehicle and see your total instantly — no quote forms, no waiting.",
+      "Crete routes can show an instant total. For other markets, send the route and passenger details for a confirmed quote.",
     step2Title: "Book in two minutes",
     step2Body:
-      "Tell us your flight and hotel. You get instant confirmation and your driver's details before pickup.",
+      "Add the flight, destination, passengers and luggage. Instant bookings continue online; quote requests are reviewed first.",
     step3Title: "Meet your driver",
     step3Body:
-      "Name sign in arrivals, help with the bags, fixed price paid on arrival. That's the whole story.",
+      "Follow the confirmed meeting instructions. The route, vehicle, payment method and total are recorded before pickup.",
   },
   widget: {
     title: "Book your transfer",
@@ -493,22 +495,22 @@ export const en = {
     explore: "Explore transfers",
   },
   about: {
-    metaTitle: "About TransferAround | Fixed-Price, Local Drivers, One Island",
+    metaTitle: "About TransferAround | Crete-Rooted Private Transfers",
     metaDescription:
-      "TransferAround was built by locals to fix what's broken about airport transfers: bidding, surge pricing and no accountability. One island, fixed prices, licensed drivers.",
+      "A Crete-rooted private-transfer booking platform: instant fixed-price booking on Crete and quote-confirmed local partners across six countries.",
     eyebrow: "About us",
     title: "Our DNA.",
-    intro: "TransferAround exists because the transfer market on our island was broken.",
+    intro: "TransferAround began in Crete with a simpler way to arrange an airport transfer.",
     body1:
-      "Travellers arriving in Heraklion or Chania were asked to compare bids from strangers, negotiate over WhatsApp, or trust a taxi-rank meter after a long flight. Prices moved. Drivers rotated. Accountability was nobody's job.",
+      "Travellers arriving in Heraklion or Chania often had to compare bids, negotiate after landing or accept a fare they could not confirm in advance. We built the Crete service around a route, an agreed total and one booking record.",
     body2:
-      "We're locals — a small team from Chania and Heraklion — and we built what we always wished existed: one fixed price per route, one licensed driver assigned per booking, one number to call if anything goes wrong.",
+      "Crete still books instantly through our local operating network. In Greece beyond Crete, Spain, Italy, Portugal, Cyprus and Turkey, we review the journey with a licensed local partner and confirm the quote before payment.",
     wontTitle: "What we won't do",
     wontBody:
-      "No reverse auctions. No surge pricing at 2am. No sending you a random driver we've never met. Every driver in our network is licensed, insured, and has driven Crete for at least three years.",
-    whyTitle: "Why one island",
+      "No reverse auctions and no unconfirmed price at pickup. We do not take payment for quote-mode journeys until the route, total and licensed local operator have been confirmed.",
+    whyTitle: "Why local depth comes first",
     whyBody:
-      "Global platforms cover 180 countries and understand none of them well. We cover 260 km of coastline, two international airports, three ferry ports, and every hotel access road worth knowing. Depth over breadth.",
+      "Crete is our operational base and the market we know in detail. Expansion follows the same standard: publish a destination only when we can explain the booking mode clearly and review each quote with a local operator.",
     valuesTitle: "What we stand for",
     value1Title: "Punctuality",
     value1Body: "Flight-tracked pickups and drivers who leave early, not on time.",
@@ -517,7 +519,7 @@ export const en = {
     value3Title: "Accountability",
     value3Body: "One company, one number to call, a named driver on every booking.",
     value4Title: "Local depth",
-    value4Body: "We cover one island and know every hotel access road on it.",
+    value4Body: "Crete expertise first, with partner-confirmed coverage in each additional market.",
     ctaTitle: "See the difference on your next arrival",
   },
   contact: {
@@ -933,6 +935,7 @@ export const en = {
     subtitle: "Written by the people who drive these roads every day.",
     relatedTitle: "Keep reading",
     tocTitle: "In this guide",
+    sourcesTitle: "Sources",
     categories: {
       guides: "Guides",
       tips: "Tips",
@@ -947,7 +950,7 @@ export const en = {
     routeTitle: (from: string, to: string) =>
       `${from} to ${to} Transfer | Fixed Price · TransferAround`,
     airportTitle: (name: string, iata: string) =>
-      `${name} (${iata}) Transfers | Fixed Price · TransferAround`,
+      `Private transfer · ${name} (${iata}) | TransferAround`,
     airportRouteTitle: (from: string, to: string) =>
       `${from} to ${to} Private Transfer | TransferAround`,
     fleetTitle: (label: string) => `${label} Transfers in Crete | TransferAround`,

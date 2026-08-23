@@ -180,35 +180,35 @@ export const de: Dict = {
       "Der Transfermarkt auf Kreta war kaputt — Bieterwettkämpfe, schwankende Preise, keine Verantwortung. Wir haben die Lösung gebaut.",
     fixedTitle: "Festpreise, immer",
     fixedBody:
-      "Der Preis, den Sie sehen, ist der Preis, den Sie zahlen. Kein Aufschlag um 2 Uhr nachts, keine Taxameter-Angst, kein Feilschen.",
+      "Der Gesamtpreis steht vor der Bestätigung fest. Gewählte Extras und strecken- oder zeitabhängige Gebühren sind vorab enthalten — ohne Taxameter oder Bieten.",
     flightTitle: "Flugverfolgung inklusive",
     flightBody:
-      "Wir verfolgen Ihren Flug und passen die Abholung automatisch an. Verspätung? Ihr Fahrer wartet — kostenlos.",
+      "Geben Sie Ihre Flugnummer an, damit die Abholung bei Flugplanänderungen angepasst werden kann. Die Wartebedingungen stehen in Ihrer Bestätigung.",
     licensedTitle: "Lizenzierte lokale Fahrer",
     licensedBody:
-      "Jeder Fahrer ist lizenziert, versichert und fährt seit mindestens drei Jahren auf Kretas Straßen.",
-    cancelTitle: "Kostenlose Stornierung",
+      "Buchungen werden lizenzierten und versicherten lokalen Betreibern zugewiesen. Angebotsreisen werden vor der Zahlung bestätigt.",
+    cancelTitle: "Klare Stornierungsbedingungen",
     cancelBody:
-      "Pläne ändern sich. Stornieren Sie bis 24 Stunden vor der Abholung völlig kostenlos.",
-    payTitle: "Zahlung bei Ankunft",
+      "Stornierungsfrist und mögliche Gebühren werden vor der Buchung und in der Erstattungsrichtlinie angezeigt.",
+    payTitle: "Zahlung passend zur Strecke",
     payBody:
-      "Jetzt buchen, den Fahrer bei Ankunft per Karte oder bar bezahlen. Keine Vorauszahlung, kein Risiko.",
-    meetTitle: "Meet & Greet inklusive",
+      "Sofortstrecken können zum sicheren Online-Checkout führen. Angebotsreisen werden vor der Zahlung bestätigt.",
+    meetTitle: "Bestätigte Abholhinweise",
     meetBody:
-      "Ihr Fahrer wartet in der Ankunftshalle mit Namensschild, hilft mit dem Gepäck und kennt den schnellsten Weg.",
+      "Ihre Bestätigung nennt Treffpunkt, Kontaktweg und ob ein physisches Namensschild enthalten oder ausgewählt ist.",
   },
   steps: {
     title: "So funktioniert's",
-    subtitle: "Drei Schritte zwischen Ihnen und einem Fahrer, der bereits wartet.",
+    subtitle: "Drei Schritte von den Streckendaten bis zur bestätigten Abholung.",
     step1Title: "Strecke & Preis wählen",
     step1Body:
-      "Wählen Sie aus 30 Festpreis-Strecken, bestimmen Sie das Fahrzeug und sehen Sie sofort den Gesamtpreis — ohne Angebotsformulare, ohne Warten.",
+      "Kreta-Strecken können sofort einen Gesamtpreis anzeigen. Für andere Märkte senden Sie Strecke und Personendaten für ein bestätigtes Angebot.",
     step2Title: "In zwei Minuten buchen",
     step2Body:
-      "Nennen Sie uns Flug und Hotel. Sie erhalten sofort eine Bestätigung und die Fahrerdaten vor der Abholung.",
+      "Geben Sie Flug, Ziel, Personen und Gepäck an. Sofortbuchungen laufen online weiter; Angebotsanfragen werden zuerst geprüft.",
     step3Title: "Fahrer treffen",
     step3Body:
-      "Namensschild in der Ankunftshalle, Hilfe mit dem Gepäck, Festpreis bei Ankunft bezahlt. Das ist alles.",
+      "Folgen Sie den bestätigten Treffpunktangaben. Strecke, Fahrzeug, Zahlungsart und Gesamtpreis sind vor der Abholung dokumentiert.",
   },
   widget: {
     title: "Transfer buchen",
@@ -498,31 +498,33 @@ export const de: Dict = {
     explore: "Transfers entdecken",
   },
   about: {
-    metaTitle: "Über TransferAround | Festpreise, lokale Fahrer, eine Insel",
+    metaTitle: "Über TransferAround | Privattransfers mit Wurzeln auf Kreta",
     metaDescription:
-      "TransferAround wurde von Einheimischen gegründet, um zu reparieren, was bei Transfers kaputt ist: Bieterwettkämpfe, schwankende Preise, fehlende Verantwortung.",
+      "Eine Buchungsplattform für Privattransfers mit Wurzeln auf Kreta: dort sofort zum Festpreis buchen, in sechs Ländern mit bestätigten Angeboten lokaler Partner.",
     eyebrow: "Über uns",
     title: "Unsere DNA.",
-    intro: "TransferAround existiert, weil der Transfermarkt auf unserer Insel kaputt war.",
+    intro:
+      "TransferAround entstand auf Kreta aus der Idee, Flughafentransfers einfacher zu organisieren.",
     body1:
-      "Reisende, die in Heraklion oder Chania ankamen, sollten Gebote von Fremden vergleichen, per WhatsApp verhandeln oder nach einem langen Flug dem Taxameter vertrauen. Preise schwankten. Fahrer wechselten. Verantwortung war niemandes Job.",
+      "Reisende, die in Heraklion oder Chania ankamen, mussten oft Angebote vergleichen, nach der Landung verhandeln oder einen Fahrpreis akzeptieren, den sie nicht im Voraus bestätigen konnten. Deshalb basiert unser Service auf Kreta auf einer festen Strecke, einem vereinbarten Gesamtpreis und einem einzigen Buchungsbeleg.",
     body2:
-      "Wir sind Einheimische — ein kleines Team aus Chania und Heraklion — und haben gebaut, was wir uns immer gewünscht haben: ein Festpreis pro Strecke, ein lizenzierter Fahrer pro Buchung, eine Nummer zum Anrufen, wenn etwas schiefgeht.",
+      "Auf Kreta buchen Sie weiterhin sofort über unser lokales Netzwerk. Im übrigen Griechenland sowie in Spanien, Italien, Portugal, Zypern und der Türkei prüfen wir die Fahrt gemeinsam mit einem lizenzierten lokalen Partner und bestätigen das Angebot vor der Zahlung.",
     wontTitle: "Was wir nicht tun",
     wontBody:
-      "Keine Reverse-Auktionen. Keine Surge-Preise um 2 Uhr nachts. Kein zufälliger Fahrer, den wir nie getroffen haben. Jeder Fahrer in unserem Netz ist lizenziert, versichert und fährt seit mindestens drei Jahren auf Kreta.",
-    whyTitle: "Warum eine Insel",
+      "Keine Reverse-Auktionen und kein unbestätigter Preis bei der Abholung. Bei Fahrten im Angebotsmodus nehmen wir erst dann eine Zahlung entgegen, wenn Strecke, Gesamtpreis und lizenzierter lokaler Anbieter bestätigt sind.",
+    whyTitle: "Warum lokale Marktkenntnis zuerst kommt",
     whyBody:
-      "Globale Plattformen decken 180 Länder ab und verstehen keines davon wirklich. Wir decken 260 km Küste, zwei internationale Flughäfen, drei Fährhäfen und jede Hotelzufahrt ab, die man kennen sollte. Tiefe statt Breite.",
+      "Kreta ist unsere operative Basis und der Markt, den wir bis ins Detail kennen. Bei der Expansion gilt derselbe Maßstab: Wir nehmen ein Reiseziel erst dann auf, wenn wir die jeweilige Buchungsart klar erklären und jedes Angebot mit einem lokalen Anbieter prüfen können.",
     valuesTitle: "Wofür wir stehen",
     value1Title: "Pünktlichkeit",
     value1Body: "Flugverfolgung und Fahrer, die früh losfahren — nicht erst pünktlich.",
     value2Title: "Transparenz",
-    value2Body: "Ein Festpreis pro Strecke. Festgelegt vor der Buchung, niemals danach.",
+    value2Body: "Ein Festpreis pro Strecke. Vor der Buchung festgelegt, niemals danach.",
     value3Title: "Verantwortung",
     value3Body: "Ein Unternehmen, eine Nummer, ein namentlich benannter Fahrer pro Buchung.",
     value4Title: "Lokale Tiefe",
-    value4Body: "Wir decken eine Insel ab und kennen jede Hotelzufahrt darauf.",
+    value4Body:
+      "Zuerst unsere Erfahrung auf Kreta, dazu von Partnern bestätigte Verfügbarkeit in jedem weiteren Markt.",
     ctaTitle: "Erleben Sie den Unterschied bei Ihrer nächsten Ankunft",
   },
   contact: {
@@ -938,6 +940,7 @@ export const de: Dict = {
     subtitle: "Geschrieben von den Menschen, die diese Straßen täglich fahren.",
     relatedTitle: "Weiterlesen",
     tocTitle: "In diesem Guide",
+    sourcesTitle: "Quellen",
     categories: {
       guides: "Guides",
       tips: "Tipps",
@@ -952,7 +955,7 @@ export const de: Dict = {
     routeTitle: (from: string, to: string) =>
       `${from} nach ${to} Transfer | Festpreis · TransferAround`,
     airportTitle: (name: string, iata: string) =>
-      `${name} (${iata}) Transfers | Festpreis · TransferAround`,
+      `Privattransfer · ${name} (${iata}) | TransferAround`,
     airportRouteTitle: (from: string, to: string) =>
       `${from} nach ${to} Privattransfer | TransferAround`,
     fleetTitle: (label: string) => `${label} Transfers auf Kreta | TransferAround`,
@@ -973,7 +976,7 @@ export const de: Dict = {
       "Private Flughafentransfers mit lizenzierten Fahrern – Kreta und darüber hinaus. Festpreise, Meet & Greet.",
     citiesIndexTitle: "Stadttransfers | TransferAround",
     citiesIndexDescription: "Private Transfers zu Städten und Resorts auf unserer Abdeckungskarte.",
-    cityTitle: (name: string) => `${name} Transfers | TransferAround`,
+    cityTitle: (name: string) => `Privattransfer in ${name} | TransferAround`,
     postTitle: (title: string) => `${title} · TransferAround Blog`,
     guideIntroTitle: "Überblick",
     guideHighlights: "Wohin reisen",

@@ -28,6 +28,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
 import { CookieBanner } from "../components/cookie-banner";
+import { ConversionTracker } from "../components/conversion-tracker";
 import { LanguageSuggestionBanner } from "../components/language-suggestion-banner";
 import { AuthProvider } from "../hooks/use-auth";
 import { CurrencyProvider, useCurrency } from "../hooks/use-currency";
@@ -36,21 +37,24 @@ import { Toaster } from "../components/ui/sonner";
 function NotFoundComponent() {
   const t = useT();
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-display text-primary">404</h1>
-        <h2 className="mt-4 text-xl font-display text-foreground">{t.notFound.title}</h2>
-        <p className="mt-2 text-sm text-muted-foreground">{t.notFound.body}</p>
-        <div className="mt-6">
-          <Link
-            to="/{-$locale}"
-            className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90"
-          >
-            {t.common.backHome}
-          </Link>
+    <>
+      <meta name="robots" content="noindex, follow" />
+      <div className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="max-w-md text-center">
+          <h1 className="text-7xl font-display text-primary">404</h1>
+          <h2 className="mt-4 text-xl font-display text-foreground">{t.notFound.title}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{t.notFound.body}</p>
+          <div className="mt-6">
+            <Link
+              to="/{-$locale}"
+              className="inline-flex items-center justify-center rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:opacity-90"
+            >
+              {t.common.backHome}
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -110,11 +114,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Licensed local drivers. Fixed prices. No bidding. Book your Crete transfer in minutes.",
       },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "TransferAround — Fixed-Price Crete Transfers" },
+      {
+        name: "twitter:description",
+        content:
+          "Licensed local drivers. Fixed prices. No bidding. Book your Crete transfer in minutes.",
+      },
       { property: "og:image", content: OG_DEFAULT_IMAGE },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "TransferAround private transfers" },
       { name: "twitter:image", content: OG_DEFAULT_IMAGE },
+      { name: "twitter:image:alt", content: "TransferAround private transfers" },
       { name: "theme-color", content: "#0B2545" },
     ],
     links: [
+      { rel: "preconnect", href: "https://images.pexels.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
       { rel: "apple-touch-icon", href: "/favicon.svg" },
@@ -180,6 +195,7 @@ function RootLayout() {
         <SiteFooter />
       </div>
       <CookieBanner />
+      <ConversionTracker />
       <Toaster position="top-center" />
     </>
   );

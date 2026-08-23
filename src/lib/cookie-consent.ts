@@ -9,6 +9,16 @@
  */
 
 export type ConsentValue = "accepted" | "declined";
+type AnalyticsProps = Record<string, string | number | boolean>;
+
+declare global {
+  interface Window {
+    plausible?: {
+      (event: string, options?: { props?: AnalyticsProps }): void;
+      q?: Array<[string, { props?: AnalyticsProps }?]>;
+    };
+  }
+}
 
 const STORAGE_KEY = "ta.cookie-consent";
 
@@ -54,6 +64,26 @@ export function loadAnalytics(): void {
   script.defer = true;
   script.setAttribute("data-domain", domain);
   document.head.appendChild(script);
+}
+
+/**
+ * Sends a custom conversion event only after analytics consent. Plausible's
+ * queue keeps early clicks that happen after consent but before its script has
+ * finished loading.
+ */
+export function trackAnalyticsEvent(event: string, props?: AnalyticsProps): void {
+  if (typeof window === "undefined" || readConsent() !== "accepted") return;
+  if (!import.meta.env.VITE_PLAUSIBLE_DOMAIN?.trim()) return;
+
+  loadAnalytics();
+  if (!window.plausible) {
+    const plausible = ((name: string, options?: { props?: AnalyticsProps }) => {
+      plausible.q = plausible.q || [];
+      plausible.q.push([name, options]);
+    }) as NonNullable<Window["plausible"]>;
+    window.plausible = plausible;
+  }
+  window.plausible(event, props ? { props } : undefined);
 }
 
 /** Boot-time application of a previously stored choice. */

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { useLocale, useT, type Locale } from "@/i18n";
 import { supabase } from "@/integrations/supabase/client";
+import { trackAnalyticsEvent } from "@/lib/cookie-consent";
 
 export type PartnerKind = "hotel" | "driver" | "travel_agency";
 
@@ -235,7 +236,8 @@ const EMPTY = {
 
 export function PartnerInquiryForm({ kind }: { kind: PartnerKind }) {
   const t = useT();
-  const copy = COPY[useLocale()][kind];
+  const locale = useLocale();
+  const copy = COPY[locale][kind];
   const [values, setValues] = useState(EMPTY);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -289,6 +291,7 @@ export function PartnerInquiryForm({ kind }: { kind: PartnerKind }) {
     }
     setValues(EMPTY);
     setState("sent");
+    trackAnalyticsEvent("Partner Inquiry Submitted", { locale, partner_type: kind });
   };
 
   if (state === "sent")

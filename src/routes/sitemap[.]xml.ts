@@ -57,6 +57,12 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...MARKET_HUB_CITIES.map((c) => `/cities/${c.slug}`),
           "/for-travel-agencies",
         ]);
+        const lastModified = new Map<string, string>([
+          ...listLiveMarkets().map((market) => [`/${market.slug}`, market.lastModified] as const),
+          ...POSTS.map(
+            (post) => [`/blog/${post.slug}`, post.updatedAt ?? post.publishedAt] as const,
+          ),
+        ]);
 
         const alternates = (path: string) =>
           [
@@ -68,12 +74,14 @@ export const Route = createFileRoute("/sitemap.xml")({
           ].join("\n");
 
         const urls = [...paths]
-          .flatMap((path) =>
-            PUBLIC_LOCALES.map(
+          .flatMap((path) => {
+            const modified = lastModified.get(path);
+            const lastmod = modified ? `\n    <lastmod>${modified}</lastmod>` : "";
+            return PUBLIC_LOCALES.map(
               (locale) =>
-                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>\n${alternates(path)}\n  </url>`,
-            ),
-          )
+                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>${lastmod}\n${alternates(path)}\n  </url>`,
+            );
+          })
           .join("\n");
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>`;

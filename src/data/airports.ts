@@ -148,7 +148,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Crete Heraklion Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -259,7 +259,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Chania International Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -376,7 +376,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Athens Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -486,7 +486,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Thessaloniki Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -597,7 +597,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Mykonos Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -708,7 +708,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Santorini Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -819,7 +819,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Corfu Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -930,7 +930,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Rhodes Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1041,7 +1041,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Zakynthos Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1152,7 +1152,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Kefalonia Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1263,7 +1263,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Kos Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1374,7 +1374,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Aktion Lefkada Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1485,7 +1485,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Paros Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1596,7 +1596,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Naxos Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1707,7 +1707,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Milos Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1818,7 +1818,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Mytilene Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -1929,7 +1929,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Sitia Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",
@@ -2040,7 +2040,7 @@ const AIRPORT_RECORDS: Omit<AirportData, "heroImage">[] = [
       },
       {
         q: "Are child car seats available from Kalamata International Airport?",
-        a: "Yes — free on request. State ages when booking and the correct seats will be installed before pickup.",
+        a: "Yes. Request the correct seat with the passenger's age when booking. Any applicable seat fee is shown before you confirm.",
       },
       {
         q: "How long will the driver wait if my flight is delayed?",

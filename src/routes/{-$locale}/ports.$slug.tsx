@@ -6,8 +6,8 @@ import { PageHero } from "@/components/sections/page-hero";
 import { Reveal } from "@/components/reveal";
 import { getDict, useT, type Locale } from "@/i18n";
 import { formatEur } from "@/lib/pricing";
-import { buildHead } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 import {
   airportsNearPort,
   getPort,
@@ -36,6 +36,7 @@ export const Route = createFileRoute("/{-$locale}/ports/$slug")({
     const { port, indexable } = loaderData;
     const p = t.portPages;
     const path = `/ports/${port.slug}`;
+    const canonical = buildCanonicalUrl(locale, path);
     return buildHead({
       locale,
       path,
@@ -47,11 +48,11 @@ export const Route = createFileRoute("/{-$locale}/ports/$slug")({
         "@graph": [
           {
             "@type": "Service",
-            "@id": `${SITE_URL}${path}#service`,
+            "@id": `${canonical}#service`,
             name: p.title(port.name),
             serviceType: p.eyebrow,
             description: p.intro(port.name, port.countryName),
-            provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+            provider: { "@id": ORGANIZATION_ID },
             areaServed: {
               "@type": "Place",
               name: port.name,

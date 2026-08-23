@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
 import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
 import { Route as Char123LocaleChar125TurkeyRouteImport } from './routes/{-$locale}/turkey'
+import { Route as Char123LocaleChar125TouristasAiRouteImport } from './routes/{-$locale}/touristas-ai'
 import { Route as Char123LocaleChar125SpainRouteImport } from './routes/{-$locale}/spain'
 import { Route as Char123LocaleChar125SignupRouteImport } from './routes/{-$locale}/signup'
 import { Route as Char123LocaleChar125ReviewsRouteImport } from './routes/{-$locale}/reviews'
@@ -94,6 +95,12 @@ const Char123LocaleChar125TurkeyRoute =
   Char123LocaleChar125TurkeyRouteImport.update({
     id: '/turkey',
     path: '/turkey',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125TouristasAiRoute =
+  Char123LocaleChar125TouristasAiRouteImport.update({
+    id: '/touristas-ai',
+    path: '/touristas-ai',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125SpainRoute =
@@ -477,6 +484,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/spain': typeof Char123LocaleChar125SpainRoute
+  '/{-$locale}/touristas-ai': typeof Char123LocaleChar125TouristasAiRoute
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
@@ -538,6 +546,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/spain': typeof Char123LocaleChar125SpainRoute
+  '/{-$locale}/touristas-ai': typeof Char123LocaleChar125TouristasAiRoute
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
@@ -604,6 +613,7 @@ export interface FileRoutesById {
   '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/spain': typeof Char123LocaleChar125SpainRoute
+  '/{-$locale}/touristas-ai': typeof Char123LocaleChar125TouristasAiRoute
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
@@ -671,6 +681,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/reviews'
     | '/{-$locale}/signup'
     | '/{-$locale}/spain'
+    | '/{-$locale}/touristas-ai'
     | '/{-$locale}/turkey'
     | '/{-$locale}/'
     | '/{-$locale}/account/profile'
@@ -732,6 +743,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/reviews'
     | '/{-$locale}/signup'
     | '/{-$locale}/spain'
+    | '/{-$locale}/touristas-ai'
     | '/{-$locale}/turkey'
     | '/{-$locale}'
     | '/{-$locale}/account/profile'
@@ -797,6 +809,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/reviews'
     | '/{-$locale}/signup'
     | '/{-$locale}/spain'
+    | '/{-$locale}/touristas-ai'
     | '/{-$locale}/turkey'
     | '/{-$locale}/'
     | '/{-$locale}/account/profile'
@@ -868,6 +881,13 @@ declare module '@tanstack/react-router' {
       path: '/turkey'
       fullPath: '/{-$locale}/turkey'
       preLoaderRoute: typeof Char123LocaleChar125TurkeyRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/touristas-ai': {
+      id: '/{-$locale}/touristas-ai'
+      path: '/touristas-ai'
+      fullPath: '/{-$locale}/touristas-ai'
+      preLoaderRoute: typeof Char123LocaleChar125TouristasAiRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/spain': {
@@ -1385,6 +1405,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125ReviewsRoute: typeof Char123LocaleChar125ReviewsRoute
   Char123LocaleChar125SignupRoute: typeof Char123LocaleChar125SignupRoute
   Char123LocaleChar125SpainRoute: typeof Char123LocaleChar125SpainRoute
+  Char123LocaleChar125TouristasAiRoute: typeof Char123LocaleChar125TouristasAiRoute
   Char123LocaleChar125TurkeyRoute: typeof Char123LocaleChar125TurkeyRoute
   Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
   Char123LocaleChar125AirportsSlugRoute: typeof Char123LocaleChar125AirportsSlugRoute
@@ -1448,6 +1469,7 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125ReviewsRoute: Char123LocaleChar125ReviewsRoute,
     Char123LocaleChar125SignupRoute: Char123LocaleChar125SignupRoute,
     Char123LocaleChar125SpainRoute: Char123LocaleChar125SpainRoute,
+    Char123LocaleChar125TouristasAiRoute: Char123LocaleChar125TouristasAiRoute,
     Char123LocaleChar125TurkeyRoute: Char123LocaleChar125TurkeyRoute,
     Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
     Char123LocaleChar125AirportsSlugRoute:

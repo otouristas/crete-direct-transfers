@@ -1,11 +1,49 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Clock } from "lucide-react";
-import { getDict, useLocale, useT, type Locale } from "@/i18n";
-import { getLocalizedPost } from "@/i18n/content";
+import { getDict, localePath, useLocale, useT, type Dict, type Locale } from "@/i18n";
+import { getLocalizedPost, getLocalizedService } from "@/i18n/content";
 import type { Post } from "@/data/posts";
-import { buildHead } from "@/lib/seo";
-import { SITE_URL } from "@/lib/site";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 import { CtaBand } from "@/components/sections/cta-band";
+
+function commercialLinkForPost(
+  slug: string,
+  t: Dict,
+  locale: Locale,
+): { path: string; label: string } {
+  switch (slug) {
+    case "heraklion-airport-to-chania-options":
+      return {
+        path: "/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-chania",
+        label: t.airportPages.transferFromTo("Heraklion Airport", "Chania"),
+      };
+    case "taxi-vs-prebooked-transfer-crete":
+      return {
+        path: "/services/airport-transfers",
+        label: getLocalizedService(locale, "airport-transfers")?.name ?? t.nav.airportTransfers,
+      };
+    case "souda-port-cruise-ferry-arrivals":
+      return { path: "/ports/souda-port-transfers", label: "Souda Port" };
+    case "crete-with-kids-child-seats":
+      return {
+        path: "/services/group-transfers",
+        label: getLocalizedService(locale, "group-transfers")?.name ?? t.nav.services,
+      };
+    case "night-arrivals-heraklion-airport":
+      return {
+        path: "/airports/crete-heraklion-airport-transfers-her",
+        label: t.seo.airportTitle("Heraklion Airport", "HER"),
+      };
+    case "chania-old-town-arrival-tips":
+      return {
+        path: "/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-chania-old-town",
+        label: t.airportPages.transferFromTo("Chania Airport", "Chania Old Town"),
+      };
+    default:
+      return { path: "/services", label: t.nav.services };
+  }
+}
 
 export const Route = createFileRoute("/{-$locale}/blog/$slug")({
   loader: ({ params }) => {
@@ -24,6 +62,7 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
     }
     const p = loaderData.post;
     const path = `/blog/${params.slug}`;
+    const canonical = buildCanonicalUrl(locale, path);
     return buildHead({
       locale,
       path,
@@ -41,15 +80,25 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
             datePublished: p.publishedAt,
             dateModified: p.updatedAt ?? p.publishedAt,
             author: { "@type": "Person", name: p.author.name },
-            publisher: { "@type": "Organization", name: "TransferAround", url: SITE_URL },
-            mainEntityOfPage: `${SITE_URL}${path}`,
+            publisher: { "@id": ORGANIZATION_ID },
+            mainEntityOfPage: canonical,
           },
           {
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-              { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/blog` },
-              { "@type": "ListItem", position: 3, name: p.title, item: `${SITE_URL}${path}` },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: t.nav.home,
+                item: buildCanonicalUrl(locale, "/"),
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: t.nav.blog,
+                item: buildCanonicalUrl(locale, "/blog"),
+              },
+              { "@type": "ListItem", position: 3, name: p.title, item: canonical },
             ],
           },
           ...(p.faq
@@ -91,6 +140,7 @@ function BlogPost() {
   const { post } = Route.useLoaderData() as { post: Post };
   const t = useT();
   const locale = useLocale();
+  const commercialLink = commercialLinkForPost(post.slug, t, locale);
   const related = post.related
     .map((slug) => getLocalizedPost(locale, slug))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
@@ -123,10 +173,11 @@ function BlogPost() {
             <span>{post.author.role}</span>
             <span>·</span>
             <span>
-              {new Date(post.publishedAt).toLocaleDateString("en-GB", {
+              {new Date(post.publishedAt).toLocaleDateString(locale, {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
+                timeZone: "UTC",
               })}
             </span>
             <span className="inline-flex items-center gap-1">
@@ -184,15 +235,43 @@ function BlogPost() {
             </section>
           )}
 
+          {post.sources && post.sources.length > 0 ? (
+            <section className="mt-10 border-t border-border pt-8">
+              <h2 className="text-lg font-display text-primary">{t.blog.sourcesTitle}</h2>
+              <ul className="mt-3 space-y-2 text-sm">
+                {post.sources.map((source) => (
+                  <li key={source.url}>
+                    <a
+                      href={source.url}
+                      rel="noreferrer"
+                      target="_blank"
+                      className="text-accent-deep underline decoration-accent/50 underline-offset-4"
+                    >
+                      {source.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
           <div className="mt-10 rounded-2xl bg-primary p-6 text-primary-foreground">
             <div className="font-display text-lg">{t.home.ctaTitle}</div>
             <p className="mt-1 text-sm text-primary-foreground/75">{t.home.ctaSubtitle}</p>
-            <Link
-              to="/{-$locale}/book"
-              className="mt-4 inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
-            >
-              {t.common.getPrice}
-            </Link>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <a
+                href={localePath(locale, commercialLink.path)}
+                className="inline-flex rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90"
+              >
+                {commercialLink.label}
+              </a>
+              <Link
+                to="/{-$locale}/book"
+                className="inline-flex rounded-xl border border-primary-foreground/25 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
+              >
+                {t.common.getPrice}
+              </Link>
+            </div>
           </div>
         </article>
       </div>

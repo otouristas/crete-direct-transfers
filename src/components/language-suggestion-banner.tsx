@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Globe, X } from "lucide-react";
-import { getDict, isLocale, useLocale, useT, type Locale } from "@/i18n";
+import { getDict, isLocale, PUBLIC_LOCALES, useLocale, useT, type Locale } from "@/i18n";
 import { cn } from "@/lib/utils";
 
 /**
@@ -33,8 +33,8 @@ export function LanguageSuggestionBanner() {
         : [navigator.language];
     for (const pref of prefs) {
       const primary = pref.split("-")[0]?.toLowerCase() ?? "";
-      if (isLocale(primary)) {
-        // Stop at the first supported preference; suggest only if it differs.
+      if (isLocale(primary) && (PUBLIC_LOCALES as readonly Locale[]).includes(primary)) {
+        // Stop at the first public preference; suggest only if it differs.
         if (primary !== locale) setSuggested(primary);
         return;
       }

@@ -7,16 +7,16 @@
 
 TransferAround is a private transfer booking service. Travellers select a
 pickup and drop-off point (airport, port, hotel, town, or any address) and get a
-fixed, all-inclusive price with a licensed local driver. Where we have driver
-supply the price is instant and bookable online; elsewhere travellers request a
-quote that is confirmed by our team.
+fixed price with a licensed local driver. Where local supply is live the price
+is instant and bookable online; elsewhere travellers request a route-specific
+quote that is confirmed before payment.
 
 Key facts:
 - Model: private (not shared) door-to-door transfers, fixed price agreed up front, no surge, no bidding.
-- Included: meet & greet, flight tracking, waiting time, taxes and tolls, luggage.
+- Inclusions: instant Crete bookings include the published route benefits; quote-mode confirmations state the meeting point, vehicle, waiting terms and applicable fees.
 - Vehicle classes: Economy, Comfort, Minivan (up to 7), Luxury, minibuses.
-- Coverage today: instant booking across Crete; airport landing pages and quote booking for major Greek airports (ATH, SKG, JMK, JTR, CFU, RHO, ZTH, KLX and more).
-- Languages: English, Greek (Ελληνικά), German (Deutsch), French, Italian, Dutch, Spanish.
+- Coverage today: instant booking across Crete; quote-confirmed coverage in the rest of Greece, Spain, Italy, Portugal, Cyprus and Turkey.
+- Public site languages: English, Greek (Ελληνικά), German (Deutsch), French, Italian.
 - Payment: card (Stripe Checkout on instant routes) or pay-on-board depending on route.
 - In-product assistant: Touristas AI (Help me book) quotes places with tool calling and deep-links into /book. Prices only come from TransferAround quote tools.
 
@@ -24,7 +24,7 @@ Key facts:
 - [Home](https://transferaround.com/): overview, booking widget, popular routes.
 - [Greece](https://transferaround.com/greece): country hub for airports and cities.
 - [Spain](https://transferaround.com/spain) and [Italy](https://transferaround.com/italy): country hubs (quote / expanding coverage).
-- [Airports](https://transferaround.com/airports): airport transfer hubs (Transfeero-style landing pages).
+- [Airports](https://transferaround.com/airports): airport transfer hubs and route-specific booking information.
 - [Cities](https://transferaround.com/cities): city and resort transfer hubs.
 - [Routes](https://transferaround.com/routes): Crete fixed-price transfer corridors.
 - [Regions](https://transferaround.com/regions): Crete coverage by prefecture.
@@ -32,7 +32,6 @@ Key facts:
 - [Fleet](https://transferaround.com/fleet): vehicle classes and capacities.
 - [How it works](https://transferaround.com/how-it-works): booking and pickup process.
 - [FAQ](https://transferaround.com/faq): pricing, luggage, child seats, cancellations.
-- [Reviews](https://transferaround.com/reviews): verified customer ratings.
 - [Contact](https://transferaround.com/contact): support and quote requests.
 - [Refunds](https://transferaround.com/legal/refunds): cancellation windows, waiting times, driver-fault make-good.
 
@@ -42,4 +41,4 @@ Key facts:
 
 ## Machine-readable
 - Sitemap: https://transferaround.com/sitemap.xml
-- Structured data: schema.org LocalBusiness, TaxiService, Service, Airport, Offer, FAQPage, BreadcrumbList, ItemList, Article on the relevant pages.
+- Structured data: schema.org Organization, WebSite, Service, Airport, Offer, FAQPage, BreadcrumbList, ItemList and Article on the relevant pages.

@@ -181,35 +181,35 @@ export const fr: Dict = {
       "Le marché du transfert en Crète était défaillant — guerres d'enchères, tarifs dynamiques, aucune responsabilité. Nous avons créé la solution.",
     fixedTitle: "Des prix fixes, toujours",
     fixedBody:
-      "Le prix affiché est le prix payé. Pas de majoration à 2h du matin, pas d'angoisse au compteur, pas de marchandage à la station.",
+      "Le total est affiché avant la confirmation. Les options choisies et tout supplément lié au trajet ou à l’horaire sont inclus à l’avance — sans compteur ni enchères.",
     flightTitle: "Prise en charge avec suivi des vols",
     flightBody:
-      "Nous surveillons votre vol et adaptons automatiquement la prise en charge. Un retard ? Votre chauffeur attend — gratuitement.",
+      "Ajoutez votre numéro de vol pour que la prise en charge suive les changements d’horaire. Les conditions d’attente figurent dans la confirmation.",
     licensedTitle: "Chauffeurs locaux agréés",
     licensedBody:
-      "Chaque chauffeur est agréé, assuré et conduit sur les routes de Crète depuis au moins trois ans.",
-    cancelTitle: "Annulation gratuite",
+      "Les réservations sont confiées à des opérateurs locaux agréés et assurés. Les trajets sur devis sont confirmés avant le paiement.",
+    cancelTitle: "Conditions d’annulation claires",
     cancelBody:
-      "Les plans changent. Annulez jusqu'à 24 heures avant la prise en charge sans rien payer.",
-    payTitle: "Paiement à l'arrivée",
+      "Le délai d’annulation et les éventuels frais sont indiqués avant la réservation et dans la politique de remboursement.",
+    payTitle: "Paiement adapté au trajet",
     payBody:
-      "Réservez maintenant, payez le chauffeur par carte ou en espèces à votre arrivée. Aucun prépaiement, aucun risque.",
-    meetTitle: "Accueil personnalisé inclus",
+      "Les trajets instantanés peuvent passer au paiement sécurisé en ligne. Les trajets sur devis sont confirmés avant tout paiement.",
+    meetTitle: "Instructions de prise en charge confirmées",
     meetBody:
-      "Votre chauffeur vous attend à l'arrivée avec une pancarte à votre nom, vous aide avec les bagages et connaît le chemin le plus rapide.",
+      "La confirmation précise le point de rendez-vous, le mode de contact et si une pancarte nominative est incluse ou sélectionnée.",
   },
   steps: {
     title: "Comment ça marche",
-    subtitle: "Trois étapes entre vous et un chauffeur qui attend déjà.",
+    subtitle: "Trois étapes, des détails du trajet à la prise en charge confirmée.",
     step1Title: "Choisissez votre itinéraire et votre prix",
     step1Body:
-      "Choisissez parmi 30 itinéraires à prix fixe, sélectionnez un véhicule et voyez votre total instantanément — sans formulaire de devis, sans attente.",
+      "Les trajets en Crète peuvent afficher un total instantané. Pour les autres marchés, envoyez le trajet et les passagers afin de recevoir un devis confirmé.",
     step2Title: "Réservez en deux minutes",
     step2Body:
-      "Indiquez-nous votre vol et votre hôtel. Vous recevez une confirmation immédiate et les coordonnées de votre chauffeur avant la prise en charge.",
+      "Ajoutez le vol, la destination, les passagers et les bagages. Les réservations instantanées continuent en ligne ; les devis sont d’abord vérifiés.",
     step3Title: "Rencontrez votre chauffeur",
     step3Body:
-      "Pancarte à votre nom à l'arrivée, aide avec les bagages, prix fixe payé à l'arrivée. Voilà toute l'histoire.",
+      "Suivez les instructions de rendez-vous confirmées. Le trajet, le véhicule, le mode de paiement et le total sont enregistrés avant la prise en charge.",
   },
   widget: {
     title: "Réservez votre transfert",
@@ -503,26 +503,27 @@ export const fr: Dict = {
     explore: "Découvrir les transferts",
   },
   about: {
-    metaTitle: "À propos de TransferAround | Prix fixes, chauffeurs locaux, une île",
+    metaTitle: "À propos de TransferAround | Transferts privés ancrés en Crète",
     metaDescription:
-      "TransferAround a été créé par des locaux pour corriger ce qui ne va pas dans les transferts aéroport : enchères, tarifs dynamiques et absence de responsabilité. Une île, des prix fixes, des chauffeurs agréés.",
+      "Une plateforme de réservation de transferts privés ancrée en Crète : réservation instantanée à prix fixe en Crète et partenaires locaux avec devis confirmé dans six pays.",
     eyebrow: "À propos",
     title: "Notre ADN.",
-    intro: "TransferAround existe parce que le marché du transfert sur notre île était défaillant.",
+    intro:
+      "TransferAround est né en Crète d'une idée simple : faciliter l'organisation d'un transfert aéroport.",
     body1:
-      "Les voyageurs arrivant à Héraklion ou La Canée devaient comparer des offres d'inconnus, négocier sur WhatsApp, ou faire confiance au compteur après un long vol. Les prix bougeaient. Les chauffeurs tournaient. La responsabilité n'était le travail de personne.",
+      "À leur arrivée à Héraklion ou à La Canée, les voyageurs devaient souvent comparer des offres, négocier après l'atterrissage ou accepter un tarif impossible à confirmer à l'avance. Nous avons conçu notre service en Crète autour d'un itinéraire, d'un montant total convenu et d'un dossier de réservation unique.",
     body2:
-      "Nous sommes locaux — une petite équipe de La Canée et Heraklion — et nous avons construit ce que nous avons toujours voulu : un prix fixe par trajet, un chauffeur licencié par réservation, un numero a appeler si quelque chose cloche.",
+      "En Crète, les réservations restent instantanées grâce à notre réseau local. Dans le reste de la Grèce, ainsi qu'en Espagne, en Italie, au Portugal, à Chypre et en Turquie, nous examinons le trajet avec un partenaire local agréé et confirmons le devis avant tout paiement.",
     wontTitle: "Ce que nous ne ferons pas",
     wontBody:
-      "Pas d'enchères inverses. Pas de surge à 2h du matin. Pas de chauffeur au hasard que nous n'avons jamais rencontré. Chaque chauffeur de notre réseau est licencié, assuré, et conduit en Crète depuis au moins trois ans.",
-    whyTitle: "Pourquoi une seule ile",
+      "Pas d'enchères inversées ni de prix non confirmé au moment de la prise en charge. Pour les trajets sur devis, nous ne demandons aucun paiement tant que l'itinéraire, le montant total et l'opérateur local agréé n'ont pas été confirmés.",
+    whyTitle: "Pourquoi l'ancrage local passe avant tout",
     whyBody:
-      "Les plateformes mondiales couvrent 180 pays et n'en comprennent vraiment aucun. Nous couvrons 260 km de côte, deux aéroports internationaux, trois ports, et chaque accès hôtel digne d'être connu. La profondeur plutot que l'etendue.",
+      "La Crète est notre base opérationnelle et le marché que nous connaissons dans le détail. Notre expansion suit la même exigence : nous ne publions une destination que lorsque nous pouvons expliquer clairement son mode de réservation et examiner chaque devis avec un opérateur local.",
     valuesTitle: "Nos valeurs",
     value1Title: "Ponctualité",
     value1Body:
-      "Prise en charge avec suivi des vols et des chauffeurs qui partent en avance, pas à l'heure.",
+      "Prises en charge avec suivi des vols et chauffeurs qui partent en avance, pas simplement à l'heure.",
     value2Title: "Transparence",
     value2Body: "Un prix fixe par itinéraire. Fixé avant la réservation, jamais après.",
     value3Title: "Responsabilité",
@@ -530,7 +531,7 @@ export const fr: Dict = {
       "Une entreprise, un seul numéro à appeler, un chauffeur nommé sur chaque réservation.",
     value4Title: "Ancrage local",
     value4Body:
-      "Nous couvrons une seule île et connaissons chacune de ses routes d'accès aux hôtels.",
+      "L'expertise de la Crète d'abord, puis une couverture confirmée par nos partenaires sur chaque marché supplémentaire.",
     ctaTitle: "Découvrez la différence lors de votre prochaine arrivée",
   },
   contact: {
@@ -950,6 +951,7 @@ export const fr: Dict = {
     subtitle: "Écrits par ceux qui parcourent ces routes chaque jour.",
     relatedTitle: "Continuez votre lecture",
     tocTitle: "Dans ce guide",
+    sourcesTitle: "Sources",
     categories: {
       guides: "Guides",
       tips: "Conseils",
@@ -963,7 +965,7 @@ export const fr: Dict = {
     regionTitle: (name: string) => `${name}, transferts Crète | TransferAround`,
     routeTitle: (from: string, to: string) => `${from} vers ${to} | Prix fixe · TransferAround`,
     airportTitle: (name: string, iata: string) =>
-      `${name} (${iata}) transferts | Prix fixe · TransferAround`,
+      `Transfert privé · ${name} (${iata}) | TransferAround`,
     airportRouteTitle: (from: string, to: string) =>
       `${from} vers ${to} transfert privé | TransferAround`,
     fleetTitle: (label: string) => `${label} transferts en Crète | TransferAround`,

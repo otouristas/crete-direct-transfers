@@ -7,8 +7,8 @@ import { PageHero } from "@/components/sections/page-hero";
 import { Reveal } from "@/components/reveal";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedVehicles } from "@/i18n/content";
-import { buildHead } from "@/lib/seo";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 
 /** Intercity rides default to Standard Class and above for the extra room. */
 const INTERCITY_CLASSES = new Set(["comfort", "luxury", "suv", "minivan", "van-first"]);
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/{-$locale}/city-to-city")({
     const locale = (ctx.params.locale ?? "en") as Locale;
     const t = getDict(locale);
     const p = t.cityToCityPage;
+    const canonical = buildCanonicalUrl(locale, "/city-to-city");
     return buildHead({
       locale,
       path: "/city-to-city",
@@ -28,11 +29,11 @@ export const Route = createFileRoute("/{-$locale}/city-to-city")({
         "@graph": [
           {
             "@type": "Service",
-            "@id": `${SITE_URL}/city-to-city#service`,
+            "@id": `${canonical}#service`,
             name: p.title,
             serviceType: p.eyebrow,
             description: p.metaDescription,
-            provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+            provider: { "@id": ORGANIZATION_ID },
           },
           {
             "@type": "FAQPage",

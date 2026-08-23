@@ -30,6 +30,11 @@ function fitTitle(value: string): string {
   return trimAtWord(withoutBrand, TITLE_LIMIT);
 }
 
+/** Absolute canonical URL for a locale and locale-less route path. */
+export function buildCanonicalUrl(locale: Locale, path: string): string {
+  return `${SITE_URL}${localePath(locale, path)}`;
+}
+
 /**
  * head() payload for a leaf route: title/description/OG, one canonical and
  * per-locale + x-default hreflang alternates (absolute URLs, generated from
@@ -45,7 +50,7 @@ export function buildHead({
   noindex,
   jsonLd,
 }: BuildHeadArgs) {
-  const canonical = `${SITE_URL}${localePath(locale, path)}`;
+  const canonical = buildCanonicalUrl(locale, path);
   const isPublicLocale = (PUBLIC_LOCALES as readonly string[]).includes(locale);
   const seoTitle = fitTitle(title);
   const seoDescription = trimAtWord(description, DESCRIPTION_LIMIT);
@@ -58,11 +63,21 @@ export function buildHead({
     { property: "og:description", content: seoDescription },
     { property: "og:url", content: canonical },
     { property: "og:site_name", content: SITE_NAME },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: seoTitle },
+    { name: "twitter:description", content: seoDescription },
   ];
   const image = ogImage ?? OG_DEFAULT_IMAGE;
   meta.push({ property: "og:image", content: image });
+  if (!ogImage) {
+    meta.push({ property: "og:image:width", content: "1200" });
+    meta.push({ property: "og:image:height", content: "630" });
+  }
+  meta.push({ property: "og:image:alt", content: seoTitle });
   meta.push({ name: "twitter:image", content: image });
-  if (shouldNoindex) meta.push({ name: "robots", content: "noindex, nofollow" });
+  meta.push({ name: "twitter:image:alt", content: seoTitle });
+  if (shouldNoindex) meta.push({ name: "robots", content: "noindex, follow" });
 
   const links = shouldNoindex
     ? []
@@ -71,12 +86,12 @@ export function buildHead({
         ...PUBLIC_LOCALES.map((l) => ({
           rel: "alternate",
           hrefLang: l,
-          href: `${SITE_URL}${localePath(l, path)}`,
+          href: buildCanonicalUrl(l, path),
         })),
         {
           rel: "alternate",
           hrefLang: "x-default",
-          href: `${SITE_URL}${localePath("en", path)}`,
+          href: buildCanonicalUrl("en", path),
         },
       ];
 

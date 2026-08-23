@@ -3,9 +3,9 @@
   "name": "crete-direct-transfers-preview",
   "compatibility_date": "2026-07-10",
   "compatibility_flags": ["nodejs_compat"],
-  "main": ".output/server/index.mjs",
+  "main": "dist/server/server.js",
   "assets": {
     "binding": "ASSETS",
-    "directory": ".output/public"
+    "directory": "dist/client"
   }
 }

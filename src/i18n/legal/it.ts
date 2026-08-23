@@ -478,10 +478,10 @@ export const legalDocsIt: LegalDocs = {
   },
 
   imprint: {
-    metaTitle: "Impronta | TransferAround",
+    metaTitle: "Note legali | TransferAround",
     metaDescription: "Informazioni societarie e informative legali per TransferAround.",
-    title: "Impronta",
-    updated: "24 luglio 2026",
+    title: "Note legali",
+    updated: "23 agosto 2026",
     sections: [
       {
         title: "Persona giuridica",
@@ -490,8 +490,6 @@ export const legalDocsIt: LegalDocs = {
           "TransferAround Travel Services P.C., operante come TransferAround.com",
           "Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα",
           "E-mail: {email:support}",
-          "Telefono: +30 28 1000 0000",
-          "Matricola della società, partita IVA e numero GEMI da aggiungere una volta definita l'entità operativa.",
         ],
       },
       {

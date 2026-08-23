@@ -181,34 +181,35 @@ export const es: Dict = {
       "El mercado de traslados en Creta estaba roto — guerras de pujas, precios dinámicos, ninguna responsabilidad. Nosotros creamos la solución.",
     fixedTitle: "Precios fijos, siempre",
     fixedBody:
-      "El precio que ves es el precio que pagas. Sin recargos a las 2 de la madrugada, sin la angustia del taxímetro, sin regateos en la parada.",
+      "El total se muestra antes de confirmar. Los extras elegidos y cualquier cargo por ruta u horario quedan incluidos de antemano — sin taxímetro ni pujas.",
     flightTitle: "Recogidas con seguimiento de vuelos",
     flightBody:
-      "Seguimos tu vuelo y ajustamos la recogida automáticamente. ¿Retraso? Tu conductor espera — gratis.",
+      "Añade el número de vuelo para adaptar la recogida a los cambios de horario. Las condiciones de espera figuran en la confirmación.",
     licensedTitle: "Conductores locales con licencia",
     licensedBody:
-      "Cada conductor tiene licencia, seguro y conduce por las carreteras de Creta desde hace al menos tres años.",
-    cancelTitle: "Cancelación gratuita",
-    cancelBody: "Los planes cambian. Cancela hasta 24 horas antes de la recogida sin pagar nada.",
-    payTitle: "Pago a la llegada",
+      "Las reservas se asignan a operadores locales autorizados y asegurados. Los trayectos con presupuesto se confirman antes del pago.",
+    cancelTitle: "Condiciones de cancelación claras",
+    cancelBody:
+      "El plazo de cancelación y cualquier cargo aplicable se muestran antes de reservar y en la política de reembolsos.",
+    payTitle: "Pago adaptado al trayecto",
     payBody:
-      "Reserva ahora, paga al conductor con tarjeta o en efectivo cuando llegues. Sin pago anticipado, sin riesgo.",
-    meetTitle: "Recibimiento incluido",
+      "Las rutas de reserva inmediata pueden pasar al pago seguro en línea. Los trayectos con presupuesto se confirman antes del pago.",
+    meetTitle: "Instrucciones de recogida confirmadas",
     meetBody:
-      "Tu conductor te espera en llegadas con un cartel con tu nombre, te ayuda con el equipaje y conoce la salida más rápida.",
+      "La confirmación indica el punto de encuentro, el método de contacto y si se incluye o se ha elegido un cartel físico con el nombre.",
   },
   steps: {
     title: "Cómo funciona",
-    subtitle: "Tres pasos entre tú y un conductor que ya está esperando.",
+    subtitle: "Tres pasos desde los datos del trayecto hasta la recogida confirmada.",
     step1Title: "Elige tu ruta y precio",
     step1Body:
-      "Elige entre 30 rutas a precio fijo, selecciona un vehículo y ve tu total al instante — sin formularios de presupuesto, sin esperas.",
+      "Las rutas de Creta pueden mostrar un total inmediato. Para otros mercados, envía la ruta y los pasajeros para recibir un presupuesto confirmado.",
     step2Title: "Reserva en dos minutos",
     step2Body:
-      "Indícanos tu vuelo y tu hotel. Recibes confirmación inmediata y los datos de tu conductor antes de la recogida.",
+      "Añade vuelo, destino, pasajeros y equipaje. Las reservas inmediatas continúan en línea; las solicitudes de presupuesto se revisan primero.",
     step3Title: "Conoce a tu conductor",
     step3Body:
-      "Cartel con tu nombre en llegadas, ayuda con el equipaje, precio fijo pagado a la llegada. Eso es todo.",
+      "Sigue las instrucciones de encuentro confirmadas. La ruta, el vehículo, el método de pago y el total quedan registrados antes de la recogida.",
   },
   widget: {
     title: "Reserva tu traslado",
@@ -501,34 +502,35 @@ export const es: Dict = {
     explore: "Explorar traslados",
   },
   about: {
-    metaTitle: "Sobre TransferAround | Precios fijos, conductores locales, una isla",
+    metaTitle: "Sobre TransferAround | Traslados privados con raíces en Creta",
     metaDescription:
-      "TransferAround fue creado por gente local para arreglar lo que falla en los traslados al aeropuerto: pujas, precios dinámicos y falta de responsabilidad. Una isla, precios fijos, conductores con licencia.",
-    eyebrow: "Quiénes somos",
+      "Una plataforma de reserva de traslados privados con raíces en Creta: reserva instantánea a precio fijo en Creta y colaboradores locales con presupuesto confirmado en seis países.",
+    eyebrow: "Sobre nosotros",
     title: "Nuestro ADN.",
-    intro: "TransferAround existe porque el mercado de traslados en nuestra isla estaba roto.",
+    intro:
+      "TransferAround nació en Creta para ofrecer una forma más sencilla de organizar un traslado al aeropuerto.",
     body1:
-      "Los viajeros que llegaban a Heraklion o La Canea tenían que comparar ofertas de desconocidos, negociar por WhatsApp o confiar en el taxímetro tras un vuelo largo. Los precios se movian. Los conductores rotaban. La responsabilidad no era trabajo de nadie.",
+      "Quienes llegaban a Heraklion o La Canea a menudo tenían que comparar pujas, negociar al aterrizar o aceptar una tarifa que no podían confirmar de antemano. Creamos el servicio de Creta en torno a una ruta, un importe total acordado y un único registro de reserva.",
     body2:
-      "Somos locales — un pequeño equipo de La Canea y Heraklion — y construimos lo que siempre quisimos: un precio fijo por ruta, un conductor con licencia por reserva, un número al que llamar si algo falla.",
+      "En Creta, las reservas siguen siendo instantáneas a través de nuestra red operativa local. En el resto de Grecia, España, Italia, Portugal, Chipre y Turquía, revisamos el trayecto con un colaborador local autorizado y confirmamos el presupuesto antes del pago.",
     wontTitle: "Lo que no haremos",
     wontBody:
-      "Sin subastas inversas. Sin surge a las 2 de la madrugada. Sin un conductor al azar que nunca hemos conocido. Cada conductor de nuestra red tiene licencia, seguro y lleva al menos tres años conduciendo en Creta.",
-    whyTitle: "Por que una sola isla",
+      "Sin subastas inversas ni precios sin confirmar en el momento de la recogida. No cobramos los trayectos que requieren presupuesto hasta haber confirmado la ruta, el importe total y el operador local autorizado.",
+    whyTitle: "Por qué priorizamos el conocimiento local",
     whyBody:
-      "Las plataformas globales cubren 180 países y no entienden bien ninguno. Nosotros cubrimos 260 km de costa, dos aeropuertos internacionales, tres puertos y cada acceso a hotel que merece la pena conocer. Profundidad antes que amplitud.",
+      "Creta es nuestra base operativa y el mercado que conocemos al detalle. Nuestra expansión sigue el mismo criterio: solo publicamos un destino cuando podemos explicar claramente cómo se reserva y revisar cada presupuesto con un operador local.",
     valuesTitle: "Lo que defendemos",
     value1Title: "Puntualidad",
     value1Body:
-      "Recogidas con seguimiento de vuelos y conductores que salen antes de tiempo, no a la hora justa.",
+      "Recogidas con seguimiento de vuelos y conductores que salen con margen, no justo a tiempo.",
     value2Title: "Transparencia",
-    value2Body: "Un precio fijo por ruta. Fijado antes de reservar, nunca después.",
+    value2Body: "Un precio fijo por ruta. Establecido antes de reservar, nunca después.",
     value3Title: "Responsabilidad",
-    value3Body:
-      "Una empresa, un solo número al que llamar, un conductor con nombre en cada reserva.",
-    value4Title: "Conocimiento local",
-    value4Body: "Cubrimos una sola isla y conocemos cada carretera de acceso a los hoteles.",
-    ctaTitle: "Nota la diferencia en tu próxima llegada",
+    value3Body: "Una empresa, un número al que llamar y un conductor identificado en cada reserva.",
+    value4Title: "Experiencia local",
+    value4Body:
+      "Primero, nuestro conocimiento de Creta; en cada mercado adicional, cobertura confirmada con colaboradores.",
+    ctaTitle: "Descubre la diferencia en tu próxima llegada",
   },
   contact: {
     metaTitle: "Contacta con TransferAround | Central 24/7, teléfono, correo",
@@ -945,6 +947,7 @@ export const es: Dict = {
     subtitle: "Escritas por quienes recorren estas carreteras cada día.",
     relatedTitle: "Sigue leyendo",
     tocTitle: "En esta guía",
+    sourcesTitle: "Fuentes",
     categories: {
       guides: "Guías",
       tips: "Consejos",
@@ -958,7 +961,7 @@ export const es: Dict = {
     regionTitle: (name: string) => `${name}, traslados Creta | TransferAround`,
     routeTitle: (from: string, to: string) => `${from} a ${to} | Precio fijo · TransferAround`,
     airportTitle: (name: string, iata: string) =>
-      `${name} (${iata}) traslados | Precio fijo · TransferAround`,
+      `Traslado privado · ${name} (${iata}) | TransferAround`,
     airportRouteTitle: (from: string, to: string) =>
       `${from} a ${to} traslado privado | TransferAround`,
     fleetTitle: (label: string) => `${label} traslados en Creta | TransferAround`,

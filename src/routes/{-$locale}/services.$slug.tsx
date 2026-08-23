@@ -4,7 +4,8 @@ import { quote, formatEur } from "@/lib/pricing";
 import { Check } from "lucide-react";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedService, getLocalizedServices } from "@/i18n/content";
-import { buildHead } from "@/lib/seo";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { ORGANIZATION_ID } from "@/lib/structured-data";
 
 export const Route = createFileRoute("/{-$locale}/services/$slug")({
   loader: ({ params }) => {
@@ -25,17 +26,19 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
       };
     }
     const s = loaderData.service;
+    const path = `/services/${params.slug}`;
     return buildHead({
       locale,
-      path: `/services/${params.slug}`,
+      path,
       title: t.seo.serviceTitle(s.name),
       description: s.tagline,
       ogImage: s.heroImage,
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "Service",
+        "@id": `${buildCanonicalUrl(locale, path)}#service`,
         serviceType: s.name,
-        provider: { "@type": "LocalBusiness", name: "TransferAround" },
+        provider: { "@id": ORGANIZATION_ID },
         areaServed: t.directoryPages.areaServed,
         description: s.body,
       },

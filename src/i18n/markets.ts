@@ -94,26 +94,26 @@ const templates: Record<
   el: {
     title: "Ιδιωτικές μεταφορές στην {country}",
     greeceBody:
-      "Αδειοδοτημένες μεταφορές από αεροδρόμια, λιμάνια και θέρετρα. Άμεση κράτηση στην Κρήτη και επιβεβαιωμένες προσφορές στην υπόλοιπη Ελλάδα.",
+      "Αδειούχες μεταφορές από αεροδρόμια, λιμάνια και θέρετρα. Άμεση κράτηση στην Κρήτη και επιβεβαιωμένες προσφορές στην υπόλοιπη Ελλάδα.",
     quoteBody:
-      "Μεταφορές από αεροδρόμια, λιμάνια και πόλεις με αδειοδοτημένους τοπικούς συνεργάτες και σαφή προσφορά πριν το ταξίδι.",
+      "Μεταφορές από αεροδρόμια, λιμάνια και πόλεις με αδειούχους τοπικούς συνεργάτες και σαφή προσφορά πριν το ταξίδι.",
     metaTitle: "Ιδιωτικές μεταφορές στην {country} | TransferAround",
     metaDescription:
-      "Ζητήστε ιδιωτική μεταφορά στην {country} με αδειοδοτημένους συνεργάτες και επιβεβαίωση πριν το ταξίδι.",
+      "Ζητήστε ιδιωτική μεταφορά στην {country} με αδειούχους συνεργάτες και επιβεβαίωση πριν το ταξίδι.",
     intents: [
       "Ιδιωτική μεταφορά αεροδρομίου στην {country}",
-      "Αστική μεταφορά στην {country}",
-      "Αδειοδοτημένος οδηγός στην {country}",
+      "Μεταφορά εντός πόλης στην {country}",
+      "Αδειούχος οδηγός στην {country}",
       "Μεταφορά λιμανιού και θερέτρου στην {country}",
     ],
   },
   de: {
-    title: "Private Transfers in {country}",
+    title: "Privattransfers in {country}",
     greeceBody:
       "Lizenzierte Flughafen-, Hafen- und Resorttransfers. Kreta sofort buchen und für das übrige Griechenland bestätigte Angebote anfragen.",
     quoteBody:
       "Flughafen-, Hafen- und Stadttransfers mit lizenzierten Partnern und einem klaren Angebot vor der Reise.",
-    metaTitle: "Private Transfers in {country} | TransferAround",
+    metaTitle: "Privattransfers in {country} | TransferAround",
     metaDescription:
       "Fordern Sie einen privaten Transfer in {country} mit lizenzierten Partnern und Bestätigung vor der Reise an.",
     intents: [

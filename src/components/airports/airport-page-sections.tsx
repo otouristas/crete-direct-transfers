@@ -26,9 +26,15 @@ export function AirportHero({
   return (
     <section className="relative bg-primary text-primary-foreground">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-40"
-          style={{ backgroundImage: `url(${airport.heroImage})` }}
+        <img
+          src={airport.heroImage}
+          alt=""
+          width={1600}
+          height={900}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/75 to-primary/40" />
       </div>
@@ -40,9 +46,13 @@ export function AirportHero({
           {t.airportPages.transfersTitle(airport.name, airport.iata)}
         </h1>
         <p className="mt-4 max-w-2xl text-lg text-primary-foreground/85">
-          {t.airportPages.heroDescription}
+          {airport.bookable === "instant" ? t.airportPages.heroDescription : airport.intro}
         </p>
-        <p className="mt-4 text-sm text-primary-foreground/65">{t.airportPages.heroTrustLine}</p>
+        <p className="mt-4 text-sm text-primary-foreground/65">
+          {airport.bookable === "instant"
+            ? t.airportPages.heroTrustLine
+            : t.marketsDirectory.quoteFirst}
+        </p>
         <div className="mt-8" id="react-picker">
           {bookingSlot}
         </div>
@@ -122,14 +132,21 @@ export function AirportFacts({ airport }: { airport: AirportData }) {
       value:
         airport.fromPriceEur > 0 ? formatEur(airport.fromPriceEur) : t.marketsDirectory.quoteFirst,
     },
-    {
-      label: t.routesPages.factTracking,
-      value: t.airportPages.flightMonitoringValue,
-    },
-    {
-      label: t.airportPages.waitingTime,
-      value: t.airportPages.waitingTimeValue,
-    },
+    ...(airport.bookable === "instant"
+      ? [
+          {
+            label: t.routesPages.factTracking,
+            value: t.airportPages.flightMonitoringValue,
+          },
+          {
+            label: t.airportPages.waitingTime,
+            value: t.airportPages.waitingTimeValue,
+          },
+        ]
+      : [
+          { label: t.airportPages.pickup, value: airport.pickupPoint },
+          { label: t.airportPages.terminals, value: airport.terminals },
+        ]),
   ];
 
   return (

@@ -35,23 +35,24 @@ export function airportFromIata(ia: IataAirport): AirportData {
       getAirportImage({ iata: ia.iata, citySlug: kebab(city), countryCode: ia.countryCode }),
       { width: 1600 },
     ),
-    fromPriceEur: 45,
+    // No public "from" price is shown until a route-specific quote exists.
+    fromPriceEur: 0,
     bookable: "quote",
-    terminals: "Your driver meets you inside the arrivals hall with a name sign.",
-    pickupPoint: "Arrivals hall — look for your name on the sign",
+    terminals: "Terminal and meeting instructions are confirmed with your route quote.",
+    pickupPoint: "Confirmed after the pickup terminal and route are reviewed",
     cityDriveMin: "Varies by destination",
     tollsNote:
       "Any tolls or airport fees are included in your fixed quote — no surprises on arrival.",
-    updatedAt: "2026-07-24",
-    intro: `Book a fixed-price private transfer from ${ia.name} (${ia.iata}) in ${where}. A licensed local driver tracks your flight, meets you in arrivals with a name sign, and takes you door-to-door for an agreed price — no meters, no surge, no bidding. Enter your destination for an instant quote confirmed before you pay.`,
+    updatedAt: "2026-08-23",
+    intro: `Request a fixed-price private transfer from ${ia.name} (${ia.iata}) in ${where}. Share the destination, flight and passenger details so TransferAround can confirm a licensed local driver, the meeting point and the total fare before payment.`,
     knowBefore: [
       {
-        title: "Meet & greet in arrivals",
-        body: `Your driver waits inside the ${ia.name} arrivals hall holding a sign with your name. Free wait time is included if your flight is delayed — we track it automatically.`,
+        title: "Confirm the arrival terminal",
+        body: `${ia.name} may use more than one arrivals area. Add the airline and flight number so the quote can include the correct meeting instructions.`,
       },
       {
         title: "One fixed price, agreed up front",
-        body: "You approve the total before you travel. It covers the vehicle, luggage, tolls and taxes — the price you see is the price you pay.",
+        body: "You approve the route-specific total before you travel. The confirmation states what is included, the vehicle class and any route or airport fees.",
       },
       {
         title: "Pay after the quote is confirmed",
@@ -59,8 +60,8 @@ export function airportFromIata(ia: IataAirport): AirportData {
       },
     ],
     insights: [
-      `${ia.name} (${ia.iata}) serves ${where}. Pre-booking a private transfer removes the airport taxi-rank lottery: your fare is fixed in advance, your driver is licensed, and pickup is timed to your actual landing.`,
-      "Private transfers suit families, groups and late arrivals — door-to-door with child seats on request, no luggage limits within your vehicle class, and no waiting for scheduled public transport.",
+      `${ia.name} (${ia.iata}) serves ${where}. A confirmed private-transfer quote records the route, vehicle class, meeting point and total fare before the journey.`,
+      "For families, groups or late arrivals, include passenger ages, luggage and flight details in the request so availability and the correct vehicle can be confirmed.",
     ],
     comparison: [
       {
@@ -81,7 +82,7 @@ export function airportFromIata(ia: IataAirport): AirportData {
         mode: "TransferAround private transfer",
         time: "Direct, door-to-door",
         cost: "Fixed quote",
-        pros: "Fixed price, meet & greet, flight tracking, child seats on request",
+        pros: "Route and total confirmed before travel",
         cons: "Book in advance",
         recommended: true,
       },
@@ -89,11 +90,11 @@ export function airportFromIata(ia: IataAirport): AirportData {
     faqs: [
       {
         q: `How do I book a transfer from ${ia.name} (${ia.iata})?`,
-        a: `Enter ${ia.name} as your pickup and your destination to get an instant quote. Confirm it and you'll receive your driver's details before pickup.`,
+        a: `Enter ${ia.name} as the pickup and provide the destination, date, flight and passenger details. TransferAround will confirm availability and the fixed total before payment.`,
       },
       {
         q: `Where does the driver meet me at ${ia.name}?`,
-        a: "In the arrivals hall, holding a sign with your name. If your flight is delayed we track it and adjust the pickup automatically.",
+        a: "The exact terminal meeting point is included in the confirmed quote and booking details after the flight information is reviewed.",
       },
       {
         q: "Is the price fixed?",
@@ -101,7 +102,7 @@ export function airportFromIata(ia: IataAirport): AirportData {
       },
       {
         q: "Can I request child seats or a larger vehicle?",
-        a: "Yes — choose a vehicle class that fits your group and add child seats when you book. We'll match the right vehicle to your party and luggage.",
+        a: "Add passenger ages, luggage and any child-seat request to the quote. Availability and the appropriate vehicle are confirmed before payment.",
       },
     ],
   };

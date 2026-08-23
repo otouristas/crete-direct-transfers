@@ -8,7 +8,8 @@ import { MARKET_HUB_AIRPORTS, MARKET_HUB_CITIES, getMarketHubAirport } from "@/d
 import { AIRPORTS, type AirportData } from "@/data/airports";
 import { getAirportResolved } from "@/lib/airport-resolve";
 import { localizeMarket } from "@/i18n/markets";
-import { getMarketAirportDetails } from "@/i18n/market-airport-details";
+import { getMarketAirportDetails, getMarketAirportIntro } from "@/i18n/market-airport-details";
+import { localizeGeneratedAirport } from "@/i18n/generated-airport-copy";
 import { AIRPORT_ROUTES, type AirportRouteData } from "@/data/airport-routes";
 import { POSTS, type Post } from "@/data/posts";
 import { COUNTRY_GUIDES, type CountryGuide } from "@/data/country-guides";
@@ -26,6 +27,8 @@ import type {
   ServiceOverlay,
   VehicleOverlay,
 } from "./types";
+import { applyEditorialOverrides } from "./editorial-overrides";
+import { applyAirportEditorialOverrides } from "./airport-editorial-overrides";
 
 type OverlayModule = Partial<ContentOverlays>;
 
@@ -108,10 +111,14 @@ export function getLocalizedMarketHubAirports(locale: Locale, countrySlug?: stri
   const list = countrySlug
     ? MARKET_HUB_AIRPORTS.filter((a) => a.countrySlug === countrySlug)
     : MARKET_HUB_AIRPORTS;
-  if (!o) return list;
   return list.map((a) => {
-    const patch = o[a.slug];
-    return patch ? { ...a, intro: patch.intro, ...(patch.name ? { name: patch.name } : {}) } : a;
+    const patch = o?.[a.slug];
+    const name = patch?.name ?? a.name;
+    return {
+      ...a,
+      name,
+      intro: getMarketAirportIntro(locale, a, name),
+    };
   });
 }
 
@@ -129,18 +136,19 @@ export function getLocalizedMarketHubCities(locale: Locale, countrySlug?: string
 
 export function getLocalizedAirports(locale: Locale): AirportData[] {
   const o = overlay(locale).airports as AirportOverlay | undefined;
-  if (!o) return AIRPORTS;
   return AIRPORTS.map((a) => {
-    const patch = o[a.slug];
-    if (!patch) return a;
-    return {
-      ...a,
-      ...patch,
-      comparison: patch.comparison.map((c, i) => ({
-        ...c,
-        recommended: a.comparison[i]?.recommended,
-      })),
-    };
+    const patch = o?.[a.slug];
+    const localized = patch
+      ? {
+          ...a,
+          ...patch,
+          comparison: patch.comparison.map((c, i) => ({
+            ...c,
+            recommended: a.comparison[i]?.recommended,
+          })),
+        }
+      : a;
+    return applyAirportEditorialOverrides(locale, a, localized);
   });
 }
 
@@ -170,12 +178,13 @@ export function getLocalizedAirport(locale: Locale, slug: string): AirportData |
       // the exact fare is confirmed, and the page copy says so.
       fromPriceEur: localizedHub.fromPriceEur || resolved.fromPriceEur,
       bookable: localizedHub.bookable,
-      intro: localizedHub.intro,
+      intro: getMarketAirportIntro(locale, hub, localizedHub.name),
     };
   }
-  // Global fallback: any of the 8,927 IATA airports renders with generated
-  // (English) content so no real airport 404s. Not locale-overlaid yet.
-  return getAirportResolved(slug);
+  // Global fallback: any of the 8,927 IATA airports renders with native
+  // quote-safe generated copy, while airport facts and identifiers stay intact.
+  const generated = getAirportResolved(slug);
+  return generated ? localizeGeneratedAirport(generated, locale) : undefined;
 }
 
 export function airportRouteKey(airportSlug: string, routeSlug: string) {
@@ -203,11 +212,11 @@ export function getLocalizedAirportRoute(
 
 export function getLocalizedPosts(locale: Locale): Post[] {
   const o = overlay(locale).posts as PostOverlay | undefined;
-  if (!o) return POSTS;
+  if (!o) return POSTS.map((post) => applyEditorialOverrides(locale, post));
   return POSTS.map((p) => {
     const patch = o[p.slug];
-    if (!patch) return p;
-    return {
+    if (!patch) return applyEditorialOverrides(locale, p);
+    const localized = {
       ...p,
       title: patch.title,
       description: patch.description,
@@ -219,6 +228,7 @@ export function getLocalizedPosts(locale: Locale): Post[] {
       })),
       faq: patch.faq ?? p.faq,
     };
+    return applyEditorialOverrides(locale, localized);
   });
 }
 
@@ -229,12 +239,13 @@ export function getLocalizedPost(locale: Locale, slug: string): Post | undefined
 // Keep async loader available for future lazy splitting
 
 /**
- * Country guide copy, English merged with any locale overlay. Overlays are
- * partial, so a locale can translate the prose and inherit the rest.
+ * Country guides never fall back to English on a non-English route. A missing
+ * overlay hides the optional guide sections until native copy is available.
  */
 export function getLocalizedCountryGuide(locale: Locale, slug: string): CountryGuide | undefined {
   const base = COUNTRY_GUIDES.find((guide) => guide.slug === slug);
   if (!base) return undefined;
+  if (locale === "en") return base;
   const o = overlay(locale).countryGuides as CountryGuideOverlay | undefined;
-  return o?.[slug] ? { ...base, ...o[slug] } : base;
+  return o?.[slug] ? { ...base, ...o[slug] } : undefined;
 }

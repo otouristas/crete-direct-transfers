@@ -3,11 +3,21 @@
 // identity for the brand — the key signal for a Google knowledge panel and for
 // GEO citation (ChatGPT / Perplexity / Gemini / AI Overviews). Per-page schema
 // (LocalBusiness, TaxiService, Article…) references these by @id.
-import { SITE_URL, SITE_NAME, CONTACT_EMAIL, CONTACT_PHONE, OG_DEFAULT_IMAGE } from "./site";
-import { LOCALES } from "@/i18n";
+import {
+  SITE_URL,
+  SITE_NAME,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  LOGO_IMAGE,
+  OG_DEFAULT_IMAGE,
+  REVIEWS_VERIFIED,
+} from "./site";
+import { PUBLIC_LOCALES } from "@/i18n";
+import { listLiveMarkets } from "@/data/markets";
+import { AVG_RATING, REVIEWS } from "@/data/reviews";
 
 /** BCP-47 language tags we publish in — drives availableLanguage / inLanguage. */
-const LANGUAGE_TAGS: string[] = [...LOCALES];
+const LANGUAGE_TAGS: string[] = [...PUBLIC_LOCALES];
 
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;
@@ -20,17 +30,17 @@ export const ORGANIZATION_JSONLD = {
   url: SITE_URL,
   logo: {
     "@type": "ImageObject",
-    url: OG_DEFAULT_IMAGE,
+    url: LOGO_IMAGE,
   },
   image: OG_DEFAULT_IMAGE,
   description:
     "Fixed-price private airport, port and city-to-city transfers with licensed local drivers, flight tracking and no bidding.",
   email: CONTACT_EMAIL,
-  areaServed: [
-    { "@type": "Country", name: "Greece" },
-    { "@type": "Country", name: "Spain" },
-    { "@type": "Country", name: "Italy" },
-  ],
+  areaServed: listLiveMarkets().map((market) => ({
+    "@type": "Country",
+    name: market.name,
+    identifier: market.countryCode,
+  })),
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "customer service",
@@ -39,6 +49,15 @@ export const ORGANIZATION_JSONLD = {
     ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
   },
   ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
+  ...(REVIEWS_VERIFIED
+    ? {
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: AVG_RATING,
+          reviewCount: REVIEWS.length,
+        },
+      }
+    : {}),
 };
 
 export const WEBSITE_JSONLD = {

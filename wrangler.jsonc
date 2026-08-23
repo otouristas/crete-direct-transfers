@@ -1,16 +1,15 @@
 // Cloudflare Workers deploy config.
-// `wrangler deploy` runs build.command below; the build (nitro) merges this
-// file into .output/server/wrangler.json and writes a redirect at
-// .wrangler/deploy/config.json which wrangler then follows for the upload.
+// `wrangler deploy` runs the Vite build below, then uploads the generated
+// TanStack Start Worker entry and client assets.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "crete-direct-transfers",
   "compatibility_date": "2026-07-10",
   "compatibility_flags": ["nodejs_compat"],
-  "main": ".output/server/index.mjs",
+  "main": "dist/server/server.js",
   "assets": {
     "binding": "ASSETS",
-    "directory": ".output/public",
+    "directory": "dist/client",
   },
   "build": {
     "command": "npm run build",

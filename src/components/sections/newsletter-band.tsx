@@ -4,6 +4,7 @@ import { Check, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLocale, useT } from "@/i18n";
 import { cn } from "@/lib/utils";
+import { trackAnalyticsEvent } from "@/lib/cookie-consent";
 
 type State = "idle" | "sending" | "sent" | "error";
 
@@ -48,6 +49,7 @@ export function NewsletterBand() {
 
     setState("sent");
     setEmail("");
+    trackAnalyticsEvent("Newsletter Signup", { locale, source: "homepage" });
   };
 
   return (

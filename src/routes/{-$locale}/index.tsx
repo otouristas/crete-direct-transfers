@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { REVIEWS, AVG_RATING } from "@/data/reviews";
+import { REVIEWS } from "@/data/reviews";
 import { BookingWidget } from "@/components/booking-widget";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { Steps } from "@/components/sections/steps";
@@ -11,11 +11,9 @@ import { Reveal } from "@/components/reveal";
 import { StatsBand } from "@/components/sections/stats-band";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedVehicles } from "@/i18n/content";
-import { getCountryName } from "@/i18n/markets";
-import { listLiveMarkets } from "@/data/markets";
 import { getMarketNavigation } from "@/lib/market-navigation";
 import { buildHead } from "@/lib/seo";
-import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF, REVIEWS_VERIFIED } from "@/lib/site";
+import { CONTACT_WHATSAPP_HREF, REVIEWS_VERIFIED } from "@/lib/site";
 import { Phone } from "lucide-react";
 import {
   getCountryImage,
@@ -47,29 +45,6 @@ export const Route = createFileRoute("/{-$locale}/")({
       title: t.home.metaTitle,
       description: t.home.metaDescription,
       ogImage: imageOgUrl(HERO_PHOTO),
-      jsonLd: {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "@id": `${SITE_URL}/#organization`,
-        name: "TransferAround",
-        url: SITE_URL,
-        description: t.home.metaDescription,
-        areaServed: listLiveMarkets().map((market) => ({
-          "@type": "Country",
-          name: getCountryName(locale, market.slug),
-          identifier: market.countryCode,
-        })),
-        ...(CONTACT_PHONE ? { telephone: CONTACT_PHONE } : {}),
-        ...(REVIEWS_VERIFIED
-          ? {
-              aggregateRating: {
-                "@type": "AggregateRating",
-                ratingValue: AVG_RATING,
-                reviewCount: REVIEWS.length,
-              },
-            }
-          : {}),
-      },
     });
   },
   component: HomePage,
@@ -96,9 +71,15 @@ function HomePage() {
       {/* 1. Hero — layered photo + booking bar; -mt-16 pulls under the sticky transparent header */}
       <section className="relative -mt-16 bg-primary pt-16">
         <div className="pointer-events-none hero-stage" aria-hidden>
-          <div
-            className="hero-photo media-grade"
-            style={{ backgroundImage: `url(${HERO_IMAGE})` }}
+          <img
+            src={HERO_IMAGE}
+            alt=""
+            width={2400}
+            height={1350}
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            className="hero-photo media-grade h-full w-full object-cover object-[center_42%]"
           />
           <div className="hero-scrim" />
           <div className="hero-grain" />

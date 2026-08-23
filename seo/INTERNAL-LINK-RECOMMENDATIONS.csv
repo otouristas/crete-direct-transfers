@@ -1,0 +1,21 @@
+source,anchor,destination,type,status
+/blog/heraklion-airport-to-chania-options,Heraklion Airport to Chania transfer,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-chania,commercial,IMPLEMENTED
+/blog/taxi-vs-prebooked-transfer-crete,airport transfers,/services/airport-transfers,commercial,IMPLEMENTED
+/blog/souda-port-cruise-ferry-arrivals,Souda Port transfers,/ports/souda-port-transfers,commercial,IMPLEMENTED
+/blog/crete-with-kids-child-seats,group transfers,/services/group-transfers,commercial,IMPLEMENTED
+/blog/night-arrivals-heraklion-airport,Heraklion Airport transfers,/airports/crete-heraklion-airport-transfers-her,commercial,IMPLEMENTED
+/blog/chania-old-town-arrival-tips,Chania Airport to Chania Old Town transfer,/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-chania-old-town,commercial,IMPLEMENTED
+/routes/heraklion-airport-to-elounda,Heraklion Airport to Elounda arrival guide,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-elounda,horizontal,IMPLEMENTED
+/routes/heraklion-airport-to-agios-nikolaos,Heraklion Airport to Agios Nikolaos arrival guide,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-agios-nikolaos,horizontal,IMPLEMENTED
+/routes/heraklion-airport-to-hersonissos,Heraklion Airport to Hersonissos arrival guide,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-hersonissos,horizontal,IMPLEMENTED
+/routes/heraklion-airport-to-malia,Heraklion Airport to Malia arrival guide,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-malia,horizontal,IMPLEMENTED
+/routes/heraklion-airport-to-stalis,Heraklion Airport to Stalis arrival guide,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-stalis,horizontal,IMPLEMENTED
+/routes/heraklion-airport-to-rethymno,Heraklion Airport to Rethymno arrival guide,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-rethymno,horizontal,IMPLEMENTED
+/routes/heraklion-airport-to-chania,Heraklion Airport to Chania arrival guide,/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-chania,horizontal,IMPLEMENTED
+/routes/chania-airport-to-chania-old-town,Chania Airport to Chania Old Town arrival guide,/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-chania-old-town,horizontal,IMPLEMENTED
+/routes/chania-airport-to-rethymno,Chania Airport to Rethymno arrival guide,/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-rethymno,horizontal,IMPLEMENTED
+/routes/chania-airport-to-kissamos,Chania Airport to Kissamos arrival guide,/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-kissamos,horizontal,IMPLEMENTED
+/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-elounda,local route information: Heraklion Airport to Elounda,/routes/heraklion-airport-to-elounda,horizontal,IMPLEMENTED
+/airports/crete-heraklion-airport-transfers-her/transfer-from-heraklion-airport-to-chania,local route information: Heraklion Airport to Chania,/routes/heraklion-airport-to-chania,horizontal,IMPLEMENTED
+/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-rethymno,local route information: Chania Airport to Rethymno,/routes/chania-airport-to-rethymno,horizontal,IMPLEMENTED
+/airports/chania-international-airport-transfers-chq/transfer-from-chania-airport-to-kissamos,local route information: Chania Airport to Kissamos,/routes/chania-airport-to-kissamos,horizontal,IMPLEMENTED

@@ -19,6 +19,7 @@ export type Post = {
   sections: PostSection[];
   faq?: { q: string; a: string }[];
   related: string[];
+  sources?: { label: string; url: string }[];
 };
 
 const AUTHOR_NIKOS = { name: "Nikos Papadakis", role: "Head of Dispatch, Heraklion" };
@@ -186,10 +187,11 @@ export const POSTS: Post[] = [
     slug: "crete-with-kids-child-seats",
     title: "Crete with Kids: Car Seats, Transfers and the Logistics Nobody Warns You About",
     description:
-      "Greek car seat law, why taxi ranks can't help you, and how to plan family transfers in Crete without dragging three car seats through an airport.",
+      "Current Greece child-restraint guidance, how to request the right seat, and how to plan family transfers in Crete without carrying seats through the airport.",
     heroImage: imageUrl(getCityImage("georgioupoli"), { width: 1600 }),
     category: "tips",
     publishedAt: "2026-05-05",
+    updatedAt: "2026-08-23",
     readingMinutes: 5,
     author: AUTHOR_NIKOS,
     sections: [
@@ -197,7 +199,7 @@ export const POSTS: Post[] = [
         id: "the-law",
         heading: "What Greek law says about kids in cars",
         body: [
-          "Children under 135 cm must ride in an appropriate child restraint in private vehicles. Licensed taxis are technically exempt — which is precisely the problem. The rank taxi that picks you up owes your toddler nothing more than a lap. Most parents discover this at the arrivals curb, jet-lagged, with no good options.",
+          "The European Commission's 2024 road-safety country profile records child-restraint requirements in Greece up to 150 cm. The suitable restraint depends on the child's size and the vehicle. Confirm the current rule and request the exact seat before travel; do not assume an airport-rank vehicle carries one.",
         ],
       },
       {
@@ -221,6 +223,12 @@ export const POSTS: Post[] = [
         body: [
           "Book the pickup for actual-landing-plus-45-minutes if you have checked bags and small children — rushing a family through baggage claim saves nobody. If your return flight leaves before 08:00, ask dispatch about the night surcharge window and build in the 22:00–06:00 +15% honestly rather than being surprised. And put the hotel's name and your kid's seat needs in the booking notes; the driver reads them the night before.",
         ],
+      },
+    ],
+    sources: [
+      {
+        label: "European Commission — Road Safety Country Profile: Greece (2024)",
+        url: "https://road-safety.transport.ec.europa.eu/document/download/84102944-04ff-4908-9aed-897b70f99bd3_en?filename=erso-country-overview-2024-greece.pdf",
       },
     ],
     related: ["taxi-vs-prebooked-transfer-crete", "night-arrivals-heraklion-airport"],

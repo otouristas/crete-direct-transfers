@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { formatEur } from "@/lib/pricing";
-import { buildHead } from "@/lib/seo";
-import { getDict, localePath, useLocale, useT, type Locale } from "@/i18n";
+import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { getDict, useLocale, useT, type Locale } from "@/i18n";
 import { getLocalizedAirports, getLocalizedAirportRoutes } from "@/i18n/content";
 import { listIndexableAirportsByCountry } from "@/lib/indexable-airports";
 import { getCountryName } from "@/i18n/markets";
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/{-$locale}/airports/")({
           "@type": "ListItem",
           position: i + 1,
           name: t.directoryPages.airportListItemName(a.name, a.iata),
-          url: `https://transferaround.com${localePath(locale, `/airports/${a.slug}`)}`,
+          url: buildCanonicalUrl(locale, `/airports/${a.slug}`),
         })),
       },
     });

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-23T18:56:04.658Z",
+  "generatedAt": "2026-08-23T19:06:51.235Z",
   "source": "pexels",
   "images": {
     "airport:ADB": {
@@ -38,6 +38,30 @@
       "src": "https://images.pexels.com/photos/12674842/pexels-photo-12674842.jpeg",
       "query": "Alicante Spain city"
     },
+    "airport:AMS": {
+      "id": 32953042,
+      "photographer": "David Rama",
+      "photographerUrl": "https://www.pexels.com/@phreewil",
+      "pexelsUrl": "https://www.pexels.com/photo/charming-amsterdam-canal-houses-at-twilight-32953042/",
+      "alt": "A picturesque view of colorful canal houses reflecting on the water in Amsterdam, Netherlands.",
+      "avgColor": "#57536A",
+      "width": 6000,
+      "height": 4000,
+      "src": "https://images.pexels.com/photos/32953042/pexels-photo-32953042.jpeg",
+      "query": "Amsterdam Netherlands city"
+    },
+    "airport:ARN": {
+      "id": 1529034,
+      "photographer": "Nadine Wuchenauer",
+      "photographerUrl": "https://www.pexels.com/@nadine-wuchenauer-695910",
+      "pexelsUrl": "https://www.pexels.com/photo/calm-lake-near-city-with-lights-turned-on-during-nightime-1529034/",
+      "alt": "Evening view of Södermalm's illuminated waterfront buildings and skyline in Stockholm, Sweden.",
+      "avgColor": "#2F3842",
+      "width": 5184,
+      "height": 3456,
+      "src": "https://images.pexels.com/photos/1529034/pexels-photo-1529034.jpeg",
+      "query": "Stockholm Sweden city"
+    },
     "airport:ASR": {
       "id": 10480150,
       "photographer": "Olga Petrova",
@@ -61,6 +85,18 @@
       "height": 3265,
       "src": "https://images.pexels.com/photos/36825391/pexels-photo-36825391.jpeg",
       "query": "Athens Greece travel"
+    },
+    "airport:AUH": {
+      "id": 2883603,
+      "photographer": "Lucas Carlini",
+      "photographerUrl": "https://www.pexels.com/@lucaspcarlini",
+      "pexelsUrl": "https://www.pexels.com/photo/photo-of-buildings-during-daytime-2883603/",
+      "alt": "View of the iconic Etihad Towers in Abu Dhabi showcasing modern architectural design.",
+      "avgColor": "#848B93",
+      "width": 4912,
+      "height": 3264,
+      "src": "https://images.pexels.com/photos/2883603/pexels-photo-2883603.jpeg",
+      "query": "Abu Dhabi United Arab Emirates city"
     },
     "airport:AYT": {
       "id": 22921961,
@@ -86,6 +122,18 @@
       "src": "https://images.pexels.com/photos/819767/pexels-photo-819767.jpeg",
       "query": "Barcelona Spain city"
     },
+    "airport:BER": {
+      "id": 19615598,
+      "photographer": "Abdulmomen Bsruki",
+      "photographerUrl": "https://www.pexels.com/@bluemix",
+      "pexelsUrl": "https://www.pexels.com/photo/lights-on-berlin-street-cathedral-and-fernsehturm-19615598/",
+      "alt": "A captivating night scene featuring Berlin Cathedral and Fernsehturm illuminated in Berlin, Germany.",
+      "avgColor": "#503E32",
+      "width": 7008,
+      "height": 4672,
+      "src": "https://images.pexels.com/photos/19615598/pexels-photo-19615598.jpeg",
+      "query": "Berlin Germany city"
+    },
     "airport:BJV": {
       "id": 34342669,
       "photographer": "R. Yasin Asil",
@@ -98,6 +146,18 @@
       "src": "https://images.pexels.com/photos/34342669/pexels-photo-34342669.jpeg",
       "query": "Bodrum Turkey city"
     },
+    "airport:BKK": {
+      "id": 15285956,
+      "photographer": "Ethan Tran",
+      "photographerUrl": "https://www.pexels.com/@ethantran",
+      "pexelsUrl": "https://www.pexels.com/photo/bangkok-downtown-panorama-15285956/",
+      "alt": "Discover the modern skyline of Bangkok, Thailand from an aerial perspective, showcasing urban architecture.",
+      "avgColor": "#909195",
+      "width": 4896,
+      "height": 3264,
+      "src": "https://images.pexels.com/photos/15285956/pexels-photo-15285956.jpeg",
+      "query": "Bangkok Thailand city"
+    },
     "airport:BLQ": {
       "id": 1541363,
       "photographer": "Adrienn",
@@ -109,6 +169,18 @@
       "height": 2304,
       "src": "https://images.pexels.com/photos/1541363/pexels-photo-1541363.jpeg",
       "query": "Bologna Italy city"
+    },
+    "airport:BOM": {
+      "id": 9169886,
+      "photographer": "Asif pav",
+      "photographerUrl": "https://www.pexels.com/@asifpav",
+      "pexelsUrl": "https://www.pexels.com/photo/mumbai-city-and-fishers-in-the-sea-9169886/",
+      "alt": "Vibrant view of Mumbai's skyline with local fishing boats on the water, capturing urban and traditional life.",
+      "avgColor": "#68757E",
+      "width": 6000,
+      "height": 4000,
+      "src": "https://images.pexels.com/photos/9169886/pexels-photo-9169886.jpeg",
+      "query": "Mumbai India city"
     },
     "airport:BRI": {
       "id": 12464243,
@@ -133,6 +205,18 @@
       "height": 4000,
       "src": "https://images.pexels.com/photos/5720656/pexels-photo-5720656.jpeg",
       "query": "Sardinia Italy city"
+    },
+    "airport:CAI": {
+      "id": 15126865,
+      "photographer": "Diego F. Parra",
+      "photographerUrl": "https://www.pexels.com/@diego-f-parra-33199",
+      "pexelsUrl": "https://www.pexels.com/photo/the-mosque-madrasa-of-sultan-hassan-in-cairo-15126865/",
+      "alt": "Scenic aerial shot of intricate Islamic architecture with cityscape in Cairo, Egypt.",
+      "avgColor": "#B6ACAA",
+      "width": 7360,
+      "height": 4912,
+      "src": "https://images.pexels.com/photos/15126865/pexels-photo-15126865.jpeg",
+      "query": "Cairo Egypt city"
     },
     "airport:CDG": {
       "id": 38803856,
@@ -170,6 +254,18 @@
       "src": "https://images.pexels.com/photos/34882066/pexels-photo-34882066.jpeg",
       "query": "Chania Crete Greece travel"
     },
+    "airport:CPH": {
+      "id": 14252683,
+      "photographer": "Matteo Angeloni",
+      "photographerUrl": "https://www.pexels.com/@matteo-angeloni-106557007",
+      "pexelsUrl": "https://www.pexels.com/photo/residential-buildings-at-waterfront-in-copnehagen-14252683/",
+      "alt": "Scenic view of waterfront residential buildings in Copenhagen, Denmark during sunset.",
+      "avgColor": "#597A8B",
+      "width": 5039,
+      "height": 3353,
+      "src": "https://images.pexels.com/photos/14252683/pexels-photo-14252683.jpeg",
+      "query": "Copenhagen Denmark city"
+    },
     "airport:CTA": {
       "id": 18440866,
       "photographer": "Efrem  Efre",
@@ -181,6 +277,18 @@
       "height": 4640,
       "src": "https://images.pexels.com/photos/18440866/pexels-photo-18440866.jpeg",
       "query": "Catania Italy city"
+    },
+    "airport:DEL": {
+      "id": 19883685,
+      "photographer": "Ranjeet  Chauhan",
+      "photographerUrl": "https://www.pexels.com/@ranjeet-chauhan-485922",
+      "pexelsUrl": "https://www.pexels.com/photo/rashtrapati-bhavan-in-new-delhi-19883685/",
+      "alt": "Stunning view of Rashtrapati Bhavan with a clear sky in New Delhi, India, during sunrise.",
+      "avgColor": "#AEA795",
+      "width": 6000,
+      "height": 4000,
+      "src": "https://images.pexels.com/photos/19883685/pexels-photo-19883685.jpeg",
+      "query": "New Delhi India city"
     },
     "airport:DLM": {
       "id": 21358094,
@@ -194,6 +302,42 @@
       "src": "https://images.pexels.com/photos/21358094/pexels-photo-21358094.jpeg",
       "query": "Dalaman Turkey city"
     },
+    "airport:DOH": {
+      "id": 31405737,
+      "photographer": "Mohammed Nasik Bafik",
+      "photographerUrl": "https://www.pexels.com/@mohammed-nasik-bafik-2150503481",
+      "pexelsUrl": "https://www.pexels.com/photo/stunning-night-view-of-doha-skyline-reflected-on-water-31405737/",
+      "alt": "Captivating night scene of Doha's illuminated skyline reflecting on water in Qatar.",
+      "avgColor": "#2F3032",
+      "width": 8064,
+      "height": 6048,
+      "src": "https://images.pexels.com/photos/31405737/pexels-photo-31405737.jpeg",
+      "query": "Doha Qatar city"
+    },
+    "airport:DUB": {
+      "id": 13158122,
+      "photographer": "Artem Kulinych",
+      "photographerUrl": "https://www.pexels.com/@artemkulinych",
+      "pexelsUrl": "https://www.pexels.com/photo/government-building-near-river-under-cloudy-sky-13158122/",
+      "alt": "A scenic view of the historic Custom House reflecting in the River Liffey in Dublin, Ireland.",
+      "avgColor": "#94A6AA",
+      "width": 3936,
+      "height": 2624,
+      "src": "https://images.pexels.com/photos/13158122/pexels-photo-13158122.jpeg",
+      "query": "Dublin Ireland city"
+    },
+    "airport:DXB": {
+      "id": 14528599,
+      "photographer": "Vlad Deep",
+      "photographerUrl": "https://www.pexels.com/@vlad-deep-29415806",
+      "pexelsUrl": "https://www.pexels.com/photo/madinat-jumeirah-hotel-in-dubai-united-arab-emirates-14528599/",
+      "alt": "Embrace the blend of traditional and contemporary architectural styles in Dubai, showcasing unique building designs.",
+      "avgColor": "#998C7C",
+      "width": 5292,
+      "height": 3528,
+      "src": "https://images.pexels.com/photos/14528599/pexels-photo-14528599.jpeg",
+      "query": "Dubai United Arab Emirates city"
+    },
     "airport:EFL": {
       "id": 35276885,
       "photographer": "Mike Norris",
@@ -205,6 +349,30 @@
       "height": 2321,
       "src": "https://images.pexels.com/photos/35276885/pexels-photo-35276885.jpeg",
       "query": "Argostoli Kefalonia Greece travel"
+    },
+    "airport:EWR": {
+      "id": 37843928,
+      "photographer": "John Anzivino",
+      "photographerUrl": "https://www.pexels.com/@john-anzivino-2596067",
+      "pexelsUrl": "https://www.pexels.com/photo/stunning-view-of-newark-s-cathedral-basilica-in-spring-37843928/",
+      "alt": "Beautiful frontal view of Cathedral Basilica of the Sacred Heart surrounded by blossoming trees in Newark, New Jersey.",
+      "avgColor": "#58707A",
+      "width": 4155,
+      "height": 3116,
+      "src": "https://images.pexels.com/photos/37843928/pexels-photo-37843928.jpeg",
+      "query": "Newark United States city"
+    },
+    "airport:EZE": {
+      "id": 14401405,
+      "photographer": "Matheus De Moraes Gugelmim",
+      "photographerUrl": "https://www.pexels.com/@matheus-de-moraes-gugelmim-38060312",
+      "pexelsUrl": "https://www.pexels.com/photo/view-from-balcony-on-old-historic-buildings-and-green-city-14401405/",
+      "alt": "View of historic architecture and skyline in Buenos Aires, Argentina on a sunny day.",
+      "avgColor": "#788E99",
+      "width": 6000,
+      "height": 4000,
+      "src": "https://images.pexels.com/photos/14401405/pexels-photo-14401405.png",
+      "query": "Buenos Aires (Ezeiza) Argentina city"
     },
     "airport:FAO": {
       "id": 6553668,
@@ -254,6 +422,42 @@
       "src": "https://images.pexels.com/photos/28126075/pexels-photo-28126075.jpeg",
       "query": "Funchal Portugal city"
     },
+    "airport:FRA": {
+      "id": 30475302,
+      "photographer": "Fabio Riccobono",
+      "photographerUrl": "https://www.pexels.com/@fabio-riccobono-1227497836",
+      "pexelsUrl": "https://www.pexels.com/photo/architectural-skyline-of-frankfurt-at-dusk-30475302/",
+      "alt": "Stunning cityscape of Frankfurt am Main skyline at dusk with modern skyscrapers.",
+      "avgColor": "#67676F",
+      "width": 6192,
+      "height": 4128,
+      "src": "https://images.pexels.com/photos/30475302/pexels-photo-30475302.jpeg",
+      "query": "Frankfurt am Main Germany city"
+    },
+    "airport:GRU": {
+      "id": 281514,
+      "photographer": "Kaique Rocha",
+      "photographerUrl": "https://www.pexels.com/@hikaique",
+      "pexelsUrl": "https://www.pexels.com/photo/aerial-photography-of-central-park-in-new-york-281514/",
+      "alt": "Night view of São Paulo's illuminated skyline with a park and lake in the foreground.",
+      "avgColor": "#505648",
+      "width": 6000,
+      "height": 3376,
+      "src": "https://images.pexels.com/photos/281514/pexels-photo-281514.jpeg",
+      "query": "São Paulo Brazil city"
+    },
+    "airport:HEL": {
+      "id": 804462,
+      "photographer": "ClickerHappy",
+      "photographerUrl": "https://www.pexels.com/@clickerhappy",
+      "pexelsUrl": "https://www.pexels.com/photo/kohtaa-koko-maailma-signage-at-a-building-with-different-lights-at-night-804462/",
+      "alt": "Illuminated city square at night showcasing modern architecture and vibrant signage.",
+      "avgColor": "#5F4C4B",
+      "width": 6016,
+      "height": 4016,
+      "src": "https://images.pexels.com/photos/804462/pexels-photo-804462.jpeg",
+      "query": "Helsinki (Vantaa) Finland city"
+    },
     "airport:HER": {
       "id": 37844575,
       "photographer": "K",
@@ -265,6 +469,18 @@
       "height": 6912,
       "src": "https://images.pexels.com/photos/37844575/pexels-photo-37844575.jpeg",
       "query": "Heraklion Crete Greece travel"
+    },
+    "airport:HKG": {
+      "id": 1058683,
+      "photographer": "Jimmy Chan",
+      "photographerUrl": "https://www.pexels.com/@jimbear",
+      "pexelsUrl": "https://www.pexels.com/photo/skyline-photography-of-hong-kong-city-1058683/",
+      "alt": "Stunning view of Hong Kong skyline from Victoria Harbour during daylight.",
+      "avgColor": "#9EA7B4",
+      "width": 5378,
+      "height": 3586,
+      "src": "https://images.pexels.com/photos/1058683/pexels-photo-1058683.jpeg",
+      "query": "Hong Kong Hong Kong city"
     },
     "airport:IBZ": {
       "id": 29041772,
@@ -278,6 +494,18 @@
       "src": "https://images.pexels.com/photos/29041772/pexels-photo-29041772.jpeg",
       "query": "Ibiza Spain city"
     },
+    "airport:ICN": {
+      "id": 366107,
+      "photographer": "Tranmautritam",
+      "photographerUrl": "https://www.pexels.com/@tranmautritam",
+      "pexelsUrl": "https://www.pexels.com/photo/panorama-city-and-trees-366107/",
+      "alt": "Panoramic view of Seoul's skyline shrouded in fog, framed by lush autumn foliage.",
+      "avgColor": "#82807D",
+      "width": 4768,
+      "height": 2416,
+      "src": "https://images.pexels.com/photos/366107/pexels-photo-366107.jpeg",
+      "query": "Seoul South Korea city"
+    },
     "airport:IST": {
       "id": 7808041,
       "photographer": "Ahmed ؜",
@@ -290,6 +518,18 @@
       "src": "https://images.pexels.com/photos/7808041/pexels-photo-7808041.jpeg",
       "query": "Istanbul Turkey city"
     },
+    "airport:JFK": {
+      "id": 1038531,
+      "photographer": "EL Evangelista",
+      "photographerUrl": "https://www.pexels.com/@el-evangelista-171946",
+      "pexelsUrl": "https://www.pexels.com/photo/new-york-city-1038531/",
+      "alt": "Breathtaking aerial view of New York City's modern skyline with iconic skyscrapers.",
+      "avgColor": "#98958C",
+      "width": 3394,
+      "height": 2512,
+      "src": "https://images.pexels.com/photos/1038531/pexels-photo-1038531.jpeg",
+      "query": "New York United States city"
+    },
     "airport:JMK": {
       "id": 13650566,
       "photographer": "Oliver LOK",
@@ -301,6 +541,18 @@
       "height": 3680,
       "src": "https://images.pexels.com/photos/13650566/pexels-photo-13650566.jpeg",
       "query": "Mykonos Town Mykonos Greece travel"
+    },
+    "airport:JNB": {
+      "id": 12758996,
+      "photographer": "Magda Ehlers",
+      "photographerUrl": "https://www.pexels.com/@magda-ehlers-pexels",
+      "pexelsUrl": "https://www.pexels.com/photo/aerial-view-of-city-buildings-12758996/",
+      "alt": "Aerial shot capturing the sprawling urban landscape of downtown Johannesburg, South Africa.",
+      "avgColor": "#7A7B90",
+      "width": 5464,
+      "height": 3643,
+      "src": "https://images.pexels.com/photos/12758996/pexels-photo-12758996.jpeg",
+      "query": "Johannesburg South Africa city"
     },
     "airport:JNX": {
       "id": 28396348,
@@ -362,6 +614,18 @@
       "src": "https://images.pexels.com/photos/37098679/pexels-photo-37098679.jpeg",
       "query": "Kalamata Greece travel"
     },
+    "airport:LAX": {
+      "id": 4658510,
+      "photographer": "Amit Batra",
+      "photographerUrl": "https://www.pexels.com/@amit-batra-3062797",
+      "pexelsUrl": "https://www.pexels.com/photo/view-of-a-city-at-night-4658510/",
+      "alt": "A stunning night view of downtown Los Angeles featuring illuminated skyscrapers and colorful traffic trails, capturing urban life.",
+      "avgColor": "#2C2623",
+      "width": 4240,
+      "height": 2384,
+      "src": "https://images.pexels.com/photos/4658510/pexels-photo-4658510.jpeg",
+      "query": "Los Angeles United States city"
+    },
     "airport:LCA": {
       "id": 13547952,
       "photographer": "Elyas",
@@ -422,6 +686,30 @@
       "src": "https://images.pexels.com/photos/670261/pexels-photo-670261.jpeg",
       "query": "Madrid Spain city"
     },
+    "airport:MEL": {
+      "id": 1766219,
+      "photographer": "Hugo Heimendinger",
+      "photographerUrl": "https://www.pexels.com/@alwaysontheroad",
+      "pexelsUrl": "https://www.pexels.com/photo/people-walking-at-the-park-1766219/",
+      "alt": "Stunning view of Melbourne skyline viewed from a park, showcasing skyscrapers and urban greenery.",
+      "avgColor": "#869098",
+      "width": 6000,
+      "height": 4000,
+      "src": "https://images.pexels.com/photos/1766219/pexels-photo-1766219.jpeg",
+      "query": "Melbourne Australia city"
+    },
+    "airport:MIA": {
+      "id": 9400835,
+      "photographer": "Mikhail Nilov",
+      "photographerUrl": "https://www.pexels.com/@mikhail-nilov",
+      "pexelsUrl": "https://www.pexels.com/photo/high-rise-buildings-near-body-of-water-9400835/",
+      "alt": "Aerial shot of Miami's skyline with watercraft patterns on the ocean surface.",
+      "avgColor": "#626B68",
+      "width": 5464,
+      "height": 3640,
+      "src": "https://images.pexels.com/photos/9400835/pexels-photo-9400835.jpeg",
+      "query": "Miami United States city"
+    },
     "airport:MJT": {
       "id": 38932800,
       "photographer": "Mustafa Çimen",
@@ -445,6 +733,18 @@
       "height": 4000,
       "src": "https://images.pexels.com/photos/2734920/pexels-photo-2734920.jpeg",
       "query": "Adamas Milos Greece travel"
+    },
+    "airport:MUC": {
+      "id": 15926306,
+      "photographer": "Büşra Ilıca",
+      "photographerUrl": "https://www.pexels.com/@busra-ilica-44059051",
+      "pexelsUrl": "https://www.pexels.com/photo/facade-of-the-st-michaels-church-and-tower-of-the-frauenkirche-in-munich-bavaria-germany-15926306/",
+      "alt": "Capture of St. Michael's Church and Frauenkirche tower in Munich, Germany, under a clear blue sky.",
+      "avgColor": "#577482",
+      "width": 6000,
+      "height": 4000,
+      "src": "https://images.pexels.com/photos/15926306/pexels-photo-15926306.jpeg",
+      "query": "Munich Germany city"
     },
     "airport:MXP": {
       "id": 8430364,
@@ -470,6 +770,18 @@
       "src": "https://images.pexels.com/photos/12464321/pexels-photo-12464321.jpeg",
       "query": "Naples Italy city"
     },
+    "airport:NRT": {
+      "id": 11553022,
+      "photographer": "Afif Ramdhasuma",
+      "photographerUrl": "https://www.pexels.com/@javaistan",
+      "pexelsUrl": "https://www.pexels.com/photo/japan-airlines-parked-on-airport-11553022/",
+      "alt": "Japan Airlines planes on the tarmac at Narita International Airport in Chiba, Japan.",
+      "avgColor": "#8A9495",
+      "width": 7952,
+      "height": 5304,
+      "src": "https://images.pexels.com/photos/11553022/pexels-photo-11553022.jpeg",
+      "query": "Narita Japan city"
+    },
     "airport:OPO": {
       "id": 17849332,
       "photographer": "Susanna Marsiglia",
@@ -481,6 +793,30 @@
       "height": 4534,
       "src": "https://images.pexels.com/photos/17849332/pexels-photo-17849332.jpeg",
       "query": "Porto Portugal city"
+    },
+    "airport:ORD": {
+      "id": 2124701,
+      "photographer": "Chait Goli",
+      "photographerUrl": "https://www.pexels.com/@chaitaastic",
+      "pexelsUrl": "https://www.pexels.com/photo/buildings-2124701/",
+      "alt": "Stunning view of Chicago's skyline reflecting on the river during sunset.",
+      "avgColor": "#6C6E74",
+      "width": 5932,
+      "height": 3338,
+      "src": "https://images.pexels.com/photos/2124701/pexels-photo-2124701.jpeg",
+      "query": "Chicago United States city"
+    },
+    "airport:OSL": {
+      "id": 4150060,
+      "photographer": "Naren Yogarajah",
+      "photographerUrl": "https://www.pexels.com/@naren-yogarajah-2550806",
+      "pexelsUrl": "https://www.pexels.com/photo/aerial-shot-of-oslo-4150060/",
+      "alt": "A breathtaking aerial view of Oslo, Norway, featuring lush greenery and a vibrant sunset sky.",
+      "avgColor": "#8E8765",
+      "width": 5760,
+      "height": 3840,
+      "src": "https://images.pexels.com/photos/4150060/pexels-photo-4150060.jpeg",
+      "query": "Oslo (Gardermoen) Norway city"
     },
     "airport:PAS": {
       "id": 9883703,
@@ -578,6 +914,30 @@
       "src": "https://images.pexels.com/photos/11254754/pexels-photo-11254754.jpeg",
       "query": "Istanbul Turkey city"
     },
+    "airport:SFO": {
+      "id": 196642,
+      "photographer": "picjumbo.com",
+      "photographerUrl": "https://www.pexels.com/@picjumbo-com-55570",
+      "pexelsUrl": "https://www.pexels.com/photo/sky-view-of-city-during-sun-set-196642/",
+      "alt": "A breathtaking view of San Francisco's skyline and bay at dusk with city lights aglow.",
+      "avgColor": "#796E70",
+      "width": 4000,
+      "height": 2667,
+      "src": "https://images.pexels.com/photos/196642/pexels-photo-196642.jpeg",
+      "query": "San Francisco United States city"
+    },
+    "airport:SIN": {
+      "id": 164536,
+      "photographer": "Pixabay",
+      "photographerUrl": "https://www.pexels.com/@pixabay",
+      "pexelsUrl": "https://www.pexels.com/photo/concrete-buildings-near-body-of-water-at-night-164536/",
+      "alt": "Vibrant night view of Singapore city skyline with illuminated skyscrapers reflected in water.",
+      "avgColor": "#31384F",
+      "width": 5472,
+      "height": 3080,
+      "src": "https://images.pexels.com/photos/164536/pexels-photo-164536.jpeg",
+      "query": "Singapore Singapore city"
+    },
     "airport:SKG": {
       "id": 12708090,
       "photographer": "Lazy Photography",
@@ -602,6 +962,18 @@
       "src": "https://images.pexels.com/photos/11829191/pexels-photo-11829191.jpeg",
       "query": "Seville Spain city"
     },
+    "airport:SYD": {
+      "id": 20636688,
+      "photographer": "Yifan Lai",
+      "photographerUrl": "https://www.pexels.com/@yifan-lai-1434608",
+      "pexelsUrl": "https://www.pexels.com/photo/bay-full-of-ships-and-boats-off-the-coast-of-sydney-20636688/",
+      "alt": "Stunning daytime view of Sydney skyline and harbor from Watsons Bay, NSW, Australia.",
+      "avgColor": "#81897C",
+      "width": 7728,
+      "height": 5152,
+      "src": "https://images.pexels.com/photos/20636688/pexels-photo-20636688.jpeg",
+      "query": "Sydney (Mascot) Australia city"
+    },
     "airport:TFS": {
       "id": 16442171,
       "photographer": "Erik Karits",
@@ -613,6 +985,18 @@
       "height": 4480,
       "src": "https://images.pexels.com/photos/16442171/pexels-photo-16442171.jpeg",
       "query": "Tenerife Spain city"
+    },
+    "airport:TLV": {
+      "id": 17291329,
+      "photographer": "K",
+      "photographerUrl": "https://www.pexels.com/@kelly",
+      "pexelsUrl": "https://www.pexels.com/photo/buildings-near-park-in-haifa-in-israel-17291329/",
+      "alt": "A panoramic aerial view showcasing the modern skyline of Tel Aviv, Israel.",
+      "avgColor": "#848580",
+      "width": 5272,
+      "height": 2962,
+      "src": "https://images.pexels.com/photos/17291329/pexels-photo-17291329.jpeg",
+      "query": "Tel Aviv Israel city"
     },
     "airport:VCE": {
       "id": 7220197,
@@ -626,6 +1010,18 @@
       "src": "https://images.pexels.com/photos/7220197/pexels-photo-7220197.jpeg",
       "query": "Venice Italy city"
     },
+    "airport:VIE": {
+      "id": 19343897,
+      "photographer": "Ekam Juneja",
+      "photographerUrl": "https://www.pexels.com/@ekam-juneja-61080223",
+      "pexelsUrl": "https://www.pexels.com/photo/hofburg-palace-in-vienna-19343897/",
+      "alt": "Elegant view of the Hofburg Palace's dome and facade in Vienna, Austria under a clear sky.",
+      "avgColor": "#ABB6BA",
+      "width": 4000,
+      "height": 2667,
+      "src": "https://images.pexels.com/photos/19343897/pexels-photo-19343897.jpeg",
+      "query": "Vienna Austria city"
+    },
     "airport:VLC": {
       "id": 11223106,
       "photographer": "Salvatore De Lellis",
@@ -637,6 +1033,30 @@
       "height": 3000,
       "src": "https://images.pexels.com/photos/11223106/pexels-photo-11223106.jpeg",
       "query": "Valencia Spain city"
+    },
+    "airport:YYZ": {
+      "id": 11819107,
+      "photographer": "alex ohan",
+      "photographerUrl": "https://www.pexels.com/@alex-ohan-204757441",
+      "pexelsUrl": "https://www.pexels.com/photo/high-rise-buildings-in-the-city-11819107/",
+      "alt": "A scenic view of the Toronto skyline from a waterfront park during the day.",
+      "avgColor": "#7F888F",
+      "width": 5184,
+      "height": 3456,
+      "src": "https://images.pexels.com/photos/11819107/pexels-photo-11819107.jpeg",
+      "query": "Toronto Canada city"
+    },
+    "airport:ZRH": {
+      "id": 36549295,
+      "photographer": "Natalia Sevruk",
+      "photographerUrl": "https://www.pexels.com/@natalia-sevruk-636238602",
+      "pexelsUrl": "https://www.pexels.com/photo/historic-rooftops-of-zurich-under-clear-sky-36549295/",
+      "alt": "A picturesque view of the historic rooftops in Zurich, Switzerland, captured on a clear day.",
+      "avgColor": "#8B847E",
+      "width": 4954,
+      "height": 3263,
+      "src": "https://images.pexels.com/photos/36549295/pexels-photo-36549295.jpeg",
+      "query": "Zurich Switzerland city"
     },
     "airport:ZTH": {
       "id": 12517800,

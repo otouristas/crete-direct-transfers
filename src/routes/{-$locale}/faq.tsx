@@ -8,11 +8,26 @@ export const Route = createFileRoute("/{-$locale}/faq")({
   head: (ctx) => {
     const locale = (ctx.params.locale ?? "en") as Locale;
     const t = getDict(locale);
+    const groups = getLocalizedFaqs(locale);
     return buildHead({
       locale,
       path: "/faq",
       title: t.faqPage.metaTitle,
       description: t.faqPage.metaDescription,
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: groups.flatMap((group) =>
+          group.items.map((item) => ({
+            "@type": "Question",
+            name: item.q,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: item.a,
+            },
+          })),
+        ),
+      },
     });
   },
   component: function FaqPage() {
