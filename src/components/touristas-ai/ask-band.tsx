@@ -94,7 +94,7 @@ export function AskTouristasBand({
                 <ArrowUpRight className="h-4 w-4" />
               </button>
               <Link
-                to="/{-$locale}/touristas-ai"
+                to="/{-$locale}/book"
                 className="inline-flex items-center gap-2 rounded-xl border border-primary-foreground/25 px-5 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10"
               >
                 {t.openFullPage}

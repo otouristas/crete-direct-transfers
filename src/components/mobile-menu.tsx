@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Briefcase, Building2, Globe2, X } from "lucide-react";
+import { Briefcase, Building2, Globe2, Plane, X } from "lucide-react";
 import { useLocale, useT } from "@/i18n";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { MobileAccountLinks } from "@/components/auth/account-menu";
@@ -10,6 +10,7 @@ import { TrustPills } from "@/components/sections/trust-pills";
 import { cn } from "@/lib/utils";
 import { BUSINESS_METRICS_VERIFIED, REVIEWS_VERIFIED } from "@/lib/site";
 import { getMarketNavigation } from "@/lib/market-navigation";
+import { TRAVEL_AGENCY_COPY } from "@/lib/travel-agency-copy";
 
 const HEADER_H = "h-16";
 
@@ -42,6 +43,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const partnerLinks: NavLink[] = [
     { label: t.nav.forHotels, to: "/{-$locale}/for-hotels" },
     { label: t.nav.forDrivers, to: "/{-$locale}/for-drivers" },
+    { label: TRAVEL_AGENCY_COPY[locale].nav, to: "/{-$locale}/for-travel-agencies" },
   ];
 
   const secondaryLinks: NavLink[] = [
@@ -219,6 +221,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
               >
                 {item.to.includes("hotels") ? (
                   <Building2 className="h-4 w-4 text-accent" aria-hidden />
+                ) : item.to.includes("travel-agencies") ? (
+                  <Plane className="h-4 w-4 text-accent" aria-hidden />
                 ) : (
                   <Briefcase className="h-4 w-4 text-accent" aria-hidden />
                 )}

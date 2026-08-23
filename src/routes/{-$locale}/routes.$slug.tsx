@@ -4,7 +4,6 @@ import { quote, formatEur } from "@/lib/pricing";
 import { BookingWidget } from "@/components/booking-widget";
 import { RouteCard } from "@/components/sections/route-card";
 import { CtaBand } from "@/components/sections/cta-band";
-import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
 import { InpageNav } from "@/components/inpage-nav";
 import { getDict, useLocale, useT, type Locale, type Dict } from "@/i18n";
 import { getLocalizedRoute, getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
@@ -304,13 +303,6 @@ function RoutePage() {
           </div>
         </div>
       </section>
-
-      <AskTouristasBand
-        pageType="routes"
-        entityLabel={`${route.from} to ${route.to}`}
-        entitySlug={route.slug}
-        secondaryLabel={route.to}
-      />
 
       <InpageNav items={navItems} />
 

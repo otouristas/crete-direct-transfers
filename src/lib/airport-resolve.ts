@@ -6,6 +6,7 @@
 import { type AirportData, AIRPORTS, getAirport } from "@/data/airports";
 import { getIataAirport, airportsInCountry, type IataAirport } from "@/data/iata-airports";
 import { airportSlug, iataFromSlug, kebab } from "./airport-slug";
+import { MARKET_HUB_AIRPORTS } from "@/data/market-hubs";
 
 /** Neutral hero for generated airports until per-airport imagery is self-hosted (Phase 5). */
 const GENERIC_AIRPORT_HERO =
@@ -13,7 +14,7 @@ const GENERIC_AIRPORT_HERO =
 
 /** IATA → curated slug, so related-airport links prefer the rich page when one exists. */
 const curatedSlugByIata = new Map<string, string>(
-  AIRPORTS.map((a) => [a.iata.toUpperCase(), a.slug]),
+  [...AIRPORTS, ...MARKET_HUB_AIRPORTS].map((a) => [a.iata.toUpperCase(), a.slug]),
 );
 
 /** Build a full AirportData for a global (non-curated) IATA airport. */

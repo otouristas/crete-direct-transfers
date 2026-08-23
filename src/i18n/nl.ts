@@ -928,8 +928,7 @@ export const nl: Dict = {
     offersTitle: "Ritaanbiedingen",
     offersEmpty: "Geen actieve aanbiedingen. Blijf online.",
     asapTitle: "NU / ASAP",
-    asapEmpty:
-      "Geen live NU-verzoeken. Als een gast Touristas om een directe transfer vraagt, verschijnt die hier.",
+    asapEmpty: "Geen live NU-verzoeken. Nieuwe directe transferverzoeken verschijnen hier.",
     asapBadge: "NU",
     asapExpires: "Verloopt over {sec}s",
     asapNewToast: "Nieuw NU-transferverzoek",

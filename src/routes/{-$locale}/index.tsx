@@ -13,8 +13,6 @@ import { getLocalizedRegions, getLocalizedRoutes, getLocalizedVehicles } from "@
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF, REVIEWS_VERIFIED } from "@/lib/site";
 import { Phone } from "lucide-react";
-import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
-import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=2400&q=80";
@@ -99,9 +97,6 @@ function HomePage() {
             <p className="mt-6 max-w-md text-lg text-primary-foreground/80">
               {t.home.heroSubtitle}
             </p>
-            <div className="mt-6">
-              <AskTouristasInline prompt="HER to Elounda tomorrow at 3pm" />
-            </div>
             <TrustPills dark className="mt-8" />
           </div>
           <div id="book" className="relative z-[35] mt-10 w-full scroll-mt-32">
@@ -109,8 +104,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-
-      <AskTouristasBand pageType="home" />
 
       <InpageNav items={navItems} />
 

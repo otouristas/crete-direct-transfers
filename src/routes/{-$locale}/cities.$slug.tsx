@@ -3,14 +3,36 @@ import { getDestination, DESTINATIONS } from "@/data/destinations";
 import { formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
-import { getLocalizedAirports, getLocalizedAirportRoutes } from "@/i18n/content";
+import {
+  getLocalizedAirports,
+  getLocalizedAirportRoutes,
+  getLocalizedMarketHubAirports,
+  getLocalizedMarketHubCities,
+  getLocalizedMarkets,
+} from "@/i18n/content";
 import { CtaBand } from "@/components/sections/cta-band";
-import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
-import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
 
 export const Route = createFileRoute("/{-$locale}/cities/$slug")({
   loader: ({ params }) => {
+    const locale = (params.locale ?? "en") as Locale;
     const city = getDestination(params.slug);
+    const marketHubCity = getLocalizedMarketHubCities(locale).find(
+      (item) => item.slug === params.slug,
+    );
+    if (!city && marketHubCity) {
+      const market = getLocalizedMarkets(locale).find(
+        (item) => item.slug === marketHubCity.countrySlug,
+      );
+      return {
+        city: {
+          ...marketHubCity,
+          type: "city" as const,
+          region: market?.name ?? marketHubCity.countrySlug,
+          island: undefined,
+          countrySlug: marketHubCity.countrySlug,
+        },
+      };
+    }
     if (!city || (city.type !== "city" && city.type !== "resort" && city.type !== "port")) {
       // allow any destination with a page for SEO hubs
       const any = getDestination(params.slug);
@@ -61,14 +83,26 @@ function CityPage() {
   const { city } = Route.useLoaderData();
   const locale = useLocale();
   const t = useT();
-  const airports = getLocalizedAirports(locale).filter((a) => a.citySlug === city.slug);
+  const countrySlug = "countrySlug" in city ? city.countrySlug : undefined;
+  const airports = countrySlug
+    ? getLocalizedMarketHubAirports(locale, countrySlug).filter(
+        (airport) =>
+          airport.cityName.toLowerCase() === city.name.toLowerCase() ||
+          airport.cityName.toLowerCase().includes(city.name.toLowerCase()) ||
+          city.name.toLowerCase().startsWith(airport.cityName.toLowerCase()),
+      )
+    : getLocalizedAirports(locale).filter((a) => a.citySlug === city.slug);
   const routesTo = getLocalizedAirportRoutes(locale).filter((r) => r.toSlug === city.slug);
-  const nearbyCities = DESTINATIONS.filter(
-    (d) =>
-      d.slug !== city.slug &&
-      d.type === "city" &&
-      (d.island === city.island || d.region === city.region),
-  ).slice(0, 8);
+  const nearbyCities = countrySlug
+    ? getLocalizedMarketHubCities(locale, countrySlug)
+        .filter((item) => item.slug !== city.slug)
+        .slice(0, 8)
+    : DESTINATIONS.filter(
+        (d) =>
+          d.slug !== city.slug &&
+          d.type === "city" &&
+          (d.island === city.island || d.region === city.region),
+      ).slice(0, 8);
 
   return (
     <>
@@ -94,13 +128,8 @@ function CityPage() {
               city.island ? `, ${city.island}` : city.region ? `, ${city.region}` : "",
             )}
           </p>
-          <div className="mt-6">
-            <AskTouristasInline prompt={t.directoryPages.cityAiPrompt(city.name)} />
-          </div>
         </div>
       </section>
-
-      <AskTouristasBand pageType="city" entityLabel={city.name} />
 
       <section className="mx-auto max-w-7xl px-6 py-14">
         <p className="max-w-3xl text-lg leading-relaxed text-foreground/90">
@@ -124,7 +153,9 @@ function CityPage() {
                       {a.name} ({a.iata})
                     </span>
                     <span className="text-sm text-muted-foreground">
-                      {t.common.from} {formatEur(a.fromPriceEur)}
+                      {a.fromPriceEur > 0
+                        ? `${t.common.from} ${formatEur(a.fromPriceEur)}`
+                        : t.marketsDirectory.quoteFirst}
                     </span>
                   </Link>
                 </li>
@@ -180,10 +211,11 @@ function CityPage() {
 
         <div className="mt-12">
           <Link
-            to="/{-$locale}/greece"
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            to={`/{-$locale}/${countrySlug ?? "greece"}` as any}
             className="text-sm font-semibold text-accent-deep hover:underline"
           >
-            ← {t.directoryPages.allTransfersInGreece}
+            ← {countrySlug ? city.region : t.directoryPages.allTransfersInGreece}
           </Link>
         </div>
       </section>

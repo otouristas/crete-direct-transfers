@@ -930,8 +930,7 @@ export const de: Dict = {
     offersTitle: "Auftragsangebote",
     offersEmpty: "Keine aktiven Angebote. Bleiben Sie online.",
     asapTitle: "JETZT / ASAP",
-    asapEmpty:
-      "Keine live JETZT-Anfragen. Wenn ein Gast Touristas um eine sofortige Fahrt bittet, erscheint sie hier.",
+    asapEmpty: "Keine live JETZT-Anfragen. Neue Soforttransfer-Anfragen erscheinen hier.",
     asapBadge: "JETZT",
     asapExpires: "Läuft ab in {sec}s",
     asapNewToast: "Neue JETZT-Transferanfrage",

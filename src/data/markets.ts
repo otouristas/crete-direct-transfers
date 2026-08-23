@@ -129,10 +129,10 @@ export const MARKETS: Market[] = [
       "ponta-delgada-airport-transfers-pdl",
     ],
     featuredCitySlugs: ["lisbon", "porto", "algarve", "funchal", "ponta-delgada"],
-    publicationStatus: "draft",
+    publicationStatus: "published",
     lastModified: "2026-07-28",
     supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
-    live: false,
+    live: true,
   },
   {
     slug: "cyprus",
@@ -148,10 +148,10 @@ export const MARKETS: Market[] = [
     searchIntents: [],
     featuredAirportSlugs: ["larnaca-airport-transfers-lca", "paphos-airport-transfers-pfo"],
     featuredCitySlugs: ["larnaca", "paphos", "limassol", "nicosia", "ayia-napa", "protaras"],
-    publicationStatus: "draft",
+    publicationStatus: "published",
     lastModified: "2026-07-28",
     supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
-    live: false,
+    live: true,
   },
   {
     slug: "turkey",
@@ -176,10 +176,10 @@ export const MARKETS: Market[] = [
       "kayseri-airport-transfers-asr",
     ],
     featuredCitySlugs: ["istanbul", "antalya", "izmir", "bodrum", "dalaman", "cappadocia"],
-    publicationStatus: "draft",
+    publicationStatus: "published",
     lastModified: "2026-07-28",
     supportedLocales: ["en", "el", "de", "fr", "it", "nl", "es"],
-    live: false,
+    live: true,
   },
 ];
 

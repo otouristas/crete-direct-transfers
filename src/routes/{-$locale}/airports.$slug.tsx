@@ -11,8 +11,8 @@ import {
 import type { AirportData } from "@/data/airports";
 import type { AirportRouteData } from "@/data/airport-routes";
 import { getIataAirport } from "@/data/iata-airports";
+import { getMarketHubAirport } from "@/data/market-hubs";
 import { CtaBand } from "@/components/sections/cta-band";
-import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
 import {
   AirportHero,
   AirportInPageNav,
@@ -31,7 +31,9 @@ import {
 export const Route = createFileRoute("/{-$locale}/airports/$slug")({
   loader: ({ params }) => {
     const locale = (params.locale ?? "en") as Locale;
-    const curated = getLocalizedAirports(locale).some((airport) => airport.slug === params.slug);
+    const curated =
+      getLocalizedAirports(locale).some((airport) => airport.slug === params.slug) ||
+      Boolean(getMarketHubAirport(params.slug));
     if (!curated && locale !== "en") throw notFound();
     const airport = getLocalizedAirport(locale, params.slug);
     if (!airport) throw notFound();
@@ -84,12 +86,16 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
                 addressCountry: getIataAirport(airport.iata)?.countryCode ?? "GR",
               },
             },
-            offers: {
-              "@type": "AggregateOffer",
-              priceCurrency: "EUR",
-              lowPrice: airport.fromPriceEur,
-              availability: "https://schema.org/InStock",
-            },
+            ...(airport.fromPriceEur > 0
+              ? {
+                  offers: {
+                    "@type": "AggregateOffer",
+                    priceCurrency: "EUR",
+                    lowPrice: airport.fromPriceEur,
+                    availability: "https://schema.org/InStock",
+                  },
+                }
+              : {}),
           },
           {
             "@type": "FAQPage",
@@ -165,14 +171,13 @@ function AirportHubPage() {
         airport={airport}
         bookingSlot={<AirportBookingSlot airport={airport} defaultRouteSlug={defaultLegacy} />}
       />
-      <AskTouristasBand pageType="airport" entityLabel={`${airport.name} (${airport.iata})`} />
-      <AirportInPageNav />
+      <AirportInPageNav showVehicles={airport.fromPriceEur > 0} />
       <AirportFacts airport={airport} />
       <AirportTrustStrip />
       <AirportKnowBefore airport={airport} />
       <AirportInsights airport={airport} />
       <AirportComparison airport={airport} />
-      <AirportVehicles airport={airport} vehicles={vehicles} />
+      {airport.fromPriceEur > 0 ? <AirportVehicles airport={airport} vehicles={vehicles} /> : null}
       <AirportFaqs title={t.nav.faq} subtitle={airport.intro} faqs={airport.faqs} />
       <AirportPopularRoutes airport={airport} routes={routes} />
       <OtherAirportsInGreece airport={airport} />

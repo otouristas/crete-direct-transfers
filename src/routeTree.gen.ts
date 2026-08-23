@@ -13,7 +13,6 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
 import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
 import { Route as Char123LocaleChar125TurkeyRouteImport } from './routes/{-$locale}/turkey'
-import { Route as Char123LocaleChar125TouristasAiRouteImport } from './routes/{-$locale}/touristas-ai'
 import { Route as Char123LocaleChar125SpainRouteImport } from './routes/{-$locale}/spain'
 import { Route as Char123LocaleChar125SignupRouteImport } from './routes/{-$locale}/signup'
 import { Route as Char123LocaleChar125ReviewsRouteImport } from './routes/{-$locale}/reviews'
@@ -26,6 +25,7 @@ import { Route as Char123LocaleChar125ItalyRouteImport } from './routes/{-$local
 import { Route as Char123LocaleChar125HowItWorksRouteImport } from './routes/{-$locale}/how-it-works'
 import { Route as Char123LocaleChar125GreeceRouteImport } from './routes/{-$locale}/greece'
 import { Route as Char123LocaleChar125ForgotPasswordRouteImport } from './routes/{-$locale}/forgot-password'
+import { Route as Char123LocaleChar125ForTravelAgenciesRouteImport } from './routes/{-$locale}/for-travel-agencies'
 import { Route as Char123LocaleChar125ForHotelsRouteImport } from './routes/{-$locale}/for-hotels'
 import { Route as Char123LocaleChar125ForDriversRouteImport } from './routes/{-$locale}/for-drivers'
 import { Route as Char123LocaleChar125FaqRouteImport } from './routes/{-$locale}/faq'
@@ -90,12 +90,6 @@ const Char123LocaleChar125TurkeyRoute =
   Char123LocaleChar125TurkeyRouteImport.update({
     id: '/turkey',
     path: '/turkey',
-    getParentRoute: () => Char123LocaleChar125RouteRoute,
-  } as any)
-const Char123LocaleChar125TouristasAiRoute =
-  Char123LocaleChar125TouristasAiRouteImport.update({
-    id: '/touristas-ai',
-    path: '/touristas-ai',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125SpainRoute =
@@ -167,6 +161,12 @@ const Char123LocaleChar125ForgotPasswordRoute =
   Char123LocaleChar125ForgotPasswordRouteImport.update({
     id: '/forgot-password',
     path: '/forgot-password',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ForTravelAgenciesRoute =
+  Char123LocaleChar125ForTravelAgenciesRouteImport.update({
+    id: '/for-travel-agencies',
+    path: '/for-travel-agencies',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125ForHotelsRoute =
@@ -434,6 +434,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
+  '/{-$locale}/for-travel-agencies': typeof Char123LocaleChar125ForTravelAgenciesRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
   '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
@@ -446,7 +447,6 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/spain': typeof Char123LocaleChar125SpainRoute
-  '/{-$locale}/touristas-ai': typeof Char123LocaleChar125TouristasAiRoute
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
@@ -492,6 +492,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
+  '/{-$locale}/for-travel-agencies': typeof Char123LocaleChar125ForTravelAgenciesRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
   '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
@@ -503,7 +504,6 @@ export interface FileRoutesByTo {
   '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/spain': typeof Char123LocaleChar125SpainRoute
-  '/{-$locale}/touristas-ai': typeof Char123LocaleChar125TouristasAiRoute
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
@@ -553,6 +553,7 @@ export interface FileRoutesById {
   '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
+  '/{-$locale}/for-travel-agencies': typeof Char123LocaleChar125ForTravelAgenciesRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
   '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
@@ -565,7 +566,6 @@ export interface FileRoutesById {
   '/{-$locale}/reviews': typeof Char123LocaleChar125ReviewsRoute
   '/{-$locale}/signup': typeof Char123LocaleChar125SignupRoute
   '/{-$locale}/spain': typeof Char123LocaleChar125SpainRoute
-  '/{-$locale}/touristas-ai': typeof Char123LocaleChar125TouristasAiRoute
   '/{-$locale}/turkey': typeof Char123LocaleChar125TurkeyRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
   '/{-$locale}/account/profile': typeof Char123LocaleChar125AccountProfileRoute
@@ -616,6 +616,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/faq'
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
+    | '/{-$locale}/for-travel-agencies'
     | '/{-$locale}/forgot-password'
     | '/{-$locale}/greece'
     | '/{-$locale}/how-it-works'
@@ -628,7 +629,6 @@ export interface FileRouteTypes {
     | '/{-$locale}/reviews'
     | '/{-$locale}/signup'
     | '/{-$locale}/spain'
-    | '/{-$locale}/touristas-ai'
     | '/{-$locale}/turkey'
     | '/{-$locale}/'
     | '/{-$locale}/account/profile'
@@ -674,6 +674,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/faq'
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
+    | '/{-$locale}/for-travel-agencies'
     | '/{-$locale}/forgot-password'
     | '/{-$locale}/greece'
     | '/{-$locale}/how-it-works'
@@ -685,7 +686,6 @@ export interface FileRouteTypes {
     | '/{-$locale}/reviews'
     | '/{-$locale}/signup'
     | '/{-$locale}/spain'
-    | '/{-$locale}/touristas-ai'
     | '/{-$locale}/turkey'
     | '/{-$locale}'
     | '/{-$locale}/account/profile'
@@ -734,6 +734,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/faq'
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
+    | '/{-$locale}/for-travel-agencies'
     | '/{-$locale}/forgot-password'
     | '/{-$locale}/greece'
     | '/{-$locale}/how-it-works'
@@ -746,7 +747,6 @@ export interface FileRouteTypes {
     | '/{-$locale}/reviews'
     | '/{-$locale}/signup'
     | '/{-$locale}/spain'
-    | '/{-$locale}/touristas-ai'
     | '/{-$locale}/turkey'
     | '/{-$locale}/'
     | '/{-$locale}/account/profile'
@@ -816,13 +816,6 @@ declare module '@tanstack/react-router' {
       path: '/turkey'
       fullPath: '/{-$locale}/turkey'
       preLoaderRoute: typeof Char123LocaleChar125TurkeyRouteImport
-      parentRoute: typeof Char123LocaleChar125RouteRoute
-    }
-    '/{-$locale}/touristas-ai': {
-      id: '/{-$locale}/touristas-ai'
-      path: '/touristas-ai'
-      fullPath: '/{-$locale}/touristas-ai'
-      preLoaderRoute: typeof Char123LocaleChar125TouristasAiRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/spain': {
@@ -907,6 +900,13 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/{-$locale}/forgot-password'
       preLoaderRoute: typeof Char123LocaleChar125ForgotPasswordRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/for-travel-agencies': {
+      id: '/{-$locale}/for-travel-agencies'
+      path: '/for-travel-agencies'
+      fullPath: '/{-$locale}/for-travel-agencies'
+      preLoaderRoute: typeof Char123LocaleChar125ForTravelAgenciesRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/for-hotels': {
@@ -1290,6 +1290,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125FaqRoute: typeof Char123LocaleChar125FaqRoute
   Char123LocaleChar125ForDriversRoute: typeof Char123LocaleChar125ForDriversRoute
   Char123LocaleChar125ForHotelsRoute: typeof Char123LocaleChar125ForHotelsRoute
+  Char123LocaleChar125ForTravelAgenciesRoute: typeof Char123LocaleChar125ForTravelAgenciesRoute
   Char123LocaleChar125ForgotPasswordRoute: typeof Char123LocaleChar125ForgotPasswordRoute
   Char123LocaleChar125GreeceRoute: typeof Char123LocaleChar125GreeceRoute
   Char123LocaleChar125HowItWorksRoute: typeof Char123LocaleChar125HowItWorksRoute
@@ -1302,7 +1303,6 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125ReviewsRoute: typeof Char123LocaleChar125ReviewsRoute
   Char123LocaleChar125SignupRoute: typeof Char123LocaleChar125SignupRoute
   Char123LocaleChar125SpainRoute: typeof Char123LocaleChar125SpainRoute
-  Char123LocaleChar125TouristasAiRoute: typeof Char123LocaleChar125TouristasAiRoute
   Char123LocaleChar125TurkeyRoute: typeof Char123LocaleChar125TurkeyRoute
   Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
   Char123LocaleChar125AirportsSlugRoute: typeof Char123LocaleChar125AirportsSlugRoute
@@ -1344,6 +1344,8 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125FaqRoute: Char123LocaleChar125FaqRoute,
     Char123LocaleChar125ForDriversRoute: Char123LocaleChar125ForDriversRoute,
     Char123LocaleChar125ForHotelsRoute: Char123LocaleChar125ForHotelsRoute,
+    Char123LocaleChar125ForTravelAgenciesRoute:
+      Char123LocaleChar125ForTravelAgenciesRoute,
     Char123LocaleChar125ForgotPasswordRoute:
       Char123LocaleChar125ForgotPasswordRoute,
     Char123LocaleChar125GreeceRoute: Char123LocaleChar125GreeceRoute,
@@ -1359,7 +1361,6 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125ReviewsRoute: Char123LocaleChar125ReviewsRoute,
     Char123LocaleChar125SignupRoute: Char123LocaleChar125SignupRoute,
     Char123LocaleChar125SpainRoute: Char123LocaleChar125SpainRoute,
-    Char123LocaleChar125TouristasAiRoute: Char123LocaleChar125TouristasAiRoute,
     Char123LocaleChar125TurkeyRoute: Char123LocaleChar125TurkeyRoute,
     Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
     Char123LocaleChar125AirportsSlugRoute:

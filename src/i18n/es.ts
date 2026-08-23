@@ -937,7 +937,7 @@ export const es: Dict = {
     offersEmpty: "No hay ofertas activas. Mantente en línea.",
     asapTitle: "AHORA / ASAP",
     asapEmpty:
-      "No hay solicitudes AHORA en vivo. Cuando un pasajero pida un traslado inmediato a Touristas, aparece aquí.",
+      "No hay solicitudes AHORA en vivo. Las nuevas solicitudes de traslado inmediato aparecerán aquí.",
     asapBadge: "AHORA",
     asapExpires: "Caduca en {sec}s",
     asapNewToast: "Nueva solicitud de traslado AHORA",

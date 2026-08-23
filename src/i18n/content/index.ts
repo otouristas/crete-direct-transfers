@@ -4,10 +4,11 @@ import { SERVICES, type ServiceData } from "@/data/services";
 import { REGIONS, type RegionData } from "@/data/regions";
 import { ROUTES, VEHICLE_CLASSES } from "@/data/routes";
 import { MARKETS, type Market } from "@/data/markets";
-import { MARKET_HUB_AIRPORTS, MARKET_HUB_CITIES } from "@/data/market-hubs";
+import { MARKET_HUB_AIRPORTS, MARKET_HUB_CITIES, getMarketHubAirport } from "@/data/market-hubs";
 import { AIRPORTS, type AirportData } from "@/data/airports";
 import { getAirportResolved } from "@/lib/airport-resolve";
 import { localizeMarket } from "@/i18n/markets";
+import { getMarketAirportDetails } from "@/i18n/market-airport-details";
 import { AIRPORT_ROUTES, type AirportRouteData } from "@/data/airport-routes";
 import { POSTS, type Post } from "@/data/posts";
 import type {
@@ -144,6 +145,29 @@ export function getLocalizedAirports(locale: Locale): AirportData[] {
 export function getLocalizedAirport(locale: Locale, slug: string): AirportData | undefined {
   const curated = getLocalizedAirports(locale).find((a) => a.slug === slug);
   if (curated) return curated;
+  const hub = getMarketHubAirport(slug);
+  if (hub) {
+    const resolved = getAirportResolved(slug);
+    const localizedHub = getLocalizedMarketHubAirports(locale).find((a) => a.slug === slug) ?? hub;
+    if (!resolved) return undefined;
+    return {
+      ...resolved,
+      ...getMarketAirportDetails(locale, hub, localizedHub.name, localizedHub.cityName),
+      slug: localizedHub.slug,
+      name: localizedHub.name,
+      officialName: localizedHub.name,
+      alias: localizedHub.name,
+      cityName: localizedHub.cityName,
+      citySlug: localizedHub.cityName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, ""),
+      fromPriceEur:
+        localizedHub.bookable === "quote" ? 0 : localizedHub.fromPriceEur || resolved.fromPriceEur,
+      bookable: localizedHub.bookable,
+      intro: localizedHub.intro,
+    };
+  }
   // Global fallback: any of the 8,927 IATA airports renders with generated
   // (English) content so no real airport 404s. Not locale-overlaid yet.
   return getAirportResolved(slug);

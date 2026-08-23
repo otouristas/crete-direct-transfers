@@ -120,6 +120,7 @@ const TIME_OPTIONS = Array.from({ length: 24 * 4 }, (_, i) => {
 export function BookingWidget({
   defaultRoute,
   defaultIata,
+  defaultDestination,
   defaultClass = "economy",
   compact = false,
   variant,
@@ -127,6 +128,8 @@ export function BookingWidget({
   defaultRoute?: string;
   /** Prefill From with this IATA airport (pillar / airport pages). */
   defaultIata?: string;
+  /** Prefill To with a country-specific city or resort on market hubs. */
+  defaultDestination?: string;
   defaultClass?: VehicleClass;
   compact?: boolean;
   /** Homepage uses horizontal bar; route pages keep the card. */
@@ -143,25 +146,34 @@ export function BookingWidget({
       />
     );
   }
-  return <BookingWidgetBar defaultClass={defaultClass} defaultIata={defaultIata} />;
+  return (
+    <BookingWidgetBar
+      defaultClass={defaultClass}
+      defaultIata={defaultIata}
+      defaultDestination={defaultDestination}
+    />
+  );
 }
 
 function BookingWidgetBar({
   defaultClass = "economy",
   defaultIata,
+  defaultDestination,
 }: {
   defaultClass?: VehicleClass;
   defaultIata?: string;
+  defaultDestination?: string;
 }) {
   const t = useT();
   const locale = useLocale();
   const navigate = useNavigate();
   const initialFrom = placeFromIata(defaultIata);
+  const initialTo = defaultDestination ? placeFromLabel(defaultDestination) : null;
   const [service, setService] = useState<ServiceMode>("transfer");
   const [fromQuery, setFromQuery] = useState(initialFrom?.label ?? "");
-  const [toQuery, setToQuery] = useState("");
+  const [toQuery, setToQuery] = useState(initialTo?.label ?? "");
   const [fromPlace, setFromPlace] = useState<PlaceResult | null>(initialFrom);
-  const [toPlace, setToPlace] = useState<PlaceResult | null>(null);
+  const [toPlace, setToPlace] = useState<PlaceResult | null>(initialTo);
   const [date, setDate] = useState(defaultPickupLocal);
   const [returnDate, setReturnDate] = useState("");
   const [addReturn, setAddReturn] = useState(false);

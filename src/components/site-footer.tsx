@@ -20,6 +20,7 @@ import { AVG_RATING } from "@/data/reviews";
 import { Logo } from "@/components/logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { getMarketNavigation } from "@/lib/market-navigation";
+import { TRAVEL_AGENCY_COPY } from "@/lib/travel-agency-copy";
 
 const TOP_ROUTE_SLUGS = new Set([
   "heraklion-airport-to-elounda",
@@ -268,6 +269,11 @@ export function SiteFooter() {
                 {t.nav.forDrivers}
               </Link>
             </li>
+            <li>
+              <Link to="/{-$locale}/for-travel-agencies" className={linkClass}>
+                {TRAVEL_AGENCY_COPY[locale].nav}
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -295,11 +301,6 @@ export function SiteFooter() {
             <li>
               <Link to="/{-$locale}/faq" className={linkClass}>
                 {t.nav.faq}
-              </Link>
-            </li>
-            <li>
-              <Link to="/{-$locale}/touristas-ai" className={linkClass}>
-                {t.touristasAi.title}
               </Link>
             </li>
             <li>

@@ -6,6 +6,7 @@ import { SERVICES } from "@/data/services";
 import { POSTS } from "@/data/posts";
 import { AIRPORTS } from "@/data/airports";
 import { AIRPORT_ROUTES } from "@/data/airport-routes";
+import { MARKET_HUB_AIRPORTS, MARKET_HUB_CITIES } from "@/data/market-hubs";
 import { listCityDestinations } from "@/data/destinations";
 import { listLiveMarkets } from "@/data/markets";
 import { REVIEWS_VERIFIED, SITE_URL } from "@/lib/site";
@@ -17,7 +18,6 @@ export const Route = createFileRoute("/sitemap.xml")({
       GET: async () => {
         const paths = new Set([
           "/",
-          "/touristas-ai",
           "/countries",
           ...listLiveMarkets().map((m) => `/${m.slug}`),
           "/airports",
@@ -47,8 +47,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...VEHICLE_CLASSES.map((v) => `/fleet/${v.id}`),
           ...POSTS.map((p) => `/blog/${p.slug}`),
           ...AIRPORTS.map((a) => `/airports/${a.slug}`),
+          ...MARKET_HUB_AIRPORTS.map((a) => `/airports/${a.slug}`),
           ...AIRPORT_ROUTES.map((r) => `/airports/${r.airportSlug}/${r.routeSlug}`),
           ...listCityDestinations().map((c) => `/cities/${c.slug}`),
+          ...MARKET_HUB_CITIES.map((c) => `/cities/${c.slug}`),
+          "/for-travel-agencies",
         ]);
 
         const alternates = (path: string) =>

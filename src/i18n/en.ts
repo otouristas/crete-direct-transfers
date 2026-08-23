@@ -918,8 +918,7 @@ export const en = {
     offersTitle: "Job offers",
     offersEmpty: "No active offers. Stay online — new ones appear here.",
     asapTitle: "NOW / ASAP",
-    asapEmpty:
-      "No live NOW requests. When a passenger asks Touristas for a transfer now, it shows here.",
+    asapEmpty: "No live NOW requests. New immediate transfer requests will appear here.",
     asapBadge: "NOW",
     asapExpires: "Expires in {sec}s",
     asapNewToast: "New NOW transfer request",
