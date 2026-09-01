@@ -1,4 +1,4 @@
-import { ALL_ROUTES, routesInTerritory } from "@/data/territories";
+import { ALL_ROUTES, PUBLISHED_ROUTES, routesInTerritory } from "@/data/territories";
 
 export type VehicleClass =
   | "economy"
@@ -126,7 +126,10 @@ export type RouteData = {
 
 
 /** Merged, territory-tagged route catalog. Authoring lives in `src/data/territories/`. */
-export const ROUTES: RouteData[] = ALL_ROUTES;
+export const ROUTES: RouteData[] = PUBLISHED_ROUTES;
+
+/** Every route including `planned` territories — internal tooling only. */
+export const ROUTE_CATALOG: RouteData[] = ALL_ROUTES;
 
 export function getRoute(slug: string): RouteData | undefined {
   return ROUTES.find((r) => r.slug === slug);

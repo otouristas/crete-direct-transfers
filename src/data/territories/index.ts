@@ -63,6 +63,11 @@ export const PUBLISHED_ROUTES: RouteData[] = datasetsFor({ publishedOnly: true }
   (d) => d.routes,
 );
 
+/** Regions we publish pages for (excludes `planned` territories). */
+export const PUBLISHED_REGIONS: RegionData[] = datasetsFor({ publishedOnly: true }).flatMap(
+  (d) => d.regions,
+);
+
 export function routesInTerritory(slug: string): RouteData[] {
   return ALL_ROUTES.filter((r) => r.territory === slug);
 }
