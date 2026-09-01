@@ -251,6 +251,10 @@ function BookingDetailPage() {
         <p className="mt-3 text-xs text-muted-foreground">{t.account.policyBlurb}</p>
       </div>
 
+      {(b.status === "claimed" || b.status === "en_route") && (
+        <LiveTripTracker booking={b} driver={driver.data} locale={locale} />
+      )}
+
       <TripTimeline status={b.status} locale={locale} />
 
 
