@@ -818,7 +818,7 @@ function BookingWidgetCard({
             >
               {vehicles.map((v) => (
                 <option key={v.id} value={v.id}>
-                  {v.label} · {v.capacity}
+                  {v.label} · {vehicleCapacity(t, v)}
                 </option>
               ))}
             </select>
@@ -898,7 +898,7 @@ function BookingWidgetCard({
           <dl className="mt-2 space-y-1.5 rounded-lg bg-muted p-3 text-xs">
             {q.breakdown.map((b, i) => (
               <div key={i} className="flex justify-between">
-                <dt className="text-muted-foreground">{b.label}</dt>
+                <dt className="text-muted-foreground">{priceLineLabel(t, b)}</dt>
                 <dd
                   className={cn("tabular-nums", b.amountEur < 0 && "font-medium text-accent-deep")}
                 >
