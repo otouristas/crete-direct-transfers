@@ -238,6 +238,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
@@ -289,6 +290,7 @@ export type Database = {
           flight_number?: string | null
           goodwill_credit_cents?: number
           id?: string
+          locale?: string
           market?: string | null
           notes?: string | null
           offered_at?: string | null
@@ -340,6 +342,7 @@ export type Database = {
           flight_number?: string | null
           goodwill_credit_cents?: number
           id?: string
+          locale?: string
           market?: string | null
           notes?: string | null
           offered_at?: string | null
@@ -892,6 +895,51 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      event_outbox: {
+        Row: {
+          aggregate_id: string
+          attempts: number
+          available_at: string
+          created_at: string
+          event_type: string
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          locked_at: string | null
+          payload: Json
+          processed_at: string | null
+          status: string
+        }
+        Insert: {
+          aggregate_id: string
+          attempts?: number
+          available_at?: string
+          created_at?: string
+          event_type: string
+          id?: string
+          idempotency_key: string
+          last_error?: string | null
+          locked_at?: string | null
+          payload?: Json
+          processed_at?: string | null
+          status?: string
+        }
+        Update: {
+          aggregate_id?: string
+          attempts?: number
+          available_at?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          idempotency_key?: string
+          last_error?: string | null
+          locked_at?: string | null
+          payload?: Json
+          processed_at?: string | null
+          status?: string
+        }
+        Relationships: []
       }
       job_offers: {
         Row: {
@@ -1464,6 +1512,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
@@ -1516,6 +1565,29 @@ export type Database = {
         }
         Returns: number
       }
+      claim_event_outbox: {
+        Args: { p_limit?: number }
+        Returns: {
+          aggregate_id: string
+          attempts: number
+          available_at: string
+          created_at: string
+          event_type: string
+          id: string
+          idempotency_key: string
+          last_error: string | null
+          locked_at: string | null
+          payload: Json
+          processed_at: string | null
+          status: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "event_outbox"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       claim_job: {
         Args: { p_booking_id: string }
         Returns: {
@@ -1542,6 +1614,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
@@ -1575,6 +1648,10 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      complete_event_outbox: {
+        Args: { p_error?: string; p_id: string; p_success: boolean }
+        Returns: undefined
       }
       create_asap_booking: {
         Args: {
@@ -1621,6 +1698,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
@@ -1687,6 +1765,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
@@ -1869,6 +1948,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
@@ -1964,6 +2044,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
@@ -2169,6 +2250,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          locale: string
           market: string | null
           notes: string | null
           offered_at: string | null
