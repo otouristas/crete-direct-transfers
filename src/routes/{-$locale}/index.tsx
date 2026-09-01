@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { REVIEWS } from "@/data/reviews";
-import { HeroRouteStage } from "@/components/sections/hero-route-stage";
+import { BookingWidget } from "@/components/booking-widget";
+import { ResumeQuoteBanner } from "@/components/booking/resume-quote-banner";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { Steps } from "@/components/sections/steps";
 import { ReviewsGrid } from "@/components/sections/review-card";
