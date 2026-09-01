@@ -106,6 +106,17 @@ export function hydrateCurrencyFromStorage(): CurrencyCode {
   return preferred;
 }
 
+/** True when the visitor picked a currency explicitly on this device. */
+export function hasStoredCurrency(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return !!raw && isCurrencyCode(raw);
+  } catch {
+    return false;
+  }
+}
+
 export function setPreferredCurrency(code: CurrencyCode): void {
   preferred = code;
   try {

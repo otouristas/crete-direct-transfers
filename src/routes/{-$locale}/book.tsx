@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 import { format, parseISO, subHours } from "date-fns";
+import { dateFnsLocale } from "@/lib/date-locale";
 import { VEHICLE_CLASSES, getRoute, type VehicleClass } from "@/data/routes";
 import {
   quoteAllClasses,
@@ -167,10 +168,10 @@ function formatClock(iso: string): string {
   }
 }
 
-function formatDay(iso: string): string {
+function formatDay(iso: string, locale: Locale = "en"): string {
   if (!iso) return "";
   try {
-    return format(parseISO(iso), "d MMM yyyy");
+    return format(parseISO(iso), "d MMM yyyy", { locale: dateFnsLocale(locale) });
   } catch {
     return "";
   }
@@ -613,7 +614,9 @@ function BookPage() {
   const cancelDeadline = pickupAt
     ? (() => {
         try {
-          return format(subHours(parseISO(pickupAt), 24), "d MMMM yyyy HH:mm");
+          return format(subHours(parseISO(pickupAt), 24), "d MMMM yyyy HH:mm", {
+            locale: dateFnsLocale(locale),
+          });
         } catch {
           return "";
         }
@@ -963,7 +966,7 @@ function BookPage() {
                 className="sticky top-20 z-30"
                 tripLabel={tripType === "return" ? t.widget.return : t.widget.oneWay}
                 passengers={passengers}
-                dateLabel={formatDay(pickupAt)}
+                dateLabel={formatDay(pickupAt, locale)}
                 fromLabel={fromLabel}
                 toLabel={isHourly ? `${hours}h` : toLabel}
                 fromTime={formatClock(pickupAt)}
@@ -1073,7 +1076,7 @@ function BookPage() {
               className="h-fit lg:sticky lg:top-20 lg:z-30"
               tripLabel={tripType === "return" ? t.widget.return : t.widget.oneWay}
               passengers={passengers}
-              dateLabel={formatDay(pickupAt)}
+              dateLabel={formatDay(pickupAt, locale)}
               fromLabel={fromLabel}
               toLabel={isHourly ? `${hours}h` : toLabel}
               fromTime={formatClock(pickupAt)}
@@ -1151,7 +1154,7 @@ function BookPage() {
                   forceActions
                   tripLabel={tripType === "return" ? t.widget.return : t.widget.oneWay}
                   passengers={passengers}
-                  dateLabel={formatDay(pickupAt)}
+                  dateLabel={formatDay(pickupAt, locale)}
                   fromLabel={fromLabel}
                   toLabel={isHourly ? `${hours}h` : toLabel}
                   fromTime={formatClock(pickupAt)}

@@ -4,6 +4,16 @@ import { airportPages } from "./airport-pages";
 import { opsCopy } from "./ops-copy";
 
 export const el: Dict = {
+  priceLines: {
+    vehicle: (v: string) => `Όχημα ${v}`,
+    hourly: (v: string, h: number) => `${v} · ${h} ώρες`,
+    childSeat: "Παιδικό κάθισμα",
+    extraStop: "Επιπλέον στάση",
+    meetAndGreet: "Υποδοχή με πινακίδα ονόματος",
+    nightSurcharge: "Νυχτερινή προσαύξηση (22:00–06:00)",
+    returnTrip: "Διαδρομή επιστροφής",
+    returnDiscount: "Έκπτωση επιστροφής (−5%)",
+  },
   common: {
     bookNow: "Κλείστε τώρα",
     bookTransfer: "Κλείστε μεταφορά",

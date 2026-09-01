@@ -22,6 +22,8 @@ import { PlaceCombobox } from "@/components/place-combobox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useLocale, useT } from "@/i18n";
+import { priceLineLabel } from "@/lib/price-labels";
+import { dateFnsLocale } from "@/lib/date-locale";
 import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
 
@@ -540,9 +542,11 @@ function DateTimePicker({
   onTimeChange: (t: string) => void;
 }) {
   const t = useT();
+  const locale = useLocale();
   return (
     <div className="space-y-3">
       <Calendar
+        locale={dateFnsLocale(locale)}
         mode="single"
         selected={selected}
         onSelect={(d) => d && onDateChange(d)}
@@ -898,7 +902,7 @@ function BookingWidgetCard({
           <dl className="mt-2 space-y-1.5 rounded-lg bg-muted p-3 text-xs">
             {q.breakdown.map((b, i) => (
               <div key={i} className="flex justify-between">
-                <dt className="text-muted-foreground">{b.label}</dt>
+                <dt className="text-muted-foreground">{priceLineLabel(t, b)}</dt>
                 <dd
                   className={cn("tabular-nums", b.amountEur < 0 && "font-medium text-accent-deep")}
                 >

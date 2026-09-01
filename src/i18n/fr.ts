@@ -6,6 +6,16 @@ import { airportPages } from "./airport-pages";
 import { opsCopy } from "./ops-copy";
 
 export const fr: Dict = {
+  priceLines: {
+    vehicle: (v: string) => `Véhicule ${v}`,
+    hourly: (v: string, h: number) => `${v} · ${h} h`,
+    childSeat: "Siège enfant",
+    extraStop: "Arrêt supplémentaire",
+    meetAndGreet: "Accueil avec pancarte",
+    nightSurcharge: "Supplément de nuit (22h00–06h00)",
+    returnTrip: "Trajet retour",
+    returnDiscount: "Remise aller-retour (−5%)",
+  },
   common: {
     bookNow: "Réserver",
     bookTransfer: "Réserver un transfert",

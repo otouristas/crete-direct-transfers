@@ -6,6 +6,16 @@ import { airportPages } from "./airport-pages";
 import { opsCopy } from "./ops-copy";
 
 export const nl: Dict = {
+  priceLines: {
+    vehicle: (v: string) => `Voertuig ${v}`,
+    hourly: (v: string, h: number) => `${v} · ${h} uur`,
+    childSeat: "Kinderzitje",
+    extraStop: "Extra stop",
+    meetAndGreet: "Ontvangst met naambord",
+    nightSurcharge: "Nachttoeslag (22:00–06:00)",
+    returnTrip: "Terugrit",
+    returnDiscount: "Retourkorting (−5%)",
+  },
   common: {
     bookNow: "Nu boeken",
     bookTransfer: "Boek een transfer",

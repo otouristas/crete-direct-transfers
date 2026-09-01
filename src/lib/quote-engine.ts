@@ -1,6 +1,13 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import { quote, quoteHourly, quoteTrip, type Extras, type TripType } from "@/lib/pricing";
+import {
+  quote,
+  quoteHourly,
+  quoteTrip,
+  type Extras,
+  type PriceLine,
+  type TripType,
+} from "@/lib/pricing";
 import type { VehicleClass } from "@/data/routes";
 import { getAirport } from "@/data/airports";
 import { getAirportRoute } from "@/data/airport-routes";
@@ -60,7 +67,7 @@ function resolveBookable(input: CreateQuoteInput): "instant" | "quote" {
 /** Compute price locally (same engine as the booking UI). */
 export function computeQuotePrice(input: CreateQuoteInput): {
   priceCents: number;
-  breakdown: { label: string; amountEur: number }[];
+  breakdown: PriceLine[];
   bookableMode: "instant" | "quote";
 } | null {
   const pickupAt = input.pickupAt ? new Date(input.pickupAt) : undefined;
