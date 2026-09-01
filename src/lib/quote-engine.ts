@@ -1,6 +1,13 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import { quote, quoteHourly, quoteTrip, type Extras, type TripType } from "@/lib/pricing";
+import {
+  quote,
+  quoteHourly,
+  quoteTrip,
+  type Extras,
+  type PriceLine,
+  type TripType,
+} from "@/lib/pricing";
 import type { VehicleClass } from "@/data/routes";
 import { getAirport } from "@/data/airports";
 import { getAirportRoute } from "@/data/airport-routes";
