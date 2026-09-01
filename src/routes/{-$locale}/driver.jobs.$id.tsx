@@ -259,6 +259,7 @@ function DriverJobDetailPage() {
               cancelLabel={t.account.cancelKeep}
               onConfirm={() => unable.mutate()}
             />
+            <CancelJobDialog bookingId={id} locale={locale} />
           </div>
         </div>
       )}
