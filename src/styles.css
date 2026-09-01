@@ -542,3 +542,47 @@
     animation: none;
   }
 }
+
+/* ---- Signature route canvas (homepage hero map) ---- */
+.tfr-route-canvas {
+  --tfr-route-line: var(--accent);
+  --tfr-route-pickup: var(--accent);
+  --tfr-route-dropoff: var(--primary);
+  color: var(--primary);
+}
+.tfr-route-draw {
+  animation: tfr-route-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes tfr-route-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.tfr-route-ping {
+  fill: var(--tfr-route-pickup, currentColor);
+  opacity: 0.25;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tfr-route-ping 2.4s ease-out infinite;
+}
+@keyframes tfr-route-ping {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.35;
+  }
+  70%,
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tfr-route-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .tfr-route-ping {
+    animation: none;
+    opacity: 0.2;
+  }
+}
