@@ -224,25 +224,27 @@ function BookingWidgetBar({
     const dropoffLat = isHourly ? undefined : (toPlace?.lat ?? dropoffPoint?.lat);
     const dropoffLng = isHourly ? undefined : (toPlace?.lng ?? dropoffPoint?.lng);
 
-    navigate({
-      to: "/{-$locale}/book",
-      search: {
-        service,
-        hours: isHourly ? hours : undefined,
-        route: matched,
-        class: vehicleClass,
-        date,
-        pax,
-        trip,
-        returnDate: trip === "return" ? returnDate || undefined : undefined,
-        pickupAddress: fromQuery || fromPlace?.label || undefined,
-        dropoffAddress: isHourly ? undefined : toQuery || toPlace?.label || undefined,
-        pickupLat,
-        pickupLng,
-        dropoffLat,
-        dropoffLng,
-      },
-    });
+    const search = {
+      service,
+      hours: isHourly ? hours : undefined,
+      route: matched,
+      class: vehicleClass,
+      date,
+      pax,
+      trip,
+      returnDate: trip === "return" ? returnDate || undefined : undefined,
+      pickupAddress: fromQuery || fromPlace?.label || undefined,
+      dropoffAddress: isHourly ? undefined : toQuery || toPlace?.label || undefined,
+      pickupLat,
+      pickupLng,
+      dropoffLat,
+      dropoffLng,
+    };
+    saveQuote(
+      [search.pickupAddress, search.dropoffAddress].filter(Boolean).join(" → ") || (matched ?? ""),
+      search,
+    );
+    navigate({ to: "/{-$locale}/book", search });
   };
 
   const { date: calDate, time } = splitLocal(date);
