@@ -11,14 +11,60 @@ export type Extras = {
 
 export type TripType = "oneway" | "return";
 
+/** Stable, language-independent identifiers for fare lines. */
+export type PriceLineCode =
+  | "vehicle"
+  | "hourly"
+  | "childSeat"
+  | "extraStop"
+  | "meetAndGreet"
+  | "nightSurcharge"
+  | "returnTrip"
+  | "returnDiscount";
+
+export type PriceLine = {
+  /** Language-independent code — render via `priceLineLabel()`. */
+  code: PriceLineCode;
+  /** Interpolation values (vehicle label, hours). */
+  params?: { vehicle?: string; hours?: number };
+  /** English fallback, also what gets persisted with the quote. */
+  label: string;
+  amountEur: number;
+};
+
 export type Quote = {
   routeSlug: string;
   vehicleClass: VehicleClass;
   tripType: TripType;
   currency: "EUR";
-  breakdown: { label: string; amountEur: number }[];
+  breakdown: PriceLine[];
   totalEur: number;
 };
+
+const EN_LINE_LABELS: Record<PriceLineCode, string> = {
+  vehicle: "vehicle",
+  hourly: "hourly",
+  childSeat: "Child seat",
+  extraStop: "Extra stop",
+  meetAndGreet: "Meet & greet with sign",
+  nightSurcharge: "Night surcharge (22:00–06:00)",
+  returnTrip: "Return trip",
+  returnDiscount: "Return discount (−5%)",
+};
+
+function line(
+  code: PriceLineCode,
+  amountEur: number,
+  params?: { vehicle?: string; hours?: number },
+): PriceLine {
+  const label =
+    code === "vehicle"
+      ? `${params?.vehicle ?? ""} vehicle`.trim()
+      : code === "hourly"
+        ? `${params?.vehicle ?? ""} · ${params?.hours ?? 0}h`
+        : EN_LINE_LABELS[code];
+  return params ? { code, params, label, amountEur } : { code, label, amountEur };
+}
 
 const EXTRA_PRICES = {
   childSeat: 10,
@@ -47,18 +93,16 @@ export function quote(input: {
 
   const tripType: TripType = input.tripType ?? "oneway";
   const base = Math.round(route.basePriceEur * vc.multiplier);
-  const breakdown: { label: string; amountEur: number }[] = [
-    { label: `${vc.label} vehicle`, amountEur: base },
-  ];
+  const breakdown: PriceLine[] = [line("vehicle", base, { vehicle: vc.label })];
 
   if (input.extras?.childSeat) {
-    breakdown.push({ label: "Child seat", amountEur: EXTRA_PRICES.childSeat });
+    breakdown.push(line("childSeat", EXTRA_PRICES.childSeat));
   }
   if (input.extras?.extraStop) {
-    breakdown.push({ label: "Extra stop", amountEur: EXTRA_PRICES.extraStop });
+    breakdown.push(line("extraStop", EXTRA_PRICES.extraStop));
   }
   if (input.extras?.meetAndGreet) {
-    breakdown.push({ label: "Meet & greet with sign", amountEur: EXTRA_PRICES.meetAndGreet });
+    breakdown.push(line("meetAndGreet", EXTRA_PRICES.meetAndGreet));
   }
 
   let outboundSubtotal = breakdown.reduce((s, b) => s + b.amountEur, 0);
@@ -66,7 +110,7 @@ export function quote(input: {
   // Night surcharge 22:00–06:00 (+15%) per leg, based on that leg's pickup time
   if (input.pickupAt && isNight(input.pickupAt)) {
     const surcharge = Math.round(outboundSubtotal * 0.15);
-    breakdown.push({ label: "Night surcharge (22:00–06:00)", amountEur: surcharge });
+    breakdown.push(line("nightSurcharge", surcharge));
     outboundSubtotal += surcharge;
   }
 
@@ -75,16 +119,16 @@ export function quote(input: {
   if (tripType === "return") {
     // Return leg: same base + extras, its own night-surcharge check
     let returnSubtotal = breakdown
-      .filter((b) => !b.label.startsWith("Night surcharge"))
+      .filter((b) => b.code !== "nightSurcharge")
       .reduce((s, b) => s + b.amountEur, 0);
     if (input.returnAt && isNight(input.returnAt)) {
       returnSubtotal += Math.round(returnSubtotal * 0.15);
     }
-    breakdown.push({ label: "Return trip", amountEur: returnSubtotal });
+    breakdown.push(line("returnTrip", returnSubtotal));
     total += returnSubtotal;
 
     const discount = -Math.round(total * RETURN_DISCOUNT);
-    breakdown.push({ label: "Return discount (−5%)", amountEur: discount });
+    breakdown.push(line("returnDiscount", discount));
     total += discount;
   }
 
@@ -105,7 +149,7 @@ export type HourlyQuote = {
   hours: number;
   vehicleClass: VehicleClass;
   currency: "EUR";
-  breakdown: { label: string; amountEur: number }[];
+  breakdown: PriceLine[];
   totalEur: number;
 };
 
@@ -119,14 +163,12 @@ export function quoteHourly(input: {
   if (!vc) return null;
 
   const base = Math.round(HOURLY_BASE_EUR * hours * vc.multiplier);
-  const breakdown: { label: string; amountEur: number }[] = [
-    { label: `${vc.label} · ${hours}h`, amountEur: base },
-  ];
+  const breakdown: PriceLine[] = [line("hourly", base, { vehicle: vc.label, hours })];
 
   let total = base;
   if (input.pickupAt && isNight(input.pickupAt)) {
     const surcharge = Math.round(total * 0.15);
-    breakdown.push({ label: "Night surcharge (22:00–06:00)", amountEur: surcharge });
+    breakdown.push(line("nightSurcharge", surcharge));
     total += surcharge;
   }
 
@@ -262,25 +304,23 @@ export function quoteFromBase(input: {
 
   const tripType: TripType = input.tripType ?? "oneway";
   const base = Math.round(input.baseEur * vc.multiplier);
-  const breakdown: { label: string; amountEur: number }[] = [
-    { label: `${vc.label} vehicle`, amountEur: base },
-  ];
+  const breakdown: PriceLine[] = [line("vehicle", base, { vehicle: vc.label })];
 
   if (input.extras?.childSeat) {
-    breakdown.push({ label: "Child seat", amountEur: EXTRA_PRICES.childSeat });
+    breakdown.push(line("childSeat", EXTRA_PRICES.childSeat));
   }
   if (input.extras?.extraStop) {
-    breakdown.push({ label: "Extra stop", amountEur: EXTRA_PRICES.extraStop });
+    breakdown.push(line("extraStop", EXTRA_PRICES.extraStop));
   }
   if (input.extras?.meetAndGreet) {
-    breakdown.push({ label: "Meet & greet with sign", amountEur: EXTRA_PRICES.meetAndGreet });
+    breakdown.push(line("meetAndGreet", EXTRA_PRICES.meetAndGreet));
   }
 
   let outboundSubtotal = breakdown.reduce((s, b) => s + b.amountEur, 0);
 
   if (input.pickupAt && isNight(input.pickupAt)) {
     const surcharge = Math.round(outboundSubtotal * 0.15);
-    breakdown.push({ label: "Night surcharge (22:00–06:00)", amountEur: surcharge });
+    breakdown.push(line("nightSurcharge", surcharge));
     outboundSubtotal += surcharge;
   }
 
@@ -288,16 +328,16 @@ export function quoteFromBase(input: {
 
   if (tripType === "return") {
     let returnSubtotal = breakdown
-      .filter((b) => !b.label.startsWith("Night surcharge"))
+      .filter((b) => b.code !== "nightSurcharge")
       .reduce((s, b) => s + b.amountEur, 0);
     if (input.returnAt && isNight(input.returnAt)) {
       returnSubtotal += Math.round(returnSubtotal * 0.15);
     }
-    breakdown.push({ label: "Return trip", amountEur: returnSubtotal });
+    breakdown.push(line("returnTrip", returnSubtotal));
     total += returnSubtotal;
 
     const discount = -Math.round(total * RETURN_DISCOUNT);
-    breakdown.push({ label: "Return discount (−5%)", amountEur: discount });
+    breakdown.push(line("returnDiscount", discount));
     total += discount;
   }
 
