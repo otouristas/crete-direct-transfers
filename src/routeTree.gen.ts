@@ -73,6 +73,7 @@ import { Route as Char123LocaleChar125DriverJobsIndexRouteImport } from './route
 import { Route as Char123LocaleChar125DriverJobsIdRouteImport } from './routes/{-$locale}/driver.jobs.$id'
 import { Route as Char123LocaleChar125AirportsSlugRouteSlugRouteImport } from './routes/{-$locale}/airports.$slug_.$routeSlug'
 import { Route as Char123LocaleChar125AccountBookingsIdRouteImport } from './routes/{-$locale}/account.bookings.$id'
+import { Route as ApiPublicPayoutsRunRouteImport } from './routes/api/public/payouts/run'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -455,6 +456,11 @@ const Char123LocaleChar125AccountBookingsIdRoute =
     path: '/bookings/$id',
     getParentRoute: () => Char123LocaleChar125AccountRoute,
   } as any)
+const ApiPublicPayoutsRunRoute = ApiPublicPayoutsRunRouteImport.update({
+  id: '/api/public/payouts/run',
+  path: '/api/public/payouts/run',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
@@ -517,6 +523,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
   '/{-$locale}/services/': typeof Char123LocaleChar125ServicesIndexRoute
+  '/api/public/payouts/run': typeof ApiPublicPayoutsRunRoute
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
   '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
@@ -579,6 +586,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/regions': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes': typeof Char123LocaleChar125RoutesIndexRoute
   '/{-$locale}/services': typeof Char123LocaleChar125ServicesIndexRoute
+  '/api/public/payouts/run': typeof ApiPublicPayoutsRunRoute
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
   '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
@@ -646,6 +654,7 @@ export interface FileRoutesById {
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
   '/{-$locale}/services/': typeof Char123LocaleChar125ServicesIndexRoute
+  '/api/public/payouts/run': typeof ApiPublicPayoutsRunRoute
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
   '/{-$locale}/airports/$slug_/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
@@ -714,6 +723,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/regions/'
     | '/{-$locale}/routes/'
     | '/{-$locale}/services/'
+    | '/api/public/payouts/run'
     | '/{-$locale}/account/bookings/$id'
     | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
@@ -776,6 +786,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/regions'
     | '/{-$locale}/routes'
     | '/{-$locale}/services'
+    | '/api/public/payouts/run'
     | '/{-$locale}/account/bookings/$id'
     | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
@@ -842,6 +853,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/regions/'
     | '/{-$locale}/routes/'
     | '/{-$locale}/services/'
+    | '/api/public/payouts/run'
     | '/{-$locale}/account/bookings/$id'
     | '/{-$locale}/airports/$slug_/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
@@ -851,6 +863,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiPublicPayoutsRunRoute: typeof ApiPublicPayoutsRunRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1303,6 +1316,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125AccountBookingsIdRouteImport
       parentRoute: typeof Char123LocaleChar125AccountRoute
     }
+    '/api/public/payouts/run': {
+      id: '/api/public/payouts/run'
+      path: '/api/public/payouts/run'
+      fullPath: '/api/public/payouts/run'
+      preLoaderRoute: typeof ApiPublicPayoutsRunRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1518,6 +1538,7 @@ const Char123LocaleChar125RouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiPublicPayoutsRunRoute: ApiPublicPayoutsRunRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
