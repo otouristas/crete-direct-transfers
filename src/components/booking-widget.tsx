@@ -652,27 +652,29 @@ function BookingWidgetCard({
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate({
-      to: "/{-$locale}/book",
-      search: {
-        service: "transfer",
-        route: matched,
-        class: vehicleClass,
-        date,
-        pax,
-        trip: tripType,
-        returnDate: tripType === "return" ? returnDate || undefined : undefined,
-        flight: flight || undefined,
-        bagsChecked,
-        bagsCabin,
-        pickupAddress: fromQuery || fromPlace?.label || undefined,
-        dropoffAddress: toQuery || toPlace?.label || undefined,
-        pickupLat: fromPlace?.lat ?? pickupPoint?.lat,
-        pickupLng: fromPlace?.lng ?? pickupPoint?.lng,
-        dropoffLat: toPlace?.lat ?? dropoffPoint?.lat,
-        dropoffLng: toPlace?.lng ?? dropoffPoint?.lng,
-      },
-    });
+    const search = {
+      service: "transfer" as const,
+      route: matched,
+      class: vehicleClass,
+      date,
+      pax,
+      trip: tripType,
+      returnDate: tripType === "return" ? returnDate || undefined : undefined,
+      flight: flight || undefined,
+      bagsChecked,
+      bagsCabin,
+      pickupAddress: fromQuery || fromPlace?.label || undefined,
+      dropoffAddress: toQuery || toPlace?.label || undefined,
+      pickupLat: fromPlace?.lat ?? pickupPoint?.lat,
+      pickupLng: fromPlace?.lng ?? pickupPoint?.lng,
+      dropoffLat: toPlace?.lat ?? dropoffPoint?.lat,
+      dropoffLng: toPlace?.lng ?? dropoffPoint?.lng,
+    };
+    saveQuote(
+      [search.pickupAddress, search.dropoffAddress].filter(Boolean).join(" → ") || (matched ?? ""),
+      search,
+    );
+    navigate({ to: "/{-$locale}/book", search });
   };
 
   return (
