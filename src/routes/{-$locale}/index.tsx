@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { REVIEWS } from "@/data/reviews";
-import { BookingWidget } from "@/components/booking-widget";
-import { ResumeQuoteBanner } from "@/components/booking/resume-quote-banner";
+import { HeroRouteStage } from "@/components/sections/hero-route-stage";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { Steps } from "@/components/sections/steps";
 import { ReviewsGrid } from "@/components/sections/review-card";
@@ -106,14 +105,6 @@ function HomePage() {
             <TrustPills dark className="hero-rise hero-rise-4 mt-8" />
           </div>
 
-          <div
-            id="book"
-            className="hero-rise hero-rise-4 relative z-[35] mt-12 w-full scroll-mt-32"
-          >
-            <BookingWidget variant="hbar" />
-            <ResumeQuoteBanner locale={locale} className="mt-4" />
-          </div>
-
           {/* Coverage ribbon — the same reassurance Transfeero runs, on our real numbers. */}
           <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-primary-foreground/65">
             <span>{t.home.countriesAirports(COVERAGE.airportPages)}</span>
@@ -130,6 +121,11 @@ function HomePage() {
           <PhotoCredit image={HERO_PHOTO} overlay className="bottom-3" />
         </div>
       </section>
+
+      {/* Signature route canvas — the quote card floats over an animated map of the island */}
+      <div id="book" className="scroll-mt-32">
+        <HeroRouteStage locale={locale} />
+      </div>
 
       <InpageNav items={navItems} />
 
