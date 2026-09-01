@@ -1,3 +1,4 @@
+import { DEFAULT_TERRITORY } from "@/data/territories";
 /**
  * Immersive route guides.
  *
@@ -18,6 +19,8 @@ export type GuideStop = {
 };
 
 export type RouteGuide = {
+  /** Owning territory slug. Defaults to the launch territory. */
+  territory?: string;
   slug: string;
   /** Slug in ROUTES this guide is attached to. */
   routeSlug: string;
@@ -531,4 +534,9 @@ export function listRouteGuides(): { guide: RouteGuide; priceEur: number | null 
     const route = getRoute(guide.routeSlug);
     return { guide, priceEur: route ? route.basePriceEur : null };
   });
+}
+
+/** Records default to the launch territory until an entry names its own. */
+export function routeGuidesInTerritory(territory: string): RouteGuide[] {
+  return ROUTE_GUIDES.filter((r) => (r.territory ?? DEFAULT_TERRITORY) === territory);
 }

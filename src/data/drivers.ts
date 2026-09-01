@@ -1,3 +1,4 @@
+import { DEFAULT_TERRITORY } from "@/data/territories";
 /**
  * Named driver profiles.
  *
@@ -8,6 +9,8 @@
  * dashboard, at which point `photo` is populated.
  */
 export type DriverProfile = {
+  /** Owning territory slug. Defaults to the launch territory. */
+  territory?: string;
   slug: string;
   name: string;
   /** Home base town. */
@@ -196,4 +199,9 @@ export function driverInitials(name: string): string {
     .slice(0, 2)
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
+}
+
+/** Records default to the launch territory until an entry names its own. */
+export function driversInTerritory(territory: string): DriverProfile[] {
+  return DRIVERS.filter((r) => (r.territory ?? DEFAULT_TERRITORY) === territory);
 }

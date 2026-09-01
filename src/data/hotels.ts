@@ -1,3 +1,4 @@
+import { DEFAULT_TERRITORY } from "@/data/territories";
 /**
  * Hotel and resort landing pages.
  *
@@ -9,6 +10,8 @@
 import { getCityImage, imageUrl } from "@/lib/place-image";
 
 export type HotelArea = {
+  /** Owning territory slug. Defaults to the launch territory. */
+  territory?: string;
   slug: string;
   /** Resort or hotel area name — we publish areas, not brand names we do not represent. */
   name: string;
@@ -243,4 +246,9 @@ export function hotelAreasByRegion(): { region: string; areas: HotelArea[] }[] {
     map.set(area.region, list);
   }
   return [...map.entries()].map(([region, areas]) => ({ region, areas }));
+}
+
+/** Records default to the launch territory until an entry names its own. */
+export function hotelAreasInTerritory(territory: string): HotelArea[] {
+  return HOTEL_AREAS.filter((r) => (r.territory ?? DEFAULT_TERRITORY) === territory);
 }

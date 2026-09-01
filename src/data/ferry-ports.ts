@@ -1,3 +1,4 @@
+import { DEFAULT_TERRITORY } from "@/data/territories";
 /**
  * Ferry and cruise arrival pages for Crete.
  *
@@ -9,6 +10,8 @@
 import { getCityImage, imageUrl } from "@/lib/place-image";
 
 export type FerryPort = {
+  /** Owning territory slug. Defaults to the launch territory. */
+  territory?: string;
   slug: string;
   name: string;
   /** Town the port serves. */
@@ -248,4 +251,9 @@ export const FERRY_PORTS: FerryPort[] = [
 
 export function getFerryPort(slug: string): FerryPort | undefined {
   return FERRY_PORTS.find((p) => p.slug === slug);
+}
+
+/** Records default to the launch territory until an entry names its own. */
+export function ferryPortsInTerritory(territory: string): FerryPort[] {
+  return FERRY_PORTS.filter((r) => (r.territory ?? DEFAULT_TERRITORY) === territory);
 }
