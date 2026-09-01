@@ -342,6 +342,24 @@ function BookingDetailPage() {
           </Link>
         )}
 
+        <ReceiptButton
+          locale={locale}
+          brand="TransferAround"
+          data={{
+            reference: b.id.slice(0, 8),
+            route: route ? `${route.from} → ${route.to}` : b.route_slug,
+            pickupAt: fmt(b.pickup_at),
+            passengers: b.passengers,
+            vehicle: vehicle?.label ?? b.vehicle_class,
+            total: money.format(b.price_cents / 100),
+            paymentStatus:
+              b.payment_status === "paid" || b.payment_status === "deposit_paid"
+                ? t.account.paidOnline
+                : t.widget.payOnBoard,
+          }}
+        />
+
+
         {canCancel && (
           <AlertDialog>
             <AlertDialogTrigger className="rounded-xl border border-destructive/40 px-5 py-2.5 text-sm font-medium text-destructive transition hover:bg-destructive/10">
