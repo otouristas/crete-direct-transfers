@@ -2,7 +2,10 @@ import type { Dict } from "@/i18n";
 import type { PriceLine } from "@/lib/pricing";
 
 /** Localized label for a fare line, falling back to the persisted English label. */
-export function priceLineLabel(t: Dict, line: PriceLine): string {
+export function priceLineLabel(
+  t: Dict,
+  line: Partial<PriceLine> & { label: string },
+): string {
   const l = t.priceLines;
   switch (line.code) {
     case "vehicle":
