@@ -276,6 +276,26 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/{-$locale}/guides" className={linkClass}>
+                Route guides
+              </Link>
+            </li>
+            <li>
+              <Link to="/{-$locale}/drivers" className={linkClass}>
+                Our drivers
+              </Link>
+            </li>
+            <li>
+              <Link to="/{-$locale}/hotels" className={linkClass}>
+                Hotels &amp; resorts
+              </Link>
+            </li>
+            <li>
+              <Link to="/{-$locale}/ferry" className={linkClass}>
+                Ferry ports
+              </Link>
+            </li>
+            <li>
               <Link to="/{-$locale}/for-hotels" className={linkClass}>
                 {t.nav.forHotels}
               </Link>
