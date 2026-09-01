@@ -1184,6 +1184,12 @@ export const de: Dict = {
     tabPool: "Offene Aufträge",
     tabJobs: "Meine Aufträge",
     tabEarnings: "Einnahmen",
+    statsToday: "Heutige Fahrten",
+    statsUpcoming: "Bevorstehend",
+    statsPending: "Ausstehende Einnahmen",
+    statsAvailable: "Verfügbares Guthaben",
+    statsReliability: "Zuverlässigkeit",
+    statsOverview: "Übersicht",
     pendingTitle: "Bewerbung eingegangen",
     pendingBody:
       "Wir prüfen Ihre Bewerbung — die meisten werden innerhalb von 48 Stunden freigegeben. Fragen? Rufen Sie die Zentrale an.",

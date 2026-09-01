@@ -1171,6 +1171,12 @@ export const en = {
     tabPool: "Open jobs",
     tabJobs: "My jobs",
     tabEarnings: "Earnings",
+    statsToday: "Today's jobs",
+    statsUpcoming: "Upcoming",
+    statsPending: "Pending earnings",
+    statsAvailable: "Available balance",
+    statsReliability: "Reliability",
+    statsOverview: "Overview",
     pendingTitle: "Application received",
     pendingBody:
       "We're reviewing your application — most are approved within 48 hours. Questions? Call dispatch.",

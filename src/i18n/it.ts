@@ -1188,6 +1188,12 @@ export const it: Dict = {
     tabPool: "Lavori disponibili",
     tabJobs: "I miei lavori",
     tabEarnings: "Guadagni",
+    statsToday: "Corse di oggi",
+    statsUpcoming: "In arrivo",
+    statsPending: "Guadagni in sospeso",
+    statsAvailable: "Saldo disponibile",
+    statsReliability: "Affidabilità",
+    statsOverview: "Panoramica",
     pendingTitle: "Candidatura ricevuta",
     pendingBody:
       "Stiamo esaminando la tua candidatura — la maggior parte viene approvata entro 48 ore. Domande? Chiama la centrale.",
