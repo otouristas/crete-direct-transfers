@@ -17,6 +17,7 @@ import {
 } from "@/queries/bookings";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { TripTimeline } from "@/components/account/trip-timeline";
+import { LiveTripTracker } from "@/components/account/live-trip-tracker";
 import { ReceiptButton } from "@/components/account/receipt-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
