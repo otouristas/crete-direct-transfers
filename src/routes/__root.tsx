@@ -189,7 +189,6 @@ function RootLayout() {
   return (
     <>
       <div className="min-h-screen flex flex-col">
-        <LanguageSuggestionBanner />
         <SiteHeader />
         <main className="flex-1" key={currency}>
           <Outlet />

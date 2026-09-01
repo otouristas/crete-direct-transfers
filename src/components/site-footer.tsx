@@ -271,6 +271,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link to="/{-$locale}/hourly-service" className={linkClass}>
+                {t.hourlyPage.eyebrow}
+              </Link>
+            </li>
+            <li>
               <Link to="/{-$locale}/for-hotels" className={linkClass}>
                 {t.nav.forHotels}
               </Link>
