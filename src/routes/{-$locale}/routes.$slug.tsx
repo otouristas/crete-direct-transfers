@@ -239,9 +239,11 @@ function RoutePage() {
   const vehicles = getLocalizedVehicles(locale);
   const q = quote({ routeSlug: route.slug, vehicleClass: "economy" })!;
   const faqs = routeFaqs(locale, route, formatEur(q.totalEur));
+  const routeGuide = guideForRoute(route.slug);
   const airportArrivalPage = getLocalizedAirportRoutes(locale).find(
     (airportRoute) => airportRoute.legacyRouteSlug === route.slug,
   );
+
   const others = getLocalizedRoutes(locale)
     .filter((r) => r.slug !== route.slug && r.region === route.region)
     .slice(0, 3);
