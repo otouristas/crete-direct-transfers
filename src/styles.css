@@ -586,3 +586,57 @@
     opacity: 0.2;
   }
 }
+
+/* Live trip tracker: driver marker + live pulse */
+.tfr-live-car {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: var(--accent);
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgb(11 37 69 / 0.35);
+}
+.tfr-live-car-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: var(--accent);
+  opacity: 0.35;
+  animation: tfr-live-pulse 1.9s ease-out infinite;
+}
+.tfr-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--accent);
+  animation: tfr-live-pulse-dot 1.6s ease-in-out infinite;
+}
+@keyframes tfr-live-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.45;
+  }
+  80%,
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+@keyframes tfr-live-pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tfr-live-car-pulse,
+  .tfr-live-dot {
+    animation: none;
+  }
+}
