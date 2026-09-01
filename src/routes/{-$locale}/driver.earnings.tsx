@@ -310,6 +310,82 @@ function EarningsPage() {
           </ul>
         )}
       </section>
+
+      {/* Account ledger */}
+      <section className="rounded-2xl border border-border bg-card p-6">
+        <h3 className="font-display text-lg text-primary">{t.driverAccount.ledgerTitle}</h3>
+        {(ledger.data ?? []).length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">{t.driverAccount.ledgerEmpty}</p>
+        ) : (
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs uppercase tracking-widest text-muted-foreground">
+                  <th className="pb-3">{t.driverAccount.colDate}</th>
+                  <th className="pb-3">{t.driverAccount.colType}</th>
+                  <th className="pb-3">{t.driverAccount.colDetails}</th>
+                  <th className="pb-3 text-right">{t.driverAccount.colAmount}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {(ledger.data ?? []).map((entry) => (
+                  <tr key={entry.id}>
+                    <td className="py-3">
+                      {new Date(entry.created_at).toLocaleDateString(dateLocale)}
+                    </td>
+                    <td className="py-3">{entryTypeLabel(entry.entry_type, locale)}</td>
+                    <td className="py-3 text-muted-foreground">{entry.description ?? "—"}</td>
+                    <td
+                      className={`py-3 text-right font-medium ${
+                        entry.amount_cents < 0 ? "text-destructive" : "text-primary"
+                      }`}
+                    >
+                      {entry.amount_cents < 0 ? "−" : "+"}
+                      {formatEur(Math.abs(entry.amount_cents) / 100)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function entryTypeLabel(type: AccountEntry["entry_type"], locale: Parameters<typeof getDict>[0]) {
+  const t = getDict(locale);
+  const map: Record<string, string> = {
+    earning: t.driverAccount.typeEarning,
+    commission: t.driverAccount.typeCommission,
+    penalty: t.driverAccount.typePenalty,
+    incentive: t.driverAccount.typeIncentive,
+    payout: t.driverAccount.typePayout,
+    adjustment: t.driverAccount.typeAdjustment,
+  };
+  return map[type] ?? type;
+}
+
+function MiniStat({
+  label,
+  value,
+  tone = "muted",
+}: {
+  label: string;
+  value: string;
+  tone?: "muted" | "negative";
+}) {
+  return (
+    <div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground">{label}</div>
+      <div
+        className={`mt-1 font-display text-2xl ${
+          tone === "negative" ? "text-destructive" : "text-primary"
+        }`}
+      >
+        {value}
+      </div>
     </div>
   );
 }
