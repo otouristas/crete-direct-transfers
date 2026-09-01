@@ -117,6 +117,73 @@ function EarningsPage() {
         />
       </div>
 
+      {/* Account balance + reliability */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl border border-border bg-card p-6 lg:col-span-2">
+          <h3 className="font-display text-lg text-primary">{t.driverAccount.balanceTitle}</h3>
+          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+            <MiniStat
+              label={t.driverAccount.availableBalance}
+              value={formatEur((balance.data?.available_cents ?? 0) / 100)}
+            />
+            <MiniStat
+              label={t.driverAccount.negativeBalance}
+              value={`−${formatEur((balance.data?.negative_cents ?? 0) / 100)}`}
+              tone={(balance.data?.negative_cents ?? 0) > 0 ? "negative" : "muted"}
+            />
+            <MiniStat
+              label={t.driverAccount.lifetimePenalties}
+              value={`−${formatEur((balance.data?.penalties_cents ?? 0) / 100)}`}
+            />
+          </div>
+          {(balance.data?.negative_cents ?? 0) > 0 && (
+            <p className="mt-4 text-xs text-muted-foreground">{t.driverAccount.negativeNote}</p>
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-6">
+          <h3 className="font-display text-lg text-primary">{t.driverAccount.reliabilityTitle}</h3>
+          <div className="mt-3 font-display text-4xl text-primary">
+            {reliability.data?.score ?? 100}
+            <span className="text-base text-muted-foreground">/100</span>
+          </div>
+          <dl className="mt-4 space-y-1 text-xs text-muted-foreground">
+            <div className="flex justify-between">
+              <dt>{t.driverAccount.reliabilityCancellations}</dt>
+              <dd>{reliability.data?.cancellations_90d ?? 0}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt>{t.driverAccount.reliabilityNoShows}</dt>
+              <dd>{reliability.data?.no_shows_90d ?? 0}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt>{t.driverAccount.reliabilityCompleted}</dt>
+              <dd>{reliability.data?.completed_90d ?? 0}</dd>
+            </div>
+          </dl>
+          {isSuspended(reliability.data ?? null) && (
+            <p className="mt-4 rounded-xl bg-destructive/10 p-3 text-xs text-destructive">
+              {t.driverAccount.suspendedUntil}{" "}
+              {new Date(reliability.data!.suspended_until!).toLocaleDateString(dateLocale)} ·{" "}
+              {t.driverAccount.suspendedNote}
+            </p>
+          )}
+          <p className="mt-4 text-xs text-muted-foreground">{t.driverAccount.reliabilityNote}</p>
+        </div>
+      </div>
+
+      {/* Cancellation policy */}
+      <section className="rounded-2xl border border-border bg-card p-6">
+        <h3 className="font-display text-lg text-primary">{t.driverAccount.policyTitle}</h3>
+        <ul className="mt-3 grid gap-1 text-sm text-muted-foreground sm:grid-cols-2">
+          <li>{t.driverAccount.policy72}</li>
+          <li>{t.driverAccount.policy48}</li>
+          <li>{t.driverAccount.policy24}</li>
+          <li>{t.driverAccount.policyLate}</li>
+          <li>{t.driverAccount.policyNoShow}</li>
+        </ul>
+      </section>
+
       {/* Connect onboarding */}
       <section className="rounded-2xl border border-border bg-card p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
