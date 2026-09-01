@@ -1618,6 +1618,22 @@ export type Database = {
       }
     }
     Views: {
+      driver_account_summary: {
+        Row: {
+          available_cents: number | null
+          cancellations_90d: number | null
+          driver_id: string | null
+          full_name: string | null
+          incentives_cents: number | null
+          negative_cents: number | null
+          no_shows_90d: number | null
+          penalties_cents: number | null
+          pending_cents: number | null
+          score: number | null
+          suspended_until: string | null
+        }
+        Relationships: []
+      }
       my_job_offers: {
         Row: {
           bags_cabin: number | null
@@ -1671,10 +1687,12 @@ export type Database = {
           eta_minutes: number | null
           extras: Json | null
           id: string | null
+          incentive_cents: number | null
           passengers: number | null
           pickup_address: string | null
           pickup_at: string | null
           price_cents: number | null
+          released_at: string | null
           return_at: string | null
           route_slug: string | null
           trip_type: string | null
@@ -1691,10 +1709,12 @@ export type Database = {
           eta_minutes?: number | null
           extras?: Json | null
           id?: string | null
+          incentive_cents?: number | null
           passengers?: number | null
           pickup_address?: string | null
           pickup_at?: string | null
           price_cents?: number | null
+          released_at?: string | null
           return_at?: string | null
           route_slug?: string | null
           trip_type?: string | null
@@ -1711,10 +1731,12 @@ export type Database = {
           eta_minutes?: number | null
           extras?: Json | null
           id?: string | null
+          incentive_cents?: number | null
           passengers?: number | null
           pickup_address?: string | null
           pickup_at?: string | null
           price_cents?: number | null
+          released_at?: string | null
           return_at?: string | null
           route_slug?: string | null
           trip_type?: string | null
@@ -1867,6 +1889,41 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      admin_update_penalty_settings: {
+        Args: {
+          p_auto_incentive_bps?: number
+          p_auto_incentive_hours?: number
+          p_penalty_no_show_bps?: number
+          p_penalty_tier_24_bps?: number
+          p_penalty_tier_48_bps?: number
+          p_penalty_tier_72_bps?: number
+          p_reliability_suspend_days?: number
+          p_reliability_suspend_score?: number
+        }
+        Returns: {
+          auto_incentive_bps: number
+          auto_incentive_hours: number
+          commission_bps: number
+          created_at: string
+          default_payout_schedule: string
+          holding_period_hours: number
+          id: boolean
+          min_payout_cents: number
+          penalty_no_show_bps: number
+          penalty_tier_24_bps: number
+          penalty_tier_48_bps: number
+          penalty_tier_72_bps: number
+          reliability_suspend_days: number
+          reliability_suspend_score: number
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "platform_settings"
           isOneToOne: true
           isSetofReturn: false
         }
