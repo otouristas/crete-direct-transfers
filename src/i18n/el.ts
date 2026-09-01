@@ -562,6 +562,12 @@ export const el: Dict = {
     metaDescription:
       "Κλείστε μεταφορά με σταθερή τιμή στην Κρήτη. Επιλέξτε διαδρομή και όχημα, λάβετε άμεση επιβεβαίωση. Πληρωμή κατά την άφιξη.",
     stepTrip: "Το ταξίδι σας",
+    inclusionsTitle: "Περιλαμβάνονται στην τιμή",
+    inclMeet: "Υποδοχή με πινακίδα ονόματος",
+    inclWait: "60 λεπτά δωρεάν αναμονή στο αεροδρόμιο",
+    inclTrack: "Παρακολούθηση πτήσης & πλοίου",
+    inclCancel: "Δωρεάν ακύρωση έως 24 ώρες πριν",
+    noHiddenFees: "Χωρίς κρυφές χρεώσεις — η τιμή που βλέπετε είναι η τελική.",
     stepDetails: "Τα στοιχεία σας",
     continue: "Συνέχεια",
     back: "Πίσω",
@@ -1076,6 +1082,14 @@ export const el: Dict = {
     sortOldest: "Παλαιότερες πρώτα",
     clearDates: "Καθαρισμός ημερομηνιών",
     viewDetails: "Δείτε λεπτομέρειες",
+    nextTransferTitle: "Η επόμενη μεταφορά σας",
+    countdownDays: (n: number) => `σε ${n} ${n === 1 ? "ημέρα" : "ημέρες"}`,
+    countdownHours: (n: number) => `σε ${n} ώ.`,
+    countdownMinutes: (n: number) => `σε ${n} λεπτά`,
+    countdownNow: "Σε εξέλιξη τώρα",
+    callDriver: "Κλήση οδηγού",
+    messageDriver: "WhatsApp στον οδηγό",
+    viewTransfer: "Προβολή μεταφοράς",
     bookingRef: "Κωδικός κράτησης",
     status: {
       pending: "Αναζήτηση οδηγού",
@@ -1124,6 +1138,7 @@ export const el: Dict = {
     policyBlurb:
       "Δωρεάν αναμονή: 60 λεπτά σε αεροδρόμια/λιμάνια με παρακολούθηση πτήσης, 30 λεπτά σε ξενοδοχεία/διευθύνσεις. Δεν εμφανίστηκε ο οδηγός; Αναφέρετε πρόβλημα για πλήρη αποζημίωση.",
     paidOnline: "Πληρώθηκε online",
+    chargedInEur: "Χρέωση σε EUR",
     reportProblem: "Αναφορά προβλήματος",
     reportProblemTitle: "Τι πήγε στραβά;",
     reportProblemBody:
@@ -1193,6 +1208,7 @@ export const el: Dict = {
     statsAvailable: "Διαθέσιμο υπόλοιπο",
     statsReliability: "Αξιοπιστία",
     statsOverview: "Επισκόπηση",
+    netPayout: "Η αμοιβή σας",
     pendingTitle: "Η αίτηση ελήφθη",
     pendingBody:
       "Εξετάζουμε την αίτησή σας — οι περισσότερες εγκρίνονται εντός 48 ωρών. Ερωτήσεις; Καλέστε το κέντρο.",
@@ -1460,6 +1476,8 @@ export const el: Dict = {
     available: "Διαθέσιμα τώρα",
     total: "Συνολικά έσοδα",
     nextPayout: "Επόμενη πληρωμή",
+    last8Weeks: "Τελευταίες 8 εβδομάδες",
+    exportCsv: "Εξαγωγή CSV",
     notScheduled: "Δεν έχει προγραμματιστεί",
     setupTitle: "Ρύθμιση πληρωμών",
     setupBody: "Συνδέστε τα τραπεζικά σας στοιχεία μέσω Stripe για να λαμβάνετε τα έσοδά σας.",

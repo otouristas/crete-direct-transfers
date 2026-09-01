@@ -17,6 +17,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DriverStatsBand } from "@/components/driver/driver-stats-band";
 import { getRoute, VEHICLE_CLASSES } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
+import { platformSettingsQuery } from "@/queries/earnings";
+import { dateFnsLocale } from "@/lib/date-locale";
 import { supabase } from "@/integrations/supabase/client";
 import {
   listAsapDispatchEvents,
@@ -495,7 +497,9 @@ function JobSummaryCard(props: {
   const t = getDict(locale);
   const route = getRoute(props.routeSlug ?? "");
   const vehicle = VEHICLE_CLASSES.find((v) => v.id === props.vehicleClass);
-  const dateLocale = locale === "en" ? "en-GB" : locale;
+  const settings = useQuery(platformSettingsQuery);
+  const commissionBps = settings.data?.commission_bps ?? 1500;
+  const netEur = ((props.priceCents ?? 0) * (10000 - commissionBps)) / 10000 / 100;
   const extras = (props.extras ?? {}) as Record<string, boolean>;
   const extrasLabels = [
     extras.childSeat && t.bookPage.childSeat,
@@ -518,16 +522,19 @@ function JobSummaryCard(props: {
           </div>
           <div className="mt-1 text-sm text-muted-foreground">
             {props.pickupAt &&
-              new Date(props.pickupAt).toLocaleString(dateLocale, {
+              new Date(props.pickupAt).toLocaleString(dateFnsLocale(locale).code ?? "en-GB", {
                 dateStyle: "medium",
                 timeStyle: "short",
               })}
             {props.tripType === "return" && ` · ${t.widget.return}`}
           </div>
         </div>
-        <span className="font-display text-xl text-primary">
-          {formatEur((props.priceCents ?? 0) / 100)}
-        </span>
+        <div className="text-right">
+          <span className="block font-display text-xl text-primary">{formatEur(netEur)}</span>
+          <span className="block text-[11px] uppercase tracking-wide text-muted-foreground">
+            {t.driver.netPayout}
+          </span>
+        </div>
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground">

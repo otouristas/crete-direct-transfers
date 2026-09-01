@@ -562,6 +562,12 @@ export const nl: Dict = {
     metaDescription:
       "Boek een transfer tegen vaste prijs op Kreta. Kies uw route en voertuig, krijg directe bevestiging. Betalen bij aankomst.",
     stepTrip: "Uw reis",
+    inclusionsTitle: "Inbegrepen in deze prijs",
+    inclMeet: "Ontvangst met naambord",
+    inclWait: "60 min gratis wachttijd op de luchthaven",
+    inclTrack: "Vlucht- en veerboottracking",
+    inclCancel: "Gratis annuleren tot 24 uur vooraf",
+    noHiddenFees: "Geen verborgen kosten — de getoonde prijs is de eindprijs.",
     stepDetails: "Uw gegevens",
     continue: "Doorgaan",
     back: "Terug",
@@ -1071,6 +1077,14 @@ export const nl: Dict = {
     sortOldest: "Oudste eerst",
     clearDates: "Datums wissen",
     viewDetails: "Details bekijken",
+    nextTransferTitle: "Je volgende transfer",
+    countdownDays: (n: number) => `over ${n} dag${n === 1 ? "" : "en"}`,
+    countdownHours: (n: number) => `over ${n} uur`,
+    countdownMinutes: (n: number) => `over ${n} min`,
+    countdownNow: "Nu bezig",
+    callDriver: "Bel de chauffeur",
+    messageDriver: "WhatsApp de chauffeur",
+    viewTransfer: "Transfer bekijken",
     bookingRef: "Boekingsref.",
     status: {
       pending: "Chauffeur zoeken",
@@ -1118,6 +1132,7 @@ export const nl: Dict = {
     policyBlurb:
       "Gratis wachten: 60 min op luchthavens/havens met vluchttracking, 30 min bij hotels/adressen. Chauffeur niet verschenen? Meld een probleem voor volledige compensatie.",
     paidOnline: "Online betaald",
+    chargedInEur: "Afgerekend in EUR",
     reportProblem: "Probleem melden",
     reportProblemTitle: "Wat ging er mis?",
     reportProblemBody:
@@ -1186,6 +1201,7 @@ export const nl: Dict = {
     statsAvailable: "Beschikbaar saldo",
     statsReliability: "Betrouwbaarheid",
     statsOverview: "Overzicht",
+    netPayout: "Jouw uitbetaling",
     pendingTitle: "Sollicitatie ontvangen",
     pendingBody:
       "We beoordelen uw sollicitatie — de meeste worden binnen 48 uur goedgekeurd. Vragen? Bel de centrale.",
@@ -1452,6 +1468,8 @@ export const nl: Dict = {
     available: "Nu beschikbaar",
     total: "Totaal verdiend",
     nextPayout: "Volgende uitbetaling",
+    last8Weeks: "Laatste 8 weken",
+    exportCsv: "CSV exporteren",
     notScheduled: "Niet gepland",
     setupTitle: "Uitbetalingen instellen",
     setupBody: "Koppel je bankgegevens via Stripe zodat we je verdiensten kunnen overmaken.",

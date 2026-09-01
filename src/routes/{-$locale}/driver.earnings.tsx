@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { formatEur } from "@/lib/pricing";
+import { EarningsSparkline } from "@/components/driver/earnings-sparkline";
 import {
   myEarningsQuery,
   myPayoutsQuery,
@@ -116,6 +117,8 @@ function EarningsPage() {
           value={next ? next.toLocaleDateString(dateLocale) : t.payouts.notScheduled}
         />
       </div>
+
+      <EarningsSparkline rows={rows} locale={locale} />
 
       {/* Account balance + reliability */}
       <div className="grid gap-4 lg:grid-cols-3">

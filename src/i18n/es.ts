@@ -564,6 +564,12 @@ export const es: Dict = {
     metaDescription:
       "Reserva un traslado a precio fijo en Creta. Elige tu ruta y vehículo, obtén confirmación inmediata. Pago a la llegada.",
     stepTrip: "Tu viaje",
+    inclusionsTitle: "Incluido en este precio",
+    inclMeet: "Recepción con cartel con tu nombre",
+    inclWait: "60 min de espera gratuita en el aeropuerto",
+    inclTrack: "Seguimiento de vuelo y ferry",
+    inclCancel: "Cancelación gratuita hasta 24 h antes",
+    noHiddenFees: "Sin cargos ocultos: el precio que ves es el que pagas.",
     stepDetails: "Tus datos",
     continue: "Continuar",
     back: "Atrás",
@@ -1080,6 +1086,14 @@ export const es: Dict = {
     sortOldest: "Más antiguos primero",
     clearDates: "Borrar fechas",
     viewDetails: "Ver detalles",
+    nextTransferTitle: "Tu próximo traslado",
+    countdownDays: (n: number) => `en ${n} día${n === 1 ? "" : "s"}`,
+    countdownHours: (n: number) => `en ${n} h`,
+    countdownMinutes: (n: number) => `en ${n} min`,
+    countdownNow: "En curso",
+    callDriver: "Llamar al conductor",
+    messageDriver: "WhatsApp al conductor",
+    viewTransfer: "Ver traslado",
     bookingRef: "Ref. de reserva",
     status: {
       pending: "Buscando conductor",
@@ -1128,6 +1142,7 @@ export const es: Dict = {
     policyBlurb:
       "Espera gratuita: 60 min en aeropuertos/puertos con seguimiento de vuelo, 30 min en hoteles/direcciones. ¿El conductor no apareció? Reporta un problema para compensación total.",
     paidOnline: "Pagado online",
+    chargedInEur: "Cobro en EUR",
     reportProblem: "Reportar un problema",
     reportProblemTitle: "¿Qué salió mal?",
     reportProblemBody:
@@ -1196,6 +1211,7 @@ export const es: Dict = {
     statsAvailable: "Saldo disponible",
     statsReliability: "Fiabilidad",
     statsOverview: "Resumen",
+    netPayout: "Tu pago",
     pendingTitle: "Solicitud recibida",
     pendingBody:
       "Estamos revisando tu solicitud — la mayoría se aprueban en 48 horas. ¿Dudas? Llama a la central.",
@@ -1465,6 +1481,8 @@ export const es: Dict = {
     available: "Disponible ahora",
     total: "Total ganado",
     nextPayout: "Próximo pago",
+    last8Weeks: "Últimas 8 semanas",
+    exportCsv: "Exportar CSV",
     notScheduled: "Sin programar",
     setupTitle: "Configurar pagos",
     setupBody: "Vincula tus datos bancarios con Stripe para recibir tus ganancias.",

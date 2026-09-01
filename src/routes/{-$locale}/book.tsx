@@ -30,6 +30,7 @@ import { PlaceCombobox } from "@/components/place-combobox";
 import { BookingRouteMap } from "@/components/booking/booking-route-map";
 import { BookingVehicleList } from "@/components/booking/booking-vehicle-list";
 import { BookingSummary, FreeCancelBanner } from "@/components/booking/booking-summary";
+import { PriceInclusions } from "@/components/booking/price-inclusions";
 import {
   Drawer,
   DrawerContent,
@@ -959,6 +960,8 @@ function BookPage() {
                   }
                 />
               </div>
+
+              <PriceInclusions locale={locale} className="mt-6" />
             </div>
 
             <div className="relative mt-8 hidden lg:col-span-4 lg:mt-0 lg:block">

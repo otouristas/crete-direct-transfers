@@ -559,6 +559,12 @@ export const de: Dict = {
     metaDescription:
       "Buchen Sie einen Festpreis-Transfer auf Kreta. Strecke und Fahrzeug wählen, sofortige Bestätigung erhalten. Zahlung bei Ankunft.",
     stepTrip: "Ihre Fahrt",
+    inclusionsTitle: "Im Preis enthalten",
+    inclMeet: "Empfang mit Namensschild",
+    inclWait: "60 Min. kostenlose Wartezeit am Flughafen",
+    inclTrack: "Flug- und Fährenverfolgung",
+    inclCancel: "Kostenlose Stornierung bis 24 Std. vorher",
+    noHiddenFees: "Keine versteckten Kosten — der angezeigte Preis ist der Endpreis.",
     stepDetails: "Ihre Daten",
     continue: "Weiter",
     back: "Zurück",
@@ -1074,6 +1080,14 @@ export const de: Dict = {
     sortOldest: "Älteste zuerst",
     clearDates: "Daten löschen",
     viewDetails: "Details ansehen",
+    nextTransferTitle: "Ihr nächster Transfer",
+    countdownDays: (n: number) => `in ${n} Tag${n === 1 ? "" : "en"}`,
+    countdownHours: (n: number) => `in ${n} Std.`,
+    countdownMinutes: (n: number) => `in ${n} Min.`,
+    countdownNow: "Findet gerade statt",
+    callDriver: "Fahrer anrufen",
+    messageDriver: "Fahrer per WhatsApp",
+    viewTransfer: "Transfer ansehen",
     bookingRef: "Buchungsnummer",
     status: {
       pending: "Fahrer wird gesucht",
@@ -1122,6 +1136,7 @@ export const de: Dict = {
     policyBlurb:
       "Kostenloses Warten: 60 Min. am Flughafen/Hafen mit Flugverfolgung, 30 Min. am Hotel/Adresse. Fahrer nicht erschienen? Melden Sie ein Problem für vollständigen Ausgleich.",
     paidOnline: "Online bezahlt",
+    chargedInEur: "Abrechnung in EUR",
     reportProblem: "Problem melden",
     reportProblemTitle: "Was ist schiefgelaufen?",
     reportProblemBody:
@@ -1190,6 +1205,7 @@ export const de: Dict = {
     statsAvailable: "Verfügbares Guthaben",
     statsReliability: "Zuverlässigkeit",
     statsOverview: "Übersicht",
+    netPayout: "Ihre Auszahlung",
     pendingTitle: "Bewerbung eingegangen",
     pendingBody:
       "Wir prüfen Ihre Bewerbung — die meisten werden innerhalb von 48 Stunden freigegeben. Fragen? Rufen Sie die Zentrale an.",
@@ -1458,6 +1474,8 @@ export const de: Dict = {
     available: "Jetzt verfügbar",
     total: "Gesamt verdient",
     nextPayout: "Nächste Auszahlung",
+    last8Weeks: "Letzte 8 Wochen",
+    exportCsv: "CSV exportieren",
     notScheduled: "Nicht geplant",
     setupTitle: "Auszahlungen einrichten",
     setupBody: "Hinterlegen Sie Ihre Bankdaten über Stripe, damit wir Ihre Einnahmen überweisen können.",

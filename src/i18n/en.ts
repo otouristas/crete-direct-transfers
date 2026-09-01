@@ -554,6 +554,12 @@ export const en = {
     metaDescription:
       "Book a fixed-price transfer in Crete. Choose your route and vehicle, get instant confirmation. Pay on arrival.",
     stepTrip: "Your trip",
+    inclusionsTitle: "Included in this price",
+    inclMeet: "Meet & greet with name sign",
+    inclWait: "60 min free airport waiting",
+    inclTrack: "Flight & ferry tracking",
+    inclCancel: "Free cancellation up to 24 h",
+    noHiddenFees: "No hidden fees — the price you see is the price you pay.",
     stepDetails: "Your details",
     continue: "Continue",
     back: "Back",
@@ -1065,6 +1071,14 @@ export const en = {
     sortOldest: "Oldest first",
     clearDates: "Clear dates",
     viewDetails: "View details",
+    nextTransferTitle: "Your next transfer",
+    countdownDays: (n: number) => `in ${n} day${n === 1 ? "" : "s"}`,
+    countdownHours: (n: number) => `in ${n} h`,
+    countdownMinutes: (n: number) => `in ${n} min`,
+    countdownNow: "Happening now",
+    callDriver: "Call driver",
+    messageDriver: "WhatsApp driver",
+    viewTransfer: "View transfer",
     bookingRef: "Booking ref",
     status: {
       pending: "Finding your driver",
@@ -1111,6 +1125,7 @@ export const en = {
     policyBlurb:
       "Free waiting: 60 min at airports/ports with flight tracking, 30 min at hotels/addresses. Driver no-show? Report a problem for a full make-good.",
     paidOnline: "Paid online",
+    chargedInEur: "Charged in EUR",
     reportProblem: "Report a problem",
     reportProblemTitle: "What went wrong?",
     reportProblemBody:
@@ -1177,6 +1192,7 @@ export const en = {
     statsAvailable: "Available balance",
     statsReliability: "Reliability",
     statsOverview: "Overview",
+    netPayout: "Your payout",
     pendingTitle: "Application received",
     pendingBody:
       "We're reviewing your application — most are approved within 48 hours. Questions? Call dispatch.",
@@ -1444,6 +1460,8 @@ export const en = {
     available: "Available now",
     total: "Total earned",
     nextPayout: "Next payout",
+    last8Weeks: "Last 8 weeks",
+    exportCsv: "Export CSV",
     notScheduled: "Not scheduled",
     setupTitle: "Set up payouts",
     setupBody: "Connect your bank details with Stripe so we can send your earnings.",

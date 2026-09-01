@@ -567,6 +567,12 @@ export const it: Dict = {
     metaDescription:
       "Prenota un transfer a prezzo fisso a Creta. Scegli la tua tratta e il veicolo, ricevi conferma immediata. Pagamento all'arrivo.",
     stepTrip: "Il tuo viaggio",
+    inclusionsTitle: "Incluso in questo prezzo",
+    inclMeet: "Accoglienza con cartello nominativo",
+    inclWait: "60 min di attesa gratuita in aeroporto",
+    inclTrack: "Monitoraggio volo e traghetto",
+    inclCancel: "Cancellazione gratuita fino a 24 h prima",
+    noHiddenFees: "Nessun costo nascosto — il prezzo che vedi è quello che paghi.",
     stepDetails: "I tuoi dati",
     continue: "Continua",
     back: "Indietro",
@@ -1079,6 +1085,14 @@ export const it: Dict = {
     sortOldest: "Più vecchi prima",
     clearDates: "Cancella date",
     viewDetails: "Vedi dettagli",
+    nextTransferTitle: "Il tuo prossimo transfer",
+    countdownDays: (n: number) => `tra ${n} giorn${n === 1 ? "o" : "i"}`,
+    countdownHours: (n: number) => `tra ${n} h`,
+    countdownMinutes: (n: number) => `tra ${n} min`,
+    countdownNow: "In corso",
+    callDriver: "Chiama l'autista",
+    messageDriver: "WhatsApp all'autista",
+    viewTransfer: "Vedi il transfer",
     bookingRef: "Rif. prenotazione",
     status: {
       pending: "Ricerca autista",
@@ -1126,6 +1140,7 @@ export const it: Dict = {
     policyBlurb:
       "Attesa gratuita: 60 min in aeroporto/porto con tracking del volo, 30 min in hotel/indirizzi. Autista non arrivato? Segnala un problema per un ripristino completo.",
     paidOnline: "Pagato online",
+    chargedInEur: "Addebito in EUR",
     reportProblem: "Segnala un problema",
     reportProblemTitle: "Cosa è andato storto?",
     reportProblemBody:
@@ -1194,6 +1209,7 @@ export const it: Dict = {
     statsAvailable: "Saldo disponibile",
     statsReliability: "Affidabilità",
     statsOverview: "Panoramica",
+    netPayout: "Il tuo compenso",
     pendingTitle: "Candidatura ricevuta",
     pendingBody:
       "Stiamo esaminando la tua candidatura — la maggior parte viene approvata entro 48 ore. Domande? Chiama la centrale.",
@@ -1461,6 +1477,8 @@ export const it: Dict = {
     available: "Disponibile ora",
     total: "Totale guadagnato",
     nextPayout: "Prossimo pagamento",
+    last8Weeks: "Ultime 8 settimane",
+    exportCsv: "Esporta CSV",
     notScheduled: "Non programmato",
     setupTitle: "Configura i pagamenti",
     setupBody: "Collega le tue coordinate bancarie con Stripe per ricevere i guadagni.",

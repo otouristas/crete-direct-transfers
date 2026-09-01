@@ -566,6 +566,12 @@ export const fr: Dict = {
     metaDescription:
       "Réservez un transfert à prix fixe en Crète. Choisissez votre itinéraire et votre véhicule, obtenez une confirmation immédiate. Paiement à l'arrivée.",
     stepTrip: "Votre trajet",
+    inclusionsTitle: "Inclus dans ce prix",
+    inclMeet: "Accueil avec pancarte à votre nom",
+    inclWait: "60 min d'attente offertes à l'aéroport",
+    inclTrack: "Suivi du vol et du ferry",
+    inclCancel: "Annulation gratuite jusqu'à 24 h avant",
+    noHiddenFees: "Aucun frais caché — le prix affiché est le prix final.",
     stepDetails: "Vos coordonnées",
     continue: "Continuer",
     back: "Retour",
@@ -1085,6 +1091,14 @@ export const fr: Dict = {
     sortOldest: "Plus anciens d'abord",
     clearDates: "Effacer les dates",
     viewDetails: "Voir les détails",
+    nextTransferTitle: "Votre prochain transfert",
+    countdownDays: (n: number) => `dans ${n} jour${n === 1 ? "" : "s"}`,
+    countdownHours: (n: number) => `dans ${n} h`,
+    countdownMinutes: (n: number) => `dans ${n} min`,
+    countdownNow: "En cours",
+    callDriver: "Appeler le chauffeur",
+    messageDriver: "WhatsApp au chauffeur",
+    viewTransfer: "Voir le transfert",
     bookingRef: "Réf. de réservation",
     status: {
       pending: "Recherche du chauffeur",
@@ -1134,6 +1148,7 @@ export const fr: Dict = {
     policyBlurb:
       "Attente gratuite : 60 min aéroports/ports avec suivi de vol, 30 min hôtels/adresses. Chauffeur absent ? Signalez un problème pour une compensation totale.",
     paidOnline: "Payé en ligne",
+    chargedInEur: "Débité en EUR",
     reportProblem: "Signaler un problème",
     reportProblemTitle: "Que s'est-il passé ?",
     reportProblemBody:
@@ -1203,6 +1218,7 @@ export const fr: Dict = {
     statsAvailable: "Solde disponible",
     statsReliability: "Fiabilité",
     statsOverview: "Aperçu",
+    netPayout: "Votre rémunération",
     pendingTitle: "Candidature reçue",
     pendingBody:
       "Nous examinons votre candidature — la plupart sont approuvées sous 48 heures. Des questions ? Appelez la régulation.",
@@ -1474,6 +1490,8 @@ export const fr: Dict = {
     available: "Disponible maintenant",
     total: "Total gagné",
     nextPayout: "Prochain versement",
+    last8Weeks: "8 dernières semaines",
+    exportCsv: "Exporter en CSV",
     notScheduled: "Non planifié",
     setupTitle: "Configurer les versements",
     setupBody: "Renseignez vos coordonnées bancaires via Stripe pour recevoir vos revenus.",
