@@ -74,7 +74,6 @@ export default function LiveTripMapInner({
   geometry?: TripGeometry;
 }) {
   const points: [number, number][] = [];
-  if (driver) points.push([driver.lat, driver.lng]);
   if (pickup) points.push([pickup.lat, pickup.lng]);
   if (dropoff) points.push([dropoff.lat, dropoff.lng]);
 
@@ -91,7 +90,7 @@ export default function LiveTripMapInner({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <Fit points={points} />
+        <Fit points={points} driver={driver} />
         {geometry && geometry.length > 1 && (
           <Polyline
             positions={geometry}
