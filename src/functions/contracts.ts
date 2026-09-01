@@ -127,8 +127,8 @@ export const signContract = createServerFn({ method: "POST" })
       p_signer_name: data.signerName,
       p_rendered_body: rendered,
       p_body_sha256: hash,
-      p_ip: ip,
-      p_user_agent: request.headers.get("user-agent"),
+      p_ip: ip ?? undefined,
+      p_user_agent: request.headers.get("user-agent") ?? undefined,
     });
     if (error) throw new Error(error.message);
     return toRecord(signed as unknown as ContractRow);
