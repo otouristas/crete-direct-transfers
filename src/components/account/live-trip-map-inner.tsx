@@ -32,7 +32,14 @@ function carIcon(heading: number | null) {
   });
 }
 
-function Fit({ points }: { points: [number, number][] }) {
+/** Fit once per endpoint change, then keep the moving driver in view. */
+function Fit({
+  points,
+  driver,
+}: {
+  points: [number, number][];
+  driver?: LiveMapPoint | null;
+}) {
   const map = useMap();
   const key = points.map((p) => p.join()).join("|");
   useEffect(() => {
@@ -41,9 +48,15 @@ function Fit({ points }: { points: [number, number][] }) {
       map.setView(points[0], 13);
       return;
     }
-    map.fitBounds(latLngBounds(points), { padding: [50, 50], maxZoom: 14 });
+    map.fitBounds(latLngBounds(points), { padding: [50, 50], maxZoom: 13 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, key]);
+  useEffect(() => {
+    if (!driver) return;
+    if (!map.getBounds().pad(-0.15).contains([driver.lat, driver.lng])) {
+      map.panTo([driver.lat, driver.lng], { animate: true });
+    }
+  }, [map, driver?.lat, driver?.lng]);
   return null;
 }
 
