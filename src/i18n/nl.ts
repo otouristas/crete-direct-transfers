@@ -1118,6 +1118,7 @@ export const nl: Dict = {
     policyBlurb:
       "Gratis wachten: 60 min op luchthavens/havens met vluchttracking, 30 min bij hotels/adressen. Chauffeur niet verschenen? Meld een probleem voor volledige compensatie.",
     paidOnline: "Online betaald",
+    chargedInEur: "Afgerekend in EUR",
     reportProblem: "Probleem melden",
     reportProblemTitle: "Wat ging er mis?",
     reportProblemBody:

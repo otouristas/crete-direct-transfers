@@ -1126,6 +1126,7 @@ export const it: Dict = {
     policyBlurb:
       "Attesa gratuita: 60 min in aeroporto/porto con tracking del volo, 30 min in hotel/indirizzi. Autista non arrivato? Segnala un problema per un ripristino completo.",
     paidOnline: "Pagato online",
+    chargedInEur: "Addebito in EUR",
     reportProblem: "Segnala un problema",
     reportProblemTitle: "Cosa è andato storto?",
     reportProblemBody:

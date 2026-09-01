@@ -1122,6 +1122,7 @@ export const de: Dict = {
     policyBlurb:
       "Kostenloses Warten: 60 Min. am Flughafen/Hafen mit Flugverfolgung, 30 Min. am Hotel/Adresse. Fahrer nicht erschienen? Melden Sie ein Problem für vollständigen Ausgleich.",
     paidOnline: "Online bezahlt",
+    chargedInEur: "Abrechnung in EUR",
     reportProblem: "Problem melden",
     reportProblemTitle: "Was ist schiefgelaufen?",
     reportProblemBody:

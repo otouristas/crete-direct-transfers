@@ -1111,6 +1111,7 @@ export const en = {
     policyBlurb:
       "Free waiting: 60 min at airports/ports with flight tracking, 30 min at hotels/addresses. Driver no-show? Report a problem for a full make-good.",
     paidOnline: "Paid online",
+    chargedInEur: "Charged in EUR",
     reportProblem: "Report a problem",
     reportProblemTitle: "What went wrong?",
     reportProblemBody:

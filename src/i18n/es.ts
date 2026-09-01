@@ -1128,6 +1128,7 @@ export const es: Dict = {
     policyBlurb:
       "Espera gratuita: 60 min en aeropuertos/puertos con seguimiento de vuelo, 30 min en hoteles/direcciones. ¿El conductor no apareció? Reporta un problema para compensación total.",
     paidOnline: "Pagado online",
+    chargedInEur: "Cobro en EUR",
     reportProblem: "Reportar un problema",
     reportProblemTitle: "¿Qué salió mal?",
     reportProblemBody:

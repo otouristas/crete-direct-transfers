@@ -1134,6 +1134,7 @@ export const fr: Dict = {
     policyBlurb:
       "Attente gratuite : 60 min aéroports/ports avec suivi de vol, 30 min hôtels/adresses. Chauffeur absent ? Signalez un problème pour une compensation totale.",
     paidOnline: "Payé en ligne",
+    chargedInEur: "Débité en EUR",
     reportProblem: "Signaler un problème",
     reportProblemTitle: "Que s'est-il passé ?",
     reportProblemBody:

@@ -1124,6 +1124,7 @@ export const el: Dict = {
     policyBlurb:
       "Δωρεάν αναμονή: 60 λεπτά σε αεροδρόμια/λιμάνια με παρακολούθηση πτήσης, 30 λεπτά σε ξενοδοχεία/διευθύνσεις. Δεν εμφανίστηκε ο οδηγός; Αναφέρετε πρόβλημα για πλήρη αποζημίωση.",
     paidOnline: "Πληρώθηκε online",
+    chargedInEur: "Χρέωση σε EUR",
     reportProblem: "Αναφορά προβλήματος",
     reportProblemTitle: "Τι πήγε στραβά;",
     reportProblemBody:
