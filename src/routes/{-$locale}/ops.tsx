@@ -15,6 +15,7 @@ import {
   setPartnerStatusAdmin,
   unassignedBookingsQuery,
 } from "@/queries/ops";
+import { DriverAccountsPanel } from "@/components/ops/driver-accounts-panel";
 import { formatEur } from "@/lib/pricing";
 import { Skeleton } from "@/components/ui/skeleton";
 import { buildHead } from "@/lib/seo";
@@ -108,6 +109,8 @@ function OpsPage() {
         <h1 className="font-display text-3xl text-primary">{t.ops.title}</h1>
         <p className="mt-2 text-sm text-muted-foreground">{t.ops.description}</p>
       </div>
+
+      <DriverAccountsPanel locale={locale} />
 
       <section>
         <h2 className="font-display text-xl text-primary">{t.ops.onboardingReview}</h2>
