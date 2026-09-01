@@ -251,6 +251,9 @@ function BookingDetailPage() {
         <p className="mt-3 text-xs text-muted-foreground">{t.account.policyBlurb}</p>
       </div>
 
+      <TripTimeline status={b.status} locale={locale} />
+
+
       {b.status === "pending" && !b.driver_id && (
         <div className="rounded-2xl border border-border bg-card p-8">
           <h3 className="flex items-center gap-2 font-display text-lg text-primary">
