@@ -14,22 +14,6 @@ export const de: Dict = {
     returnTrip: "Rückfahrt",
     returnDiscount: "Rabatt für Hin- und Rückfahrt (−5%)",
   },
-  vehicles: {
-    capacity: (max: number) => `1–${max} Passagiere`,
-    bags: (n: number) => `${n} Gepäckstücke`,
-    descriptions: {
-      economy: "Skoda Octavia, Toyota Prius oder ähnlich. Klimatisiert, sauber, pünktlich.",
-      comfort: "Mercedes E-Klasse, BMW 5er oder ähnlich. Mehr Beinfreiheit, Wasser an Bord.",
-      luxury:
-        "Mercedes S-Klasse, BMW 7er, Audi A8 oder ähnlich. Chauffeurservice zum Festpreis.",
-      suv: "Cadillac Escalade, Chevrolet Suburban oder ähnlich. Platz und Präsenz für Familien.",
-      minivan: "Mercedes Vito, Ford Custom oder ähnlich. Die richtige Wahl für Familien und Gruppen.",
-      "van-first": "Mercedes V-Klasse oder ähnlich. Premium-Van-Komfort für kleine Gruppen.",
-      "minibus-12": "Mercedes Sprinter, Ford Transit oder ähnlich. Ideal für größere Gruppen.",
-      "minibus-16":
-        "Mercedes Sprinter, Ford Transit oder ähnlich. Maximale Kapazität für Gruppen und Teams.",
-    },
-  },
   common: {
     bookNow: "Jetzt buchen",
     bookTransfer: "Transfer buchen",

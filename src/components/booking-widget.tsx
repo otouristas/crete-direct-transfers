@@ -818,7 +818,7 @@ function BookingWidgetCard({
             >
               {vehicles.map((v) => (
                 <option key={v.id} value={v.id}>
-                  {v.label} · {vehicleCapacity(t, v)}
+                  {v.label} · {v.capacity}
                 </option>
               ))}
             </select>
