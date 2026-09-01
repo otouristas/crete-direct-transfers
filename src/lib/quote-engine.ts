@@ -60,7 +60,7 @@ function resolveBookable(input: CreateQuoteInput): "instant" | "quote" {
 /** Compute price locally (same engine as the booking UI). */
 export function computeQuotePrice(input: CreateQuoteInput): {
   priceCents: number;
-  breakdown: { label: string; amountEur: number }[];
+  breakdown: PriceLine[];
   bookableMode: "instant" | "quote";
 } | null {
   const pickupAt = input.pickupAt ? new Date(input.pickupAt) : undefined;
