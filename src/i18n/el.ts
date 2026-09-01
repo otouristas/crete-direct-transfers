@@ -1202,6 +1202,7 @@ export const el: Dict = {
     statsAvailable: "Διαθέσιμο υπόλοιπο",
     statsReliability: "Αξιοπιστία",
     statsOverview: "Επισκόπηση",
+    netPayout: "Η αμοιβή σας",
     pendingTitle: "Η αίτηση ελήφθη",
     pendingBody:
       "Εξετάζουμε την αίτησή σας — οι περισσότερες εγκρίνονται εντός 48 ωρών. Ερωτήσεις; Καλέστε το κέντρο.",

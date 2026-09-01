@@ -1186,6 +1186,7 @@ export const en = {
     statsAvailable: "Available balance",
     statsReliability: "Reliability",
     statsOverview: "Overview",
+    netPayout: "Your payout",
     pendingTitle: "Application received",
     pendingBody:
       "We're reviewing your application — most are approved within 48 hours. Questions? Call dispatch.",

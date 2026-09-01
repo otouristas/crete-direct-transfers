@@ -1205,6 +1205,7 @@ export const es: Dict = {
     statsAvailable: "Saldo disponible",
     statsReliability: "Fiabilidad",
     statsOverview: "Resumen",
+    netPayout: "Tu pago",
     pendingTitle: "Solicitud recibida",
     pendingBody:
       "Estamos revisando tu solicitud — la mayoría se aprueban en 48 horas. ¿Dudas? Llama a la central.",

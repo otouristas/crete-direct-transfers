@@ -1203,6 +1203,7 @@ export const it: Dict = {
     statsAvailable: "Saldo disponibile",
     statsReliability: "Affidabilità",
     statsOverview: "Panoramica",
+    netPayout: "Il tuo compenso",
     pendingTitle: "Candidatura ricevuta",
     pendingBody:
       "Stiamo esaminando la tua candidatura — la maggior parte viene approvata entro 48 ore. Domande? Chiama la centrale.",

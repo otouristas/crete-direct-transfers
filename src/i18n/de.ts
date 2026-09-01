@@ -1199,6 +1199,7 @@ export const de: Dict = {
     statsAvailable: "Verfügbares Guthaben",
     statsReliability: "Zuverlässigkeit",
     statsOverview: "Übersicht",
+    netPayout: "Ihre Auszahlung",
     pendingTitle: "Bewerbung eingegangen",
     pendingBody:
       "Wir prüfen Ihre Bewerbung — die meisten werden innerhalb von 48 Stunden freigegeben. Fragen? Rufen Sie die Zentrale an.",

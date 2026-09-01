@@ -1195,6 +1195,7 @@ export const nl: Dict = {
     statsAvailable: "Beschikbaar saldo",
     statsReliability: "Betrouwbaarheid",
     statsOverview: "Overzicht",
+    netPayout: "Jouw uitbetaling",
     pendingTitle: "Sollicitatie ontvangen",
     pendingBody:
       "We beoordelen uw sollicitatie — de meeste worden binnen 48 uur goedgekeurd. Vragen? Bel de centrale.",
