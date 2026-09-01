@@ -17,6 +17,7 @@ import {
 } from "@/queries/bookings";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { TripTimeline } from "@/components/account/trip-timeline";
+import { LiveTripTracker } from "@/components/account/live-trip-tracker";
 import { ReceiptButton } from "@/components/account/receipt-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -250,6 +251,10 @@ function BookingDetailPage() {
         </p>
         <p className="mt-3 text-xs text-muted-foreground">{t.account.policyBlurb}</p>
       </div>
+
+      {(b.status === "claimed" || b.status === "en_route") && (
+        <LiveTripTracker booking={b} driver={driver.data} locale={locale} />
+      )}
 
       <TripTimeline status={b.status} locale={locale} />
 

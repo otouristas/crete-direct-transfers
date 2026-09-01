@@ -1684,6 +1684,67 @@ export type Database = {
         }
         Relationships: []
       }
+      trip_locations: {
+        Row: {
+          booking_id: string
+          distance_km: number | null
+          driver_id: string
+          eta_minutes: number | null
+          heading: number | null
+          lat: number
+          lng: number
+          speed_kph: number | null
+          stage: string
+          updated_at: string
+        }
+        Insert: {
+          booking_id: string
+          distance_km?: number | null
+          driver_id: string
+          eta_minutes?: number | null
+          heading?: number | null
+          lat: number
+          lng: number
+          speed_kph?: number | null
+          stage?: string
+          updated_at?: string
+        }
+        Update: {
+          booking_id?: string
+          distance_km?: number | null
+          driver_id?: string
+          eta_minutes?: number | null
+          heading?: number | null
+          lat?: number
+          lng?: number
+          speed_kph?: number | null
+          stage?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_locations_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trip_locations_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "my_job_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "trip_locations_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "open_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       contract_overview: {
@@ -2623,6 +2684,36 @@ export type Database = {
         Returns: boolean
       }
       pick_partner_for_zone: { Args: { p_zone_id: string }; Returns: string }
+      ping_driver_location: {
+        Args: {
+          p_booking_id: string
+          p_distance_km?: number
+          p_eta_minutes?: number
+          p_heading?: number
+          p_lat: number
+          p_lng: number
+          p_speed_kph?: number
+          p_stage?: string
+        }
+        Returns: {
+          booking_id: string
+          distance_km: number | null
+          driver_id: string
+          eta_minutes: number | null
+          heading: number | null
+          lat: number
+          lng: number
+          speed_kph: number | null
+          stage: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "trip_locations"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       preview_driver_cancellation: {
         Args: { p_booking_id: string }
         Returns: Json

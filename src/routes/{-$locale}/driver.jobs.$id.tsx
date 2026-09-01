@@ -19,6 +19,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { CancelJobDialog } from "@/components/driver/cancel-job-dialog";
+import { ShareLocationToggle } from "@/components/driver/share-location-toggle";
+import { tripEndpoints } from "@/components/account/live-trip-tracker";
 import { getRoute, VEHICLE_CLASSES } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
 
@@ -224,6 +226,12 @@ function DriverJobDetailPage() {
         <div className="rounded-2xl border border-border bg-card p-8">
           <h3 className="font-display text-lg text-primary">{t.driver.statusTitle}</h3>
           <div className="mt-4 flex flex-wrap gap-3">
+            <ShareLocationToggle
+              bookingId={b.id}
+              stage={b.status === "en_route" ? "on_trip" : "to_pickup"}
+              target={tripEndpoints(b)[b.status === "en_route" ? "dropoff" : "pickup"]}
+              locale={locale}
+            />
             {b.status === "claimed" && (
               <button
                 onClick={() => move.mutate("en_route")}
