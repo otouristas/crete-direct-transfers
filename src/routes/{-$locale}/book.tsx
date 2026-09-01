@@ -168,7 +168,7 @@ function formatClock(iso: string): string {
   }
 }
 
-function formatDay(iso: string, locale: AppLocale = "en"): string {
+function formatDay(iso: string, locale: Locale = "en"): string {
   if (!iso) return "";
   try {
     return format(parseISO(iso), "d MMM yyyy", { locale: dateFnsLocale(locale) });
@@ -966,7 +966,7 @@ function BookPage() {
                 className="sticky top-20 z-30"
                 tripLabel={tripType === "return" ? t.widget.return : t.widget.oneWay}
                 passengers={passengers}
-                dateLabel={formatDay(pickupAt)}
+                dateLabel={formatDay(pickupAt, locale)}
                 fromLabel={fromLabel}
                 toLabel={isHourly ? `${hours}h` : toLabel}
                 fromTime={formatClock(pickupAt)}
@@ -1076,7 +1076,7 @@ function BookPage() {
               className="h-fit lg:sticky lg:top-20 lg:z-30"
               tripLabel={tripType === "return" ? t.widget.return : t.widget.oneWay}
               passengers={passengers}
-              dateLabel={formatDay(pickupAt)}
+              dateLabel={formatDay(pickupAt, locale)}
               fromLabel={fromLabel}
               toLabel={isHourly ? `${hours}h` : toLabel}
               fromTime={formatClock(pickupAt)}
@@ -1154,7 +1154,7 @@ function BookPage() {
                   forceActions
                   tripLabel={tripType === "return" ? t.widget.return : t.widget.oneWay}
                   passengers={passengers}
-                  dateLabel={formatDay(pickupAt)}
+                  dateLabel={formatDay(pickupAt, locale)}
                   fromLabel={fromLabel}
                   toLabel={isHourly ? `${hours}h` : toLabel}
                   fromTime={formatClock(pickupAt)}
