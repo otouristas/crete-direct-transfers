@@ -4,6 +4,32 @@ import { airportPages } from "./airport-pages";
 import { opsCopy } from "./ops-copy";
 
 export const el: Dict = {
+  priceLines: {
+    vehicle: (v: string) => `Όχημα ${v}`,
+    hourly: (v: string, h: number) => `${v} · ${h} ώρες`,
+    childSeat: "Παιδικό κάθισμα",
+    extraStop: "Επιπλέον στάση",
+    meetAndGreet: "Υποδοχή με πινακίδα ονόματος",
+    nightSurcharge: "Νυχτερινή προσαύξηση (22:00–06:00)",
+    returnTrip: "Διαδρομή επιστροφής",
+    returnDiscount: "Έκπτωση επιστροφής (−5%)",
+  },
+  vehicles: {
+    capacity: (max: number) => `1–${max} επιβάτες`,
+    bags: (n: number) => `${n} αποσκευές`,
+    descriptions: {
+      economy: "Skoda Octavia, Toyota Prius ή παρόμοιο. Κλιματιζόμενο, καθαρό, συνεπές.",
+      comfort: "Mercedes E-Class, BMW Σειρά 5 ή παρόμοιο. Περισσότερος χώρος, νερό στο όχημα.",
+      luxury:
+        "Mercedes S-Class, BMW 7, Audi A8 ή παρόμοιο. Υπηρεσία σοφέρ, πάντα σε σταθερή τιμή.",
+      suv: "Cadillac Escalade, Chevrolet Suburban ή παρόμοιο. Χώρος και άνεση για οικογένειες.",
+      minivan: "Mercedes Vito, Ford Custom ή παρόμοιο. Η σωστή επιλογή για οικογένειες και γκρουπ.",
+      "van-first": "Mercedes V-Class ή παρόμοιο. Premium άνεση van για μικρές παρέες.",
+      "minibus-12": "Mercedes Sprinter, Ford Transit ή παρόμοιο. Ιδανικό για μεγαλύτερα γκρουπ.",
+      "minibus-16":
+        "Mercedes Sprinter, Ford Transit ή παρόμοιο. Μέγιστη χωρητικότητα για παρέες και ομάδες.",
+    },
+  },
   common: {
     bookNow: "Κλείστε τώρα",
     bookTransfer: "Κλείστε μεταφορά",

@@ -6,6 +6,32 @@ import { airportPages } from "./airport-pages";
 import { opsCopy } from "./ops-copy";
 
 export const nl: Dict = {
+  priceLines: {
+    vehicle: (v: string) => `Voertuig ${v}`,
+    hourly: (v: string, h: number) => `${v} · ${h} uur`,
+    childSeat: "Kinderzitje",
+    extraStop: "Extra stop",
+    meetAndGreet: "Ontvangst met naambord",
+    nightSurcharge: "Nachttoeslag (22:00–06:00)",
+    returnTrip: "Terugrit",
+    returnDiscount: "Retourkorting (−5%)",
+  },
+  vehicles: {
+    capacity: (max: number) => `1–${max} passagiers`,
+    bags: (n: number) => `${n} koffers`,
+    descriptions: {
+      economy: "Skoda Octavia, Toyota Prius of vergelijkbaar. Airconditioning, schoon, stipt.",
+      comfort: "Mercedes E-Klasse, BMW 5-serie of vergelijkbaar. Extra beenruimte, water aan boord.",
+      luxury:
+        "Mercedes S-Klasse, BMW 7, Audi A8 of vergelijkbaar. Chauffeursservice, vaste prijs.",
+      suv: "Cadillac Escalade, Chevrolet Suburban of vergelijkbaar. Ruimte en allure voor gezinnen.",
+      minivan: "Mercedes Vito, Ford Custom of vergelijkbaar. De juiste keuze voor gezinnen en groepen.",
+      "van-first": "Mercedes V-Klasse of vergelijkbaar. Premium vancomfort voor kleine groepen.",
+      "minibus-12": "Mercedes Sprinter, Ford Transit of vergelijkbaar. Ideaal voor grotere groepen.",
+      "minibus-16":
+        "Mercedes Sprinter, Ford Transit of vergelijkbaar. Maximale capaciteit voor groepen en teams.",
+    },
+  },
   common: {
     bookNow: "Nu boeken",
     bookTransfer: "Boek een transfer",

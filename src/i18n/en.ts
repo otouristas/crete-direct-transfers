@@ -5,6 +5,31 @@ import { airportPages } from "./airport-pages";
 import { opsCopy } from "./ops-copy";
 
 export const en = {
+  priceLines: {
+    vehicle: (v: string) => `${v} vehicle`,
+    hourly: (v: string, h: number) => `${v} · ${h}h`,
+    childSeat: "Child seat",
+    extraStop: "Extra stop",
+    meetAndGreet: "Meet & greet with sign",
+    nightSurcharge: "Night surcharge (22:00–06:00)",
+    returnTrip: "Return trip",
+    returnDiscount: "Return discount (−5%)",
+  },
+  vehicles: {
+    capacity: (max: number) => `1–${max} passengers`,
+    bags: (n: number) => `${n} bags`,
+    descriptions: {
+      economy: "Skoda Octavia, Toyota Prius or similar. Air-conditioned, clean, punctual.",
+      comfort: "Mercedes E-Class, BMW 5 Series or similar. Extra legroom, water on board.",
+      luxury: "Mercedes S-Class, BMW 7, Audi A8 or similar. Chauffeur service, still fixed price.",
+      suv: "Cadillac Escalade, Chevrolet Suburban or similar. Space and presence for families.",
+      minivan: "Mercedes Vito, Ford Custom or similar. The right pick for families and groups.",
+      "van-first": "Mercedes V-Class or similar. Premium van comfort for small groups.",
+      "minibus-12": "Mercedes Sprinter, Ford Transit or similar. Ideal for larger groups.",
+      "minibus-16":
+        "Mercedes Sprinter, Ford Transit or similar. Maximum capacity for parties and teams.",
+    },
+  },
   common: {
     bookNow: "Book now",
     bookTransfer: "Book a transfer",
