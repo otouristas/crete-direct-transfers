@@ -268,6 +268,11 @@ export const de: Dict = {
     metaTitle: "TransferAround — Private Flughafentransfers zum Festpreis",
     metaDescription:
       "Private Transfers zum Festpreis in Griechenland, Spanien, Italien, Portugal, Zypern und der Türkei. Lizenzierte lokale Fahrer, Flugverfolgung, kostenlose Stornierung.",
+    mapEyebrow: "Live-Route",
+    mapTitle: "Sehen Sie zu, wie sich Ihre Route zeichnet",
+    mapHint: "Wählen Sie Abhol- und Zielort, um die Linie über die Insel zu zeichnen.",
+    mapDistance: (km: number, min: number) =>
+      `${km} km · ca. ${min} Min. Fahrt`,
     heroEyebrow: "Private Transfers zum Festpreis",
     heroTitle1: "Ihre Ankunft.",
     heroTitleAccent: "Ihr Fahrer.",
