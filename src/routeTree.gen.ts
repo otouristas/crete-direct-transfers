@@ -66,6 +66,7 @@ import { Route as Char123LocaleChar125LegalDriverPartnershipRouteImport } from '
 import { Route as Char123LocaleChar125LegalCookiesRouteImport } from './routes/{-$locale}/legal.cookies'
 import { Route as Char123LocaleChar125GuidesSlugRouteImport } from './routes/{-$locale}/guides.$slug'
 import { Route as Char123LocaleChar125FleetClassRouteImport } from './routes/{-$locale}/fleet.$class'
+import { Route as Char123LocaleChar125DriversSlugRouteImport } from './routes/{-$locale}/drivers.$slug'
 import { Route as Char123LocaleChar125DriverApplyRouteImport } from './routes/{-$locale}/driver_.apply'
 import { Route as Char123LocaleChar125DriverEarningsRouteImport } from './routes/{-$locale}/driver.earnings'
 import { Route as Char123LocaleChar125CitiesSlugRouteImport } from './routes/{-$locale}/cities.$slug'
@@ -418,6 +419,12 @@ const Char123LocaleChar125FleetClassRoute =
     path: '/fleet/$class',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125DriversSlugRoute =
+  Char123LocaleChar125DriversSlugRouteImport.update({
+    id: '/drivers/$slug',
+    path: '/drivers/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125DriverApplyRoute =
   Char123LocaleChar125DriverApplyRouteImport.update({
     id: '/driver_/apply',
@@ -529,6 +536,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
+  '/{-$locale}/drivers/$slug': typeof Char123LocaleChar125DriversSlugRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
   '/{-$locale}/guides/$slug': typeof Char123LocaleChar125GuidesSlugRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
@@ -596,6 +604,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
+  '/{-$locale}/drivers/$slug': typeof Char123LocaleChar125DriversSlugRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
   '/{-$locale}/guides/$slug': typeof Char123LocaleChar125GuidesSlugRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
@@ -668,6 +677,7 @@ export interface FileRoutesById {
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver_/apply': typeof Char123LocaleChar125DriverApplyRoute
+  '/{-$locale}/drivers/$slug': typeof Char123LocaleChar125DriversSlugRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
   '/{-$locale}/guides/$slug': typeof Char123LocaleChar125GuidesSlugRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
@@ -741,6 +751,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
+    | '/{-$locale}/drivers/$slug'
     | '/{-$locale}/fleet/$class'
     | '/{-$locale}/guides/$slug'
     | '/{-$locale}/legal/cookies'
@@ -808,6 +819,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
+    | '/{-$locale}/drivers/$slug'
     | '/{-$locale}/fleet/$class'
     | '/{-$locale}/guides/$slug'
     | '/{-$locale}/legal/cookies'
@@ -879,6 +891,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver_/apply'
+    | '/{-$locale}/drivers/$slug'
     | '/{-$locale}/fleet/$class'
     | '/{-$locale}/guides/$slug'
     | '/{-$locale}/legal/cookies'
@@ -1319,6 +1332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125FleetClassRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
+    '/{-$locale}/drivers/$slug': {
+      id: '/{-$locale}/drivers/$slug'
+      path: '/drivers/$slug'
+      fullPath: '/{-$locale}/drivers/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125DriversSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/driver_/apply': {
       id: '/{-$locale}/driver_/apply'
       path: '/driver/apply'
@@ -1513,6 +1533,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125BlogSlugRoute: typeof Char123LocaleChar125BlogSlugRoute
   Char123LocaleChar125CitiesSlugRoute: typeof Char123LocaleChar125CitiesSlugRoute
   Char123LocaleChar125DriverApplyRoute: typeof Char123LocaleChar125DriverApplyRoute
+  Char123LocaleChar125DriversSlugRoute: typeof Char123LocaleChar125DriversSlugRoute
   Char123LocaleChar125FleetClassRoute: typeof Char123LocaleChar125FleetClassRoute
   Char123LocaleChar125GuidesSlugRoute: typeof Char123LocaleChar125GuidesSlugRoute
   Char123LocaleChar125LegalCookiesRoute: typeof Char123LocaleChar125LegalCookiesRoute
@@ -1582,6 +1603,7 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125BlogSlugRoute: Char123LocaleChar125BlogSlugRoute,
     Char123LocaleChar125CitiesSlugRoute: Char123LocaleChar125CitiesSlugRoute,
     Char123LocaleChar125DriverApplyRoute: Char123LocaleChar125DriverApplyRoute,
+    Char123LocaleChar125DriversSlugRoute: Char123LocaleChar125DriversSlugRoute,
     Char123LocaleChar125FleetClassRoute: Char123LocaleChar125FleetClassRoute,
     Char123LocaleChar125GuidesSlugRoute: Char123LocaleChar125GuidesSlugRoute,
     Char123LocaleChar125LegalCookiesRoute:
