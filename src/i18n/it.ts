@@ -567,6 +567,12 @@ export const it: Dict = {
     metaDescription:
       "Prenota un transfer a prezzo fisso a Creta. Scegli la tua tratta e il veicolo, ricevi conferma immediata. Pagamento all'arrivo.",
     stepTrip: "Il tuo viaggio",
+    inclusionsTitle: "Incluso in questo prezzo",
+    inclMeet: "Accoglienza con cartello nominativo",
+    inclWait: "60 min di attesa gratuita in aeroporto",
+    inclTrack: "Monitoraggio volo e traghetto",
+    inclCancel: "Cancellazione gratuita fino a 24 h prima",
+    noHiddenFees: "Nessun costo nascosto — il prezzo che vedi è quello che paghi.",
     stepDetails: "I tuoi dati",
     continue: "Continua",
     back: "Indietro",

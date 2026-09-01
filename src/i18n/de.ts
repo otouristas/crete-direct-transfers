@@ -559,6 +559,12 @@ export const de: Dict = {
     metaDescription:
       "Buchen Sie einen Festpreis-Transfer auf Kreta. Strecke und Fahrzeug wählen, sofortige Bestätigung erhalten. Zahlung bei Ankunft.",
     stepTrip: "Ihre Fahrt",
+    inclusionsTitle: "Im Preis enthalten",
+    inclMeet: "Empfang mit Namensschild",
+    inclWait: "60 Min. kostenlose Wartezeit am Flughafen",
+    inclTrack: "Flug- und Fährenverfolgung",
+    inclCancel: "Kostenlose Stornierung bis 24 Std. vorher",
+    noHiddenFees: "Keine versteckten Kosten — der angezeigte Preis ist der Endpreis.",
     stepDetails: "Ihre Daten",
     continue: "Weiter",
     back: "Zurück",

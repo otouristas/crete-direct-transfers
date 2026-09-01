@@ -566,6 +566,12 @@ export const fr: Dict = {
     metaDescription:
       "Réservez un transfert à prix fixe en Crète. Choisissez votre itinéraire et votre véhicule, obtenez une confirmation immédiate. Paiement à l'arrivée.",
     stepTrip: "Votre trajet",
+    inclusionsTitle: "Inclus dans ce prix",
+    inclMeet: "Accueil avec pancarte à votre nom",
+    inclWait: "60 min d'attente offertes à l'aéroport",
+    inclTrack: "Suivi du vol et du ferry",
+    inclCancel: "Annulation gratuite jusqu'à 24 h avant",
+    noHiddenFees: "Aucun frais caché — le prix affiché est le prix final.",
     stepDetails: "Vos coordonnées",
     continue: "Continuer",
     back: "Retour",

@@ -554,6 +554,12 @@ export const en = {
     metaDescription:
       "Book a fixed-price transfer in Crete. Choose your route and vehicle, get instant confirmation. Pay on arrival.",
     stepTrip: "Your trip",
+    inclusionsTitle: "Included in this price",
+    inclMeet: "Meet & greet with name sign",
+    inclWait: "60 min free airport waiting",
+    inclTrack: "Flight & ferry tracking",
+    inclCancel: "Free cancellation up to 24 h",
+    noHiddenFees: "No hidden fees — the price you see is the price you pay.",
     stepDetails: "Your details",
     continue: "Continue",
     back: "Back",

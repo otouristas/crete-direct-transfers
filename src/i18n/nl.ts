@@ -562,6 +562,12 @@ export const nl: Dict = {
     metaDescription:
       "Boek een transfer tegen vaste prijs op Kreta. Kies uw route en voertuig, krijg directe bevestiging. Betalen bij aankomst.",
     stepTrip: "Uw reis",
+    inclusionsTitle: "Inbegrepen in deze prijs",
+    inclMeet: "Ontvangst met naambord",
+    inclWait: "60 min gratis wachttijd op de luchthaven",
+    inclTrack: "Vlucht- en veerboottracking",
+    inclCancel: "Gratis annuleren tot 24 uur vooraf",
+    noHiddenFees: "Geen verborgen kosten — de getoonde prijs is de eindprijs.",
     stepDetails: "Uw gegevens",
     continue: "Doorgaan",
     back: "Terug",
