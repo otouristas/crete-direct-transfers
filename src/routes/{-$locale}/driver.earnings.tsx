@@ -42,6 +42,9 @@ function EarningsPage() {
 
   const earnings = useQuery({ ...myEarningsQuery(user?.id ?? ""), enabled: !!user });
   const payouts = useQuery({ ...myPayoutsQuery(user?.id ?? ""), enabled: !!user });
+  const balance = useQuery({ ...myAccountBalanceQuery(user?.id ?? ""), enabled: !!user });
+  const ledger = useQuery({ ...myAccountLedgerQuery(user?.id ?? ""), enabled: !!user });
+  const reliability = useQuery({ ...myReliabilityQuery(user?.id ?? ""), enabled: !!user });
   const connect = useQuery({
     queryKey: ["connect-status", user?.id],
     queryFn: () => fetchStatus({ data: undefined }),
