@@ -2,6 +2,7 @@ import { getRoute, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { getAirport, type AirportData } from "@/data/airports";
 import { getAirportRoute, type AirportRouteData } from "@/data/airport-routes";
 import { formatMoney } from "@/lib/currency";
+import { getTerritory } from "@/data/territories";
 
 export type Extras = {
   childSeat?: boolean;
@@ -272,12 +273,19 @@ export function vehicleFromPrices(
   }));
 }
 
-/** Distance-based economy base, tuned to Crete corridor averages (~€1.15/km, €35 floor). */
+/**
+ * Distance-based economy base. Defaults match the launch territory (Crete:
+ * ~EUR 1.15/km, EUR 35 floor); pass a territory slug and the registered
+ * per-territory fare parameters are used instead.
+ */
 const DISTANCE_FLOOR_EUR = 35;
 const DISTANCE_RATE_PER_KM = 1.15;
 
-export function distanceBaseEur(distanceKm: number): number {
-  return Math.max(DISTANCE_FLOOR_EUR, Math.round(distanceKm * DISTANCE_RATE_PER_KM));
+export function distanceBaseEur(distanceKm: number, territorySlug?: string): number {
+  const pricing = territorySlug ? getTerritory(territorySlug)?.pricing : undefined;
+  const floor = pricing?.floorEur ?? DISTANCE_FLOOR_EUR;
+  const perKm = pricing?.perKmEur ?? DISTANCE_RATE_PER_KM;
+  return Math.max(floor, Math.round(distanceKm * perKm));
 }
 
 export type TripQuote = Quote & {
