@@ -36,8 +36,6 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   const primaryLinks: NavLink[] = [
     { label: t.nav.airports, to: "/{-$locale}/airports", hint: t.navHints.airports },
     { label: t.nav.routes, to: "/{-$locale}/routes", hint: t.navHints.routes },
-    { label: t.nav.fleet, to: "/{-$locale}/fleet", hint: t.navHints.fleet },
-    { label: t.nav.faq, to: "/{-$locale}/faq", hint: t.navHints.faq },
   ];
 
   const partnerLinks: NavLink[] = [

@@ -61,9 +61,6 @@ export function SiteHeader() {
       to: "/{-$locale}/airports",
     },
     { label: t.cityToCityPage.eyebrow, to: "/{-$locale}/city-to-city" },
-    { label: t.hourlyPage.eyebrow, to: "/{-$locale}/hourly-service" },
-    { label: t.nav.fleet, to: "/{-$locale}/fleet" },
-    { label: t.nav.faq, to: "/{-$locale}/faq" },
   ];
 
   const partnerLinks: NavLink[] = [
@@ -124,18 +121,14 @@ export function SiteHeader() {
 
   return (
     <>
-      <header
-        className={cn(
-          "sticky top-0 z-40 transition-[background-color,box-shadow,border-color] duration-300",
-          solid
-            ? "border-b border-primary-foreground/10 bg-primary shadow-sm"
-            : "border-b border-transparent bg-transparent",
-        )}
-      >
+      <header className="sticky top-0 z-40 px-3 pt-3 sm:px-5">
         <div
           className={cn(
-            "mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 lg:grid-cols-[1fr_auto_1fr]",
+            "mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 rounded-2xl px-4 transition-[background-color,box-shadow,border-color] duration-300 sm:px-5 lg:rounded-full lg:grid-cols-[1fr_auto_1fr]",
             HEADER_H,
+            solid
+              ? "bg-primary/90 shadow-[0_12px_40px_-12px_var(--primary)] ring-1 ring-primary-foreground/10 backdrop-blur-xl"
+              : "bg-primary/35 ring-1 ring-primary-foreground/15 backdrop-blur-md",
           )}
         >
           {/* Left — logo */}
@@ -323,7 +316,7 @@ export function SiteHeader() {
             <AccountMenu onDark />
             <Link
               to="/{-$locale}/book"
-              className="hidden items-center whitespace-nowrap rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground shadow-[0_1px_0_0_rgb(255_255_255/0.25)_inset] transition hover:brightness-105 hover:shadow-[0_6px_18px_-6px_var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary md:inline-flex"
+              className="hidden items-center whitespace-nowrap rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground shadow-[0_1px_0_0_rgb(255_255_255/0.25)_inset] transition hover:brightness-105 hover:shadow-[0_6px_18px_-6px_var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary md:inline-flex"
             >
               {t.common.bookNow}
             </Link>
