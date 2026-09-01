@@ -452,6 +452,74 @@ export type Database = {
         }
         Relationships: []
       }
+      contracts: {
+        Row: {
+          body_sha256: string | null
+          company_signer_name: string
+          created_at: string
+          id: string
+          issued_by: string | null
+          kind: string
+          partner_id: string | null
+          rendered_body: string | null
+          signed_at: string | null
+          signed_ip: string | null
+          signed_user_agent: string | null
+          signer_name: string | null
+          status: string
+          template_version: string
+          updated_at: string
+          user_id: string
+          variables: Json
+        }
+        Insert: {
+          body_sha256?: string | null
+          company_signer_name?: string
+          created_at?: string
+          id?: string
+          issued_by?: string | null
+          kind: string
+          partner_id?: string | null
+          rendered_body?: string | null
+          signed_at?: string | null
+          signed_ip?: string | null
+          signed_user_agent?: string | null
+          signer_name?: string | null
+          status?: string
+          template_version: string
+          updated_at?: string
+          user_id: string
+          variables?: Json
+        }
+        Update: {
+          body_sha256?: string | null
+          company_signer_name?: string
+          created_at?: string
+          id?: string
+          issued_by?: string | null
+          kind?: string
+          partner_id?: string | null
+          rendered_body?: string | null
+          signed_at?: string | null
+          signed_ip?: string | null
+          signed_user_agent?: string | null
+          signer_name?: string | null
+          status?: string
+          template_version?: string
+          updated_at?: string
+          user_id?: string
+          variables?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       device_tokens: {
         Row: {
           created_at: string
@@ -1618,6 +1686,32 @@ export type Database = {
       }
     }
     Views: {
+      contract_overview: {
+        Row: {
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          kind: string | null
+          partner_id: string | null
+          phone: string | null
+          role: string | null
+          signed_at: string | null
+          signer_name: string | null
+          status: string | null
+          template_version: string | null
+          user_id: string | null
+          variables: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contracts_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       driver_account_summary: {
         Row: {
           available_cents: number | null
@@ -1773,6 +1867,40 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "driver_account_entries"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      admin_issue_contract: {
+        Args: {
+          p_kind: string
+          p_partner_id?: string
+          p_template_version: string
+          p_user_id: string
+          p_variables?: Json
+        }
+        Returns: {
+          body_sha256: string | null
+          company_signer_name: string
+          created_at: string
+          id: string
+          issued_by: string | null
+          kind: string
+          partner_id: string | null
+          rendered_body: string | null
+          signed_at: string | null
+          signed_ip: string | null
+          signed_user_agent: string | null
+          signer_name: string | null
+          status: string
+          template_version: string
+          updated_at: string
+          user_id: string
+          variables: Json
+        }
+        SetofOptions: {
+          from: "*"
+          to: "contracts"
           isOneToOne: true
           isSetofReturn: false
         }
@@ -2394,6 +2522,39 @@ export type Database = {
           tier: string
         }[]
       }
+      ensure_my_contract: {
+        Args: {
+          p_kind: string
+          p_partner_id?: string
+          p_template_version: string
+          p_variables?: Json
+        }
+        Returns: {
+          body_sha256: string | null
+          company_signer_name: string
+          created_at: string
+          id: string
+          issued_by: string | null
+          kind: string
+          partner_id: string | null
+          rendered_body: string | null
+          signed_at: string | null
+          signed_ip: string | null
+          signed_user_agent: string | null
+          signer_name: string | null
+          status: string
+          template_version: string
+          updated_at: string
+          user_id: string
+          variables: Json
+        }
+        SetofOptions: {
+          from: "*"
+          to: "contracts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       expire_asap_bookings: { Args: never; Returns: number }
       expire_job_offers: { Args: never; Returns: Json }
       get_asap_dispatch_status: {
@@ -2799,6 +2960,41 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "partners"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      sign_contract: {
+        Args: {
+          p_body_sha256: string
+          p_contract_id: string
+          p_ip?: string
+          p_rendered_body: string
+          p_signer_name: string
+          p_user_agent?: string
+        }
+        Returns: {
+          body_sha256: string | null
+          company_signer_name: string
+          created_at: string
+          id: string
+          issued_by: string | null
+          kind: string
+          partner_id: string | null
+          rendered_body: string | null
+          signed_at: string | null
+          signed_ip: string | null
+          signed_user_agent: string | null
+          signer_name: string | null
+          status: string
+          template_version: string
+          updated_at: string
+          user_id: string
+          variables: Json
+        }
+        SetofOptions: {
+          from: "*"
+          to: "contracts"
           isOneToOne: true
           isSetofReturn: false
         }
