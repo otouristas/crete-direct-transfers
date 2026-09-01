@@ -1474,6 +1474,8 @@ export const es: Dict = {
     available: "Disponible ahora",
     total: "Total ganado",
     nextPayout: "Próximo pago",
+    last8Weeks: "Últimas 8 semanas",
+    exportCsv: "Exportar CSV",
     notScheduled: "Sin programar",
     setupTitle: "Configurar pagos",
     setupBody: "Vincula tus datos bancarios con Stripe para recibir tus ganancias.",

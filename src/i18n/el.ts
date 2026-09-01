@@ -1469,6 +1469,8 @@ export const el: Dict = {
     available: "Διαθέσιμα τώρα",
     total: "Συνολικά έσοδα",
     nextPayout: "Επόμενη πληρωμή",
+    last8Weeks: "Τελευταίες 8 εβδομάδες",
+    exportCsv: "Εξαγωγή CSV",
     notScheduled: "Δεν έχει προγραμματιστεί",
     setupTitle: "Ρύθμιση πληρωμών",
     setupBody: "Συνδέστε τα τραπεζικά σας στοιχεία μέσω Stripe για να λαμβάνετε τα έσοδά σας.",

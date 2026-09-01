@@ -1467,6 +1467,8 @@ export const de: Dict = {
     available: "Jetzt verfügbar",
     total: "Gesamt verdient",
     nextPayout: "Nächste Auszahlung",
+    last8Weeks: "Letzte 8 Wochen",
+    exportCsv: "CSV exportieren",
     notScheduled: "Nicht geplant",
     setupTitle: "Auszahlungen einrichten",
     setupBody: "Hinterlegen Sie Ihre Bankdaten über Stripe, damit wir Ihre Einnahmen überweisen können.",

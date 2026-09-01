@@ -1483,6 +1483,8 @@ export const fr: Dict = {
     available: "Disponible maintenant",
     total: "Total gagné",
     nextPayout: "Prochain versement",
+    last8Weeks: "8 dernières semaines",
+    exportCsv: "Exporter en CSV",
     notScheduled: "Non planifié",
     setupTitle: "Configurer les versements",
     setupBody: "Renseignez vos coordonnées bancaires via Stripe pour recevoir vos revenus.",

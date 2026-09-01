@@ -1453,6 +1453,8 @@ export const en = {
     available: "Available now",
     total: "Total earned",
     nextPayout: "Next payout",
+    last8Weeks: "Last 8 weeks",
+    exportCsv: "Export CSV",
     notScheduled: "Not scheduled",
     setupTitle: "Set up payouts",
     setupBody: "Connect your bank details with Stripe so we can send your earnings.",

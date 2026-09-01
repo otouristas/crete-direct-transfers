@@ -1470,6 +1470,8 @@ export const it: Dict = {
     available: "Disponibile ora",
     total: "Totale guadagnato",
     nextPayout: "Prossimo pagamento",
+    last8Weeks: "Ultime 8 settimane",
+    exportCsv: "Esporta CSV",
     notScheduled: "Non programmato",
     setupTitle: "Configura i pagamenti",
     setupBody: "Collega le tue coordinate bancarie con Stripe per ricevere i guadagni.",

@@ -1461,6 +1461,8 @@ export const nl: Dict = {
     available: "Nu beschikbaar",
     total: "Totaal verdiend",
     nextPayout: "Volgende uitbetaling",
+    last8Weeks: "Laatste 8 weken",
+    exportCsv: "CSV exporteren",
     notScheduled: "Niet gepland",
     setupTitle: "Uitbetalingen instellen",
     setupBody: "Koppel je bankgegevens via Stripe zodat we je verdiensten kunnen overmaken.",
