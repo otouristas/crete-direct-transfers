@@ -61,9 +61,6 @@ export function SiteHeader() {
       to: "/{-$locale}/airports",
     },
     { label: t.cityToCityPage.eyebrow, to: "/{-$locale}/city-to-city" },
-    { label: t.hourlyPage.eyebrow, to: "/{-$locale}/hourly-service" },
-    { label: t.nav.fleet, to: "/{-$locale}/fleet" },
-    { label: t.nav.faq, to: "/{-$locale}/faq" },
   ];
 
   const partnerLinks: NavLink[] = [
