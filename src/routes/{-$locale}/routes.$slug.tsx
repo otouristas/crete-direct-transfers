@@ -327,6 +327,7 @@ function RoutePage() {
 
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-14 lg:grid-cols-[1fr_400px]">
         <div className="min-w-0 space-y-14">
+          <TrustRail locale={locale} seed={route.slug} />
           <section id="key-facts" className="scroll-mt-32">
             <h2 className="text-2xl font-display text-primary">{t.routesPages.keyFactsTitle}</h2>
             <dl className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
