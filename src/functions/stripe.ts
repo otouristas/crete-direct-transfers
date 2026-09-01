@@ -194,11 +194,13 @@ async function handleConnectEvent(event: Stripe.Event): Promise<boolean> {
     return true;
   }
 
-  if (event.type === "transfer.paid" || event.type === "transfer.failed") {
+  // Transfer lifecycle names vary by pinned API version; compare as strings.
+  const eventName: string = event.type;
+  if (eventName === "transfer.paid" || eventName === "transfer.failed") {
     const transfer = event.data.object as Stripe.Transfer;
     const payoutId = transfer.metadata?.payout_id;
     if (!payoutId) return true;
-    const paid = event.type === "transfer.paid";
+    const paid = eventName === "transfer.paid";
     await admin
       .from("driver_payouts")
       .update({
