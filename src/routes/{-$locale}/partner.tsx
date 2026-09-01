@@ -69,7 +69,10 @@ function PartnerGate() {
   return (
     <DashboardShell
       title={t.partner.title}
-      tabs={[{ label: t.partner.inboxTitle, to: "/partner" }]}
+      tabs={[
+        { label: t.partner.inboxTitle, to: "/partner" },
+        { label: t.contracts.title, to: "/contracts" },
+      ]}
     >
       <Outlet />
       {/* partnerId available via query on index; admin sees first membership or picks via URL later */}

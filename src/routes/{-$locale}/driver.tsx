@@ -70,6 +70,7 @@ function DriverGate() {
         { label: t.driver.tabPool, to: "/driver" },
         { label: t.driver.tabJobs, to: "/driver/jobs" },
         { label: t.driver.tabEarnings, to: "/driver/earnings" },
+        { label: t.contracts.title, to: "/contracts" },
       ]}
     >
       <Outlet />

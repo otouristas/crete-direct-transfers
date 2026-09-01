@@ -16,6 +16,7 @@ import {
   unassignedBookingsQuery,
 } from "@/queries/ops";
 import { DriverAccountsPanel } from "@/components/ops/driver-accounts-panel";
+import { ContractsPanel } from "@/components/ops/contracts-panel";
 import { formatEur } from "@/lib/pricing";
 import { Skeleton } from "@/components/ui/skeleton";
 import { buildHead } from "@/lib/seo";
@@ -111,6 +112,8 @@ function OpsPage() {
       </div>
 
       <DriverAccountsPanel locale={locale} />
+
+      <ContractsPanel locale={locale} />
 
       <section>
         <h2 className="font-display text-xl text-primary">{t.ops.onboardingReview}</h2>
