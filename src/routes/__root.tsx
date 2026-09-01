@@ -29,7 +29,7 @@ import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
 import { CookieBanner } from "../components/cookie-banner";
 import { ConversionTracker } from "../components/conversion-tracker";
-import { LanguageSuggestionBanner } from "../components/language-suggestion-banner";
+
 import { AuthProvider } from "../hooks/use-auth";
 import { CurrencyProvider, useCurrency } from "../hooks/use-currency";
 import { useProfileCurrencySync } from "../hooks/use-profile-currency-sync";
