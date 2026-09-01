@@ -16,7 +16,8 @@ Key facts:
 - Inclusions: instant Crete bookings include the published route benefits; quote-mode confirmations state the meeting point, vehicle, waiting terms and applicable fees.
 - Vehicle classes: Economy, Comfort, Minivan (up to 7), Luxury, minibuses.
 - Coverage today: instant booking across Crete; quote-confirmed coverage in the rest of Greece, Spain, Italy, Portugal, Cyprus and Turkey.
-- Public site languages: English, Greek (Ελληνικά), German (Deutsch), French, Italian.
+- Public site languages: English, Greek (Ελληνικά), German (Deutsch), French (Français), Italian (Italiano), Dutch (Nederlands), Spanish (Español). English is served at the root; other locales at /el, /de, /fr, /it, /nl, /es.
+- Display currencies: 30 currencies selectable in the header; EUR remains the settlement currency for every booking, driver payout and refund.
 - Payment: card (Stripe Checkout on instant routes) or pay-on-board depending on route.
 - In-product assistant: Touristas AI (Help me book) quotes places with tool calling and deep-links into /book. Prices only come from TransferAround quote tools.
 
@@ -38,6 +39,17 @@ Key facts:
 ## For partners
 - [For hotels](https://transferaround.com/for-hotels): partner transfers for accommodation providers.
 - [For drivers](https://transferaround.com/for-drivers): become a licensed partner driver.
+- [For travel agencies](https://transferaround.com/for-travel-agencies): agency and reseller transfers with agreed commission.
+- [Agreements](https://transferaround.com/contracts): digital driver and partner agreements, signed online with PDF download.
+
+## Legal
+- [Terms](https://transferaround.com/legal/terms)
+- [Privacy](https://transferaround.com/legal/privacy)
+- [Cookies](https://transferaround.com/legal/cookies)
+- [Refund and cancellation policy](https://transferaround.com/legal/refunds)
+- [Driver partnership terms](https://transferaround.com/legal/driver-partnership): commission split, payouts, cancellation penalties.
+- [KYC and verification](https://transferaround.com/legal/kyc)
+- [Imprint](https://transferaround.com/legal/imprint)
 
 ## Machine-readable
 - Sitemap: https://transferaround.com/sitemap.xml
