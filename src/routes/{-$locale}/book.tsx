@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 import { format, parseISO, subHours } from "date-fns";
+import { dateFnsLocale } from "@/lib/date-locale";
 import { VEHICLE_CLASSES, getRoute, type VehicleClass } from "@/data/routes";
 import {
   quoteAllClasses,
@@ -170,7 +171,7 @@ function formatClock(iso: string): string {
 function formatDay(iso: string): string {
   if (!iso) return "";
   try {
-    return format(parseISO(iso), "d MMM yyyy");
+    return format(parseISO(iso), "d MMM yyyy", { locale: dateFnsLocale(locale) });
   } catch {
     return "";
   }
@@ -613,7 +614,9 @@ function BookPage() {
   const cancelDeadline = pickupAt
     ? (() => {
         try {
-          return format(subHours(parseISO(pickupAt), 24), "d MMMM yyyy HH:mm");
+          return format(subHours(parseISO(pickupAt), 24), "d MMMM yyyy HH:mm", {
+            locale: dateFnsLocale(locale),
+          });
         } catch {
           return "";
         }

@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { DateRange } from "react-day-picker";
 import { format, isWithinInterval, parseISO, startOfDay, endOfDay } from "date-fns";
+import { dateFnsLocale } from "@/lib/date-locale";
 import {
   ArrowRight,
   BadgeCheck,
@@ -150,8 +151,8 @@ function MyBookingsPage() {
   const dateLabel =
     appliedRange?.from &&
     (appliedRange.to
-      ? `${format(appliedRange.from, "d MMM yyyy")} – ${format(appliedRange.to, "d MMM yyyy")}`
-      : format(appliedRange.from, "d MMM yyyy"));
+      ? `${format(appliedRange.from, "d MMM yyyy", { locale: dateFnsLocale(locale) })} – ${format(appliedRange.to, "d MMM yyyy", { locale: dateFnsLocale(locale) })}`
+      : format(appliedRange.from, "d MMM yyyy", { locale: dateFnsLocale(locale) }));
 
   return (
     <div>
@@ -241,6 +242,7 @@ function MyBookingsPage() {
           </div>
           <PopoverContent align="end" className="w-auto p-4">
             <Calendar
+              locale={dateFnsLocale(locale)}
               mode="range"
               numberOfMonths={2}
               selected={dateRange}

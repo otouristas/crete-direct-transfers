@@ -23,6 +23,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useLocale, useT } from "@/i18n";
 import { priceLineLabel } from "@/lib/price-labels";
+import { dateFnsLocale } from "@/lib/date-locale";
 import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
 
@@ -544,6 +545,7 @@ function DateTimePicker({
   return (
     <div className="space-y-3">
       <Calendar
+        locale={dateFnsLocale(locale)}
         mode="single"
         selected={selected}
         onSelect={(d) => d && onDateChange(d)}
