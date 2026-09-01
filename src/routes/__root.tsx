@@ -32,6 +32,7 @@ import { ConversionTracker } from "../components/conversion-tracker";
 import { LanguageSuggestionBanner } from "../components/language-suggestion-banner";
 import { AuthProvider } from "../hooks/use-auth";
 import { CurrencyProvider, useCurrency } from "../hooks/use-currency";
+import { useProfileCurrencySync } from "../hooks/use-profile-currency-sync";
 import { Toaster } from "../components/ui/sonner";
 
 function NotFoundComponent() {
@@ -183,6 +184,7 @@ function RootComponent() {
 /** Inner layout so useCurrency runs inside CurrencyProvider. */
 function RootLayout() {
   const { currency } = useCurrency();
+  useProfileCurrencySync();
 
   return (
     <>
