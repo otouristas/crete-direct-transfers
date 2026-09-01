@@ -5,6 +5,7 @@ import { BookingWidget } from "@/components/booking-widget";
 import { RouteCard } from "@/components/sections/route-card";
 import { CtaBand } from "@/components/sections/cta-band";
 import { InpageNav } from "@/components/inpage-nav";
+import { TrustRail } from "@/components/booking/trust-rail";
 import { getDict, useLocale, useT, type Locale, type Dict } from "@/i18n";
 import {
   getLocalizedAirportRoutes,
