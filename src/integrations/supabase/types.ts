@@ -238,6 +238,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -254,6 +255,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
@@ -294,6 +296,7 @@ export type Database = {
           flight_number?: string | null
           goodwill_credit_cents?: number
           id?: string
+          incentive_cents?: number
           locale?: string
           market?: string | null
           notes?: string | null
@@ -310,6 +313,7 @@ export type Database = {
           refund_amount_cents?: number | null
           refund_percent?: number | null
           refund_status?: string
+          released_at?: string | null
           return_at?: string | null
           return_flight_number?: string | null
           route_slug: string
@@ -350,6 +354,7 @@ export type Database = {
           flight_number?: string | null
           goodwill_credit_cents?: number
           id?: string
+          incentive_cents?: number
           locale?: string
           market?: string | null
           notes?: string | null
@@ -366,6 +371,7 @@ export type Database = {
           refund_amount_cents?: number | null
           refund_percent?: number | null
           refund_status?: string
+          released_at?: string | null
           return_at?: string | null
           return_flight_number?: string | null
           route_slug?: string
@@ -475,6 +481,166 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      driver_account_entries: {
+        Row: {
+          amount_cents: number
+          booking_id: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          driver_id: string
+          earning_id: string | null
+          entry_type: string
+          id: string
+          metadata: Json
+          payout_id: string | null
+          reason: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          booking_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          driver_id: string
+          earning_id?: string | null
+          entry_type: string
+          id?: string
+          metadata?: Json
+          payout_id?: string | null
+          reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          booking_id?: string | null
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          driver_id?: string
+          earning_id?: string | null
+          entry_type?: string
+          id?: string
+          metadata?: Json
+          payout_id?: string | null
+          reason?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_account_entries_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_account_entries_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "my_job_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_account_entries_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "open_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_account_entries_earning_id_fkey"
+            columns: ["earning_id"]
+            isOneToOne: false
+            referencedRelation: "driver_earnings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_account_entries_payout_id_fkey"
+            columns: ["payout_id"]
+            isOneToOne: false
+            referencedRelation: "driver_payouts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      driver_cancellations: {
+        Row: {
+          booking_id: string
+          cancelled_at: string
+          created_at: string
+          driver_id: string
+          hours_before_pickup: number
+          id: string
+          kind: string
+          net_reference_cents: number
+          notes: string | null
+          penalty_bps: number
+          penalty_cents: number
+          reason: string | null
+          released_at: string | null
+          tier: string
+        }
+        Insert: {
+          booking_id: string
+          cancelled_at?: string
+          created_at?: string
+          driver_id: string
+          hours_before_pickup: number
+          id?: string
+          kind?: string
+          net_reference_cents?: number
+          notes?: string | null
+          penalty_bps?: number
+          penalty_cents?: number
+          reason?: string | null
+          released_at?: string | null
+          tier: string
+        }
+        Update: {
+          booking_id?: string
+          cancelled_at?: string
+          created_at?: string
+          driver_id?: string
+          hours_before_pickup?: number
+          id?: string
+          kind?: string
+          net_reference_cents?: number
+          notes?: string | null
+          penalty_bps?: number
+          penalty_cents?: number
+          reason?: string | null
+          released_at?: string | null
+          tier?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_cancellations_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_cancellations_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "my_job_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_cancellations_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "open_jobs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       driver_documents: {
         Row: {
@@ -601,21 +767,21 @@ export type Database = {
           {
             foreignKeyName: "driver_earnings_booking_id_fkey"
             columns: ["booking_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "bookings"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "driver_earnings_booking_id_fkey"
             columns: ["booking_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "my_job_offers"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "driver_earnings_booking_id_fkey"
             columns: ["booking_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "open_jobs"
             referencedColumns: ["id"]
           },
@@ -908,6 +1074,36 @@ export type Database = {
           },
         ]
       }
+      driver_reliability: {
+        Row: {
+          cancellations_90d: number
+          completed_90d: number
+          driver_id: string
+          no_shows_90d: number
+          score: number
+          suspended_until: string | null
+          updated_at: string
+        }
+        Insert: {
+          cancellations_90d?: number
+          completed_90d?: number
+          driver_id: string
+          no_shows_90d?: number
+          score?: number
+          suspended_until?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cancellations_90d?: number
+          completed_90d?: number
+          driver_id?: string
+          no_shows_90d?: number
+          score?: number
+          suspended_until?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       event_outbox: {
         Row: {
           aggregate_id: string
@@ -1173,30 +1369,54 @@ export type Database = {
       }
       platform_settings: {
         Row: {
+          auto_incentive_bps: number
+          auto_incentive_hours: number
           commission_bps: number
           created_at: string
           default_payout_schedule: string
           holding_period_hours: number
           id: boolean
           min_payout_cents: number
+          penalty_no_show_bps: number
+          penalty_tier_24_bps: number
+          penalty_tier_48_bps: number
+          penalty_tier_72_bps: number
+          reliability_suspend_days: number
+          reliability_suspend_score: number
           updated_at: string
         }
         Insert: {
+          auto_incentive_bps?: number
+          auto_incentive_hours?: number
           commission_bps?: number
           created_at?: string
           default_payout_schedule?: string
           holding_period_hours?: number
           id?: boolean
           min_payout_cents?: number
+          penalty_no_show_bps?: number
+          penalty_tier_24_bps?: number
+          penalty_tier_48_bps?: number
+          penalty_tier_72_bps?: number
+          reliability_suspend_days?: number
+          reliability_suspend_score?: number
           updated_at?: string
         }
         Update: {
+          auto_incentive_bps?: number
+          auto_incentive_hours?: number
           commission_bps?: number
           created_at?: string
           default_payout_schedule?: string
           holding_period_hours?: number
           id?: boolean
           min_payout_cents?: number
+          penalty_no_show_bps?: number
+          penalty_tier_24_bps?: number
+          penalty_tier_48_bps?: number
+          penalty_tier_72_bps?: number
+          reliability_suspend_days?: number
+          reliability_suspend_score?: number
           updated_at?: string
         }
         Relationships: []
@@ -1505,6 +1725,58 @@ export type Database = {
       }
     }
     Functions: {
+      admin_adjust_driver_account: {
+        Args: {
+          p_amount_cents: number
+          p_driver_id: string
+          p_entry_type?: string
+          p_reason: string
+        }
+        Returns: {
+          amount_cents: number
+          booking_id: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          driver_id: string
+          earning_id: string | null
+          entry_type: string
+          id: string
+          metadata: Json
+          payout_id: string | null
+          reason: string | null
+          status: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "driver_account_entries"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      admin_mark_driver_no_show: {
+        Args: { p_booking_id: string; p_note?: string }
+        Returns: Json
+      }
+      admin_set_driver_suspension: {
+        Args: { p_driver_id: string; p_until: string }
+        Returns: {
+          cancellations_90d: number
+          completed_90d: number
+          driver_id: string
+          no_shows_90d: number
+          score: number
+          suspended_until: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "driver_reliability"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       admin_set_earning_status: {
         Args: { p_earning_id: string; p_note?: string; p_status: string }
         Returns: {
@@ -1532,6 +1804,73 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      admin_set_replacement_incentive: {
+        Args: { p_booking_id: string; p_cents: number }
+        Returns: {
+          asap_expires_at: string | null
+          assigned_at: string | null
+          bags_cabin: number
+          bags_checked: number
+          cancellation_note: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          cancelled_by: string | null
+          created_at: string
+          currency: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          dispatch_batch: number
+          dispatch_mode: string | null
+          driver_id: string | null
+          dropoff_address: string | null
+          dropoff_point: Json | null
+          eta_minutes: number | null
+          extras: Json
+          flight_number: string | null
+          goodwill_credit_cents: number
+          id: string
+          incentive_cents: number
+          locale: string
+          market: string | null
+          notes: string | null
+          offered_at: string | null
+          partner_id: string | null
+          passengers: number
+          payment_status: string
+          pickup_address: string | null
+          pickup_at: string
+          pickup_point: Json | null
+          prefer_credit: boolean
+          price_cents: number
+          quote_id: string | null
+          refund_amount_cents: number | null
+          refund_percent: number | null
+          refund_status: string
+          released_at: string | null
+          return_at: string | null
+          return_flight_number: string | null
+          route_slug: string
+          status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
+          stripe_payment_intent_id: string | null
+          trip_type: string
+          updated_at: string
+          urgency: string
+          user_id: string | null
+          vehicle_class: string
+          zone_id: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "bookings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       admin_update_platform_settings: {
         Args: {
           p_commission_bps?: number
@@ -1540,17 +1879,50 @@ export type Database = {
           p_min_payout_cents?: number
         }
         Returns: {
+          auto_incentive_bps: number
+          auto_incentive_hours: number
           commission_bps: number
           created_at: string
           default_payout_schedule: string
           holding_period_hours: number
           id: boolean
           min_payout_cents: number
+          penalty_no_show_bps: number
+          penalty_tier_24_bps: number
+          penalty_tier_48_bps: number
+          penalty_tier_72_bps: number
+          reliability_suspend_days: number
+          reliability_suspend_score: number
           updated_at: string
         }
         SetofOptions: {
           from: "*"
           to: "platform_settings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      admin_waive_penalty: {
+        Args: { p_entry_id: string; p_reason: string }
+        Returns: {
+          amount_cents: number
+          booking_id: string | null
+          created_at: string
+          created_by: string | null
+          currency: string
+          driver_id: string
+          earning_id: string | null
+          entry_type: string
+          id: string
+          metadata: Json
+          payout_id: string | null
+          reason: string | null
+          status: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "driver_account_entries"
           isOneToOne: true
           isSetofReturn: false
         }
@@ -1581,6 +1953,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -1597,6 +1970,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
@@ -1687,6 +2061,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -1703,6 +2078,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
@@ -1775,6 +2151,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -1791,6 +2168,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
@@ -1846,6 +2224,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -1862,6 +2241,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
@@ -1935,6 +2315,28 @@ export type Database = {
         }
       }
       default_dispatch_mode: { Args: { p_market: string }; Returns: string }
+      driver_account_balance: {
+        Args: { p_driver_id: string }
+        Returns: {
+          available_cents: number
+          incentives_cents: number
+          negative_cents: number
+          paid_cents: number
+          penalties_cents: number
+          pending_cents: number
+        }[]
+      }
+      driver_cancel_job: {
+        Args: { p_booking_id: string; p_reason?: string }
+        Returns: Json
+      }
+      driver_cancellation_tier: {
+        Args: { p_hours: number }
+        Returns: {
+          bps: number
+          tier: string
+        }[]
+      }
       expire_asap_bookings: { Args: never; Returns: number }
       expire_job_offers: { Args: never; Returns: Json }
       get_asap_dispatch_status: {
@@ -1963,6 +2365,7 @@ export type Database = {
         Args: { p_partner_id: string }
         Returns: boolean
       }
+      is_suspended_driver: { Args: { p_driver_id: string }; Returns: boolean }
       mature_held_earnings: { Args: never; Returns: number }
       my_partner_ids: { Args: never; Returns: string[] }
       open_incident: {
@@ -2002,6 +2405,10 @@ export type Database = {
         Returns: boolean
       }
       pick_partner_for_zone: { Args: { p_zone_id: string }; Returns: string }
+      preview_driver_cancellation: {
+        Args: { p_booking_id: string }
+        Returns: Json
+      }
       process_stripe_checkout_event: {
         Args: {
           p_amount_total: number
@@ -2012,6 +2419,34 @@ export type Database = {
           p_livemode: boolean
           p_payment_intent_id: string
           p_session_id: string
+        }
+        Returns: Json
+      }
+      recompute_driver_reliability: {
+        Args: { p_driver_id: string }
+        Returns: {
+          cancellations_90d: number
+          completed_90d: number
+          driver_id: string
+          no_shows_90d: number
+          score: number
+          suspended_until: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "driver_reliability"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      release_booking_from_driver: {
+        Args: {
+          p_actor: string
+          p_booking_id: string
+          p_driver_id: string
+          p_kind: string
+          p_reason: string
         }
         Returns: Json
       }
@@ -2046,6 +2481,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -2062,6 +2498,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
@@ -2146,6 +2583,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -2162,6 +2600,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
@@ -2356,6 +2795,7 @@ export type Database = {
           flight_number: string | null
           goodwill_credit_cents: number
           id: string
+          incentive_cents: number
           locale: string
           market: string | null
           notes: string | null
@@ -2372,6 +2812,7 @@ export type Database = {
           refund_amount_cents: number | null
           refund_percent: number | null
           refund_status: string
+          released_at: string | null
           return_at: string | null
           return_flight_number: string | null
           route_slug: string
