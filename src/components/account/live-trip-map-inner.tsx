@@ -32,7 +32,14 @@ function carIcon(heading: number | null) {
   });
 }
 
-function Fit({ points }: { points: [number, number][] }) {
+/** Fit once per endpoint change, then keep the moving driver in view. */
+function Fit({
+  points,
+  driver,
+}: {
+  points: [number, number][];
+  driver?: LiveMapPoint | null;
+}) {
   const map = useMap();
   const key = points.map((p) => p.join()).join("|");
   useEffect(() => {
@@ -41,9 +48,15 @@ function Fit({ points }: { points: [number, number][] }) {
       map.setView(points[0], 13);
       return;
     }
-    map.fitBounds(latLngBounds(points), { padding: [50, 50], maxZoom: 14 });
+    map.fitBounds(latLngBounds(points), { padding: [50, 50], maxZoom: 13 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, key]);
+  useEffect(() => {
+    if (!driver) return;
+    if (!map.getBounds().pad(-0.15).contains([driver.lat, driver.lng])) {
+      map.panTo([driver.lat, driver.lng], { animate: true });
+    }
+  }, [map, driver?.lat, driver?.lng]);
   return null;
 }
 
@@ -61,7 +74,6 @@ export default function LiveTripMapInner({
   geometry?: TripGeometry;
 }) {
   const points: [number, number][] = [];
-  if (driver) points.push([driver.lat, driver.lng]);
   if (pickup) points.push([pickup.lat, pickup.lng]);
   if (dropoff) points.push([dropoff.lat, dropoff.lng]);
 
@@ -78,7 +90,7 @@ export default function LiveTripMapInner({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <Fit points={points} />
+        <Fit points={points} driver={driver} />
         {geometry && geometry.length > 1 && (
           <Polyline
             positions={geometry}
