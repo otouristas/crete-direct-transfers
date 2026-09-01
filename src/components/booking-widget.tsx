@@ -26,6 +26,7 @@ import { priceLineLabel } from "@/lib/price-labels";
 import { dateFnsLocale } from "@/lib/date-locale";
 import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
+import { saveQuote } from "@/lib/quote-recovery";
 
 type ServiceMode = "transfer" | "hourly";
 
