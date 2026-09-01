@@ -23,6 +23,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { BookingCtaBand } from "@/components/account/booking-cta-band";
 import { AccountAppDownload } from "@/components/account/account-app-download";
+import { NextTransferCard } from "@/components/account/next-transfer-card";
 import { getRoute } from "@/data/routes";
 import { useMoney } from "@/hooks/use-currency";
 import { CONTACT_EMAIL } from "@/lib/site";
@@ -154,8 +155,13 @@ function MyBookingsPage() {
       ? `${format(appliedRange.from, "d MMM yyyy", { locale: dateFnsLocale(locale) })} – ${format(appliedRange.to, "d MMM yyyy", { locale: dateFnsLocale(locale) })}`
       : format(appliedRange.from, "d MMM yyyy", { locale: dateFnsLocale(locale) }));
 
+  const nextTransfer = (bookings.data ?? [])
+    .filter((b) => isUpcoming(b, Date.now()))
+    .sort((a, b) => a.pickup_at.localeCompare(b.pickup_at))[0];
+
   return (
     <div>
+      {nextTransfer && <NextTransferCard booking={nextTransfer} locale={locale} />}
       <nav className="mb-7 mt-1 flex gap-1 overflow-x-auto border-b border-border [scrollbar-width:none]">
         {statusTabs.map((tab) => {
           const Icon = tab.icon;
