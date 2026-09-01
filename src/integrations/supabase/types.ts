@@ -258,6 +258,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
@@ -310,6 +314,10 @@ export type Database = {
           return_flight_number?: string | null
           route_slug: string
           status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_checkout_session_url?: string | null
+          stripe_checkout_status?: string | null
+          stripe_checkout_version?: number
           stripe_payment_intent_id?: string | null
           trip_type?: string
           updated_at?: string
@@ -362,6 +370,10 @@ export type Database = {
           return_flight_number?: string | null
           route_slug?: string
           status?: string
+          stripe_checkout_session_id?: string | null
+          stripe_checkout_session_url?: string | null
+          stripe_checkout_status?: string | null
+          stripe_checkout_version?: number
           stripe_payment_intent_id?: string | null
           trip_type?: string
           updated_at?: string
@@ -1003,6 +1015,30 @@ export type Database = {
           },
         ]
       }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          locale: string
+          source: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          locale?: string
+          source?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          locale?: string
+          source?: string
+        }
+        Relationships: []
+      }
       partner_members: {
         Row: {
           created_at: string
@@ -1327,6 +1363,39 @@ export type Database = {
         }
         Relationships: []
       }
+      stripe_webhook_events: {
+        Row: {
+          booking_id: string | null
+          error: string | null
+          event_id: string
+          event_type: string
+          livemode: boolean
+          processed_at: string | null
+          received_at: string
+          status: string
+        }
+        Insert: {
+          booking_id?: string | null
+          error?: string | null
+          event_id: string
+          event_type: string
+          livemode: boolean
+          processed_at?: string | null
+          received_at?: string
+          status?: string
+        }
+        Update: {
+          booking_id?: string | null
+          error?: string | null
+          event_id?: string
+          event_type?: string
+          livemode?: boolean
+          processed_at?: string | null
+          received_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       my_job_offers: {
@@ -1532,6 +1601,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
@@ -1634,6 +1707,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
@@ -1718,6 +1795,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
@@ -1785,6 +1866,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
@@ -1917,6 +2002,19 @@ export type Database = {
         Returns: boolean
       }
       pick_partner_for_zone: { Args: { p_zone_id: string }; Returns: string }
+      process_stripe_checkout_event: {
+        Args: {
+          p_amount_total: number
+          p_booking_id: string
+          p_currency: string
+          p_event_id: string
+          p_event_type: string
+          p_livemode: boolean
+          p_payment_intent_id: string
+          p_session_id: string
+        }
+        Returns: Json
+      }
       request_cancellation: {
         Args: {
           p_booking_id: string
@@ -1968,6 +2066,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
@@ -2064,6 +2166,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
@@ -2270,6 +2376,10 @@ export type Database = {
           return_flight_number: string | null
           route_slug: string
           status: string
+          stripe_checkout_session_id: string | null
+          stripe_checkout_session_url: string | null
+          stripe_checkout_status: string | null
+          stripe_checkout_version: number
           stripe_payment_intent_id: string | null
           trip_type: string
           updated_at: string
