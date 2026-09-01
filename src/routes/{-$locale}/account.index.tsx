@@ -24,7 +24,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { BookingCtaBand } from "@/components/account/booking-cta-band";
 import { AccountAppDownload } from "@/components/account/account-app-download";
 import { getRoute } from "@/data/routes";
-import { formatEur } from "@/lib/pricing";
+import { useMoney } from "@/hooks/use-currency";
 import { CONTACT_EMAIL } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -410,6 +410,7 @@ function SelectMenu({
 function BookingList({ bookings }: { bookings: Booking[] }) {
   const t = useT();
   const locale = useLocale();
+  const money = useMoney();
 
   if (bookings.length === 0) {
     return (
@@ -460,7 +461,7 @@ function BookingList({ bookings }: { bookings: Booking[] }) {
               <div className="flex items-center gap-3">
                 <StatusBadge status={b.status} />
                 <span className="font-display text-lg text-primary">
-                  {formatEur(b.price_cents / 100)}
+                  {money.format(b.price_cents / 100)}
                 </span>
               </div>
             </div>

@@ -38,7 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getRoute, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
-import { formatEur } from "@/lib/pricing";
+import { useMoney } from "@/hooks/use-currency";
 import { lookupFlight } from "@/lib/flight-tracking";
 import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_WHATSAPP_HREF } from "@/lib/site";
 
@@ -67,6 +67,7 @@ const INCIDENT_TYPES: Exclude<IncidentType, "unable_to_complete">[] = [
 ];
 
 function BookingDetailPage() {
+  const money = useMoney();
   const { locale } = Route.useRouteContext();
   const t = getDict(locale);
   const { id } = Route.useParams();
@@ -234,9 +235,12 @@ function BookingDetailPage() {
             {t.common.total}
           </span>
           <span className="font-display text-2xl text-primary">
-            {formatEur(b.price_cents / 100)}
+            {money.format(b.price_cents / 100)}
           </span>
         </div>
+        {money.isConverted && (
+          <p className="mt-1 text-right text-xs text-muted-foreground">{t.account.chargedInEur}</p>
+        )}
         <p className="mt-1 text-xs text-muted-foreground">
           {b.payment_status === "paid" || b.payment_status === "deposit_paid"
             ? t.account.paidOnline
