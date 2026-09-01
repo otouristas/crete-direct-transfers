@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -128,6 +128,7 @@ export function BookingWidget({
   defaultService = "transfer",
   compact = false,
   variant,
+  onSelectionChange,
 }: {
   defaultRoute?: string;
   /** Prefill From with this IATA airport (pillar / airport pages). */
@@ -140,6 +141,11 @@ export function BookingWidget({
   compact?: boolean;
   /** Homepage uses horizontal bar; route pages keep the card. */
   variant?: "hbar" | "card";
+  /** Fires whenever the from/to selection changes (hbar variant only). */
+  onSelectionChange?: (selection: {
+    from: PlaceResult | null;
+    to: PlaceResult | null;
+  }) => void;
 }) {
   const resolvedVariant = variant ?? (compact ? "card" : "hbar");
   if (resolvedVariant === "card") {
@@ -158,6 +164,7 @@ export function BookingWidget({
       defaultIata={defaultIata}
       defaultDestination={defaultDestination}
       defaultService={defaultService}
+      onSelectionChange={onSelectionChange}
     />
   );
 }
@@ -167,11 +174,16 @@ function BookingWidgetBar({
   defaultIata,
   defaultDestination,
   defaultService = "transfer",
+  onSelectionChange,
 }: {
   defaultClass?: VehicleClass;
   defaultIata?: string;
   defaultDestination?: string;
   defaultService?: ServiceMode;
+  onSelectionChange?: (selection: {
+    from: PlaceResult | null;
+    to: PlaceResult | null;
+  }) => void;
 }) {
   const t = useT();
   const locale = useLocale();
@@ -198,6 +210,11 @@ function BookingWidgetBar({
   const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(null);
   const [dateOpen, setDateOpen] = useState(false);
   const [returnOpen, setReturnOpen] = useState(false);
+
+  useEffect(() => {
+    onSelectionChange?.({ from: fromPlace, to: toPlace });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fromPlace, toPlace]);
 
   const kindLabels = {
     airport: t.bookPage.kindAirport,
