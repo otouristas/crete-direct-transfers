@@ -48,6 +48,7 @@ import { Route as Char123LocaleChar125PartnerIndexRouteImport } from './routes/{
 import { Route as Char123LocaleChar125HotelsIndexRouteImport } from './routes/{-$locale}/hotels.index'
 import { Route as Char123LocaleChar125GuidesIndexRouteImport } from './routes/{-$locale}/guides.index'
 import { Route as Char123LocaleChar125FleetIndexRouteImport } from './routes/{-$locale}/fleet.index'
+import { Route as Char123LocaleChar125FerryIndexRouteImport } from './routes/{-$locale}/ferry.index'
 import { Route as Char123LocaleChar125DriversIndexRouteImport } from './routes/{-$locale}/drivers.index'
 import { Route as Char123LocaleChar125DriverIndexRouteImport } from './routes/{-$locale}/driver.index'
 import { Route as Char123LocaleChar125CitiesIndexRouteImport } from './routes/{-$locale}/cities.index'
@@ -313,6 +314,12 @@ const Char123LocaleChar125FleetIndexRoute =
     path: '/fleet/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125FerryIndexRoute =
+  Char123LocaleChar125FerryIndexRouteImport.update({
+    id: '/ferry/',
+    path: '/ferry/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125DriversIndexRoute =
   Char123LocaleChar125DriversIndexRouteImport.update({
     id: '/drivers/',
@@ -571,6 +578,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/drivers/': typeof Char123LocaleChar125DriversIndexRoute
+  '/{-$locale}/ferry/': typeof Char123LocaleChar125FerryIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/guides/': typeof Char123LocaleChar125GuidesIndexRoute
   '/{-$locale}/hotels/': typeof Char123LocaleChar125HotelsIndexRoute
@@ -641,6 +649,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/cities': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/drivers': typeof Char123LocaleChar125DriversIndexRoute
+  '/{-$locale}/ferry': typeof Char123LocaleChar125FerryIndexRoute
   '/{-$locale}/fleet': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/guides': typeof Char123LocaleChar125GuidesIndexRoute
   '/{-$locale}/hotels': typeof Char123LocaleChar125HotelsIndexRoute
@@ -716,6 +725,7 @@ export interface FileRoutesById {
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/drivers/': typeof Char123LocaleChar125DriversIndexRoute
+  '/{-$locale}/ferry/': typeof Char123LocaleChar125FerryIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/guides/': typeof Char123LocaleChar125GuidesIndexRoute
   '/{-$locale}/hotels/': typeof Char123LocaleChar125HotelsIndexRoute
@@ -792,6 +802,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
     | '/{-$locale}/drivers/'
+    | '/{-$locale}/ferry/'
     | '/{-$locale}/fleet/'
     | '/{-$locale}/guides/'
     | '/{-$locale}/hotels/'
@@ -862,6 +873,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities'
     | '/{-$locale}/driver'
     | '/{-$locale}/drivers'
+    | '/{-$locale}/ferry'
     | '/{-$locale}/fleet'
     | '/{-$locale}/guides'
     | '/{-$locale}/hotels'
@@ -936,6 +948,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
     | '/{-$locale}/drivers/'
+    | '/{-$locale}/ferry/'
     | '/{-$locale}/fleet/'
     | '/{-$locale}/guides/'
     | '/{-$locale}/hotels/'
@@ -1230,6 +1243,13 @@ declare module '@tanstack/react-router' {
       path: '/fleet'
       fullPath: '/{-$locale}/fleet/'
       preLoaderRoute: typeof Char123LocaleChar125FleetIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/ferry/': {
+      id: '/{-$locale}/ferry/'
+      path: '/ferry'
+      fullPath: '/{-$locale}/ferry/'
+      preLoaderRoute: typeof Char123LocaleChar125FerryIndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/drivers/': {
@@ -1592,6 +1612,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125BlogIndexRoute: typeof Char123LocaleChar125BlogIndexRoute
   Char123LocaleChar125CitiesIndexRoute: typeof Char123LocaleChar125CitiesIndexRoute
   Char123LocaleChar125DriversIndexRoute: typeof Char123LocaleChar125DriversIndexRoute
+  Char123LocaleChar125FerryIndexRoute: typeof Char123LocaleChar125FerryIndexRoute
   Char123LocaleChar125FleetIndexRoute: typeof Char123LocaleChar125FleetIndexRoute
   Char123LocaleChar125GuidesIndexRoute: typeof Char123LocaleChar125GuidesIndexRoute
   Char123LocaleChar125HotelsIndexRoute: typeof Char123LocaleChar125HotelsIndexRoute
@@ -1672,6 +1693,7 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125CitiesIndexRoute: Char123LocaleChar125CitiesIndexRoute,
     Char123LocaleChar125DriversIndexRoute:
       Char123LocaleChar125DriversIndexRoute,
+    Char123LocaleChar125FerryIndexRoute: Char123LocaleChar125FerryIndexRoute,
     Char123LocaleChar125FleetIndexRoute: Char123LocaleChar125FleetIndexRoute,
     Char123LocaleChar125GuidesIndexRoute: Char123LocaleChar125GuidesIndexRoute,
     Char123LocaleChar125HotelsIndexRoute: Char123LocaleChar125HotelsIndexRoute,
