@@ -34,6 +34,7 @@ import { Route as Char123LocaleChar125FaqRouteImport } from './routes/{-$locale}
 import { Route as Char123LocaleChar125DriverRouteImport } from './routes/{-$locale}/driver'
 import { Route as Char123LocaleChar125CyprusRouteImport } from './routes/{-$locale}/cyprus'
 import { Route as Char123LocaleChar125CountriesRouteImport } from './routes/{-$locale}/countries'
+import { Route as Char123LocaleChar125ContractsRouteImport } from './routes/{-$locale}/contracts'
 import { Route as Char123LocaleChar125ContactRouteImport } from './routes/{-$locale}/contact'
 import { Route as Char123LocaleChar125CityToCityRouteImport } from './routes/{-$locale}/city-to-city'
 import { Route as Char123LocaleChar125BookRouteImport } from './routes/{-$locale}/book'
@@ -220,6 +221,12 @@ const Char123LocaleChar125CountriesRoute =
   Char123LocaleChar125CountriesRouteImport.update({
     id: '/countries',
     path: '/countries',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ContractsRoute =
+  Char123LocaleChar125ContractsRouteImport.update({
+    id: '/contracts',
+    path: '/contracts',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125ContactRoute =
@@ -470,6 +477,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
   '/{-$locale}/city-to-city': typeof Char123LocaleChar125CityToCityRoute
   '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/contracts': typeof Char123LocaleChar125ContractsRoute
   '/{-$locale}/countries': typeof Char123LocaleChar125CountriesRoute
   '/{-$locale}/cyprus': typeof Char123LocaleChar125CyprusRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverRouteWithChildren
@@ -535,6 +543,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
   '/{-$locale}/city-to-city': typeof Char123LocaleChar125CityToCityRoute
   '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/contracts': typeof Char123LocaleChar125ContractsRoute
   '/{-$locale}/countries': typeof Char123LocaleChar125CountriesRoute
   '/{-$locale}/cyprus': typeof Char123LocaleChar125CyprusRoute
   '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
@@ -601,6 +610,7 @@ export interface FileRoutesById {
   '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
   '/{-$locale}/city-to-city': typeof Char123LocaleChar125CityToCityRoute
   '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
+  '/{-$locale}/contracts': typeof Char123LocaleChar125ContractsRoute
   '/{-$locale}/countries': typeof Char123LocaleChar125CountriesRoute
   '/{-$locale}/cyprus': typeof Char123LocaleChar125CyprusRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverRouteWithChildren
@@ -670,6 +680,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/book'
     | '/{-$locale}/city-to-city'
     | '/{-$locale}/contact'
+    | '/{-$locale}/contracts'
     | '/{-$locale}/countries'
     | '/{-$locale}/cyprus'
     | '/{-$locale}/driver'
@@ -735,6 +746,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/book'
     | '/{-$locale}/city-to-city'
     | '/{-$locale}/contact'
+    | '/{-$locale}/contracts'
     | '/{-$locale}/countries'
     | '/{-$locale}/cyprus'
     | '/{-$locale}/faq'
@@ -800,6 +812,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/book'
     | '/{-$locale}/city-to-city'
     | '/{-$locale}/contact'
+    | '/{-$locale}/contracts'
     | '/{-$locale}/countries'
     | '/{-$locale}/cyprus'
     | '/{-$locale}/driver'
@@ -1041,6 +1054,13 @@ declare module '@tanstack/react-router' {
       path: '/countries'
       fullPath: '/{-$locale}/countries'
       preLoaderRoute: typeof Char123LocaleChar125CountriesRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/contracts': {
+      id: '/{-$locale}/contracts'
+      path: '/contracts'
+      fullPath: '/{-$locale}/contracts'
+      preLoaderRoute: typeof Char123LocaleChar125ContractsRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/contact': {
@@ -1405,6 +1425,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125BookRoute: typeof Char123LocaleChar125BookRouteWithChildren
   Char123LocaleChar125CityToCityRoute: typeof Char123LocaleChar125CityToCityRoute
   Char123LocaleChar125ContactRoute: typeof Char123LocaleChar125ContactRoute
+  Char123LocaleChar125ContractsRoute: typeof Char123LocaleChar125ContractsRoute
   Char123LocaleChar125CountriesRoute: typeof Char123LocaleChar125CountriesRoute
   Char123LocaleChar125CyprusRoute: typeof Char123LocaleChar125CyprusRoute
   Char123LocaleChar125DriverRoute: typeof Char123LocaleChar125DriverRouteWithChildren
@@ -1463,6 +1484,7 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125BookRoute: Char123LocaleChar125BookRouteWithChildren,
     Char123LocaleChar125CityToCityRoute: Char123LocaleChar125CityToCityRoute,
     Char123LocaleChar125ContactRoute: Char123LocaleChar125ContactRoute,
+    Char123LocaleChar125ContractsRoute: Char123LocaleChar125ContractsRoute,
     Char123LocaleChar125CountriesRoute: Char123LocaleChar125CountriesRoute,
     Char123LocaleChar125CyprusRoute: Char123LocaleChar125CyprusRoute,
     Char123LocaleChar125DriverRoute:
