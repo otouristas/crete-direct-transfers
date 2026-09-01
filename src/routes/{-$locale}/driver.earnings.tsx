@@ -334,7 +334,7 @@ function EarningsPage() {
                       {new Date(entry.created_at).toLocaleDateString(dateLocale)}
                     </td>
                     <td className="py-3">{entryTypeLabel(entry.entry_type, locale)}</td>
-                    <td className="py-3 text-muted-foreground">{entry.description ?? "—"}</td>
+                    <td className="py-3 text-muted-foreground">{entry.reason ?? "—"}</td>
                     <td
                       className={`py-3 text-right font-medium ${
                         entry.amount_cents < 0 ? "text-destructive" : "text-primary"

@@ -180,7 +180,7 @@ export async function setDriverSuspensionAdmin(input: {
 }): Promise<void> {
   const { error } = await supabase.rpc("admin_set_driver_suspension", {
     p_driver_id: input.driverId,
-    p_until: input.until ?? undefined,
+    p_until: input.until as unknown as string,
   });
   if (error) throw error;
 }
