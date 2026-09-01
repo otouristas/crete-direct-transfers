@@ -1,6 +1,6 @@
 import type { Territory, TerritoryDataset } from "@/data/territory";
 import { tagTerritory } from "@/data/territory";
-import { buildRegions, type RegionRecord } from "@/data/regions";
+import { buildRegions, type RegionRecord } from "@/data/region-record";
 import type { RouteData } from "@/data/routes";
 import { getCityImage, imageUrl } from "@/lib/place-image";
 

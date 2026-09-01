@@ -2,7 +2,7 @@ import type { Territory, TerritoryDataset } from "@/data/territory";
 import { tagTerritory } from "@/data/territory";
 import { CRETE_ROUTES } from "./routes";
 import { CRETE_REGION_RECORDS } from "./regions";
-import { buildRegions } from "@/data/regions";
+import { buildRegions } from "@/data/region-record";
 
 export const CRETE: Territory = {
   slug: "crete",
