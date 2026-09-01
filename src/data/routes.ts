@@ -1,4 +1,4 @@
-import { getCityImage, getRegionImage, getServiceImage, imageUrl } from "@/lib/place-image";
+import { ALL_ROUTES, routesInTerritory } from "@/data/territories";
 
 export type VehicleClass =
   | "economy"
@@ -105,7 +105,8 @@ export const VEHICLE_CLASSES: {
   },
 ];
 
-export type Region = "Chania" | "Rethymno" | "Heraklion" | "Lasithi";
+/** Region display name inside a territory (e.g. "Lasithi", "Athens Riviera"). */
+export type Region = string;
 
 export type RouteData = {
   slug: string;
@@ -119,8 +120,13 @@ export type RouteData = {
   notes: string;
   region: Region;
   service: "airport" | "port" | "cross-island" | "hotel";
+  /** Owning territory slug — stamped by the dataset registry. */
+  territory?: string;
 };
 
+
+/** Merged, territory-tagged route catalog. Authoring lives in `src/data/territories/`. */
+export const ROUTES: RouteData[] = ALL_ROUTES;
 
 export function getRoute(slug: string): RouteData | undefined {
   return ROUTES.find((r) => r.slug === slug);
@@ -132,4 +138,9 @@ export function routesByRegion(region: Region): RouteData[] {
 
 export function routesByService(service: RouteData["service"]): RouteData[] {
   return ROUTES.filter((r) => r.service === service);
+}
+
+/** Routes for one territory — the default lens for a destination hub. */
+export function routesByTerritory(territory: string): RouteData[] {
+  return routesInTerritory(territory);
 }
