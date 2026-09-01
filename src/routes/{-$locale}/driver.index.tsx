@@ -14,6 +14,7 @@ import {
 } from "@/queries/driver";
 import { useProfile } from "@/queries/profile";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DriverStatsBand } from "@/components/driver/driver-stats-band";
 import { getRoute, VEHICLE_CLASSES } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
 import { supabase } from "@/integrations/supabase/client";
@@ -150,6 +151,7 @@ function OpenJobsPage() {
 
   return (
     <div className="space-y-6">
+      <DriverStatsBand locale={locale} />
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4">
         <div>
           <p className="text-sm font-medium text-primary">
