@@ -31,16 +31,17 @@ export function HeroRouteStage({ locale }: { locale: Locale }) {
     <section className="relative z-30 -mt-16 bg-background md:-mt-24">
       <div className="mx-auto max-w-[1280px] px-6">
         <div className="relative overflow-hidden rounded-[28px] border border-border bg-card shadow-[0_30px_80px_-40px_rgba(11,37,69,0.45)]">
-          <div className="pointer-events-none absolute inset-0">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-[62%] md:h-[64%]">
             <CreteRouteCanvas
               title={t.home.mapTitle}
               pickup={pickup}
               dropoff={dropoff}
-              className="tfr-route-canvas h-full w-full opacity-90"
+              className="tfr-route-canvas h-full w-full"
             />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-card" />
           </div>
 
-          <div className="relative px-5 pb-6 pt-7 md:px-8 md:pb-8 md:pt-9">
+          <div className="relative flex min-h-[440px] flex-col justify-between px-5 pb-6 pt-7 md:min-h-[500px] md:px-8 md:pb-8 md:pt-9">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent-deep">
                 {t.home.mapEyebrow}
@@ -52,7 +53,7 @@ export function HeroRouteStage({ locale }: { locale: Locale }) {
               </p>
             </div>
 
-            <div className="mt-5">
+            <div className="mt-8">
               <BookingWidget variant="hbar" onSelectionChange={setSelection} />
               <ResumeQuoteBanner locale={locale} className="mt-4" />
             </div>
