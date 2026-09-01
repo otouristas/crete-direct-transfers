@@ -1187,6 +1187,12 @@ export const el: Dict = {
     tabPool: "Ανοιχτές διαδρομές",
     tabJobs: "Οι διαδρομές μου",
     tabEarnings: "Έσοδα",
+    statsToday: "Σημερινές διαδρομές",
+    statsUpcoming: "Επερχόμενες",
+    statsPending: "Εκκρεμή έσοδα",
+    statsAvailable: "Διαθέσιμο υπόλοιπο",
+    statsReliability: "Αξιοπιστία",
+    statsOverview: "Επισκόπηση",
     pendingTitle: "Η αίτηση ελήφθη",
     pendingBody:
       "Εξετάζουμε την αίτησή σας — οι περισσότερες εγκρίνονται εντός 48 ωρών. Ερωτήσεις; Καλέστε το κέντρο.",

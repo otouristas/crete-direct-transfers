@@ -1197,6 +1197,12 @@ export const fr: Dict = {
     tabPool: "Courses disponibles",
     tabJobs: "Mes courses",
     tabEarnings: "Revenus",
+    statsToday: "Courses du jour",
+    statsUpcoming: "À venir",
+    statsPending: "Revenus en attente",
+    statsAvailable: "Solde disponible",
+    statsReliability: "Fiabilité",
+    statsOverview: "Aperçu",
     pendingTitle: "Candidature reçue",
     pendingBody:
       "Nous examinons votre candidature — la plupart sont approuvées sous 48 heures. Des questions ? Appelez la régulation.",

@@ -1190,6 +1190,12 @@ export const es: Dict = {
     tabPool: "Trabajos disponibles",
     tabJobs: "Mis trabajos",
     tabEarnings: "Ganancias",
+    statsToday: "Viajes de hoy",
+    statsUpcoming: "Próximos",
+    statsPending: "Ganancias pendientes",
+    statsAvailable: "Saldo disponible",
+    statsReliability: "Fiabilidad",
+    statsOverview: "Resumen",
     pendingTitle: "Solicitud recibida",
     pendingBody:
       "Estamos revisando tu solicitud — la mayoría se aprueban en 48 horas. ¿Dudas? Llama a la central.",
