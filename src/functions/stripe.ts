@@ -169,3 +169,77 @@ export async function handleStripeWebhook(
   if (!result.ok) throw new Error(`Stripe payment validation failed: ${result.error}`);
   return { received: true, ignored: false, duplicate: result.duplicate === true };
 }
+
+/**
+ * Connect + payout lifecycle events. Returns true when the event was handled
+ * here so the checkout path can ignore it.
+ */
+async function handleConnectEvent(event: Stripe.Event): Promise<boolean> {
+  const admin = getServiceSupabase();
+  if (!admin) return false;
+
+  if (event.type === "account.updated") {
+    const account = event.data.object as Stripe.Account;
+    await admin
+      .from("driver_payout_accounts")
+      .update({
+        charges_enabled: account.charges_enabled ?? false,
+        payouts_enabled: account.payouts_enabled ?? false,
+        details_submitted: account.details_submitted ?? false,
+        requirements_due: account.requirements?.currently_due ?? [],
+        instant_eligible: (account.capabilities?.transfers ?? "inactive") === "active",
+        country: account.country ?? null,
+      })
+      .eq("stripe_account_id", account.id);
+    return true;
+  }
+
+  if (event.type === "transfer.paid" || event.type === "transfer.failed") {
+    const transfer = event.data.object as Stripe.Transfer;
+    const payoutId = transfer.metadata?.payout_id;
+    if (!payoutId) return true;
+    const paid = event.type === "transfer.paid";
+    await admin
+      .from("driver_payouts")
+      .update({
+        status: paid ? "paid" : "failed",
+        failure_reason: paid ? null : "transfer_failed",
+      })
+      .eq("id", payoutId);
+    if (!paid) {
+      await admin
+        .from("driver_earnings")
+        .update({ payout_id: null, status: "available" })
+        .eq("payout_id", payoutId);
+    }
+    return true;
+  }
+
+  if (event.type === "charge.dispute.created" || event.type === "charge.refunded") {
+    const object = event.data.object as Stripe.Dispute | Stripe.Charge;
+    const paymentIntent =
+      typeof object.payment_intent === "string"
+        ? object.payment_intent
+        : (object.payment_intent?.id ?? null);
+    if (!paymentIntent) return true;
+
+    const { data: booking } = await admin
+      .from("bookings")
+      .select("id")
+      .eq("stripe_payment_intent_id", paymentIntent)
+      .maybeSingle();
+    if (!booking) return true;
+
+    await admin
+      .from("driver_earnings")
+      .update({
+        status: event.type === "charge.dispute.created" ? "disputed" : "voided",
+        note: event.type === "charge.dispute.created" ? "stripe dispute" : "stripe refund",
+      })
+      .eq("booking_id", booking.id)
+      .in("status", ["pending", "held", "available"]);
+    return true;
+  }
+
+  return false;
+}
