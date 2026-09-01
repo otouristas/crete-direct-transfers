@@ -123,9 +123,16 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Signature route canvas — the quote card floats over an animated map of the island */}
+      {/* Booking bar — clean, map-free quote entry */}
       <div id="book" className="scroll-mt-32">
-        <HeroRouteStage locale={locale} />
+        <section className="relative z-30 -mt-16 bg-background md:-mt-24">
+          <div className="mx-auto max-w-[1280px] px-6">
+            <div className="overflow-hidden rounded-[28px] border border-border bg-card p-6 shadow-[0_30px_80px_-40px_rgba(11,37,69,0.45)] md:p-8">
+              <BookingWidget variant="hbar" />
+              <ResumeQuoteBanner locale={locale} className="mt-4" />
+            </div>
+          </div>
+        </section>
       </div>
 
       <InpageNav items={navItems} />
