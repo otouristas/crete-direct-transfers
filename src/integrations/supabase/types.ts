@@ -527,6 +527,92 @@ export type Database = {
           },
         ]
       }
+      driver_earnings: {
+        Row: {
+          available_at: string | null
+          booking_id: string
+          commission_bps: number
+          commission_cents: number
+          completed_at: string | null
+          created_at: string
+          currency: string
+          driver_id: string
+          gross_cents: number
+          id: string
+          net_cents: number
+          note: string | null
+          paid_at: string | null
+          payout_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          available_at?: string | null
+          booking_id: string
+          commission_bps: number
+          commission_cents: number
+          completed_at?: string | null
+          created_at?: string
+          currency?: string
+          driver_id: string
+          gross_cents: number
+          id?: string
+          net_cents: number
+          note?: string | null
+          paid_at?: string | null
+          payout_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          available_at?: string | null
+          booking_id?: string
+          commission_bps?: number
+          commission_cents?: number
+          completed_at?: string | null
+          created_at?: string
+          currency?: string
+          driver_id?: string
+          gross_cents?: number
+          id?: string
+          net_cents?: number
+          note?: string | null
+          paid_at?: string | null
+          payout_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "driver_earnings_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_earnings_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "my_job_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_earnings_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: true
+            referencedRelation: "open_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "driver_earnings_payout_id_fkey"
+            columns: ["payout_id"]
+            isOneToOne: false
+            referencedRelation: "driver_payouts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       driver_onboarding_events: {
         Row: {
           actor_id: string | null
@@ -634,6 +720,99 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      driver_payout_accounts: {
+        Row: {
+          charges_enabled: boolean
+          country: string | null
+          created_at: string
+          details_submitted: boolean
+          driver_id: string
+          id: string
+          instant_eligible: boolean
+          payout_schedule: string
+          payouts_enabled: boolean
+          requirements_due: string[]
+          stripe_account_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          charges_enabled?: boolean
+          country?: string | null
+          created_at?: string
+          details_submitted?: boolean
+          driver_id: string
+          id?: string
+          instant_eligible?: boolean
+          payout_schedule?: string
+          payouts_enabled?: boolean
+          requirements_due?: string[]
+          stripe_account_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          charges_enabled?: boolean
+          country?: string | null
+          created_at?: string
+          details_submitted?: boolean
+          driver_id?: string
+          id?: string
+          instant_eligible?: boolean
+          payout_schedule?: string
+          payouts_enabled?: boolean
+          requirements_due?: string[]
+          stripe_account_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      driver_payouts: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          driver_id: string
+          failure_reason: string | null
+          id: string
+          method: string
+          period_end: string | null
+          period_start: string | null
+          status: string
+          stripe_payout_id: string | null
+          stripe_transfer_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          driver_id: string
+          failure_reason?: string | null
+          id?: string
+          method?: string
+          period_end?: string | null
+          period_start?: string | null
+          status?: string
+          stripe_payout_id?: string | null
+          stripe_transfer_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          driver_id?: string
+          failure_reason?: string | null
+          id?: string
+          method?: string
+          period_end?: string | null
+          period_start?: string | null
+          status?: string
+          stripe_payout_id?: string | null
+          stripe_transfer_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       driver_profiles: {
         Row: {
@@ -904,6 +1083,36 @@ export type Database = {
           name?: string
           slug?: string
           status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      platform_settings: {
+        Row: {
+          commission_bps: number
+          created_at: string
+          default_payout_schedule: string
+          holding_period_hours: number
+          id: boolean
+          min_payout_cents: number
+          updated_at: string
+        }
+        Insert: {
+          commission_bps?: number
+          created_at?: string
+          default_payout_schedule?: string
+          holding_period_hours?: number
+          id?: boolean
+          min_payout_cents?: number
+          updated_at?: string
+        }
+        Update: {
+          commission_bps?: number
+          created_at?: string
+          default_payout_schedule?: string
+          holding_period_hours?: number
+          id?: boolean
+          min_payout_cents?: number
           updated_at?: string
         }
         Relationships: []
@@ -1179,6 +1388,56 @@ export type Database = {
       }
     }
     Functions: {
+      admin_set_earning_status: {
+        Args: { p_earning_id: string; p_note?: string; p_status: string }
+        Returns: {
+          available_at: string | null
+          booking_id: string
+          commission_bps: number
+          commission_cents: number
+          completed_at: string | null
+          created_at: string
+          currency: string
+          driver_id: string
+          gross_cents: number
+          id: string
+          net_cents: number
+          note: string | null
+          paid_at: string | null
+          payout_id: string | null
+          status: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "driver_earnings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      admin_update_platform_settings: {
+        Args: {
+          p_commission_bps?: number
+          p_default_payout_schedule?: string
+          p_holding_period_hours?: number
+          p_min_payout_cents?: number
+        }
+        Returns: {
+          commission_bps: number
+          created_at: string
+          default_payout_schedule: string
+          holding_period_hours: number
+          id: boolean
+          min_payout_cents: number
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "platform_settings"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       assign_job_to_driver: {
         Args: { p_booking_id: string; p_driver_id: string }
         Returns: {
@@ -1540,6 +1799,7 @@ export type Database = {
         Args: { p_partner_id: string }
         Returns: boolean
       }
+      mature_held_earnings: { Args: never; Returns: number }
       my_partner_ids: { Args: never; Returns: string[] }
       open_incident: {
         Args: {
@@ -1813,6 +2073,29 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "driver_profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      set_my_payout_schedule: {
+        Args: { p_schedule: string }
+        Returns: {
+          charges_enabled: boolean
+          country: string | null
+          created_at: string
+          details_submitted: boolean
+          driver_id: string
+          id: string
+          instant_eligible: boolean
+          payout_schedule: string
+          payouts_enabled: boolean
+          requirements_due: string[]
+          stripe_account_id: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "driver_payout_accounts"
           isOneToOne: true
           isSetofReturn: false
         }
