@@ -122,6 +122,10 @@ export async function handleStripeWebhook(
   if (!stripe || !secret || !signature) throw new Error("Stripe webhook is not configured");
 
   const event = stripe.webhooks.constructEvent(rawBody, signature, secret);
+
+  const connectHandled = await handleConnectEvent(event);
+  if (connectHandled) return { received: true, ignored: false };
+
   if (
     event.type !== "checkout.session.completed" &&
     event.type !== "checkout.session.async_payment_succeeded"
