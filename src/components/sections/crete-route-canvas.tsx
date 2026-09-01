@@ -104,10 +104,12 @@ export function CreteRouteCanvas({
   pickup,
   dropoff,
   className,
+  title,
 }: {
   pickup?: CanvasPoint | null;
   dropoff?: CanvasPoint | null;
   className?: string;
+  title: string;
 }) {
   const from = pickup && inBounds(pickup.lat, pickup.lng) ? pickup : null;
   const to = dropoff && inBounds(dropoff.lat, dropoff.lng) ? dropoff : null;
@@ -126,7 +128,7 @@ export function CreteRouteCanvas({
       viewBox={`0 0 ${VIEW.w} ${VIEW.h}`}
       className={className}
       role="img"
-      aria-label="Crete"
+      aria-label={title}
       preserveAspectRatio="xMidYMid meet"
     >
       <defs>
