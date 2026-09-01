@@ -47,6 +47,7 @@ import { Route as Char123LocaleChar125PortsIndexRouteImport } from './routes/{-$
 import { Route as Char123LocaleChar125PartnerIndexRouteImport } from './routes/{-$locale}/partner.index'
 import { Route as Char123LocaleChar125GuidesIndexRouteImport } from './routes/{-$locale}/guides.index'
 import { Route as Char123LocaleChar125FleetIndexRouteImport } from './routes/{-$locale}/fleet.index'
+import { Route as Char123LocaleChar125DriversIndexRouteImport } from './routes/{-$locale}/drivers.index'
 import { Route as Char123LocaleChar125DriverIndexRouteImport } from './routes/{-$locale}/driver.index'
 import { Route as Char123LocaleChar125CitiesIndexRouteImport } from './routes/{-$locale}/cities.index'
 import { Route as Char123LocaleChar125BlogIndexRouteImport } from './routes/{-$locale}/blog.index'
@@ -303,6 +304,12 @@ const Char123LocaleChar125FleetIndexRoute =
     path: '/fleet/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125DriversIndexRoute =
+  Char123LocaleChar125DriversIndexRouteImport.update({
+    id: '/drivers/',
+    path: '/drivers/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125DriverIndexRoute =
   Char123LocaleChar125DriverIndexRouteImport.update({
     id: '/',
@@ -540,6 +547,7 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
+  '/{-$locale}/drivers/': typeof Char123LocaleChar125DriversIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/guides/': typeof Char123LocaleChar125GuidesIndexRoute
   '/{-$locale}/partner/': typeof Char123LocaleChar125PartnerIndexRoute
@@ -606,6 +614,7 @@ export interface FileRoutesByTo {
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogIndexRoute
   '/{-$locale}/cities': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverIndexRoute
+  '/{-$locale}/drivers': typeof Char123LocaleChar125DriversIndexRoute
   '/{-$locale}/fleet': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/guides': typeof Char123LocaleChar125GuidesIndexRoute
   '/{-$locale}/partner': typeof Char123LocaleChar125PartnerIndexRoute
@@ -677,6 +686,7 @@ export interface FileRoutesById {
   '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
+  '/{-$locale}/drivers/': typeof Char123LocaleChar125DriversIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
   '/{-$locale}/guides/': typeof Char123LocaleChar125GuidesIndexRoute
   '/{-$locale}/partner/': typeof Char123LocaleChar125PartnerIndexRoute
@@ -749,6 +759,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/'
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
+    | '/{-$locale}/drivers/'
     | '/{-$locale}/fleet/'
     | '/{-$locale}/guides/'
     | '/{-$locale}/partner/'
@@ -815,6 +826,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog'
     | '/{-$locale}/cities'
     | '/{-$locale}/driver'
+    | '/{-$locale}/drivers'
     | '/{-$locale}/fleet'
     | '/{-$locale}/guides'
     | '/{-$locale}/partner'
@@ -885,6 +897,7 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/'
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
+    | '/{-$locale}/drivers/'
     | '/{-$locale}/fleet/'
     | '/{-$locale}/guides/'
     | '/{-$locale}/partner/'
@@ -1171,6 +1184,13 @@ declare module '@tanstack/react-router' {
       path: '/fleet'
       fullPath: '/{-$locale}/fleet/'
       preLoaderRoute: typeof Char123LocaleChar125FleetIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/drivers/': {
+      id: '/{-$locale}/drivers/'
+      path: '/drivers'
+      fullPath: '/{-$locale}/drivers/'
+      preLoaderRoute: typeof Char123LocaleChar125DriversIndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/driver/': {
@@ -1509,6 +1529,7 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125AirportsIndexRoute: typeof Char123LocaleChar125AirportsIndexRoute
   Char123LocaleChar125BlogIndexRoute: typeof Char123LocaleChar125BlogIndexRoute
   Char123LocaleChar125CitiesIndexRoute: typeof Char123LocaleChar125CitiesIndexRoute
+  Char123LocaleChar125DriversIndexRoute: typeof Char123LocaleChar125DriversIndexRoute
   Char123LocaleChar125FleetIndexRoute: typeof Char123LocaleChar125FleetIndexRoute
   Char123LocaleChar125GuidesIndexRoute: typeof Char123LocaleChar125GuidesIndexRoute
   Char123LocaleChar125PortsIndexRoute: typeof Char123LocaleChar125PortsIndexRoute
@@ -1584,6 +1605,8 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
       Char123LocaleChar125AirportsIndexRoute,
     Char123LocaleChar125BlogIndexRoute: Char123LocaleChar125BlogIndexRoute,
     Char123LocaleChar125CitiesIndexRoute: Char123LocaleChar125CitiesIndexRoute,
+    Char123LocaleChar125DriversIndexRoute:
+      Char123LocaleChar125DriversIndexRoute,
     Char123LocaleChar125FleetIndexRoute: Char123LocaleChar125FleetIndexRoute,
     Char123LocaleChar125GuidesIndexRoute: Char123LocaleChar125GuidesIndexRoute,
     Char123LocaleChar125PortsIndexRoute: Char123LocaleChar125PortsIndexRoute,
