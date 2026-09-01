@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { REVIEWS } from "@/data/reviews";
 import { BookingWidget } from "@/components/booking-widget";
+import { ResumeQuoteBanner } from "@/components/booking/resume-quote-banner";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { Steps } from "@/components/sections/steps";
 import { ReviewsGrid } from "@/components/sections/review-card";
@@ -110,6 +111,7 @@ function HomePage() {
             className="hero-rise hero-rise-4 relative z-[35] mt-12 w-full scroll-mt-32"
           >
             <BookingWidget variant="hbar" />
+            <ResumeQuoteBanner locale={locale} className="mt-4" />
           </div>
 
           {/* Coverage ribbon — the same reassurance Transfeero runs, on our real numbers. */}

@@ -16,6 +16,8 @@ import {
   type IncidentType,
 } from "@/queries/bookings";
 import { StatusBadge } from "@/components/dashboard/status-badge";
+import { TripTimeline } from "@/components/account/trip-timeline";
+import { ReceiptButton } from "@/components/account/receipt-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   AlertDialog,
@@ -249,6 +251,9 @@ function BookingDetailPage() {
         <p className="mt-3 text-xs text-muted-foreground">{t.account.policyBlurb}</p>
       </div>
 
+      <TripTimeline status={b.status} locale={locale} />
+
+
       {b.status === "pending" && !b.driver_id && (
         <div className="rounded-2xl border border-border bg-card p-8">
           <h3 className="flex items-center gap-2 font-display text-lg text-primary">
@@ -336,6 +341,24 @@ function BookingDetailPage() {
             {t.account.bookAgain}
           </Link>
         )}
+
+        <ReceiptButton
+          locale={locale}
+          brand="TransferAround"
+          data={{
+            reference: b.id.slice(0, 8),
+            route: route ? `${route.from} → ${route.to}` : b.route_slug,
+            pickupAt: fmt(b.pickup_at),
+            passengers: b.passengers,
+            vehicle: vehicle?.label ?? b.vehicle_class,
+            total: money.format(b.price_cents / 100),
+            paymentStatus:
+              b.payment_status === "paid" || b.payment_status === "deposit_paid"
+                ? t.account.paidOnline
+                : t.widget.payOnBoard,
+          }}
+        />
+
 
         {canCancel && (
           <AlertDialog>

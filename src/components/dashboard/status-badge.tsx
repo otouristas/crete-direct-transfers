@@ -11,12 +11,12 @@ export type BookingStatus =
   | "no_show";
 
 const STATUS_CLASSES: Record<BookingStatus, string> = {
-  pending: "bg-muted text-muted-foreground",
-  claimed: "bg-accent/15 text-accent-deep",
-  en_route: "bg-accent/15 text-accent-deep",
-  completed: "bg-primary/10 text-primary",
-  cancelled: "bg-destructive/10 text-destructive",
-  no_show: "bg-destructive/10 text-destructive",
+  pending: "bg-status-pending/12 text-status-pending",
+  claimed: "bg-status-claimed/12 text-status-claimed",
+  en_route: "bg-status-en-route/12 text-status-en-route",
+  completed: "bg-status-completed/12 text-status-completed",
+  cancelled: "bg-status-cancelled/12 text-status-cancelled",
+  no_show: "bg-status-cancelled/12 text-status-cancelled",
 };
 
 export function StatusBadge({ status, className }: { status: string; className?: string }) {

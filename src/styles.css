@@ -31,6 +31,11 @@
   --color-accent-deep: var(--accent-deep);
   --color-highlight: var(--highlight);
   --color-highlight-foreground: var(--highlight-foreground);
+  --color-status-pending: var(--status-pending);
+  --color-status-claimed: var(--status-claimed);
+  --color-status-en-route: var(--status-en-route);
+  --color-status-completed: var(--status-completed);
+  --color-status-cancelled: var(--status-cancelled);
   --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-accent: "Instrument Serif", "Times New Roman", ui-serif, Georgia, serif;
@@ -64,6 +69,13 @@
   --border: oklch(0.929 0.013 255.51); /* #E2E8F0 */
   --input: oklch(0.929 0.013 255.51);
   --ring: var(--accent);
+
+  /* Status semantics — one source of truth for every badge/timeline in the app */
+  --status-pending: oklch(0.62 0.13 75); /* amber-ochre: awaiting a driver */
+  --status-claimed: oklch(0.45 0.096 186.4); /* deep teal: driver assigned */
+  --status-en-route: oklch(0.52 0.16 250); /* blue: on the way */
+  --status-completed: oklch(0.48 0.13 155); /* green: done */
+  --status-cancelled: oklch(0.55 0.22 25); /* red: cancelled / no-show */
 }
 
 @layer base {
