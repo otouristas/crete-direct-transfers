@@ -368,7 +368,28 @@ function RoutePage() {
                 <span aria-hidden>→</span>
               </Link>
             ) : null}
+            {routeGuide ? (
+              <Link
+                to="/{-$locale}/guides/$slug"
+                params={{ slug: routeGuide.slug }}
+                className="mt-5 flex max-w-2xl items-center justify-between gap-4 rounded-2xl border border-border bg-muted/40 p-5 transition hover:shadow-md"
+              >
+                <span>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-accent-deep">
+                    Route guide
+                  </span>
+                  <span className="mt-1 block font-semibold text-primary">{routeGuide.title}</span>
+                  <span className="mt-1 block text-sm text-muted-foreground">
+                    Minute-by-minute drive, detours and arrival detail.
+                  </span>
+                </span>
+                <span aria-hidden className="text-accent-deep">
+                  →
+                </span>
+              </Link>
+            ) : null}
           </section>
+
 
           <section id="overview" className="scroll-mt-32">
             <p className="max-w-2xl text-lg leading-relaxed text-foreground/90">{route.blurb}</p>
