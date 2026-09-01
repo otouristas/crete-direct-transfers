@@ -542,6 +542,7 @@ function DateTimePicker({
   onTimeChange: (t: string) => void;
 }) {
   const t = useT();
+  const locale = useLocale();
   return (
     <div className="space-y-3">
       <Calendar

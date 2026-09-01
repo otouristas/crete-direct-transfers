@@ -168,7 +168,7 @@ function formatClock(iso: string): string {
   }
 }
 
-function formatDay(iso: string): string {
+function formatDay(iso: string, locale: AppLocale = "en"): string {
   if (!iso) return "";
   try {
     return format(parseISO(iso), "d MMM yyyy", { locale: dateFnsLocale(locale) });
