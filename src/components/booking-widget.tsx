@@ -22,6 +22,7 @@ import { PlaceCombobox } from "@/components/place-combobox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useLocale, useT } from "@/i18n";
+import { priceLineLabel } from "@/lib/price-labels";
 import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
 
