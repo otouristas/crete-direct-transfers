@@ -16,6 +16,13 @@ import {
   type EarningWithBooking,
   type PayoutSchedule,
 } from "@/queries/earnings";
+import {
+  isSuspended,
+  myAccountBalanceQuery,
+  myAccountLedgerQuery,
+  myReliabilityQuery,
+  type AccountEntry,
+} from "@/queries/driver-account";
 import { getConnectStatus, startDriverOnboarding, getDriverStripeDashboardLink } from "@/functions/connect";
 
 export const Route = createFileRoute("/{-$locale}/driver/earnings")({
@@ -35,6 +42,9 @@ function EarningsPage() {
 
   const earnings = useQuery({ ...myEarningsQuery(user?.id ?? ""), enabled: !!user });
   const payouts = useQuery({ ...myPayoutsQuery(user?.id ?? ""), enabled: !!user });
+  const balance = useQuery({ ...myAccountBalanceQuery(user?.id ?? ""), enabled: !!user });
+  const ledger = useQuery({ ...myAccountLedgerQuery(user?.id ?? ""), enabled: !!user });
+  const reliability = useQuery({ ...myReliabilityQuery(user?.id ?? ""), enabled: !!user });
   const connect = useQuery({
     queryKey: ["connect-status", user?.id],
     queryFn: () => fetchStatus({ data: undefined }),
@@ -106,6 +116,73 @@ function EarningsPage() {
           value={next ? next.toLocaleDateString(dateLocale) : t.payouts.notScheduled}
         />
       </div>
+
+      {/* Account balance + reliability */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="rounded-2xl border border-border bg-card p-6 lg:col-span-2">
+          <h3 className="font-display text-lg text-primary">{t.driverAccount.balanceTitle}</h3>
+          <div className="mt-4 grid gap-4 sm:grid-cols-3">
+            <MiniStat
+              label={t.driverAccount.availableBalance}
+              value={formatEur((balance.data?.available_cents ?? 0) / 100)}
+            />
+            <MiniStat
+              label={t.driverAccount.negativeBalance}
+              value={`−${formatEur((balance.data?.negative_cents ?? 0) / 100)}`}
+              tone={(balance.data?.negative_cents ?? 0) > 0 ? "negative" : "muted"}
+            />
+            <MiniStat
+              label={t.driverAccount.lifetimePenalties}
+              value={`−${formatEur((balance.data?.penalties_cents ?? 0) / 100)}`}
+            />
+          </div>
+          {(balance.data?.negative_cents ?? 0) > 0 && (
+            <p className="mt-4 text-xs text-muted-foreground">{t.driverAccount.negativeNote}</p>
+          )}
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-6">
+          <h3 className="font-display text-lg text-primary">{t.driverAccount.reliabilityTitle}</h3>
+          <div className="mt-3 font-display text-4xl text-primary">
+            {reliability.data?.score ?? 100}
+            <span className="text-base text-muted-foreground">/100</span>
+          </div>
+          <dl className="mt-4 space-y-1 text-xs text-muted-foreground">
+            <div className="flex justify-between">
+              <dt>{t.driverAccount.reliabilityCancellations}</dt>
+              <dd>{reliability.data?.cancellations_90d ?? 0}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt>{t.driverAccount.reliabilityNoShows}</dt>
+              <dd>{reliability.data?.no_shows_90d ?? 0}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt>{t.driverAccount.reliabilityCompleted}</dt>
+              <dd>{reliability.data?.completed_90d ?? 0}</dd>
+            </div>
+          </dl>
+          {isSuspended(reliability.data ?? null) && (
+            <p className="mt-4 rounded-xl bg-destructive/10 p-3 text-xs text-destructive">
+              {t.driverAccount.suspendedUntil}{" "}
+              {new Date(reliability.data!.suspended_until!).toLocaleDateString(dateLocale)} ·{" "}
+              {t.driverAccount.suspendedNote}
+            </p>
+          )}
+          <p className="mt-4 text-xs text-muted-foreground">{t.driverAccount.reliabilityNote}</p>
+        </div>
+      </div>
+
+      {/* Cancellation policy */}
+      <section className="rounded-2xl border border-border bg-card p-6">
+        <h3 className="font-display text-lg text-primary">{t.driverAccount.policyTitle}</h3>
+        <ul className="mt-3 grid gap-1 text-sm text-muted-foreground sm:grid-cols-2">
+          <li>{t.driverAccount.policy72}</li>
+          <li>{t.driverAccount.policy48}</li>
+          <li>{t.driverAccount.policy24}</li>
+          <li>{t.driverAccount.policyLate}</li>
+          <li>{t.driverAccount.policyNoShow}</li>
+        </ul>
+      </section>
 
       {/* Connect onboarding */}
       <section className="rounded-2xl border border-border bg-card p-6">
@@ -233,6 +310,82 @@ function EarningsPage() {
           </ul>
         )}
       </section>
+
+      {/* Account ledger */}
+      <section className="rounded-2xl border border-border bg-card p-6">
+        <h3 className="font-display text-lg text-primary">{t.driverAccount.ledgerTitle}</h3>
+        {(ledger.data ?? []).length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">{t.driverAccount.ledgerEmpty}</p>
+        ) : (
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs uppercase tracking-widest text-muted-foreground">
+                  <th className="pb-3">{t.driverAccount.colDate}</th>
+                  <th className="pb-3">{t.driverAccount.colType}</th>
+                  <th className="pb-3">{t.driverAccount.colDetails}</th>
+                  <th className="pb-3 text-right">{t.driverAccount.colAmount}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {(ledger.data ?? []).map((entry) => (
+                  <tr key={entry.id}>
+                    <td className="py-3">
+                      {new Date(entry.created_at).toLocaleDateString(dateLocale)}
+                    </td>
+                    <td className="py-3">{entryTypeLabel(entry.entry_type, locale)}</td>
+                    <td className="py-3 text-muted-foreground">{entry.reason ?? "—"}</td>
+                    <td
+                      className={`py-3 text-right font-medium ${
+                        entry.amount_cents < 0 ? "text-destructive" : "text-primary"
+                      }`}
+                    >
+                      {entry.amount_cents < 0 ? "−" : "+"}
+                      {formatEur(Math.abs(entry.amount_cents) / 100)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function entryTypeLabel(type: AccountEntry["entry_type"], locale: Parameters<typeof getDict>[0]) {
+  const t = getDict(locale);
+  const map: Record<string, string> = {
+    earning: t.driverAccount.typeEarning,
+    commission: t.driverAccount.typeCommission,
+    penalty: t.driverAccount.typePenalty,
+    incentive: t.driverAccount.typeIncentive,
+    payout: t.driverAccount.typePayout,
+    adjustment: t.driverAccount.typeAdjustment,
+  };
+  return map[type] ?? type;
+}
+
+function MiniStat({
+  label,
+  value,
+  tone = "muted",
+}: {
+  label: string;
+  value: string;
+  tone?: "muted" | "negative";
+}) {
+  return (
+    <div>
+      <div className="text-xs uppercase tracking-widest text-muted-foreground">{label}</div>
+      <div
+        className={`mt-1 font-display text-2xl ${
+          tone === "negative" ? "text-destructive" : "text-primary"
+        }`}
+      >
+        {value}
+      </div>
     </div>
   );
 }

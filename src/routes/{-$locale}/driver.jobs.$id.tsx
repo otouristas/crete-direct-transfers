@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { CancelJobDialog } from "@/components/driver/cancel-job-dialog";
 import { getRoute, VEHICLE_CLASSES } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
 
@@ -258,6 +259,7 @@ function DriverJobDetailPage() {
               cancelLabel={t.account.cancelKeep}
               onConfirm={() => unable.mutate()}
             />
+            <CancelJobDialog bookingId={id} locale={locale} />
           </div>
         </div>
       )}

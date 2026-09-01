@@ -22,6 +22,8 @@ function base(
     assigned_at: null,
     bags_cabin: 1,
     bags_checked: 2,
+    incentive_cents: 0,
+    released_at: null,
     cancellation_note: null,
     cancellation_reason: null,
     cancelled_at: null,
