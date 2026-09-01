@@ -270,6 +270,11 @@ export const fr: Dict = {
     metaTitle: "TransferAround — Transferts aéroport privés à prix fixe",
     metaDescription:
       "Transferts privés à prix fixe en Grèce, Espagne, Italie, Portugal, Chypre et Turquie. Chauffeurs locaux licenciés, suivi de vol, annulation gratuite.",
+    mapEyebrow: "Itinéraire en direct",
+    mapTitle: "Regardez votre itinéraire se dessiner",
+    mapHint: "Choisissez un départ et une arrivée pour tracer la ligne sur l’île.",
+    mapDistance: (km: number, min: number) =>
+      `${km} km · environ ${min} min de route`,
     heroEyebrow: "Transferts privés à prix fixe",
     heroTitle1: "Votre arrivée.",
     heroTitleAccent: "Votre chauffeur.",

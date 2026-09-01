@@ -269,6 +269,11 @@ export const nl: Dict = {
     metaTitle: "TransferAround — Privétransfers met vaste prijs",
     metaDescription:
       "Privétransfers met vaste prijs in Griekenland, Spanje, Italië, Portugal, Cyprus en Turkije. Gelicenseerde lokale chauffeurs, vluchttracking, gratis annulering.",
+    mapEyebrow: "Live route",
+    mapTitle: "Zie je route zichzelf tekenen",
+    mapHint: "Kies ophaal- en afzetpunt om de lijn over het eiland te tekenen.",
+    mapDistance: (km: number, min: number) =>
+      `${km} km · ongeveer ${min} min rijden`,
     heroEyebrow: "Privétransfers tegen vaste prijs",
     heroTitle1: "Jouw aankomst.",
     heroTitleAccent: "Jouw chauffeur.",

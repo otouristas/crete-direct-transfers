@@ -267,6 +267,11 @@ export const en = {
     metaTitle: "TransferAround — Fixed-Price Private Airport Transfers",
     metaDescription:
       "Fixed-price private transfers in Greece, Spain, Italy, Portugal, Cyprus and Turkey. Licensed local drivers, flight-tracked pickups, free cancellation.",
+    mapEyebrow: "Live route",
+    mapTitle: "Watch your route draw itself",
+    mapHint: "Pick a pickup and drop-off to draw the line across the island.",
+    mapDistance: (km: number, min: number) =>
+      `${km} km · about ${min} min drive`,
     heroEyebrow: "Fixed-price private transfers",
     heroTitle1: "Your arrival.",
     heroTitleAccent: "Your driver.",
