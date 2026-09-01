@@ -45,7 +45,11 @@ import { Route as Char123LocaleChar125RoutesIndexRouteImport } from './routes/{-
 import { Route as Char123LocaleChar125RegionsIndexRouteImport } from './routes/{-$locale}/regions.index'
 import { Route as Char123LocaleChar125PortsIndexRouteImport } from './routes/{-$locale}/ports.index'
 import { Route as Char123LocaleChar125PartnerIndexRouteImport } from './routes/{-$locale}/partner.index'
+import { Route as Char123LocaleChar125HotelsIndexRouteImport } from './routes/{-$locale}/hotels.index'
+import { Route as Char123LocaleChar125GuidesIndexRouteImport } from './routes/{-$locale}/guides.index'
 import { Route as Char123LocaleChar125FleetIndexRouteImport } from './routes/{-$locale}/fleet.index'
+import { Route as Char123LocaleChar125FerryIndexRouteImport } from './routes/{-$locale}/ferry.index'
+import { Route as Char123LocaleChar125DriversIndexRouteImport } from './routes/{-$locale}/drivers.index'
 import { Route as Char123LocaleChar125DriverIndexRouteImport } from './routes/{-$locale}/driver.index'
 import { Route as Char123LocaleChar125CitiesIndexRouteImport } from './routes/{-$locale}/cities.index'
 import { Route as Char123LocaleChar125BlogIndexRouteImport } from './routes/{-$locale}/blog.index'
@@ -62,7 +66,11 @@ import { Route as Char123LocaleChar125LegalKycRouteImport } from './routes/{-$lo
 import { Route as Char123LocaleChar125LegalImprintRouteImport } from './routes/{-$locale}/legal.imprint'
 import { Route as Char123LocaleChar125LegalDriverPartnershipRouteImport } from './routes/{-$locale}/legal.driver-partnership'
 import { Route as Char123LocaleChar125LegalCookiesRouteImport } from './routes/{-$locale}/legal.cookies'
+import { Route as Char123LocaleChar125HotelsSlugRouteImport } from './routes/{-$locale}/hotels.$slug'
+import { Route as Char123LocaleChar125GuidesSlugRouteImport } from './routes/{-$locale}/guides.$slug'
 import { Route as Char123LocaleChar125FleetClassRouteImport } from './routes/{-$locale}/fleet.$class'
+import { Route as Char123LocaleChar125FerrySlugRouteImport } from './routes/{-$locale}/ferry.$slug'
+import { Route as Char123LocaleChar125DriversSlugRouteImport } from './routes/{-$locale}/drivers.$slug'
 import { Route as Char123LocaleChar125DriverApplyRouteImport } from './routes/{-$locale}/driver_.apply'
 import { Route as Char123LocaleChar125DriverEarningsRouteImport } from './routes/{-$locale}/driver.earnings'
 import { Route as Char123LocaleChar125CitiesSlugRouteImport } from './routes/{-$locale}/cities.$slug'
@@ -289,10 +297,34 @@ const Char123LocaleChar125PartnerIndexRoute =
     path: '/',
     getParentRoute: () => Char123LocaleChar125PartnerRoute,
   } as any)
+const Char123LocaleChar125HotelsIndexRoute =
+  Char123LocaleChar125HotelsIndexRouteImport.update({
+    id: '/hotels/',
+    path: '/hotels/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125GuidesIndexRoute =
+  Char123LocaleChar125GuidesIndexRouteImport.update({
+    id: '/guides/',
+    path: '/guides/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125FleetIndexRoute =
   Char123LocaleChar125FleetIndexRouteImport.update({
     id: '/fleet/',
     path: '/fleet/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125FerryIndexRoute =
+  Char123LocaleChar125FerryIndexRouteImport.update({
+    id: '/ferry/',
+    path: '/ferry/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125DriversIndexRoute =
+  Char123LocaleChar125DriversIndexRouteImport.update({
+    id: '/drivers/',
+    path: '/drivers/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125DriverIndexRoute =
@@ -391,10 +423,34 @@ const Char123LocaleChar125LegalCookiesRoute =
     path: '/legal/cookies',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125HotelsSlugRoute =
+  Char123LocaleChar125HotelsSlugRouteImport.update({
+    id: '/hotels/$slug',
+    path: '/hotels/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125GuidesSlugRoute =
+  Char123LocaleChar125GuidesSlugRouteImport.update({
+    id: '/guides/$slug',
+    path: '/guides/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125FleetClassRoute =
   Char123LocaleChar125FleetClassRouteImport.update({
     id: '/fleet/$class',
     path: '/fleet/$class',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125FerrySlugRoute =
+  Char123LocaleChar125FerrySlugRouteImport.update({
+    id: '/ferry/$slug',
+    path: '/ferry/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125DriversSlugRoute =
+  Char123LocaleChar125DriversSlugRouteImport.update({
+    id: '/drivers/$slug',
+    path: '/drivers/$slug',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125DriverApplyRoute =
@@ -508,7 +564,11 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
+  '/{-$locale}/drivers/$slug': typeof Char123LocaleChar125DriversSlugRoute
+  '/{-$locale}/ferry/$slug': typeof Char123LocaleChar125FerrySlugRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/guides/$slug': typeof Char123LocaleChar125GuidesSlugRoute
+  '/{-$locale}/hotels/$slug': typeof Char123LocaleChar125HotelsSlugRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
   '/{-$locale}/legal/driver-partnership': typeof Char123LocaleChar125LegalDriverPartnershipRoute
   '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
@@ -525,7 +585,11 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
+  '/{-$locale}/drivers/': typeof Char123LocaleChar125DriversIndexRoute
+  '/{-$locale}/ferry/': typeof Char123LocaleChar125FerryIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/guides/': typeof Char123LocaleChar125GuidesIndexRoute
+  '/{-$locale}/hotels/': typeof Char123LocaleChar125HotelsIndexRoute
   '/{-$locale}/partner/': typeof Char123LocaleChar125PartnerIndexRoute
   '/{-$locale}/ports/': typeof Char123LocaleChar125PortsIndexRoute
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
@@ -572,7 +636,11 @@ export interface FileRoutesByTo {
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
+  '/{-$locale}/drivers/$slug': typeof Char123LocaleChar125DriversSlugRoute
+  '/{-$locale}/ferry/$slug': typeof Char123LocaleChar125FerrySlugRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/guides/$slug': typeof Char123LocaleChar125GuidesSlugRoute
+  '/{-$locale}/hotels/$slug': typeof Char123LocaleChar125HotelsSlugRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
   '/{-$locale}/legal/driver-partnership': typeof Char123LocaleChar125LegalDriverPartnershipRoute
   '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
@@ -589,7 +657,11 @@ export interface FileRoutesByTo {
   '/{-$locale}/blog': typeof Char123LocaleChar125BlogIndexRoute
   '/{-$locale}/cities': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverIndexRoute
+  '/{-$locale}/drivers': typeof Char123LocaleChar125DriversIndexRoute
+  '/{-$locale}/ferry': typeof Char123LocaleChar125FerryIndexRoute
   '/{-$locale}/fleet': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/guides': typeof Char123LocaleChar125GuidesIndexRoute
+  '/{-$locale}/hotels': typeof Char123LocaleChar125HotelsIndexRoute
   '/{-$locale}/partner': typeof Char123LocaleChar125PartnerIndexRoute
   '/{-$locale}/ports': typeof Char123LocaleChar125PortsIndexRoute
   '/{-$locale}/regions': typeof Char123LocaleChar125RegionsIndexRoute
@@ -641,7 +713,11 @@ export interface FileRoutesById {
   '/{-$locale}/cities/$slug': typeof Char123LocaleChar125CitiesSlugRoute
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver_/apply': typeof Char123LocaleChar125DriverApplyRoute
+  '/{-$locale}/drivers/$slug': typeof Char123LocaleChar125DriversSlugRoute
+  '/{-$locale}/ferry/$slug': typeof Char123LocaleChar125FerrySlugRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/guides/$slug': typeof Char123LocaleChar125GuidesSlugRoute
+  '/{-$locale}/hotels/$slug': typeof Char123LocaleChar125HotelsSlugRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
   '/{-$locale}/legal/driver-partnership': typeof Char123LocaleChar125LegalDriverPartnershipRoute
   '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
@@ -658,7 +734,11 @@ export interface FileRoutesById {
   '/{-$locale}/blog/': typeof Char123LocaleChar125BlogIndexRoute
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
+  '/{-$locale}/drivers/': typeof Char123LocaleChar125DriversIndexRoute
+  '/{-$locale}/ferry/': typeof Char123LocaleChar125FerryIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/guides/': typeof Char123LocaleChar125GuidesIndexRoute
+  '/{-$locale}/hotels/': typeof Char123LocaleChar125HotelsIndexRoute
   '/{-$locale}/partner/': typeof Char123LocaleChar125PartnerIndexRoute
   '/{-$locale}/ports/': typeof Char123LocaleChar125PortsIndexRoute
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
@@ -711,7 +791,11 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
+    | '/{-$locale}/drivers/$slug'
+    | '/{-$locale}/ferry/$slug'
     | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/guides/$slug'
+    | '/{-$locale}/hotels/$slug'
     | '/{-$locale}/legal/cookies'
     | '/{-$locale}/legal/driver-partnership'
     | '/{-$locale}/legal/imprint'
@@ -728,7 +812,11 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/'
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
+    | '/{-$locale}/drivers/'
+    | '/{-$locale}/ferry/'
     | '/{-$locale}/fleet/'
+    | '/{-$locale}/guides/'
+    | '/{-$locale}/hotels/'
     | '/{-$locale}/partner/'
     | '/{-$locale}/ports/'
     | '/{-$locale}/regions/'
@@ -775,7 +863,11 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
+    | '/{-$locale}/drivers/$slug'
+    | '/{-$locale}/ferry/$slug'
     | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/guides/$slug'
+    | '/{-$locale}/hotels/$slug'
     | '/{-$locale}/legal/cookies'
     | '/{-$locale}/legal/driver-partnership'
     | '/{-$locale}/legal/imprint'
@@ -792,7 +884,11 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog'
     | '/{-$locale}/cities'
     | '/{-$locale}/driver'
+    | '/{-$locale}/drivers'
+    | '/{-$locale}/ferry'
     | '/{-$locale}/fleet'
+    | '/{-$locale}/guides'
+    | '/{-$locale}/hotels'
     | '/{-$locale}/partner'
     | '/{-$locale}/ports'
     | '/{-$locale}/regions'
@@ -843,7 +939,11 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/$slug'
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver_/apply'
+    | '/{-$locale}/drivers/$slug'
+    | '/{-$locale}/ferry/$slug'
     | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/guides/$slug'
+    | '/{-$locale}/hotels/$slug'
     | '/{-$locale}/legal/cookies'
     | '/{-$locale}/legal/driver-partnership'
     | '/{-$locale}/legal/imprint'
@@ -860,7 +960,11 @@ export interface FileRouteTypes {
     | '/{-$locale}/blog/'
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
+    | '/{-$locale}/drivers/'
+    | '/{-$locale}/ferry/'
     | '/{-$locale}/fleet/'
+    | '/{-$locale}/guides/'
+    | '/{-$locale}/hotels/'
     | '/{-$locale}/partner/'
     | '/{-$locale}/ports/'
     | '/{-$locale}/regions/'
@@ -1133,11 +1237,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125PartnerIndexRouteImport
       parentRoute: typeof Char123LocaleChar125PartnerRoute
     }
+    '/{-$locale}/hotels/': {
+      id: '/{-$locale}/hotels/'
+      path: '/hotels'
+      fullPath: '/{-$locale}/hotels/'
+      preLoaderRoute: typeof Char123LocaleChar125HotelsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/guides/': {
+      id: '/{-$locale}/guides/'
+      path: '/guides'
+      fullPath: '/{-$locale}/guides/'
+      preLoaderRoute: typeof Char123LocaleChar125GuidesIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/fleet/': {
       id: '/{-$locale}/fleet/'
       path: '/fleet'
       fullPath: '/{-$locale}/fleet/'
       preLoaderRoute: typeof Char123LocaleChar125FleetIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/ferry/': {
+      id: '/{-$locale}/ferry/'
+      path: '/ferry'
+      fullPath: '/{-$locale}/ferry/'
+      preLoaderRoute: typeof Char123LocaleChar125FerryIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/drivers/': {
+      id: '/{-$locale}/drivers/'
+      path: '/drivers'
+      fullPath: '/{-$locale}/drivers/'
+      preLoaderRoute: typeof Char123LocaleChar125DriversIndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/driver/': {
@@ -1252,11 +1384,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125LegalCookiesRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
+    '/{-$locale}/hotels/$slug': {
+      id: '/{-$locale}/hotels/$slug'
+      path: '/hotels/$slug'
+      fullPath: '/{-$locale}/hotels/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125HotelsSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/guides/$slug': {
+      id: '/{-$locale}/guides/$slug'
+      path: '/guides/$slug'
+      fullPath: '/{-$locale}/guides/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125GuidesSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/fleet/$class': {
       id: '/{-$locale}/fleet/$class'
       path: '/fleet/$class'
       fullPath: '/{-$locale}/fleet/$class'
       preLoaderRoute: typeof Char123LocaleChar125FleetClassRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/ferry/$slug': {
+      id: '/{-$locale}/ferry/$slug'
+      path: '/ferry/$slug'
+      fullPath: '/{-$locale}/ferry/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125FerrySlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/drivers/$slug': {
+      id: '/{-$locale}/drivers/$slug'
+      path: '/drivers/$slug'
+      fullPath: '/{-$locale}/drivers/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125DriversSlugRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/driver_/apply': {
@@ -1453,7 +1613,11 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125BlogSlugRoute: typeof Char123LocaleChar125BlogSlugRoute
   Char123LocaleChar125CitiesSlugRoute: typeof Char123LocaleChar125CitiesSlugRoute
   Char123LocaleChar125DriverApplyRoute: typeof Char123LocaleChar125DriverApplyRoute
+  Char123LocaleChar125DriversSlugRoute: typeof Char123LocaleChar125DriversSlugRoute
+  Char123LocaleChar125FerrySlugRoute: typeof Char123LocaleChar125FerrySlugRoute
   Char123LocaleChar125FleetClassRoute: typeof Char123LocaleChar125FleetClassRoute
+  Char123LocaleChar125GuidesSlugRoute: typeof Char123LocaleChar125GuidesSlugRoute
+  Char123LocaleChar125HotelsSlugRoute: typeof Char123LocaleChar125HotelsSlugRoute
   Char123LocaleChar125LegalCookiesRoute: typeof Char123LocaleChar125LegalCookiesRoute
   Char123LocaleChar125LegalDriverPartnershipRoute: typeof Char123LocaleChar125LegalDriverPartnershipRoute
   Char123LocaleChar125LegalImprintRoute: typeof Char123LocaleChar125LegalImprintRoute
@@ -1468,7 +1632,11 @@ interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125AirportsIndexRoute: typeof Char123LocaleChar125AirportsIndexRoute
   Char123LocaleChar125BlogIndexRoute: typeof Char123LocaleChar125BlogIndexRoute
   Char123LocaleChar125CitiesIndexRoute: typeof Char123LocaleChar125CitiesIndexRoute
+  Char123LocaleChar125DriversIndexRoute: typeof Char123LocaleChar125DriversIndexRoute
+  Char123LocaleChar125FerryIndexRoute: typeof Char123LocaleChar125FerryIndexRoute
   Char123LocaleChar125FleetIndexRoute: typeof Char123LocaleChar125FleetIndexRoute
+  Char123LocaleChar125GuidesIndexRoute: typeof Char123LocaleChar125GuidesIndexRoute
+  Char123LocaleChar125HotelsIndexRoute: typeof Char123LocaleChar125HotelsIndexRoute
   Char123LocaleChar125PortsIndexRoute: typeof Char123LocaleChar125PortsIndexRoute
   Char123LocaleChar125RegionsIndexRoute: typeof Char123LocaleChar125RegionsIndexRoute
   Char123LocaleChar125RoutesIndexRoute: typeof Char123LocaleChar125RoutesIndexRoute
@@ -1519,7 +1687,11 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125BlogSlugRoute: Char123LocaleChar125BlogSlugRoute,
     Char123LocaleChar125CitiesSlugRoute: Char123LocaleChar125CitiesSlugRoute,
     Char123LocaleChar125DriverApplyRoute: Char123LocaleChar125DriverApplyRoute,
+    Char123LocaleChar125DriversSlugRoute: Char123LocaleChar125DriversSlugRoute,
+    Char123LocaleChar125FerrySlugRoute: Char123LocaleChar125FerrySlugRoute,
     Char123LocaleChar125FleetClassRoute: Char123LocaleChar125FleetClassRoute,
+    Char123LocaleChar125GuidesSlugRoute: Char123LocaleChar125GuidesSlugRoute,
+    Char123LocaleChar125HotelsSlugRoute: Char123LocaleChar125HotelsSlugRoute,
     Char123LocaleChar125LegalCookiesRoute:
       Char123LocaleChar125LegalCookiesRoute,
     Char123LocaleChar125LegalDriverPartnershipRoute:
@@ -1541,7 +1713,12 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
       Char123LocaleChar125AirportsIndexRoute,
     Char123LocaleChar125BlogIndexRoute: Char123LocaleChar125BlogIndexRoute,
     Char123LocaleChar125CitiesIndexRoute: Char123LocaleChar125CitiesIndexRoute,
+    Char123LocaleChar125DriversIndexRoute:
+      Char123LocaleChar125DriversIndexRoute,
+    Char123LocaleChar125FerryIndexRoute: Char123LocaleChar125FerryIndexRoute,
     Char123LocaleChar125FleetIndexRoute: Char123LocaleChar125FleetIndexRoute,
+    Char123LocaleChar125GuidesIndexRoute: Char123LocaleChar125GuidesIndexRoute,
+    Char123LocaleChar125HotelsIndexRoute: Char123LocaleChar125HotelsIndexRoute,
     Char123LocaleChar125PortsIndexRoute: Char123LocaleChar125PortsIndexRoute,
     Char123LocaleChar125RegionsIndexRoute:
       Char123LocaleChar125RegionsIndexRoute,

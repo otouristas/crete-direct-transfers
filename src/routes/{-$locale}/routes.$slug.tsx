@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import type { RouteData } from "@/data/routes";
+import { guideForRoute } from "@/data/route-guides";
 import { quote, formatEur } from "@/lib/pricing";
 import { BookingWidget } from "@/components/booking-widget";
 import { RouteCard } from "@/components/sections/route-card";
@@ -239,9 +240,11 @@ function RoutePage() {
   const vehicles = getLocalizedVehicles(locale);
   const q = quote({ routeSlug: route.slug, vehicleClass: "economy" })!;
   const faqs = routeFaqs(locale, route, formatEur(q.totalEur));
+  const routeGuide = guideForRoute(route.slug);
   const airportArrivalPage = getLocalizedAirportRoutes(locale).find(
     (airportRoute) => airportRoute.legacyRouteSlug === route.slug,
   );
+
   const others = getLocalizedRoutes(locale)
     .filter((r) => r.slug !== route.slug && r.region === route.region)
     .slice(0, 3);
@@ -368,7 +371,28 @@ function RoutePage() {
                 <span aria-hidden>→</span>
               </Link>
             ) : null}
+            {routeGuide ? (
+              <Link
+                to="/{-$locale}/guides/$slug"
+                params={{ slug: routeGuide.slug }}
+                className="mt-5 flex max-w-2xl items-center justify-between gap-4 rounded-2xl border border-border bg-muted/40 p-5 transition hover:shadow-md"
+              >
+                <span>
+                  <span className="block text-xs font-semibold uppercase tracking-wide text-accent-deep">
+                    Route guide
+                  </span>
+                  <span className="mt-1 block font-semibold text-primary">{routeGuide.title}</span>
+                  <span className="mt-1 block text-sm text-muted-foreground">
+                    Minute-by-minute drive, detours and arrival detail.
+                  </span>
+                </span>
+                <span aria-hidden className="text-accent-deep">
+                  →
+                </span>
+              </Link>
+            ) : null}
           </section>
+
 
           <section id="overview" className="scroll-mt-32">
             <p className="max-w-2xl text-lg leading-relaxed text-foreground/90">{route.blurb}</p>

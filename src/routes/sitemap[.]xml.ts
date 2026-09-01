@@ -2,6 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { ROUTES, VEHICLE_CLASSES } from "@/data/routes";
 import { REGIONS } from "@/data/regions";
+import { ROUTE_GUIDES } from "@/data/route-guides";
+import { DRIVERS } from "@/data/drivers";
+import { HOTEL_AREAS } from "@/data/hotels";
+import { FERRY_PORTS } from "@/data/ferry-ports";
 import { SERVICES } from "@/data/services";
 import { POSTS } from "@/data/posts";
 import { AIRPORT_ROUTES } from "@/data/airport-routes";
@@ -56,6 +60,14 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...listCityDestinations().map((c) => `/cities/${c.slug}`),
           ...MARKET_HUB_CITIES.map((c) => `/cities/${c.slug}`),
           "/for-travel-agencies",
+          "/guides",
+          "/drivers",
+          "/hotels",
+          "/ferry",
+          ...ROUTE_GUIDES.map((g) => `/guides/${g.slug}`),
+          ...DRIVERS.map((d) => `/drivers/${d.slug}`),
+          ...HOTEL_AREAS.map((h) => `/hotels/${h.slug}`),
+          ...FERRY_PORTS.map((f) => `/ferry/${f.slug}`),
         ]);
         const lastModified = new Map<string, string>([
           ...listLiveMarkets().map((market) => [`/${market.slug}`, market.lastModified] as const),
