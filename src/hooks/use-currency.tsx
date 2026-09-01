@@ -5,6 +5,7 @@ import {
   setPreferredCurrency,
   subscribeCurrency,
   type CurrencyCode,
+  formatMoney,
 } from "@/lib/currency";
 
 type CurrencyContextValue = {
@@ -43,4 +44,18 @@ export function useCurrency(): CurrencyContextValue {
     };
   }
   return ctx;
+}
+
+/** Formatter for customer-facing money: EUR amounts rendered in the visitor's currency. */
+export function useMoney(): {
+  format: (amountEur: number) => string;
+  currency: CurrencyCode;
+  isConverted: boolean;
+} {
+  const { currency } = useCurrency();
+  return {
+    format: (amountEur: number) => formatMoney(amountEur, currency),
+    currency,
+    isConverted: currency !== "EUR",
+  };
 }
