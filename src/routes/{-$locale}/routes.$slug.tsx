@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import type { RouteData } from "@/data/routes";
+import { guideForRoute } from "@/data/route-guides";
 import { quote, formatEur } from "@/lib/pricing";
 import { BookingWidget } from "@/components/booking-widget";
 import { RouteCard } from "@/components/sections/route-card";
