@@ -397,14 +397,13 @@ function BookPage() {
   }, [classQuotes, vehicleClass, routeInfo, search.route, pickupAt, returnAt, tripType, extras]);
 
   const overCapacity = bagsChecked > bagCapacity(vehicleClass);
-  const canContinue =
-    !!pickupAt &&
-    !!q &&
-    (isHourly
-      ? true
-      : !!fromCoords &&
-        !!toCoords &&
-        (!!routeInfo?.routeSlug || (routeInfo?.distanceKm ?? 0) > 0 || routeLoading));
+  // A place picked from our own route catalog has no coordinates, but it still
+  // resolves to a fixed-price route — that alone is enough to continue.
+  const hasFixedRoute = !!routeInfo?.routeSlug;
+  const hasTripBasis =
+    hasFixedRoute || (!!fromCoords && !!toCoords && ((routeInfo?.distanceKm ?? 0) > 0 || routeLoading));
+
+  const canContinue = !!pickupAt && !!q && (isHourly ? true : hasTripBasis);
 
   const proceed = () => {
     const errs: Record<string, string> = {};
@@ -412,7 +411,7 @@ function BookPage() {
     if (!isHourly && tripType === "return" && !returnAt) {
       errs.returnAt = "Please pick your return date and time";
     }
-    if (!isHourly && (!fromCoords || !toCoords)) {
+    if (!isHourly && !hasTripBasis) {
       errs.places = bp.needPlaces;
     }
     if (!q) errs.quote = bp.needQuote;

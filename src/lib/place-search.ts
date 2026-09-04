@@ -162,6 +162,30 @@ function buildLocalCatalog(): PlaceResult[] {
     });
   }
 
+  // Backfill coordinates so every catalog entry can drive the map + distance
+  // pricing, even when it came from the route list (which stores names only).
+  const coordByKey = new Map<string, { lat: number; lng: number }>();
+  for (const p of out) {
+    if (p.lat != null && p.lng != null && p.routeEndKey && !coordByKey.has(p.routeEndKey)) {
+      coordByKey.set(p.routeEndKey, { lat: p.lat, lng: p.lng });
+    }
+  }
+  for (const p of out) {
+    if (p.lat != null || !p.routeEndKey) continue;
+    const hit = coordByKey.get(p.routeEndKey);
+    if (hit) {
+      p.lat = hit.lat;
+      p.lng = hit.lng;
+      continue;
+    }
+    const airport = searchIataAirports(p.label, 1)[0];
+    if (airport && routeEndKey(`${airport.name} ${airport.city}`).includes(p.routeEndKey)) {
+      p.lat = airport.lat;
+      p.lng = airport.lng;
+      p.iata = p.iata ?? airport.iata;
+    }
+  }
+
   localCache = out;
   aliasMap = aliases;
   return out;
