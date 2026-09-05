@@ -482,7 +482,12 @@ function BookPage() {
       // Quote persistence optional until migration is applied; fall back to client price.
     }
 
+    const bookingId =
+      typeof crypto !== "undefined" && "randomUUID" in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
     const base = {
+      id: bookingId,
       route_slug: routeSlug,
       vehicle_class: vehicleClass,
       passengers,
@@ -515,27 +520,23 @@ function BookPage() {
       dropoff_point: isHourly ? null : (toCoords ?? null),
     };
 
-    let { data, error } = await supabase
-      .from("bookings")
-      .insert({ ...base, ...v2 } as never)
-      .select("id")
-      .single();
+    // Guests have no SELECT policy on bookings, so never ask for the row back —
+    // we mint the id client-side and insert with `return=minimal`.
+    let { error } = await supabase.from("bookings").insert({ ...base, ...v2 } as never);
 
     if (error && user && /user_id/i.test(error.message)) {
       const { user_id: _omit, ...withoutUser } = { ...base, ...v2 };
       void _omit;
-      ({ data, error } = await supabase
-        .from("bookings")
-        .insert(withoutUser as never)
-        .select("id")
-        .single());
+      ({ error } = await supabase.from("bookings").insert(withoutUser as never));
     }
 
     setSubmitting(false);
-    if (error || !data) {
-      setSubmitError(error?.message ?? "Something went wrong. Please try again.");
+    if (error) {
+      setSubmitError(error.message ?? "Something went wrong. Please try again.");
       return;
     }
+    const data = { id: bookingId };
+
 
     try {
       await attachReferral(data.id, search.ref);
