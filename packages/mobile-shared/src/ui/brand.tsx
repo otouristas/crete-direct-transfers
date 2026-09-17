@@ -18,28 +18,30 @@ export function LogoMark({
   rounded?: boolean;
 }) {
   const pin = tone === "dark" ? colors.inverse : colors.primary;
+  // Same 64-unit geometry as public/favicon.svg and the app icons (see
+  // scripts/generate-brand-icons.mjs). The tight viewBox crops the tile's
+  // padding; `rounded` restores it and draws the navy tile behind the mark.
   return (
-    <Svg width={size} height={size} viewBox="0 0 48 48" fill="none" accessibilityRole="image">
-      {rounded ? <Rect width={48} height={48} rx={12} fill={colors.primary} /> : null}
+    <Svg
+      width={size}
+      height={size}
+      viewBox={rounded ? "0 0 64 64" : "12.5 10.7 42.7 42.7"}
+      fill="none"
+      accessibilityRole="image"
+    >
+      {rounded ? <Rect width={64} height={64} rx={14} fill={colors.primary} /> : null}
       <Path
-        d="M40.5 30.5A18 18 0 1 1 42 24"
+        d="M49.16 37.25A17.94 17.94 0 1 1 49.84 30.13"
         stroke={colors.accent}
-        strokeWidth={4}
+        strokeWidth={3}
         strokeLinecap="round"
       />
+      <Path d="M47 27.38H55.13L49.84 33.88Z" fill={colors.accent} />
       <Path
-        d="M42.5 15.5 42 24l-7.5-4"
-        fill="none"
-        stroke={colors.accent}
-        strokeWidth={4}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <Path
-        d="M24 12c-4.7 0-8.5 3.7-8.5 8.3 0 5.9 7 13.2 7.9 14.1a.9.9 0 0 0 1.2 0c.9-.9 7.9-8.2 7.9-14.1C32.5 15.7 28.7 12 24 12Z"
+        d="M32 42 25.51 33.61A8.2 8.2 0 1 1 38.49 33.61Z"
         fill={rounded ? colors.inverse : pin}
       />
-      <Circle cx={24} cy={20.4} r={3.1} fill={colors.accent} />
+      <Circle cx={32} cy={28.6} r={3.56} fill={colors.accent} />
     </Svg>
   );
 }
