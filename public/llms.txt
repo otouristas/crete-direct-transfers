@@ -14,11 +14,11 @@ quote that is confirmed before payment.
 Key facts:
 - Model: private (not shared) door-to-door transfers, fixed price agreed up front, no surge, no bidding.
 - Inclusions: instant Crete bookings include the published route benefits; quote-mode confirmations state the meeting point, vehicle, waiting terms and applicable fees.
-- Vehicle classes: Economy, Comfort, Minivan (up to 7), Luxury, minibuses.
+- Vehicle classes: Economy, Standard Class, First Class, SUV, Van Standard (up to 7), Van First Class, Minibus 12, Minibus 16.
 - Coverage today: instant booking across Crete; quote-confirmed coverage in the rest of Greece, Spain, Italy, Portugal, Cyprus and Turkey.
 - Public site languages: English, Greek (Ελληνικά), German (Deutsch), French (Français), Italian (Italiano). English is served at the root; other locales at /el, /de, /fr, /it. Dutch and Spanish interfaces exist but are not yet published for search.
 - Long-form Crete editorial (route guides, hotel and resort areas, ferry ports) is published in English only; the booking flow, prices and support are available in all five public languages.
-- Display currencies: 30 currencies selectable in the header; EUR remains the settlement currency for every booking, driver payout and refund.
+- Display currencies: 29 currencies selectable in the header; EUR remains the settlement currency for every booking, driver payout and refund.
 - Payment: card (Stripe Checkout on instant routes) or pay-on-board depending on route.
 - In-product assistant: Touristas AI (Help me book) quotes places with tool calling and deep-links into /book. Prices only come from TransferAround quote tools.
 
