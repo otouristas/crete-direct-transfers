@@ -143,7 +143,8 @@ const ROUTES: RouteData[] = [
     basePriceEur: 40,
     heroImage: IMG.town,
     blurb: "The standard ferry arrival into the capital.",
-    notes: "Eight hairpins up from the port — twenty minutes unless a cruise tender has just landed.",
+    notes:
+      "Eight hairpins up from the port — twenty minutes unless a cruise tender has just landed.",
     region: "Fira & Inland",
     service: "port",
   },

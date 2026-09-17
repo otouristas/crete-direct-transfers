@@ -14,13 +14,27 @@ import { listIndexableAirports } from "@/lib/indexable-airports";
 import { listIndexablePorts } from "@/lib/port-resolve";
 import { listCityDestinations } from "@/data/destinations";
 import { listLiveMarkets } from "@/data/markets";
-import { REVIEWS_VERIFIED, SITE_URL } from "@/lib/site";
+import { DRIVER_PROFILES_VERIFIED, REVIEWS_VERIFIED, SITE_URL } from "@/lib/site";
 import { PUBLIC_LOCALES, localePath } from "@/i18n";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
+        // Long-form editorial that exists only in English: one indexable URL
+        // each (the English one), no locale alternates. Other locales render
+        // these pages `noindex` (see buildHead's englishOnly).
+        const englishOnlyPaths = new Set([
+          "/guides",
+          "/hotels",
+          "/ferry",
+          ...ROUTE_GUIDES.map((g) => `/guides/${g.slug}`),
+          ...HOTEL_AREAS.map((h) => `/hotels/${h.slug}`),
+          ...FERRY_PORTS.map((f) => `/ferry/${f.slug}`),
+          ...(DRIVER_PROFILES_VERIFIED
+            ? ["/drivers", ...DRIVERS.map((d) => `/drivers/${d.slug}`)]
+            : []),
+        ]);
         const paths = new Set([
           "/",
           "/countries",
@@ -60,14 +74,6 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...listCityDestinations().map((c) => `/cities/${c.slug}`),
           ...MARKET_HUB_CITIES.map((c) => `/cities/${c.slug}`),
           "/for-travel-agencies",
-          "/guides",
-          "/drivers",
-          "/hotels",
-          "/ferry",
-          ...ROUTE_GUIDES.map((g) => `/guides/${g.slug}`),
-          ...DRIVERS.map((d) => `/drivers/${d.slug}`),
-          ...HOTEL_AREAS.map((h) => `/hotels/${h.slug}`),
-          ...FERRY_PORTS.map((f) => `/ferry/${f.slug}`),
         ]);
         const lastModified = new Map<string, string>([
           ...listLiveMarkets().map((market) => [`/${market.slug}`, market.lastModified] as const),
@@ -85,16 +91,18 @@ export const Route = createFileRoute("/sitemap.xml")({
             `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${localePath("en", path)}"/>`,
           ].join("\n");
 
-        const urls = [...paths]
-          .flatMap((path) => {
-            const modified = lastModified.get(path);
-            const lastmod = modified ? `\n    <lastmod>${modified}</lastmod>` : "";
-            return PUBLIC_LOCALES.map(
-              (locale) =>
-                `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>${lastmod}\n${alternates(path)}\n  </url>`,
-            );
-          })
-          .join("\n");
+        const localizedUrls = [...paths].flatMap((path) => {
+          const modified = lastModified.get(path);
+          const lastmod = modified ? `\n    <lastmod>${modified}</lastmod>` : "";
+          return PUBLIC_LOCALES.map(
+            (locale) =>
+              `  <url>\n    <loc>${SITE_URL}${localePath(locale, path)}</loc>${lastmod}\n${alternates(path)}\n  </url>`,
+          );
+        });
+        const englishOnlyUrls = [...englishOnlyPaths].map(
+          (path) => `  <url>\n    <loc>${SITE_URL}${localePath("en", path)}</loc>\n  </url>`,
+        );
+        const urls = [...localizedUrls, ...englishOnlyUrls].join("\n");
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>`;
 

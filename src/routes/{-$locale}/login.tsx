@@ -67,11 +67,15 @@ function LoginPage() {
         return;
       }
 
+      // Admins land on operations; the driver dashboard is gated to the
+      // driver role and would only bounce them back to the customer account.
       navigate({
         to:
-          profile.role === "driver" || profile.role === "admin"
-            ? "/{-$locale}/driver"
-            : "/{-$locale}/account",
+          profile.role === "admin"
+            ? "/{-$locale}/ops"
+            : profile.role === "driver"
+              ? "/{-$locale}/driver"
+              : "/{-$locale}/account",
         params: { locale: locale === "en" ? undefined : locale },
         replace: true,
       });

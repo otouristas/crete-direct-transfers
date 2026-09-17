@@ -69,9 +69,7 @@ export function DriverAccountsPanel({ locale }: { locale: Locale }) {
   };
 
   const onSuspend = (driverId: string, suspended: boolean) => {
-    const until = suspended
-      ? null
-      : new Date(Date.now() + SUSPEND_DAYS * 86_400_000).toISOString();
+    const until = suspended ? null : new Date(Date.now() + SUSPEND_DAYS * 86_400_000).toISOString();
     suspend.mutate({ driverId, until });
   };
 
@@ -133,9 +131,7 @@ export function DriverAccountsPanel({ locale }: { locale: Locale }) {
                             className="text-destructive underline"
                             onClick={() => onSuspend(row.driver_id ?? "", suspended)}
                           >
-                            {suspended
-                              ? t.driverAccount.opsReinstate
-                              : t.driverAccount.opsSuspend}
+                            {suspended ? t.driverAccount.opsReinstate : t.driverAccount.opsSuspend}
                           </button>
                         </div>
                       </td>
@@ -149,9 +145,7 @@ export function DriverAccountsPanel({ locale }: { locale: Locale }) {
       </section>
 
       <section>
-        <h2 className="font-display text-xl text-primary">
-          {t.driverAccount.opsPenaltiesTitle}
-        </h2>
+        <h2 className="font-display text-xl text-primary">{t.driverAccount.opsPenaltiesTitle}</h2>
         {penalties.isPending ? (
           <Skeleton className="mt-4 h-24 w-full rounded-2xl" />
         ) : (penalties.data ?? []).length === 0 ? (

@@ -99,11 +99,7 @@ export const DRIVERS: DriverProfile[] = [
     ],
     quote: "Twenty-two years and I still take the Panormo exit for coffee. Some things work.",
     specialties: ["Airport-to-airport", "Arkadi and inland stops", "Long-distance comfort"],
-    routeSlugs: [
-      "heraklion-airport-to-rethymno",
-      "chania-airport-to-rethymno",
-      "rethymno-to-bali",
-    ],
+    routeSlugs: ["heraklion-airport-to-rethymno", "chania-airport-to-rethymno", "rethymno-to-bali"],
     rating: 4.9,
     transfers: 5100,
   },

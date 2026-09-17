@@ -38,7 +38,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { getDict, type Locale } from "@/i18n";
+import { getDict, type Dict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { ArrowLeftRight, ChevronUp, Info } from "lucide-react";
 import { createAndPersistQuote } from "@/lib/quote-engine";
@@ -104,14 +104,29 @@ export const Route = createFileRoute("/{-$locale}/book")({
   component: BookPage,
 });
 
-const detailsSchema = z.object({
-  customer_name: z.string().trim().min(2, "Please enter your name").max(100),
-  customer_email: z.string().trim().email("Please enter a valid email").max(255),
-  customer_phone: z.string().trim().min(5, "Please enter your phone").max(30),
-  flight_number: z.string().trim().max(20).optional().or(z.literal("")),
-  return_flight_number: z.string().trim().max(20).optional().or(z.literal("")),
-  notes: z.string().trim().max(500).optional().or(z.literal("")),
-});
+/** Validation copy comes from the active dictionary so errors match the form's language. */
+function buildDetailsSchema(t: Dict) {
+  return z.object({
+    customer_name: z
+      .string()
+      .trim()
+      .min(2, t.forms.validationName)
+      .max(100, t.forms.validationName),
+    customer_email: z
+      .string()
+      .trim()
+      .email(t.forms.validationEmail)
+      .max(255, t.forms.validationEmail),
+    customer_phone: z
+      .string()
+      .trim()
+      .min(5, t.forms.validationPhone)
+      .max(30, t.forms.validationPhone),
+    flight_number: z.string().trim().max(20).optional().or(z.literal("")),
+    return_flight_number: z.string().trim().max(20).optional().or(z.literal("")),
+    notes: z.string().trim().max(500).optional().or(z.literal("")),
+  });
+}
 
 function placeFromSearch(label?: string, lat?: number, lng?: number): PlaceResult | null {
   if (!label && lat == null) return null;
@@ -401,15 +416,16 @@ function BookPage() {
   // resolves to a fixed-price route — that alone is enough to continue.
   const hasFixedRoute = !!routeInfo?.routeSlug;
   const hasTripBasis =
-    hasFixedRoute || (!!fromCoords && !!toCoords && ((routeInfo?.distanceKm ?? 0) > 0 || routeLoading));
+    hasFixedRoute ||
+    (!!fromCoords && !!toCoords && ((routeInfo?.distanceKm ?? 0) > 0 || routeLoading));
 
   const canContinue = !!pickupAt && !!q && (isHourly ? true : hasTripBasis);
 
   const proceed = () => {
     const errs: Record<string, string> = {};
-    if (!pickupAt) errs.pickupAt = "Please pick a date and time";
+    if (!pickupAt) errs.pickupAt = bp.needPickupAt;
     if (!isHourly && tripType === "return" && !returnAt) {
-      errs.returnAt = "Please pick your return date and time";
+      errs.returnAt = bp.needReturnAt;
     }
     if (!isHourly && !hasTripBasis) {
       errs.places = bp.needPlaces;
@@ -426,7 +442,7 @@ function BookPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const parsed = detailsSchema.safeParse(details);
+    const parsed = buildDetailsSchema(t).safeParse(details);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       for (const issue of parsed.error.issues) {
@@ -536,7 +552,6 @@ function BookPage() {
       return;
     }
     const data = { id: bookingId };
-
 
     try {
       await attachReferral(data.id, search.ref);

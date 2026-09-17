@@ -135,7 +135,8 @@ const ROUTES: RouteData[] = [
     basePriceEur: 45,
     heroImage: IMG.coast,
     blurb: "The short hop for Andros, Tinos and Mykonos sailings.",
-    notes: "Rafina is closer than Piraeus but the early sailings fill the ramp — we build in a buffer.",
+    notes:
+      "Rafina is closer than Piraeus but the early sailings fill the ramp — we build in a buffer.",
     region: "Piraeus & Ferry Ports",
     service: "port",
   },

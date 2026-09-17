@@ -379,11 +379,11 @@ function RoutePage() {
               >
                 <span>
                   <span className="block text-xs font-semibold uppercase tracking-wide text-accent-deep">
-                    Route guide
+                    {t.editorial.guideEyebrow}
                   </span>
                   <span className="mt-1 block font-semibold text-primary">{routeGuide.title}</span>
                   <span className="mt-1 block text-sm text-muted-foreground">
-                    Minute-by-minute drive, detours and arrival detail.
+                    {t.editorial.guideTeaser}
                   </span>
                 </span>
                 <span aria-hidden className="text-accent-deep">
@@ -392,7 +392,6 @@ function RoutePage() {
               </Link>
             ) : null}
           </section>
-
 
           <section id="overview" className="scroll-mt-32">
             <p className="max-w-2xl text-lg leading-relaxed text-foreground/90">{route.blurb}</p>

@@ -73,7 +73,7 @@ export function ContractSigner({ locale, contract, onSigned }: Props) {
             <p className="mt-2 break-all">
               {t.contracts.fingerprint}: {current.bodySha256 ?? "—"}
             </p>
-            <p className="mt-1">v{current.templateVersion}</p>
+            <p className="mt-1">{`v${current.templateVersion}`}</p>
           </div>
           <button
             type="button"

@@ -2,7 +2,8 @@
 export const SITE_URL = "https://transferaround.com";
 
 export const SITE_NAME = "TransferAround";
-export const LOGO_IMAGE = `${SITE_URL}/favicon.svg`;
+/** Square raster mark — Google's logo/knowledge-panel guidance wants PNG/JPG ≥112px, not SVG. */
+export const LOGO_IMAGE = `${SITE_URL}/icons/icon-512.png`;
 export const CONTACT_EMAIL = "hello@transferaround.com";
 export const CONTACT_PHONE: string | undefined =
   import.meta.env.VITE_CONTACT_PHONE?.trim() || undefined;
@@ -27,7 +28,13 @@ export const SOCIAL_INSTAGRAM: string | undefined =
 export const SOCIAL_X: string | undefined = import.meta.env.VITE_SOCIAL_X?.trim() || undefined;
 export const REVIEWS_VERIFIED = import.meta.env.VITE_REVIEWS_VERIFIED === "true";
 export const BUSINESS_METRICS_VERIFIED = import.meta.env.VITE_BUSINESS_METRICS_VERIFIED === "true";
+/**
+ * Named driver profiles (/drivers) carry ratings and transfer counts for real
+ * people. They stay noindex, out of the sitemap and out of the footer and
+ * cross-links until each published driver has consented and the figures are
+ * backed by records — the same gate the reviews and business metrics use.
+ */
+export const DRIVER_PROFILES_VERIFIED = import.meta.env.VITE_DRIVER_PROFILES_VERIFIED === "true";
 
-/** 1200×630 crop used when a page has no more specific social image. */
-export const OG_DEFAULT_IMAGE =
-  "https://images.pexels.com/photos/34631/pexels-photo.jpg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200";
+/** Branded 1200×630 card (self-hosted) used when a page has no more specific social image. */
+export const OG_DEFAULT_IMAGE = `${SITE_URL}/og-default.png`;

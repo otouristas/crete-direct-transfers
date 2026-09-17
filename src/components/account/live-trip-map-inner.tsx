@@ -33,13 +33,7 @@ function carIcon(heading: number | null) {
 }
 
 /** Fit once per endpoint change, then keep the moving driver in view. */
-function Fit({
-  points,
-  driver,
-}: {
-  points: [number, number][];
-  driver?: LiveMapPoint | null;
-}) {
+function Fit({ points, driver }: { points: [number, number][]; driver?: LiveMapPoint | null }) {
   const map = useMap();
   const key = points.map((p) => p.join()).join("|");
   useEffect(() => {
@@ -51,12 +45,14 @@ function Fit({
     map.fitBounds(latLngBounds(points), { padding: [50, 50], maxZoom: 13 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, key]);
+  const driverLat = driver?.lat;
+  const driverLng = driver?.lng;
   useEffect(() => {
-    if (!driver) return;
-    if (!map.getBounds().pad(-0.15).contains([driver.lat, driver.lng])) {
-      map.panTo([driver.lat, driver.lng], { animate: true });
+    if (driverLat == null || driverLng == null) return;
+    if (!map.getBounds().pad(-0.15).contains([driverLat, driverLng])) {
+      map.panTo([driverLat, driverLng], { animate: true });
     }
-  }, [map, driver?.lat, driver?.lng]);
+  }, [map, driverLat, driverLng]);
   return null;
 }
 
@@ -100,7 +96,11 @@ export default function LiveTripMapInner({
         {pickup && <Marker position={[pickup.lat, pickup.lng]} icon={PICKUP_ICON} />}
         {dropoff && <Marker position={[dropoff.lat, dropoff.lng]} icon={DROPOFF_ICON} />}
         {driver && (
-          <Marker position={[driver.lat, driver.lng]} icon={carIcon(heading ?? null)} zIndexOffset={500} />
+          <Marker
+            position={[driver.lat, driver.lng]}
+            icon={carIcon(heading ?? null)}
+            zIndexOffset={500}
+          />
         )}
       </MapContainer>
     </div>

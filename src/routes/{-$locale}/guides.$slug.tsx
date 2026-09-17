@@ -1,15 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Clock, Compass, Lightbulb, MapPin, Route as RouteIcon } from "lucide-react";
-import { PageHero } from "@/components/sections/page-hero";
 import { CtaBand } from "@/components/sections/cta-band";
 import { BookingWidget } from "@/components/booking-widget";
+import { EnglishOnlyNote } from "@/components/editorial/english-only-note";
 import { getRouteGuide, ROUTE_GUIDES } from "@/data/route-guides";
 import { getRoute } from "@/data/routes";
 import { driversForRoute, driverInitials } from "@/data/drivers";
 import { formatEur } from "@/lib/pricing";
 import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { DRIVER_PROFILES_VERIFIED } from "@/lib/site";
 import { ORGANIZATION_ID } from "@/lib/structured-data";
-import type { Locale } from "@/i18n";
+import { getDict, useT, type Locale } from "@/i18n";
 
 export const Route = createFileRoute("/{-$locale}/guides/$slug")({
   loader: ({ params }) => {
@@ -19,8 +20,11 @@ export const Route = createFileRoute("/{-$locale}/guides/$slug")({
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
-      return { meta: [{ title: "Guide unavailable" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: t.editorial.guideUnavailable }, { name: "robots", content: "noindex" }],
+      };
     }
     const { guide } = loaderData;
     const path = `/guides/${guide.slug}`;
@@ -31,6 +35,7 @@ export const Route = createFileRoute("/{-$locale}/guides/$slug")({
       title: guide.title,
       description: guide.subtitle,
       ogImage: guide.heroImage,
+      englishOnly: true,
       jsonLd: {
         "@context": "https://schema.org",
         "@graph": [
@@ -40,6 +45,8 @@ export const Route = createFileRoute("/{-$locale}/guides/$slug")({
             headline: guide.title,
             description: guide.subtitle,
             image: guide.heroImage,
+            inLanguage: "en",
+            mainEntityOfPage: canonical,
             publisher: { "@id": ORGANIZATION_ID },
           },
           {
@@ -59,9 +66,10 @@ export const Route = createFileRoute("/{-$locale}/guides/$slug")({
 });
 
 function GuidePage() {
+  const t = useT();
   const { guide } = Route.useLoaderData();
   const route = getRoute(guide.routeSlug);
-  const drivers = driversForRoute(guide.routeSlug);
+  const drivers = DRIVER_PROFILES_VERIFIED ? driversForRoute(guide.routeSlug) : [];
   const related = ROUTE_GUIDES.filter((g) => g.slug !== guide.slug).slice(0, 3);
 
   return (
@@ -75,7 +83,7 @@ function GuidePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-primary/40" />
         <div className="relative mx-auto max-w-7xl px-6 py-20 md:py-28">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-foreground/70">
-            Route guide
+            {t.editorial.guideEyebrow}
           </p>
           <h1 className="mt-4 max-w-3xl font-display text-4xl text-primary-foreground md:text-5xl">
             {guide.title}
@@ -84,9 +92,9 @@ function GuidePage() {
           {route && (
             <div className="mt-8 flex flex-wrap gap-3">
               {[
-                { icon: Clock, label: `${route.durationMin} min` },
-                { icon: MapPin, label: `${route.distanceKm} km` },
-                { icon: RouteIcon, label: `from ${formatEur(route.basePriceEur)}` },
+                { icon: Clock, label: t.editorial.minutes(route.durationMin) },
+                { icon: MapPin, label: t.editorial.kilometres(route.distanceKm) },
+                { icon: RouteIcon, label: t.editorial.fromPrice(formatEur(route.basePriceEur)) },
               ].map(({ icon: Icon, label }) => (
                 <span
                   key={label}
@@ -100,6 +108,8 @@ function GuidePage() {
         </div>
       </section>
 
+      <EnglishOnlyNote />
+
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-14 lg:grid-cols-[1fr_380px]">
         <div className="space-y-14">
           <div className="space-y-4">
@@ -111,7 +121,7 @@ function GuidePage() {
           </div>
 
           <div>
-            <h2 className="font-display text-2xl text-primary">The drive, minute by minute</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.guideDriveTitle}</h2>
             <ol className="mt-6 space-y-0">
               {guide.drive.map((stop) => (
                 <li key={stop.title} className="relative flex gap-5 pb-8 last:pb-0">
@@ -131,14 +141,14 @@ function GuidePage() {
           </div>
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Detours worth asking for</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.guideDetoursTitle}</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {guide.detours.map((d) => (
                 <div key={d.name} className="rounded-2xl border border-border bg-card p-5">
                   <div className="flex items-center justify-between gap-3">
                     <h3 className="font-semibold text-primary">{d.name}</h3>
                     <span className="rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground">
-                      +{d.addMin} min
+                      {t.editorial.guideAddMinutes(d.addMin)}
                     </span>
                   </div>
                   <p className="mt-2 text-sm text-muted-foreground">{d.body}</p>
@@ -150,18 +160,18 @@ function GuidePage() {
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-2xl border border-border bg-muted/40 p-6">
               <Clock className="h-5 w-5 text-accent-deep" />
-              <h3 className="mt-3 font-semibold text-primary">Timing and traffic</h3>
+              <h3 className="mt-3 font-semibold text-primary">{t.editorial.guideTimingTitle}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{guide.timing}</p>
             </div>
             <div className="rounded-2xl border border-border bg-muted/40 p-6">
               <Compass className="h-5 w-5 text-accent-deep" />
-              <h3 className="mt-3 font-semibold text-primary">The arrival</h3>
+              <h3 className="mt-3 font-semibold text-primary">{t.editorial.guideArrivalTitle}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{guide.arrival}</p>
             </div>
           </div>
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Local knowledge</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.guideTipsTitle}</h2>
             <ul className="mt-5 space-y-3">
               {guide.tips.map((tip) => (
                 <li key={tip} className="flex gap-3 text-muted-foreground">
@@ -174,7 +184,9 @@ function GuidePage() {
 
           {drivers.length > 0 && (
             <div>
-              <h2 className="font-display text-2xl text-primary">Drivers who run this route</h2>
+              <h2 className="font-display text-2xl text-primary">
+                {t.editorial.guideDriversTitle}
+              </h2>
               <div className="mt-5 grid gap-4 sm:grid-cols-2">
                 {drivers.map((d) => (
                   <Link
@@ -189,7 +201,7 @@ function GuidePage() {
                     <span>
                       <span className="block font-semibold text-primary">{d.name}</span>
                       <span className="block text-sm text-muted-foreground">
-                        {d.base} · {d.years} years · {d.vehicle}
+                        {d.base} · {t.editorial.yearsShort(d.years)} · {d.vehicle}
                       </span>
                     </span>
                   </Link>
@@ -199,7 +211,7 @@ function GuidePage() {
           )}
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Questions we get asked</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.questionsTitle}</h2>
             <div className="mt-5 space-y-4">
               {guide.faqs.map((f) => (
                 <div key={f.q} className="rounded-2xl border border-border bg-card p-5">
@@ -216,13 +228,13 @@ function GuidePage() {
               params={{ slug: guide.routeSlug }}
               className="inline-flex items-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
             >
-              See fixed prices for this route
+              {t.editorial.guideSeePrices}
             </Link>
             <Link
               to="/{-$locale}/guides"
               className="inline-flex items-center rounded-xl border border-border px-6 py-3 text-sm font-semibold text-primary transition hover:bg-muted"
             >
-              All route guides
+              {t.editorial.guideAll}
             </Link>
           </div>
         </div>
@@ -234,7 +246,7 @@ function GuidePage() {
 
       <section className="border-t border-border bg-muted/30">
         <div className="mx-auto max-w-7xl px-6 py-14">
-          <h2 className="font-display text-2xl text-primary">More route guides</h2>
+          <h2 className="font-display text-2xl text-primary">{t.editorial.guideMore}</h2>
           <div className="mt-6 grid gap-5 md:grid-cols-3">
             {related.map((g) => (
               <Link

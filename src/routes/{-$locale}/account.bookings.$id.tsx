@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, CarFront, Flag, Phone } from "lucide-react";
 import { toast } from "sonner";
-import { getDict } from "@/i18n";
+import { getDict, type Locale } from "@/i18n";
 import {
   bookingDriverQuery,
   bookingIncidentsQuery,
@@ -42,7 +42,7 @@ import {
 } from "@/components/ui/select";
 import { getRoute, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { useMoney } from "@/hooks/use-currency";
-import { lookupFlight } from "@/lib/flight-tracking";
+import { lookupFlight, type FlightStatus } from "@/lib/flight-tracking";
 import { CONTACT_PHONE, CONTACT_PHONE_HREF, CONTACT_WHATSAPP_HREF } from "@/lib/site";
 
 export const Route = createFileRoute("/{-$locale}/account/bookings/$id")({
@@ -209,7 +209,7 @@ function BookingDetailPage() {
             value={`${b.bags_checked} ${t.widget.checkedBags.toLowerCase()} · ${b.bags_cabin} ${t.widget.cabinBags.toLowerCase()}`}
           />
           {b.flight_number && <Item label={t.widget.flightNumber} value={b.flight_number} />}
-          {b.flight_number && <FlightStatusRow flightNumber={b.flight_number} />}
+          {b.flight_number && <FlightStatusRow flightNumber={b.flight_number} locale={locale} />}
           {b.return_flight_number && (
             <Item label={t.bookPage.returnFlightNumber} value={b.return_flight_number} />
           )}
@@ -257,7 +257,6 @@ function BookingDetailPage() {
       )}
 
       <TripTimeline status={b.status} locale={locale} />
-
 
       {b.status === "pending" && !b.driver_id && (
         <div className="rounded-2xl border border-border bg-card p-8">
@@ -363,7 +362,6 @@ function BookingDetailPage() {
                 : t.widget.payOnBoard,
           }}
         />
-
 
         {canCancel && (
           <AlertDialog>
@@ -519,22 +517,37 @@ function Item({ label, value }: { label: string; value: string }) {
   );
 }
 
-function FlightStatusRow({ flightNumber }: { flightNumber: string }) {
-  const [label, setLabel] = useState("Checking flight…");
+function FlightStatusRow({ flightNumber, locale }: { flightNumber: string; locale: Locale }) {
+  const t = getDict(locale);
+  const [flight, setFlight] = useState<FlightStatus | null>(null);
   useEffect(() => {
     let cancelled = false;
     void lookupFlight(flightNumber).then((f) => {
-      if (cancelled) return;
-      const eta = f.estimatedArrival ? new Date(f.estimatedArrival).toLocaleString() : "—";
-      setLabel(
-        f.source === "live"
-          ? `${f.status} · ETA ${eta}`
-          : `Tracking ready (${f.flightNumber}) — connect flight API for live ETA`,
-      );
+      if (!cancelled) setFlight(f);
     });
     return () => {
       cancelled = true;
     };
   }, [flightNumber]);
-  return <Item label="Flight status" value={label} />;
+
+  let label = t.flight.checking;
+  if (flight) {
+    if (flight.source === "live") {
+      const status = t.flight.statuses[flight.status] ?? t.flight.statuses.unknown;
+      const eta = flight.estimatedArrival
+        ? t.flight.eta(
+            new Date(flight.estimatedArrival).toLocaleString(locale === "en" ? "en-GB" : locale, {
+              dateStyle: "medium",
+              timeStyle: "short",
+            }),
+          )
+        : null;
+      label = eta ? `${status} · ${eta}` : status;
+    } else {
+      // No live provider configured: say what is true (the driver tracks the
+      // flight) instead of leaking a developer note to the customer.
+      label = t.flight.tracked;
+    }
+  }
+  return <Item label={t.flight.statusLabel} value={label} />;
 }

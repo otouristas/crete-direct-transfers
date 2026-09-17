@@ -124,7 +124,6 @@ export type RouteData = {
   territory?: string;
 };
 
-
 /** Merged, territory-tagged route catalog. Authoring lives in `src/data/territories/`. */
 export const ROUTES: RouteData[] = PUBLISHED_ROUTES;
 

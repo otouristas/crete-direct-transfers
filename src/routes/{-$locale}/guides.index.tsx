@@ -2,36 +2,40 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Clock, MapPin } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { CtaBand } from "@/components/sections/cta-band";
+import { EnglishOnlyNote } from "@/components/editorial/english-only-note";
 import { listRouteGuides } from "@/data/route-guides";
 import { getRoute } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
-import type { Locale } from "@/i18n";
+import { getDict, useT, type Locale } from "@/i18n";
 
 export const Route = createFileRoute("/{-$locale}/guides/")({
   head: (ctx) => {
     const locale = (ctx.params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     return buildHead({
       locale,
       path: "/guides",
-      title: "Crete transfer route guides | TransferAround",
-      description:
-        "Minute-by-minute guides to the main Crete transfer routes: what the drive looks like, worthwhile stops, timing, and arrival detail from local drivers.",
+      title: t.editorial.guidesMetaTitle,
+      description: t.editorial.guidesMetaDescription,
+      englishOnly: true,
     });
   },
   component: GuidesIndex,
 });
 
 function GuidesIndex() {
+  const t = useT();
   const guides = listRouteGuides();
   return (
     <>
       <PageHero
-        eyebrow="Route guides"
-        title="What the drive is actually like"
-        subtitle="Written by the drivers who run these roads daily: the timings, the detours worth asking for, and the arrival details that a map never shows."
-        crumbs={[{ label: "Route guides" }]}
+        eyebrow={t.editorial.guidesEyebrow}
+        title={t.editorial.guidesTitle}
+        subtitle={t.editorial.guidesSubtitle}
+        crumbs={[{ label: t.editorial.guidesNav }]}
       />
+      <EnglishOnlyNote />
       <section className="mx-auto grid max-w-7xl gap-6 px-6 py-14 md:grid-cols-2">
         {guides.map(({ guide }) => {
           const route = getRoute(guide.routeSlug);
@@ -56,13 +60,13 @@ function GuidesIndex() {
                 {route && (
                   <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                     <span className="inline-flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5" /> {route.durationMin} min
+                      <Clock className="h-3.5 w-3.5" /> {t.editorial.minutes(route.durationMin)}
                     </span>
                     <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5" /> {route.distanceKm} km
+                      <MapPin className="h-3.5 w-3.5" /> {t.editorial.kilometres(route.distanceKm)}
                     </span>
                     <span className="font-semibold text-accent-deep">
-                      from {formatEur(route.basePriceEur)}
+                      {t.editorial.fromPrice(formatEur(route.basePriceEur))}
                     </span>
                   </div>
                 )}

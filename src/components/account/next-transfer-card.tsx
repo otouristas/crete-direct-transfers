@@ -49,9 +49,7 @@ export function NextTransferCard({ booking, locale }: { booking: Booking; locale
             <StatusBadge status={booking.status} className="bg-background/15 text-inherit" />
           </div>
 
-          <h2 className="mt-3 truncate font-display text-2xl md:text-3xl">
-            {routeLabel(booking)}
-          </h2>
+          <h2 className="mt-3 truncate font-display text-2xl md:text-3xl">{routeLabel(booking)}</h2>
 
           <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-primary-foreground/80">
             <span className="inline-flex items-center gap-1.5">

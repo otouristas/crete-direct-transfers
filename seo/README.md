@@ -4,6 +4,9 @@ Audit date: 2026-08-23. Application: TanStack Start SSR on Cloudflare Workers.
 
 ## Start here
 
+- `../LAUNCH.md`: the launch blueprint — business model, product structure, URL
+  families, indexation policy and the launch checklist. Read it first; the files
+  below are the supporting audit detail.
 - `EXECUTIVE-SUMMARY.md`: priorities, risks and 30/60/90 direction.
 - `SEO-SCORECARD.md`: before/after implementation assessment.
 - `SEO-QA.md`: verification results and blocked production checks.

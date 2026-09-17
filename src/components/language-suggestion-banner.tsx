@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Globe, X } from "lucide-react";
-import { getDict, isLocale, PUBLIC_LOCALES, useLocale, useT, type Locale } from "@/i18n";
+import { getDict, isLocale, loadDict, PUBLIC_LOCALES, useLocale, useT, type Locale } from "@/i18n";
+import { loadLocaleResources } from "@/i18n/locale-resources";
 import { cn } from "@/lib/utils";
 
 /**
@@ -35,7 +36,11 @@ export function LanguageSuggestionBanner() {
       const primary = pref.split("-")[0]?.toLowerCase() ?? "";
       if (isLocale(primary) && (PUBLIC_LOCALES as readonly Locale[]).includes(primary)) {
         // Stop at the first public preference; suggest only if it differs.
-        if (primary !== locale) setSuggested(primary);
+        // The invitation is worded in the suggested language, whose dictionary
+        // is code-split — fetch it before showing the bar.
+        if (primary !== locale) {
+          void loadDict(primary).then(() => setSuggested(primary));
+        }
         return;
       }
     }
@@ -52,8 +57,10 @@ export function LanguageSuggestionBanner() {
     setSuggested(null);
   };
 
-  const switchTo = () => {
+  const switchTo = async () => {
     dismiss();
+    // Per-locale dictionaries and content are code-split: fetch first.
+    await loadLocaleResources(suggested);
     navigate({
       to: ".",
       params: (prev: Record<string, string | undefined>) => ({

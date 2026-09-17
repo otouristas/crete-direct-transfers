@@ -77,7 +77,7 @@ export function ContractsPanel({ locale }: { locale: Locale }) {
           <input
             value={userId}
             onChange={(event) => setUserId(event.target.value)}
-            placeholder="uuid"
+            placeholder={t.contracts.opsUserIdPlaceholder}
             className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
           />
         </label>
