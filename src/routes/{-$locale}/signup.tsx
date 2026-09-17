@@ -22,16 +22,21 @@ export const Route = createFileRoute("/{-$locale}/signup")({
   component: SignupPage,
 });
 
-const schema = z.object({
-  full_name: z.string().trim().min(2, "Please enter your name").max(100),
-  email: z.string().trim().email("Please enter a valid email").max(255),
-  phone: z.string().trim().max(30).optional().or(z.literal("")),
-  password: z.string().min(8, "At least 8 characters").max(72),
-});
+/** Validation messages come from the active dictionary, so a Greek or German
+ *  visitor never sees an English error under a localized label. */
+function buildSchema(t: ReturnType<typeof getDict>) {
+  return z.object({
+    full_name: z.string().trim().min(2, t.forms.validationName).max(100, t.forms.validationName),
+    email: z.string().trim().email(t.forms.validationEmail).max(255, t.forms.validationEmail),
+    phone: z.string().trim().max(30).optional().or(z.literal("")),
+    password: z.string().min(8, t.auth.passwordMin).max(72, t.auth.passwordMin),
+  });
+}
 
 function SignupPage() {
   const { locale } = Route.useRouteContext();
   const t = getDict(locale);
+  const schema = buildSchema(t);
 
   const [values, setValues] = useState({ full_name: "", email: "", phone: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /** Stylised Crete coastline, hand-traced as [lng, lat] pairs (north coast W→E, south coast E→W). */
 const COASTLINE: [number, number][] = [
@@ -115,7 +115,9 @@ export function CreteRouteCanvas({
   const to = dropoff && inBounds(dropoff.lat, dropoff.lng) ? dropoff : null;
   const a = from ? project(from.lng, from.lat) : null;
   const b = to ? project(to.lng, to.lat) : null;
-  const d = useMemo(() => (a && b ? arc(a, b) : null), [a?.[0], a?.[1], b?.[0], b?.[1]]);
+  // Cheap string math, so no memo: `d` is a primitive and the effect below
+  // only re-runs when the path text actually changes.
+  const d = a && b ? arc(a, b) : null;
 
   const pathRef = useRef<SVGPathElement | null>(null);
   const [len, setLen] = useState(0);

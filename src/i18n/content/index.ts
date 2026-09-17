@@ -32,24 +32,60 @@ import { applyAirportEditorialOverrides } from "./airport-editorial-overrides";
 
 type OverlayModule = Partial<ContentOverlays>;
 
-/** Sync access after warm — overlays are imported eagerly for SSR/head. */
-import elOverlay from "./overlays/el";
-import deOverlay from "./overlays/de";
-import frOverlay from "./overlays/fr";
-import itOverlay from "./overlays/it";
-import nlOverlay from "./overlays/nl";
-import esOverlay from "./overlays/es";
+/**
+ * Overlay registry.
+ *
+ * The six translated overlays are 325–560 KB of source each and were being
+ * shipped to every browser inside the main bundle. They are now code-split per
+ * locale: the client loads only the active locale before hydration (see
+ * `getRouter()` and `loadLocaleResources()`), while the server registers all
+ * of them at startup (`register-all.server.ts`) so SSR stays synchronous.
+ * English needs no overlay — the base data files are English.
+ */
+const SYNC: Partial<Record<Locale, OverlayModule>> = { en: {} };
 
-const SYNC: Record<Locale, OverlayModule> = {
-  en: {},
-  el: elOverlay,
-  de: deOverlay,
-  fr: frOverlay,
-  it: itOverlay,
-  nl: nlOverlay,
-  es: esOverlay,
+const OVERLAY_LOADERS: Record<Exclude<Locale, "en">, () => Promise<OverlayModule>> = {
+  el: () => import("./overlays/el").then((m) => m.default),
+  de: () => import("./overlays/de").then((m) => m.default),
+  fr: () => import("./overlays/fr").then((m) => m.default),
+  it: () => import("./overlays/it").then((m) => m.default),
+  nl: () => import("./overlays/nl").then((m) => m.default),
+  es: () => import("./overlays/es").then((m) => m.default),
 };
 
+const pending: Partial<Record<Locale, Promise<void>>> = {};
+
+/** Synchronous registration — used by the server to preload every locale. */
+export function registerContentOverlay(locale: Locale, module: OverlayModule): void {
+  SYNC[locale] = module;
+}
+
+export function isContentOverlayLoaded(locale: Locale): boolean {
+  return SYNC[locale] !== undefined;
+}
+
+/** Ensures the localized content for `locale` is available synchronously afterwards. */
+export function loadContentOverlay(locale: Locale): Promise<void> {
+  if (SYNC[locale]) return Promise.resolve();
+  const existing = pending[locale];
+  if (existing) return existing;
+  const loader = OVERLAY_LOADERS[locale as Exclude<Locale, "en">];
+  const task = loader()
+    .then((module) => {
+      SYNC[locale] = module;
+    })
+    .finally(() => {
+      delete pending[locale];
+    });
+  pending[locale] = task;
+  return task;
+}
+
+/**
+ * Sync access after warm. An unloaded locale falls back to the English base
+ * data rather than throwing; the server never hits this path and the client
+ * only would if a chunk failed to download.
+ */
 function overlay(locale: Locale): OverlayModule {
   return SYNC[locale] ?? {};
 }

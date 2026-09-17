@@ -3,13 +3,15 @@ import { Anchor, Check, Clock, MapPin, Ship } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { CtaBand } from "@/components/sections/cta-band";
 import { BookingWidget } from "@/components/booking-widget";
+import { EnglishOnlyNote } from "@/components/editorial/english-only-note";
 import { FERRY_PORTS, getFerryPort } from "@/data/ferry-ports";
 import { getRoute } from "@/data/routes";
 import { driversForRegion, driverInitials } from "@/data/drivers";
 import { formatEur } from "@/lib/pricing";
 import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { DRIVER_PROFILES_VERIFIED } from "@/lib/site";
 import { ORGANIZATION_ID } from "@/lib/structured-data";
-import type { Locale } from "@/i18n";
+import { getDict, useT, type Locale } from "@/i18n";
 
 export const Route = createFileRoute("/{-$locale}/ferry/$slug")({
   loader: ({ params }) => {
@@ -19,8 +21,11 @@ export const Route = createFileRoute("/{-$locale}/ferry/$slug")({
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
-      return { meta: [{ title: "Port unavailable" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: t.editorial.ferryUnavailable }, { name: "robots", content: "noindex" }],
+      };
     }
     const { port } = loaderData;
     const path = `/ferry/${port.slug}`;
@@ -28,16 +33,21 @@ export const Route = createFileRoute("/{-$locale}/ferry/$slug")({
     return buildHead({
       locale,
       path,
-      title: `${port.name} transfers — ferry & cruise arrivals`,
-      description: `Private transfers from ${port.name}, ${port.town}. Berthing times, meeting point at the terminal exit, 60 minutes free waiting and a fixed price from ${formatEur(port.fromPriceEur)}.`,
+      title: t.editorial.ferryPortMetaTitle(port.name),
+      description: t.editorial.ferryPortMetaDescription(
+        port.name,
+        port.town,
+        formatEur(port.fromPriceEur),
+      ),
       ogImage: port.heroImage,
+      englishOnly: true,
       jsonLd: {
         "@context": "https://schema.org",
         "@graph": [
           {
             "@type": "Service",
             "@id": `${canonical}#service`,
-            name: `${port.name} ferry transfers`,
+            name: t.editorial.ferryServiceName(port.name),
             serviceType: "Private port transfer",
             provider: { "@id": ORGANIZATION_ID },
             areaServed: { "@type": "Place", name: `${port.town}, Crete, Greece` },
@@ -59,24 +69,31 @@ export const Route = createFileRoute("/{-$locale}/ferry/$slug")({
 });
 
 function FerryPortPage() {
+  const t = useT();
   const { port } = Route.useLoaderData();
   const route = port.routeSlug ? getRoute(port.routeSlug) : undefined;
-  const drivers = driversForRegion(port.region).slice(0, 3);
+  const drivers = DRIVER_PROFILES_VERIFIED ? driversForRegion(port.region).slice(0, 3) : [];
   const others = FERRY_PORTS.filter((p) => p.slug !== port.slug).slice(0, 3);
 
   return (
     <>
       <PageHero
-        eyebrow="Ferry & cruise arrivals"
+        eyebrow={t.editorial.ferryEyebrow}
         title={port.name}
         subtitle={port.summary}
-        crumbs={[{ label: "Ferry ports", to: "/{-$locale}/ferry" }, { label: port.name }]}
+        crumbs={[{ label: t.editorial.ferryCrumb, to: "/{-$locale}/ferry" }, { label: port.name }]}
       />
+
+      <EnglishOnlyNote />
 
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-14 lg:grid-cols-[1fr_380px]">
         <div className="space-y-12">
           <div className="overflow-hidden rounded-2xl border border-border">
-            <img src={port.heroImage} alt={port.name} className="aspect-[16/9] w-full object-cover" />
+            <img
+              src={port.heroImage}
+              alt={port.name}
+              className="aspect-[16/9] w-full object-cover"
+            />
           </div>
 
           <div className="space-y-4">
@@ -88,14 +105,14 @@ function FerryPortPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Who sails here</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.ferryWhoSails}</h2>
             <div className="mt-5 overflow-hidden rounded-2xl border border-border">
               <table className="w-full text-left text-sm">
                 <thead className="bg-muted/60 text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
-                    <th className="px-5 py-3">Operator</th>
-                    <th className="px-5 py-3">Connects</th>
-                    <th className="px-5 py-3">Frequency</th>
+                    <th className="px-5 py-3">{t.editorial.ferryColOperator}</th>
+                    <th className="px-5 py-3">{t.editorial.ferryColConnects}</th>
+                    <th className="px-5 py-3">{t.editorial.ferryColFrequency}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -114,18 +131,18 @@ function FerryPortPage() {
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-2xl border border-border bg-muted/40 p-6">
               <Clock className="h-5 w-5 text-accent-deep" />
-              <h3 className="mt-3 font-semibold text-primary">Arrival times</h3>
+              <h3 className="mt-3 font-semibold text-primary">{t.editorial.ferryArrivalTimes}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{port.arrivalTimes}</p>
             </div>
             <div className="rounded-2xl border border-border bg-muted/40 p-6">
               <MapPin className="h-5 w-5 text-accent-deep" />
-              <h3 className="mt-3 font-semibold text-primary">Where we meet you</h3>
+              <h3 className="mt-3 font-semibold text-primary">{t.editorial.ferryMeetingPoint}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{port.meetingPoint}</p>
             </div>
           </div>
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Getting off the boat</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.ferryDisembark}</h2>
             <ul className="mt-5 space-y-3">
               {port.disembarkNotes.map((n) => (
                 <li key={n} className="flex gap-3 text-muted-foreground">
@@ -140,24 +157,29 @@ function FerryPortPage() {
             <div className="rounded-2xl border border-border bg-muted/40 p-6">
               <h2 className="inline-flex items-center gap-2 font-display text-xl text-primary">
                 <Ship className="h-5 w-5 text-accent-deep" />
-                Popular onward transfer
+                {t.editorial.ferryOnward}
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                {route.from} → {route.to} · {route.distanceKm} km · {route.durationMin} min · fixed
-                from {formatEur(route.basePriceEur)}
+                {t.editorial.ferryRouteLine(
+                  route.from,
+                  route.to,
+                  route.distanceKm,
+                  route.durationMin,
+                  formatEur(route.basePriceEur),
+                )}
               </p>
               <Link
                 to="/{-$locale}/routes/$slug"
                 params={{ slug: port.routeSlug }}
                 className="mt-5 inline-flex items-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
               >
-                See prices
+                {t.editorial.ferrySeePrices}
               </Link>
             </div>
           )}
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Questions we get asked</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.questionsTitle}</h2>
             <div className="mt-5 space-y-4">
               {port.faqs.map((f) => (
                 <div key={f.q} className="rounded-2xl border border-border bg-card p-5">
@@ -170,7 +192,7 @@ function FerryPortPage() {
 
           {drivers.length > 0 && (
             <div>
-              <h2 className="font-display text-2xl text-primary">Drivers who work this port</h2>
+              <h2 className="font-display text-2xl text-primary">{t.editorial.ferryDrivers}</h2>
               <div className="mt-5 grid gap-4 sm:grid-cols-3">
                 {drivers.map((d) => (
                   <Link
@@ -193,7 +215,7 @@ function FerryPortPage() {
           )}
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Other Crete ports</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.ferryOthers}</h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-3">
               {others.map((p) => (
                 <Link

@@ -16,6 +16,7 @@ import {
   SOCIAL_INSTAGRAM,
   SOCIAL_X,
   REVIEWS_VERIFIED,
+  DRIVER_PROFILES_VERIFIED,
 } from "@/lib/site";
 import { AVG_RATING } from "@/data/reviews";
 import { Logo } from "@/components/logo";
@@ -277,22 +278,24 @@ export function SiteFooter() {
             </li>
             <li>
               <Link to="/{-$locale}/guides" className={linkClass}>
-                Route guides
+                {t.editorial.guidesNav}
               </Link>
             </li>
-            <li>
-              <Link to="/{-$locale}/drivers" className={linkClass}>
-                Our drivers
-              </Link>
-            </li>
+            {DRIVER_PROFILES_VERIFIED && (
+              <li>
+                <Link to="/{-$locale}/drivers" className={linkClass}>
+                  {t.editorial.driversNav}
+                </Link>
+              </li>
+            )}
             <li>
               <Link to="/{-$locale}/hotels" className={linkClass}>
-                Hotels &amp; resorts
+                {t.editorial.hotelsNav}
               </Link>
             </li>
             <li>
               <Link to="/{-$locale}/ferry" className={linkClass}>
-                Ferry ports
+                {t.editorial.ferryNav}
               </Link>
             </li>
             <li>

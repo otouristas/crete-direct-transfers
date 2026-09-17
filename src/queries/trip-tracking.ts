@@ -105,8 +105,7 @@ export function useLiveTripLocation(
     }
 
     if (demo) {
-      const tick = () =>
-        setLocation(simulate(bookingId, approachTo ?? null, approachFrom ?? null));
+      const tick = () => setLocation(simulate(bookingId, approachTo ?? null, approachFrom ?? null));
       tick();
       setConnected(true);
       const timer = window.setInterval(tick, 3000);
@@ -151,10 +150,7 @@ export function useLiveTripLocation(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bookingId, enabled, demo, fromKey, toKey]);
 
-  return useMemo(
-    () => ({ location, isDemo: demo, connected }),
-    [location, demo, connected],
-  );
+  return useMemo(() => ({ location, isDemo: demo, connected }), [location, demo, connected]);
 }
 
 /** How stale a position is, in minutes. */

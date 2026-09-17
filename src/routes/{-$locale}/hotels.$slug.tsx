@@ -3,14 +3,16 @@ import { Check, Clock, MapPin, Plane } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { CtaBand } from "@/components/sections/cta-band";
 import { BookingWidget } from "@/components/booking-widget";
+import { EnglishOnlyNote } from "@/components/editorial/english-only-note";
 import { getHotelArea, HOTEL_AREAS } from "@/data/hotels";
 import { guideForRoute } from "@/data/route-guides";
 import { getRoute } from "@/data/routes";
 import { driversForRegion, driverInitials } from "@/data/drivers";
 import { formatEur } from "@/lib/pricing";
 import { buildCanonicalUrl, buildHead } from "@/lib/seo";
+import { DRIVER_PROFILES_VERIFIED } from "@/lib/site";
 import { ORGANIZATION_ID } from "@/lib/structured-data";
-import type { Locale } from "@/i18n";
+import { getDict, useT, type Locale } from "@/i18n";
 
 export const Route = createFileRoute("/{-$locale}/hotels/$slug")({
   loader: ({ params }) => {
@@ -20,8 +22,11 @@ export const Route = createFileRoute("/{-$locale}/hotels/$slug")({
   },
   head: ({ loaderData, params }) => {
     const locale = (params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     if (!loaderData) {
-      return { meta: [{ title: "Area unavailable" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [{ title: t.editorial.hotelUnavailable }, { name: "robots", content: "noindex" }],
+      };
     }
     const { area } = loaderData;
     const path = `/hotels/${area.slug}`;
@@ -29,14 +34,21 @@ export const Route = createFileRoute("/{-$locale}/hotels/$slug")({
     return buildHead({
       locale,
       path,
-      title: `${area.name} transfers from ${area.airport} (${area.airportIata})`,
-      description: `Fixed-price private transfers to ${area.name}: ${area.distanceKm} km, about ${area.driveMin} minutes from ${area.airport}, from ${formatEur(area.fromPriceEur)}. Door-to-reception, flight tracked.`,
+      title: t.editorial.hotelMetaTitle(area.name, area.airport, area.airportIata),
+      description: t.editorial.hotelMetaDescription(
+        area.name,
+        area.distanceKm,
+        area.driveMin,
+        area.airport,
+        formatEur(area.fromPriceEur),
+      ),
       ogImage: area.heroImage,
+      englishOnly: true,
       jsonLd: {
         "@context": "https://schema.org",
         "@type": "Service",
         "@id": `${canonical}#service`,
-        name: `${area.name} airport transfers`,
+        name: t.editorial.hotelServiceName(area.name),
         serviceType: "Private airport transfer",
         provider: { "@id": ORGANIZATION_ID },
         areaServed: { "@type": "Place", name: `${area.name}, Crete, Greece` },
@@ -52,10 +64,11 @@ export const Route = createFileRoute("/{-$locale}/hotels/$slug")({
 });
 
 function HotelAreaPage() {
+  const t = useT();
   const { area } = Route.useLoaderData();
   const route = getRoute(area.routeSlug);
   const guide = guideForRoute(area.routeSlug);
-  const drivers = driversForRegion(area.region).slice(0, 3);
+  const drivers = DRIVER_PROFILES_VERIFIED ? driversForRegion(area.region).slice(0, 3) : [];
   const others = HOTEL_AREAS.filter((a) => a.slug !== area.slug && a.region === area.region).slice(
     0,
     3,
@@ -64,14 +77,13 @@ function HotelAreaPage() {
   return (
     <>
       <PageHero
-        eyebrow="Hotel & resort transfers"
-        title={`${area.name} transfers`}
+        eyebrow={t.editorial.hotelEyebrow}
+        title={t.editorial.hotelTitle(area.name)}
         subtitle={area.summary}
-        crumbs={[
-          { label: "Hotels & resorts", to: "/{-$locale}/hotels" },
-          { label: area.name },
-        ]}
+        crumbs={[{ label: t.editorial.hotelsNav, to: "/{-$locale}/hotels" }, { label: area.name }]}
       />
+
+      <EnglishOnlyNote />
 
       <section className="mx-auto grid max-w-7xl gap-12 px-6 py-14 lg:grid-cols-[1fr_380px]">
         <div className="space-y-12">
@@ -85,14 +97,32 @@ function HotelAreaPage() {
 
           <div className="grid gap-4 sm:grid-cols-4">
             {[
-              { icon: Plane, label: "Nearest airport", value: `${area.airport} (${area.airportIata})` },
-              { icon: MapPin, label: "Distance", value: `${area.distanceKm} km` },
-              { icon: Clock, label: "Drive time", value: `${area.driveMin} min` },
-              { icon: Check, label: "Fixed price from", value: formatEur(area.fromPriceEur) },
+              {
+                icon: Plane,
+                label: t.editorial.hotelNearestAirport,
+                value: `${area.airport} (${area.airportIata})`,
+              },
+              {
+                icon: MapPin,
+                label: t.editorial.hotelDistance,
+                value: t.editorial.kilometres(area.distanceKm),
+              },
+              {
+                icon: Clock,
+                label: t.editorial.hotelDriveTime,
+                value: t.editorial.minutes(area.driveMin),
+              },
+              {
+                icon: Check,
+                label: t.editorial.hotelFixedFrom,
+                value: formatEur(area.fromPriceEur),
+              },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="rounded-2xl border border-border bg-card p-5">
                 <Icon className="h-5 w-5 text-accent-deep" />
-                <p className="mt-3 text-xs uppercase tracking-wide text-muted-foreground">{label}</p>
+                <p className="mt-3 text-xs uppercase tracking-wide text-muted-foreground">
+                  {label}
+                </p>
                 <p className="mt-1 font-semibold text-primary">{value}</p>
               </div>
             ))}
@@ -107,7 +137,7 @@ function HotelAreaPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Arriving here: what to know</h2>
+            <h2 className="font-display text-2xl text-primary">{t.editorial.hotelArrivingTitle}</h2>
             <ul className="mt-5 space-y-3">
               {area.arrivalNotes.map((note) => (
                 <li key={note} className="flex gap-3 text-muted-foreground">
@@ -119,7 +149,9 @@ function HotelAreaPage() {
           </div>
 
           <div>
-            <h2 className="font-display text-2xl text-primary">Typical properties</h2>
+            <h2 className="font-display text-2xl text-primary">
+              {t.editorial.hotelPropertiesTitle}
+            </h2>
             <div className="mt-4 flex flex-wrap gap-2">
               {area.propertyTypes.map((p) => (
                 <span
@@ -138,8 +170,11 @@ function HotelAreaPage() {
                 {route.from} → {route.to}
               </h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                {route.distanceKm} km · {route.durationMin} min · fixed from{" "}
-                {formatEur(route.basePriceEur)} for up to 3 passengers.
+                {t.editorial.hotelRouteLine(
+                  route.distanceKm,
+                  route.durationMin,
+                  formatEur(route.basePriceEur),
+                )}
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
@@ -147,7 +182,7 @@ function HotelAreaPage() {
                   params={{ slug: area.routeSlug }}
                   className="inline-flex items-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
                 >
-                  See all vehicle prices
+                  {t.editorial.hotelSeeAllPrices}
                 </Link>
                 {guide && (
                   <Link
@@ -155,7 +190,7 @@ function HotelAreaPage() {
                     params={{ slug: guide.slug }}
                     className="inline-flex items-center rounded-xl border border-border px-6 py-3 text-sm font-semibold text-primary transition hover:bg-card"
                   >
-                    Read the route guide
+                    {t.editorial.hotelReadGuide}
                   </Link>
                 )}
               </div>
@@ -164,7 +199,9 @@ function HotelAreaPage() {
 
           {drivers.length > 0 && (
             <div>
-              <h2 className="font-display text-2xl text-primary">Drivers covering {area.region}</h2>
+              <h2 className="font-display text-2xl text-primary">
+                {t.editorial.hotelDriversCovering(area.region)}
+              </h2>
               <div className="mt-5 grid gap-4 sm:grid-cols-3">
                 {drivers.map((d) => (
                   <Link
@@ -188,7 +225,7 @@ function HotelAreaPage() {
 
           {others.length > 0 && (
             <div>
-              <h2 className="font-display text-2xl text-primary">Nearby areas</h2>
+              <h2 className="font-display text-2xl text-primary">{t.editorial.hotelNearby}</h2>
               <div className="mt-5 grid gap-4 sm:grid-cols-3">
                 {others.map((a) => (
                   <Link
@@ -199,7 +236,7 @@ function HotelAreaPage() {
                   >
                     <span className="block font-semibold text-primary">{a.name}</span>
                     <span className="mt-1 block text-xs text-muted-foreground">
-                      {a.driveMin} min from {a.airportIata}
+                      {t.editorial.hotelMinutesFrom(a.driveMin, a.airportIata)}
                     </span>
                   </Link>
                 ))}

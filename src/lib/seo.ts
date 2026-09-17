@@ -11,6 +11,13 @@ export interface BuildHeadArgs {
   description: string;
   ogImage?: string;
   noindex?: boolean;
+  /**
+   * The page's long-form body exists only in English. The English URL is the
+   * sole indexable version (self-canonical, no locale alternates); every other
+   * locale renders the same English body as `noindex, follow` so hreflang
+   * clusters never carry duplicate English content.
+   */
+  englishOnly?: boolean;
   jsonLd?: JsonLd | JsonLd[];
 }
 
@@ -48,13 +55,14 @@ export function buildHead({
   description,
   ogImage,
   noindex,
+  englishOnly,
   jsonLd,
 }: BuildHeadArgs) {
   const canonical = buildCanonicalUrl(locale, path);
   const isPublicLocale = (PUBLIC_LOCALES as readonly string[]).includes(locale);
   const seoTitle = fitTitle(title);
   const seoDescription = trimAtWord(description, DESCRIPTION_LIMIT);
-  const shouldNoindex = Boolean(noindex || !isPublicLocale);
+  const shouldNoindex = Boolean(noindex || !isPublicLocale || (englishOnly && locale !== "en"));
 
   const meta: Record<string, string>[] = [
     { title: seoTitle },
@@ -81,19 +89,21 @@ export function buildHead({
 
   const links = shouldNoindex
     ? []
-    : [
-        { rel: "canonical", href: canonical },
-        ...PUBLIC_LOCALES.map((l) => ({
-          rel: "alternate",
-          hrefLang: l,
-          href: buildCanonicalUrl(l, path),
-        })),
-        {
-          rel: "alternate",
-          hrefLang: "x-default",
-          href: buildCanonicalUrl("en", path),
-        },
-      ];
+    : englishOnly
+      ? [{ rel: "canonical", href: canonical }]
+      : [
+          { rel: "canonical", href: canonical },
+          ...PUBLIC_LOCALES.map((l) => ({
+            rel: "alternate",
+            hrefLang: l,
+            href: buildCanonicalUrl(l, path),
+          })),
+          {
+            rel: "alternate",
+            hrefLang: "x-default",
+            href: buildCanonicalUrl("en", path),
+          },
+        ];
 
   const scripts =
     jsonLd && !shouldNoindex

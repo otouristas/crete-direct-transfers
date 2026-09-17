@@ -77,7 +77,8 @@ const ROUTES: RouteData[] = [
     basePriceEur: 60,
     heroImage: IMG.coast,
     blurb: "The classic southeast run down the A3 to the resort strip.",
-    notes: "Peak-season evenings slow the last kilometre; drivers use the ring road into the hotels.",
+    notes:
+      "Peak-season evenings slow the last kilometre; drivers use the ring road into the hotels.",
     region: "Famagusta Coast",
     service: "airport",
   },
@@ -129,7 +130,8 @@ const ROUTES: RouteData[] = [
     basePriceEur: 35,
     heroImage: IMG.town,
     blurb: "The short hop to the harbour and the archaeological park hotels.",
-    notes: "Harbour promenade is pedestrianised in the evenings; we drop at the hotel entrance side.",
+    notes:
+      "Harbour promenade is pedestrianised in the evenings; we drop at the hotel entrance side.",
     region: "Paphos District",
     service: "airport",
   },

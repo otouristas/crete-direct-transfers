@@ -43,7 +43,8 @@ export const FERRY_PORTS: FerryPort[] = [
     town: "Heraklion",
     region: "Heraklion",
     heroImage: img("heraklion"),
-    summary: "The island's main gateway — overnight boats from Piraeus, plus Cyclades fast ferries.",
+    summary:
+      "The island's main gateway — overnight boats from Piraeus, plus Cyclades fast ferries.",
     intro: [
       "Heraklion is the busiest passenger port on Crete and the arrival point for the overnight Piraeus boats that dock between 05:30 and 06:30. Several thousand people, most of them half-awake, come off the ramps inside twenty minutes.",
       "The terminal has taxis, but at 06:00 in August the rank empties in the time it takes the first two ramps to clear. A pre-booked driver waiting with a board is the difference between leaving at 06:15 and queueing until 07:00.",
@@ -56,7 +57,11 @@ export const FERRY_PORTS: FerryPort[] = [
         connects: "Santorini, Ios, Mykonos, Paros",
         frequency: "Daily, April–October",
       },
-      { operator: "Cruise lines", connects: "Eastern Mediterranean itineraries", frequency: "Seasonal calls" },
+      {
+        operator: "Cruise lines",
+        connects: "Eastern Mediterranean itineraries",
+        frequency: "Seasonal calls",
+      },
     ],
     arrivalTimes:
       "Overnight arrivals 05:30–06:30. Cyclades fast ferries land mid-morning and late afternoon. Cruise calls typically berth 07:00–08:00 and sail again by 18:00.",
@@ -97,7 +102,11 @@ export const FERRY_PORTS: FerryPort[] = [
     ],
     lines: [
       { operator: "ANEK / Attica", connects: "Piraeus (Athens)", frequency: "Nightly, year round" },
-      { operator: "Cruise lines", connects: "Mediterranean itineraries", frequency: "Seasonal calls" },
+      {
+        operator: "Cruise lines",
+        connects: "Mediterranean itineraries",
+        frequency: "Seasonal calls",
+      },
     ],
     arrivalTimes: "Overnight Piraeus arrivals around 06:00. Cruise calls berth from 07:00.",
     meetingPoint:
@@ -132,8 +141,16 @@ export const FERRY_PORTS: FerryPort[] = [
       "Most transfer demand here is onward: cruise passengers heading to Arkadi or Preveli for the day, and seasonal ferry arrivals continuing to beach hotels east and west.",
     ],
     lines: [
-      { operator: "Seasonal operators", connects: "Piraeus and the Cyclades", frequency: "Selected summer sailings" },
-      { operator: "Cruise lines", connects: "Small-ship Mediterranean itineraries", frequency: "Seasonal calls" },
+      {
+        operator: "Seasonal operators",
+        connects: "Piraeus and the Cyclades",
+        frequency: "Selected summer sailings",
+      },
+      {
+        operator: "Cruise lines",
+        connects: "Small-ship Mediterranean itineraries",
+        frequency: "Seasonal calls",
+      },
     ],
     arrivalTimes: "Seasonal — morning berthing for most calls.",
     meetingPoint: "Name board at the port gate, a two-minute walk from the quay.",
@@ -156,14 +173,23 @@ export const FERRY_PORTS: FerryPort[] = [
     town: "Kissamos",
     region: "Chania",
     heroImage: img("kissamos"),
-    summary: "The far west port — Balos and Gramvousa boats, plus Kythira and Peloponnese sailings.",
+    summary:
+      "The far west port — Balos and Gramvousa boats, plus Kythira and Peloponnese sailings.",
     intro: [
       "Kissamos, still widely called Kastelli, is the westernmost port on Crete. It is the departure point for the Balos and Gramvousa day boats and the terminal for the long, infrequent sailings north to Kythira, Antikythira and Gythio.",
       "The Balos boats leave early and sell out, which makes the morning transfer from Chania and the resort strip the busiest job of the day out here.",
     ],
     lines: [
-      { operator: "Gramvousa Balos Cruises", connects: "Balos lagoon and Gramvousa island", frequency: "Daily, April–October" },
-      { operator: "LANE / Triton", connects: "Kythira, Antikythira, Gythio", frequency: "Several sailings weekly" },
+      {
+        operator: "Gramvousa Balos Cruises",
+        connects: "Balos lagoon and Gramvousa island",
+        frequency: "Daily, April–October",
+      },
+      {
+        operator: "LANE / Triton",
+        connects: "Kythira, Antikythira, Gythio",
+        frequency: "Several sailings weekly",
+      },
     ],
     arrivalTimes:
       "Day boats return between 18:00 and 19:30. Mainland sailings arrive irregularly, often late evening.",
@@ -198,10 +224,15 @@ export const FERRY_PORTS: FerryPort[] = [
       "The port sits in the town itself, so arrivals are immediately somewhere rather than at an industrial gate.",
     ],
     lines: [
-      { operator: "ANEK Lines", connects: "Kasos, Karpathos, Rhodes, Piraeus", frequency: "Weekly sailings" },
+      {
+        operator: "ANEK Lines",
+        connects: "Kasos, Karpathos, Rhodes, Piraeus",
+        frequency: "Weekly sailings",
+      },
       { operator: "Cruise lines", connects: "Aegean itineraries", frequency: "Seasonal calls" },
     ],
-    arrivalTimes: "Dodecanese sailings arrive at varied hours including overnight. Cruise tenders land from 08:00.",
+    arrivalTimes:
+      "Dodecanese sailings arrive at varied hours including overnight. Cruise tenders land from 08:00.",
     meetingPoint: "Name board at the quay entrance, one minute from the tender pontoon.",
     disembarkNotes: [
       "Elounda, Plaka and the Spinalonga boats are all within twenty minutes.",
@@ -229,7 +260,11 @@ export const FERRY_PORTS: FerryPort[] = [
       "There is effectively no on-demand transport at 03:00 in Sitia. Everything east of Agios Nikolaos needs to be booked ahead.",
     ],
     lines: [
-      { operator: "ANEK Lines", connects: "Piraeus, Milos, Kasos, Karpathos, Rhodes", frequency: "Two to three sailings weekly" },
+      {
+        operator: "ANEK Lines",
+        connects: "Piraeus, Milos, Kasos, Karpathos, Rhodes",
+        frequency: "Two to three sailings weekly",
+      },
     ],
     arrivalTimes: "Highly variable, frequently between midnight and 05:00.",
     meetingPoint: "Name board at the quayside, directly at the ramp.",

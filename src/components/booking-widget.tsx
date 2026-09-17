@@ -142,10 +142,7 @@ export function BookingWidget({
   /** Homepage uses horizontal bar; route pages keep the card. */
   variant?: "hbar" | "card";
   /** Fires whenever the from/to selection changes (hbar variant only). */
-  onSelectionChange?: (selection: {
-    from: PlaceResult | null;
-    to: PlaceResult | null;
-  }) => void;
+  onSelectionChange?: (selection: { from: PlaceResult | null; to: PlaceResult | null }) => void;
 }) {
   const resolvedVariant = variant ?? (compact ? "card" : "hbar");
   if (resolvedVariant === "card") {
@@ -180,10 +177,7 @@ function BookingWidgetBar({
   defaultIata?: string;
   defaultDestination?: string;
   defaultService?: ServiceMode;
-  onSelectionChange?: (selection: {
-    from: PlaceResult | null;
-    to: PlaceResult | null;
-  }) => void;
+  onSelectionChange?: (selection: { from: PlaceResult | null; to: PlaceResult | null }) => void;
 }) {
   const t = useT();
   const locale = useLocale();

@@ -116,7 +116,8 @@ const ROUTES: RouteData[] = [
     basePriceEur: 50,
     heroImage: IMG.coast,
     blurb: "Mid-coast resorts and the Los Boliches seafront.",
-    notes: "Coastal road in summer is slower than the toll motorway; the fixed price covers either.",
+    notes:
+      "Coastal road in summer is slower than the toll motorway; the fixed price covers either.",
     region: "Málaga City",
     service: "airport",
   },

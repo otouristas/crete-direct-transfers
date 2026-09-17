@@ -14,7 +14,8 @@ type Coords = { lat: number; lng: number };
 
 function pointOf(value: unknown): Coords | null {
   const p = value as Coords | null;
-  if (p && typeof p.lat === "number" && typeof p.lng === "number") return { lat: p.lat, lng: p.lng };
+  if (p && typeof p.lat === "number" && typeof p.lng === "number")
+    return { lat: p.lat, lng: p.lng };
   return null;
 }
 
@@ -60,14 +61,21 @@ export function LiveTripTracker({
   const [geometry, setGeometry] = useState<TripGeometry>([]);
   const [fallbackEta, setFallbackEta] = useState<number | null>(null);
 
+  // Primitive coordinates as effect inputs: the objects above are rebuilt on
+  // every render, so depending on them directly would refetch the route on
+  // each tick of the live position feed.
+  const fromLat = location?.lat;
+  const fromLng = location?.lng;
+  const toLat = target?.lat;
+  const toLng = target?.lng;
   useEffect(() => {
-    if (!location || !target) {
+    if (fromLat == null || fromLng == null || toLat == null || toLng == null) {
       setGeometry([]);
       setFallbackEta(null);
       return;
     }
     let cancelled = false;
-    fetchTripRoute({ lat: location.lat, lng: location.lng }, target).then((trip) => {
+    fetchTripRoute({ lat: fromLat, lng: fromLng }, { lat: toLat, lng: toLng }).then((trip) => {
       if (cancelled) return;
       setGeometry(trip.geometry);
       setFallbackEta(trip.durationMin);
@@ -75,7 +83,7 @@ export function LiveTripTracker({
     return () => {
       cancelled = true;
     };
-  }, [location?.lat, location?.lng, target?.lat, target?.lng]);
+  }, [fromLat, fromLng, toLat, toLng]);
 
   const eta = location?.eta_minutes ?? fallbackEta;
   const phone = driver?.phone?.replace(/[^\d+]/g, "") ?? "";
@@ -88,7 +96,9 @@ export function LiveTripTracker({
     <div className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-6 py-4 sm:px-8">
         <div className="flex items-center gap-2">
-          <Radio className={`h-4 w-4 ${location && !stale ? "text-accent" : "text-muted-foreground"}`} />
+          <Radio
+            className={`h-4 w-4 ${location && !stale ? "text-accent" : "text-muted-foreground"}`}
+          />
           <h3 className="font-display text-lg text-primary">{lt.title}</h3>
           {location && !stale && (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold text-accent-deep">

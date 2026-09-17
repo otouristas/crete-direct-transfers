@@ -24,7 +24,11 @@ import {
   myReliabilityQuery,
   type AccountEntry,
 } from "@/queries/driver-account";
-import { getConnectStatus, startDriverOnboarding, getDriverStripeDashboardLink } from "@/functions/connect";
+import {
+  getConnectStatus,
+  startDriverOnboarding,
+  getDriverStripeDashboardLink,
+} from "@/functions/connect";
 
 export const Route = createFileRoute("/{-$locale}/driver/earnings")({
   component: EarningsPage,
@@ -148,7 +152,7 @@ function EarningsPage() {
           <h3 className="font-display text-lg text-primary">{t.driverAccount.reliabilityTitle}</h3>
           <div className="mt-3 font-display text-4xl text-primary">
             {reliability.data?.score ?? 100}
-            <span className="text-base text-muted-foreground">/100</span>
+            <span className="text-base text-muted-foreground">{"/100"}</span>
           </div>
           <dl className="mt-4 space-y-1 text-xs text-muted-foreground">
             <div className="flex justify-between">

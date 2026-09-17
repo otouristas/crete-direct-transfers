@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { BookingWidget } from "@/components/booking-widget";
 import { ResumeQuoteBanner } from "@/components/booking/resume-quote-banner";
 import { CreteRouteCanvas, type CanvasPoint } from "@/components/sections/crete-route-canvas";
@@ -22,10 +22,8 @@ export function HeroRouteStage({ locale }: { locale: Locale }) {
   const pickup = toPoint(selection.from);
   const dropoff = toPoint(selection.to);
 
-  const estimate = useMemo(
-    () => (pickup && dropoff ? haversineEstimate(pickup, dropoff) : null),
-    [pickup?.lat, pickup?.lng, dropoff?.lat, dropoff?.lng],
-  );
+  // Plain arithmetic on two points — cheaper than a memo with object inputs.
+  const estimate = pickup && dropoff ? haversineEstimate(pickup, dropoff) : null;
 
   return (
     <section className="relative z-30 -mt-16 bg-background md:-mt-24">

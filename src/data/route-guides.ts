@@ -440,8 +440,7 @@ export const ROUTE_GUIDES: RouteGuide[] = [
       "Night flights are common on this corridor and our night rotation is priced identically apart from the standard late surcharge, which is shown before you pay.",
       "Twenty-five minutes means you can eat at the airport or at the hotel; there is nothing worth stopping for in between.",
     ],
-    timing:
-      "Consistently quick. Even the August changeover rarely pushes this beyond 35 minutes.",
+    timing: "Consistently quick. Even the August changeover rarely pushes this beyond 35 minutes.",
     arrival:
       "The seafront is one-way in high season with heavy pedestrian flow after dark. Drop-off is at the nearest legal point to your entrance.",
     faqs: [

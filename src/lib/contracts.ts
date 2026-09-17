@@ -42,15 +42,7 @@ export function getContractTemplate(kind: ContractKind): ContractTemplate {
   return CONTRACT_TEMPLATES[kind];
 }
 
-const GREEK_WEEKDAYS = [
-  "Κυριακή",
-  "Δευτέρα",
-  "Τρίτη",
-  "Τετάρτη",
-  "Πέμπτη",
-  "Παρασκευή",
-  "Σάββατο",
-];
+const GREEK_WEEKDAYS = ["Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"];
 
 export function greekDate(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, "0");

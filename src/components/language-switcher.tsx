@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Check, Coins, Globe, X } from "lucide-react";
 import { LOCALE_LABELS, PUBLIC_LOCALES, useLocale, useT, type Locale } from "@/i18n";
+import { loadLocaleResources } from "@/i18n/locale-resources";
 import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
 import { useCurrency } from "@/hooks/use-currency";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -21,8 +22,11 @@ export function LanguageSwitcher({
   const { currency, setCurrency } = useCurrency();
   const [open, setOpen] = useState(false);
 
-  const switchTo = (next: Locale) => {
+  const switchTo = async (next: Locale) => {
     if (next === locale) return;
+    // Dictionaries and content are code-split per locale; fetch the target's
+    // before the route re-renders so nothing flashes back to English.
+    await loadLocaleResources(next);
     navigate({
       to: ".",
       params: (prev: Record<string, string | undefined>) => ({

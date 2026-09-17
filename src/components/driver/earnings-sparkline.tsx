@@ -23,13 +23,7 @@ function toCsv(rows: DriverEarning[]): string {
   return [head.join(","), ...body].join("\n");
 }
 
-export function EarningsSparkline({
-  rows,
-  locale,
-}: {
-  rows: DriverEarning[];
-  locale: Locale;
-}) {
+export function EarningsSparkline({ rows, locale }: { rows: DriverEarning[]; locale: Locale }) {
   const t = getDict(locale);
 
   const buckets = useMemo(() => {
@@ -79,7 +73,10 @@ export function EarningsSparkline({
 
       <div className="mt-6 flex h-32 items-end gap-2">
         {buckets.map((b) => (
-          <div key={b.from.toISOString()} className="flex min-w-0 flex-1 flex-col items-center gap-2">
+          <div
+            key={b.from.toISOString()}
+            className="flex min-w-0 flex-1 flex-col items-center gap-2"
+          >
             <div
               className="w-full rounded-t-md bg-accent/70 transition-all hover:bg-accent"
               style={{ height: `${Math.max(3, (b.cents / max) * 100)}%` }}

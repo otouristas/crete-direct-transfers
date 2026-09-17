@@ -6,11 +6,7 @@ const MARGIN = 56;
 const FONT_SIZE = 9.5;
 const LINE_HEIGHT = 13.5;
 
-function wrap(
-  text: string,
-  maxWidth: number,
-  measure: (line: string) => number,
-): string[] {
+function wrap(text: string, maxWidth: number, measure: (line: string) => number): string[] {
   const out: string[] = [];
   for (const paragraph of text.split("\n")) {
     if (!paragraph.trim()) {

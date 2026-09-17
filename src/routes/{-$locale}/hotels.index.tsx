@@ -2,35 +2,39 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Clock, Plane } from "lucide-react";
 import { PageHero } from "@/components/sections/page-hero";
 import { CtaBand } from "@/components/sections/cta-band";
+import { EnglishOnlyNote } from "@/components/editorial/english-only-note";
 import { hotelAreasByRegion, HOTEL_AREAS } from "@/data/hotels";
 import { formatEur } from "@/lib/pricing";
 import { buildHead } from "@/lib/seo";
-import type { Locale } from "@/i18n";
+import { getDict, useT, type Locale } from "@/i18n";
 
 export const Route = createFileRoute("/{-$locale}/hotels/")({
   head: (ctx) => {
     const locale = (ctx.params.locale ?? "en") as Locale;
+    const t = getDict(locale);
     return buildHead({
       locale,
       path: "/hotels",
-      title: "Hotel and resort transfers in Crete | TransferAround",
-      description:
-        "Fixed-price airport transfers to every major Crete resort area — Elounda, Hersonissos, Platanias, Bali, Chania Old Town and more, with door-to-reception arrival detail.",
+      title: t.editorial.hotelsMetaTitle,
+      description: t.editorial.hotelsMetaDescription,
+      englishOnly: true,
     });
   },
   component: HotelsIndex,
 });
 
 function HotelsIndex() {
+  const t = useT();
   const groups = hotelAreasByRegion();
   return (
     <>
       <PageHero
-        eyebrow="Hotels & resorts"
-        title="Transfers to where you are actually staying"
-        subtitle={`${HOTEL_AREAS.length} resort areas across Crete, each with the gate quirks, drive times and check-in realities that decide how your first day goes.`}
-        crumbs={[{ label: "Hotels & resorts" }]}
+        eyebrow={t.editorial.hotelsEyebrow}
+        title={t.editorial.hotelsTitle}
+        subtitle={t.editorial.hotelsSubtitle(HOTEL_AREAS.length)}
+        crumbs={[{ label: t.editorial.hotelsNav }]}
       />
+      <EnglishOnlyNote />
       {groups.map(({ region, areas }) => (
         <section key={region} className="mx-auto max-w-7xl px-6 py-10">
           <h2 className="font-display text-2xl text-primary">{region}</h2>
@@ -58,10 +62,10 @@ function HotelsIndex() {
                       <Plane className="h-3.5 w-3.5" /> {a.airportIata}
                     </span>
                     <span className="inline-flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5" /> {a.driveMin} min
+                      <Clock className="h-3.5 w-3.5" /> {t.editorial.minutes(a.driveMin)}
                     </span>
                     <span className="font-semibold text-accent-deep">
-                      from {formatEur(a.fromPriceEur)}
+                      {t.editorial.fromPrice(formatEur(a.fromPriceEur))}
                     </span>
                   </div>
                 </div>

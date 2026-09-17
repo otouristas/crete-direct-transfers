@@ -1,5 +1,15 @@
 # SEO Changelog
 
+## 2026-09-17 — Public-launch pass
+
+- Route guides, hotel/resort areas and ferry ports are English-only long-form content. They now publish one indexable URL each (English, self-canonical, no locale alternates); every other locale renders the same body as `noindex, follow` with a visible language note, and the sitemap lists only the English URL. Previously all five public locales were in the sitemap and hreflang clusters with identical English bodies.
+- Named driver profiles (`/drivers`) are gated behind `VITE_DRIVER_PROFILES_VERIFIED` like reviews and business metrics: `noindex`, out of the sitemap, footer and cross-links until each driver has consented and ratings/transfer counts are backed by records.
+- Page chrome on the four editorial families (headings, labels, CTAs, meta titles/descriptions) moved into the seven dictionaries; the hardcoded-copy gate is green again.
+- `llms.txt` now states the five public languages (Dutch and Spanish remain held) and lists the editorial families.
+- Organization `logo` points to a 512×512 PNG (`/icons/icon-512.png`); the default social image is a self-hosted branded 1200×630 card (`/og-default.png`) instead of a Pexels stock URL; PWA manifest and `apple-touch-icon` use real PNG icons.
+- Performance: UI dictionaries and long-form content overlays are code-split per locale and loaded only for the active language (server preloads all). Main client chunk 2,958 KB → 804 KB; shared i18n chunk 854 KB → 150 KB. A visitor no longer downloads six other languages' content.
+- Verification: SSR probe of representative routes (all locales, editorial families, private routes, 404s), sitemap composition, and a headless-browser hydration/console/locale-switch pass on the local Worker preview. Live GSC/Plausible outcomes remain **NOT AVAILABLE** until deployment.
+
 ## 2026-08-23 — Audit workspace created
 
 - Added repository-evidence technical, content, keyword, internal-linking, competitor, AI-search and multilingual audits.
