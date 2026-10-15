@@ -1,3 +1,4 @@
+import { resumeTripSharing, stopTripSharing } from "./tracking";
 import {
   createContext,
   useCallback,
@@ -106,6 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     void refreshProfile();
+    void resumeTripSharing().catch(() => {});
     void syncDriverPushToken(session.user.id)
       .then(setPushToken)
       .catch((err) => console.warn("[push]", err));
@@ -125,6 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         /* ignore */
       }
     }
+    await stopTripSharing();
     await supabase.auth.signOut();
     setPushToken(null);
   }, [pushToken, session?.user]);

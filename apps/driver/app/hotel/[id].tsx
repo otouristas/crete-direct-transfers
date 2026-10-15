@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
   heroFallback: { backgroundColor: colors.primary },
   heroScrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(11, 37, 69, 0.4)",
+    backgroundColor: "rgba(16, 17, 20, 0.4)",
   },
   back: {
     position: "absolute",

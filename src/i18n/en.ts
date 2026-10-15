@@ -157,7 +157,7 @@ export const en = {
       "Tell us your flight and hotel. You get instant confirmation and your driver's details before pickup.",
     step3Title: "Meet your driver",
     step3Body:
-      "Name sign in arrivals, help with the bags, fixed price paid on arrival. That's the whole story.",
+      "Name sign in arrivals, help with the bags, your transfer already paid securely online. That's the whole story.",
   },
   widget: {
     title: "Book your transfer",

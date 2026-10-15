@@ -67,7 +67,7 @@ export function TouristasChatShell({
           variant === "page" && "px-0",
         )}
       >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(20,184,166,0.35),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(255,255,255,0.1),transparent_50%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(36,91,235,0.35),transparent_55%),radial-gradient(ellipse_at_bottom_left,rgba(255,255,255,0.1),transparent_50%)]" />
         <div
           className={cn(
             "relative flex items-start justify-between gap-3 px-5 pb-5 pt-[max(1rem,env(safe-area-inset-top))] md:pt-6",
@@ -76,7 +76,7 @@ export function TouristasChatShell({
         >
           <div className="min-w-0">
             <div className="flex items-center gap-3">
-              <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-accent text-accent-foreground shadow-[0_0_0_4px_rgba(20,184,166,0.25)]">
+              <span className="relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-accent text-accent-foreground shadow-[0_0_0_4px_rgba(36,91,235,0.25)]">
                 <Sparkles className="h-5 w-5" />
                 <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-highlight ring-2 ring-primary" />
               </span>

@@ -1,3 +1,4 @@
+import { Logo } from "@/components/logo";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
@@ -69,31 +70,31 @@ function JourneyMap({ moving = false }: { moving?: boolean }) {
       <svg viewBox="0 0 400 260" fill="none" aria-hidden="true">
         <path
           d="M0 0H400V132C341 136 357 183 310 190C267 197 235 160 197 182C155 206 160 250 90 260H0Z"
-          fill="#EAEFE8"
+          fill="#E8EAEF"
         />
         <g stroke="#fff" strokeWidth="9">
           <path d="M-20 53L420 100M-20 134L340 153M60-20L99 280M160-20L194 280M292-20L238 250" />
           <path d="M0 212L310 0M44 0L310 217" />
         </g>
-        <g stroke="#D5DED2" strokeWidth="1">
+        <g stroke="#D2D5DE" strokeWidth="1">
           <path d="M-20 53L420 100M-20 134L340 153M60-20L99 280M160-20L194 280M292-20L238 250" />
         </g>
         <path
           d="M284 72L243 89L204 126L157 119L111 166"
-          stroke="#0B2545"
+          stroke="#101114"
           strokeWidth="6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M284 72L243 89L204 126L157 119L111 166"
-          stroke="#23B5A1"
+          stroke="#245BEB"
           strokeWidth="2"
           strokeDasharray="4 7"
           className={moving ? "practice-route-moving" : ""}
         />
-        <circle cx="284" cy="72" r="11" fill="#0B2545" stroke="white" strokeWidth="4" />
-        <circle cx="111" cy="166" r="11" fill="#14B8A6" stroke="white" strokeWidth="4" />
+        <circle cx="284" cy="72" r="11" fill="#101114" stroke="white" strokeWidth="4" />
+        <circle cx="111" cy="166" r="11" fill="#245BEB" stroke="white" strokeWidth="4" />
         <rect
           x={moving ? 176 : 240}
           y={moving ? 105 : 71}
@@ -101,17 +102,17 @@ function JourneyMap({ moving = false }: { moving?: boolean }) {
           height="34"
           rx="12"
           fill="white"
-          stroke="#0B2545"
+          stroke="#101114"
           strokeWidth="2"
         />
-        <path d={moving ? "M186 127l7-14 7 14-7-3z" : "M250 93l7-14 7 14-7-3z"} fill="#0B2545" />
-        <text x="302" y="65" fill="#5F746B" fontSize="10" fontFamily="Inter">
+        <path d={moving ? "M186 127l7-14 7 14-7-3z" : "M250 93l7-14 7 14-7-3z"} fill="#101114" />
+        <text x="302" y="65" fill="#5F6574" fontSize="10" fontFamily="Inter">
           AIRPORT
         </text>
-        <text x="45" y="190" fill="#5F746B" fontSize="10" fontFamily="Inter">
+        <text x="45" y="190" fill="#5F6574" fontSize="10" fontFamily="Inter">
           OLD TOWN
         </text>
-        <text x="290" y="232" fill="#468D9A" fontSize="11" fontFamily="Inter" letterSpacing="2">
+        <text x="290" y="232" fill="#576589" fontSize="11" fontFamily="Inter" letterSpacing="2">
           SEA OF CRETE
         </text>
       </svg>
@@ -147,9 +148,7 @@ function PhoneHeader({ driver = false }: { driver?: boolean }) {
   return (
     <div className="practice-phone-header">
       <span className="practice-wordmark">
-        <Navigation size={19} fill="currentColor" />
-        transfer<span>around</span>
-        <b>®</b>
+        <Logo className="[&>img]:h-7 [&>img]:w-7 [&>span]:text-base" />
       </span>
       {driver && <span className="practice-driver-label">DRIVER</span>}
       <span className="practice-avatar">{driver ? "N" : "A"}</span>

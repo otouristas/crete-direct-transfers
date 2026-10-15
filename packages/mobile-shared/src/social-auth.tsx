@@ -24,6 +24,28 @@ export function exchangeSocialCode(client: Client, code: string): Promise<void> 
 }
 
 export async function signInWithGoogle(client: Client, scheme: string) {
+  // signInWithOAuth constructs a URL even when a provider is disabled. Check the
+  // public server settings first so configuration errors stay inside the app.
+  const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
+  const key = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+  if (url && key) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    try {
+      const response = await fetch(`${url}/auth/v1/settings`, {
+        headers: { apikey: key },
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error("Sign-in is temporarily unavailable. Please try again.");
+      const settings = await response.json();
+      if (settings.external?.google !== true)
+        throw new Error(
+          "Google sign-in is being configured. You can continue with Apple or email.",
+        );
+    } finally {
+      clearTimeout(timer);
+    }
+  }
   const redirectTo =
     Platform.OS === "web" ? `${window.location.origin}/auth/callback` : `${scheme}://auth/callback`;
   const { data, error } = await client.auth.signInWithOAuth({

@@ -40,7 +40,7 @@ function TouristasAiPage() {
   }, [search]);
 
   return (
-    <div className="bg-[radial-gradient(ellipse_at_top,rgba(20,184,166,0.08),transparent_50%)]">
+    <div className="bg-[radial-gradient(ellipse_at_top,rgba(36,91,235,0.08),transparent_50%)]">
       <section className="border-b border-border bg-primary text-primary-foreground">
         <div className="mx-auto max-w-3xl px-6 py-10 md:py-14">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">

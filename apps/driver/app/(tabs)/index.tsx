@@ -1,603 +1,478 @@
+import { useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import * as Notifications from "expo-notifications";
 import {
+  ActionSheetIOS,
+  ActivityIndicator,
+  Alert,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  claimJob,
+  fetchDriverJobs,
   fetchMyJobOffers,
   fetchOpenJobs,
   respondToOffer,
-  claimJob,
   setDriverOnline,
 } from "@transferaround/mobile-shared";
+import { getDevicePosition, type DevicePosition } from "@transferaround/mobile-shared/location";
+import { LivePill } from "@transferaround/mobile-shared/ui/mobility";
 import {
   Avatar,
   Button,
-  Card,
-  Divider,
-  EmptyState,
-  Heading,
   Icon,
+  RouteMap,
   RouteRail,
-  Screen,
-  SectionLabel,
-  StatTile,
   Text,
-  type IconName,
   colors,
   fonts,
-  radius,
-  space,
 } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
-import { API_URL } from "../../lib/config";
-import {
-  ACCEPT_ACTION,
-  DECLINE_ACTION,
-  presentDemoOfferNotification,
-} from "../../lib/demo-notifications";
 
 type Offer = Awaited<ReturnType<typeof fetchMyJobOffers>>[number];
-type OpenJob = Awaited<ReturnType<typeof fetchOpenJobs>>[number];
-type DemoOffer = Offer & { customerName: string };
-
-function euros(cents: number) {
-  return `€${(cents / 100).toFixed(0)}`;
-}
-
-/** Fresh demo offers (expiry relative to "now" so countdowns start on go-online). */
-function makeDemoOffers(): DemoOffer[] {
-  return [
-    {
-      offer_id: "demo-offer-1",
-      id: "demo-booking-1",
-      customerName: "George K.",
-      pickup_address: "Chania Airport (CHQ)",
-      dropoff_address: "Elounda",
-      pickup_at: new Date(Date.now() + 36e5 * 20).toISOString(),
-      price_cents: 9500,
-      expires_at: new Date(Date.now() + 90_000).toISOString(),
-    } as DemoOffer,
-    {
-      offer_id: "demo-offer-2",
-      id: "demo-booking-2",
-      customerName: "Maria S.",
-      pickup_address: "Heraklion Airport (HER)",
-      dropoff_address: "Rethymno Old Town",
-      pickup_at: new Date(Date.now() + 36e5 * 28).toISOString(),
-      price_cents: 7800,
-      expires_at: new Date(Date.now() + 75_000).toISOString(),
-    } as DemoOffer,
-  ];
-}
-
-function GateScreen({
-  icon,
-  title,
-  subtitle,
-  onSignOut,
-}: {
-  icon: IconName;
-  title: string;
-  subtitle: string;
-  onSignOut: () => void;
-}) {
-  return (
-    <Screen edges={["top", "bottom"]}>
-      <View style={styles.gate}>
-        <View style={styles.gateIcon}>
-          <Icon name={icon} size={30} color={colors.accentDeep} />
-        </View>
-        <Heading variant="h1" center>
-          {title}
-        </Heading>
-        <Text variant="body" color={colors.textMuted} center>
-          {subtitle}
-        </Text>
-        <Button title="Sign out" variant="outline" icon="log-out-outline" onPress={onSignOut} />
-      </View>
-    </Screen>
-  );
-}
-
+type Job = Awaited<ReturnType<typeof fetchOpenJobs>>[number];
+type DriverJob = Awaited<ReturnType<typeof fetchDriverJobs>>[number];
 export default function OffersScreen() {
-  const { profile, user, refreshProfile, signOut, isDemo, setDemoOnline } = useAuth();
-  const driverRow = (() => {
-    const dp = profile?.driver_profiles as
-      | { is_online?: boolean; approval_status?: string; vehicle_make_model?: string }
-      | { is_online?: boolean; approval_status?: string; vehicle_make_model?: string }[]
-      | null
-      | undefined;
-    if (!dp) return null;
-    return Array.isArray(dp) ? (dp[0] ?? null) : dp;
-  })();
-  const isOnline = Boolean(driverRow?.is_online);
-  const approved = profile?.role === "driver" && driverRow?.approval_status === "approved";
-
+  const { profile, user, refreshProfile, signOut, isDemo } = useAuth();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
+  const [sheetHeight, setSheetHeight] = useState(380);
+  const [viewportHeight, setViewportHeight] = useState(height);
+  const raw = profile?.driver_profiles;
+  const driver = Array.isArray(raw) ? raw[0] : raw;
+  const approved = profile?.role === "driver" && driver?.approval_status === "approved";
+  const online = Boolean(driver?.is_online);
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [jobs, setJobs] = useState<OpenJob[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [busyId, setBusyId] = useState<string | null>(null);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [assigned, setAssigned] = useState<DriverJob[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [accepted, setAccepted] = useState<string | null>(null);
+  const [me, setMe] = useState<DevicePosition | null>(null);
   const [now, setNow] = useState(Date.now());
-
   const load = useCallback(async () => {
-    if (!isOnline) {
-      setOffers([]);
-      setJobs([]);
-      setLoading(false);
-      return;
-    }
-    if (isDemo) {
-      setOffers(makeDemoOffers());
-      setJobs([]);
-      setLoading(false);
-      return;
-    }
+    if (!approved || !user?.id || isDemo) return;
     setLoading(true);
-    setError(null);
     try {
-      const [o, j] = await Promise.all([fetchMyJobOffers(supabase), fetchOpenJobs(supabase)]);
+      const [o, j, a] = await Promise.all([
+        online ? fetchMyJobOffers(supabase) : [],
+        online ? fetchOpenJobs(supabase) : [],
+        fetchDriverJobs(supabase, user.id),
+      ]);
       setOffers(o);
       setJobs(j);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load");
+      setAssigned(a);
+      setError(null);
+    } catch {
+      setError("Your transfers could not be refreshed. Check your connection.");
     } finally {
       setLoading(false);
     }
-  }, [isOnline, isDemo]);
-
+  }, [approved, user?.id, online, isDemo]);
   useEffect(() => {
     void load();
   }, [load]);
-
   useEffect(() => {
-    if (isDemo || !user?.id) return;
-    const channel = supabase
-      .channel(`driver-offers-${user.id}`)
+    if (!user?.id || !approved) return;
+    const ch = supabase
+      .channel(`driver-work:${user.id}`)
       .on(
         "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "job_offers",
-          filter: `driver_id=eq.${user.id}`,
-        },
-        () => {
-          void load();
-        },
+        { event: "*", schema: "public", table: "job_offers", filter: `driver_id=eq.${user.id}` },
+        () => void load(),
       )
-      .subscribe();
-    const poll = setInterval(() => void load(), 15_000);
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "bookings", filter: `driver_id=eq.${user.id}` },
+        () => void load(),
+      )
+      .subscribe((s) => {
+        if (s === "SUBSCRIBED") void load();
+      });
+    const timer = setInterval(() => void load(), 15000);
     return () => {
-      void supabase.removeChannel(channel);
-      clearInterval(poll);
+      clearInterval(timer);
+      void supabase.removeChannel(ch);
     };
-  }, [user?.id, load, isDemo]);
-
+  }, [user?.id, approved, load]);
   useEffect(() => {
-    if (!isOnline || offers.length === 0) return;
-    const tick = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(tick);
-  }, [isOnline, offers.length]);
-
-  async function toggleOnline() {
-    setBusyId("online");
+    if (!offers.length) return;
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [offers.length]);
+  async function toggle() {
+    setBusy("online");
+    setError(null);
     try {
-      if (isDemo) {
-        const goingOnline = !isOnline;
-        setDemoOnline(goingOnline);
-        setAccepted(null);
-        if (goingOnline) {
-          // Simulate an incoming dispatch push ~1.6s after going online.
-          const first = makeDemoOffers()[0];
-          setTimeout(() => {
-            void presentDemoOfferNotification({
-              offerId: first.offer_id as string,
-              customerName: first.customerName,
-              from: first.pickup_address as string,
-              to: first.dropoff_address as string,
-              priceCents: first.price_cents as number,
-            });
-          }, 1600);
-        }
-      } else {
-        await setDriverOnline(supabase, !isOnline);
-        await refreshProfile();
-      }
+      await setDriverOnline(supabase, !online);
+      await refreshProfile();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not update availability");
+      setError(e instanceof Error ? e.message : "Could not update availability.");
     } finally {
-      setBusyId(null);
+      setBusy(null);
     }
   }
-
-  // Handle taps / actions on the demo ride-request notification.
-  useEffect(() => {
-    const sub = Notifications.addNotificationResponseReceivedListener((response) => {
-      const data = response.notification.request.content.data as {
-        type?: string;
-        offerId?: string;
-        customerName?: string;
-      };
-      if (data?.type !== "demo_offer" || !data.offerId) return;
-      setOffers((prev) => prev.filter((o) => o.offer_id !== data.offerId));
-      if (response.actionIdentifier === DECLINE_ACTION) {
-        setError(`Declined ${data.customerName ?? "the"} ride (demo).`);
-      } else {
-        // Default tap or the Accept action button.
-        setAccepted(`You accepted ${data.customerName ?? "the"} ride`);
-      }
-    });
-    return () => sub.remove();
-  }, []);
-
-  async function onRespond(offerId: string, accept: boolean, bookingId: string) {
-    if (isDemo) {
-      setError(
-        accept ? "Demo mode — accept is preview only." : "Demo mode — offer declined (local).",
+  async function accept(offer: Offer, yes: boolean) {
+    if (!offer.offer_id || !offer.id) return;
+    setBusy(offer.offer_id);
+    try {
+      await respondToOffer(supabase, offer.offer_id, yes);
+      if (yes) router.push(`/job/${offer.id}`);
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "This offer is no longer available.");
+    } finally {
+      setBusy(null);
+    }
+  }
+  async function claim(job: Job) {
+    if (!job.id) return;
+    setBusy(job.id);
+    try {
+      await claimJob(supabase, job.id);
+      router.push(`/job/${job.id}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "This trip could not be claimed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+  const active = assigned.find((j) => ["claimed", "en_route"].includes(j.status));
+  const completed = assigned.filter(
+    (j) =>
+      j.status === "completed" &&
+      new Date(j.pickup_at).toDateString() === new Date().toDateString(),
+  );
+  const pendingOffers = offers.filter((o) => !o.expires_at || Date.parse(o.expires_at) > now);
+  const first = pendingOffers[0];
+  function openAccount() {
+    if (Platform.OS === "ios") {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          title: profile?.full_name || "TransferAround Driver",
+          options: ["Your jobs", "Practice ride", "Sign out", "Cancel"],
+          destructiveButtonIndex: 2,
+          cancelButtonIndex: 3,
+        },
+        (choice) => {
+          if (choice === 0) router.push("/(tabs)/jobs");
+          if (choice === 1) router.push("/practice");
+          if (choice === 2) void signOut();
+        },
       );
-      if (!accept) setOffers((prev) => prev.filter((o) => o.offer_id !== offerId));
       return;
     }
-    setBusyId(offerId);
-    try {
-      const booking = await respondToOffer(supabase, offerId, accept);
-      if (accept && booking) {
-        await fetch(`${API_URL}/api/dispatch/assigned`, {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ bookingId }),
-        }).catch(() => null);
-      }
-      await load();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Respond failed");
-    } finally {
-      setBusyId(null);
-    }
+    Alert.alert("Your account", profile?.full_name || "TransferAround Driver", [
+      { text: "Practice ride", onPress: () => router.push("/practice") },
+      { text: "Sign out", style: "destructive", onPress: () => void signOut() },
+      { text: "Cancel", style: "cancel" },
+    ]);
   }
-
-  async function onClaim(bookingId: string) {
-    if (isDemo) {
-      setError("Demo mode — claim is preview only.");
-      return;
-    }
-    setBusyId(bookingId);
-    try {
-      await claimJob(supabase, bookingId);
-      await load();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Claim failed");
-    } finally {
-      setBusyId(null);
-    }
-  }
-
-  if (profile && profile.role !== "driver") {
-    return (
-      <GateScreen
-        icon="car-outline"
-        title="Driver access required"
-        subtitle="This app is for approved TransferAround drivers."
-        onSignOut={() => void signOut()}
-      />
-    );
-  }
-
-  if (profile && !approved) {
-    return (
-      <GateScreen
-        icon="time-outline"
-        title="Pending approval"
-        subtitle="Ops will approve your driver profile before you can go online."
-        onSignOut={() => void signOut()}
-      />
-    );
-  }
-
-  const firstName = (profile?.full_name ?? "Driver").split(" ")[0];
-  const stats = isDemo
-    ? { earnings: "€240", trips: "4", rating: "4.9" }
-    : { earnings: "—", trips: "—", rating: "New" };
-
-  function countdown(expires?: string | null) {
-    if (!expires) return null;
-    const secs = Math.max(0, Math.round((new Date(expires).getTime() - now) / 1000));
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
-    return { secs, label: `${m}:${s.toString().padStart(2, "0")}` };
-  }
-
   return (
-    <Screen scroll refreshing={loading} onRefresh={load}>
-      <View style={styles.header}>
-        <View style={{ flex: 1 }}>
-          <Text variant="caption" color={colors.textMuted}>
-            DRIVER
-          </Text>
-          <Heading variant="h1">Hey, {firstName}</Heading>
+    <View style={s.root} onLayout={(e) => setViewportHeight(e.nativeEvent.layout.height)}>
+      <RouteMap
+        from={active?.pickup_address || first?.pickup_address}
+        to={active?.dropoff_address || first?.dropoff_address}
+        userPoint={me}
+        height={viewportHeight}
+        bottomInset={sheetHeight}
+      />
+      <View style={[s.top, { top: insets.top + 8 }]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Driver account actions"
+          style={s.circle}
+          onPress={openAccount}
+        >
+          <Avatar name={profile?.full_name || "Driver"} size={42} />
+        </Pressable>
+        <View style={s.earnings}>
+          <Text style={s.earningsValue}>{completed.length}</Text>
+          <Text style={s.earningsLabel}>TRIPS TODAY</Text>
         </View>
-        {driverRow?.vehicle_make_model ? (
-          <View style={styles.vehicleChip}>
-            <Icon name="car-sport" size={14} color={colors.primary} />
-            <Text
-              variant="caption"
-              color={colors.primary}
-              style={{ fontFamily: fonts.bodySemibold }}
-            >
-              {driverRow.vehicle_make_model}
-            </Text>
-          </View>
-        ) : null}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Show my GPS location"
+          style={s.circle}
+          onPress={() =>
+            void getDevicePosition()
+              .then(setMe)
+              .catch((e) => setError(e.message))
+          }
+        >
+          <Icon name="locate" size={22} />
+        </Pressable>
       </View>
-
-      <Card padded elevated style={isOnline ? styles.heroOnline : undefined}>
-        <View style={styles.heroTop}>
-          <View
-            style={[
-              styles.statusDot,
-              { backgroundColor: isOnline ? colors.success : colors.textFaint },
-            ]}
-          />
-          <View style={{ flex: 1 }}>
-            <Text variant="h2">{isOnline ? "You’re online" : "You’re offline"}</Text>
-            <Text variant="caption" color={colors.textMuted}>
-              {isOnline
-                ? "You’ll receive nearby transfer offers."
-                : "Go online to start receiving offers."}
-            </Text>
-          </View>
-        </View>
-        <Button
-          title={isOnline ? "Go offline" : "Go online"}
-          icon={isOnline ? "pause" : "flash"}
-          variant={isOnline ? "outline" : "accent"}
-          onPress={() => void toggleOnline()}
-          loading={busyId === "online"}
-          fullWidth
-          style={{ marginTop: space.lg }}
-        />
-      </Card>
-
-      <Card padded>
-        <View style={styles.statsRow}>
-          <StatTile
-            label="Today"
-            value={stats.earnings}
-            icon={<Icon name="cash-outline" size={18} color={colors.accentDeep} />}
-          />
-          <View style={styles.statDivider} />
-          <StatTile
-            label="Trips"
-            value={stats.trips}
-            icon={<Icon name="navigate-outline" size={18} color={colors.accentDeep} />}
-          />
-          <View style={styles.statDivider} />
-          <StatTile
-            label="Rating"
-            value={stats.rating}
-            icon={<Icon name="star-outline" size={18} color={colors.accentDeep} />}
-          />
-        </View>
-      </Card>
-
-      {error ? (
-        <View style={styles.errorBox}>
-          <Icon name="alert-circle" size={18} color={colors.danger} />
-          <Text variant="caption" color={colors.danger} style={{ flex: 1 }}>
-            {error}
-          </Text>
-        </View>
-      ) : null}
-
-      {!isOnline ? (
-        <EmptyState
-          icon="flash-outline"
-          title="You’re offline"
-          subtitle="Toggle online above to receive transfer offers."
-        />
-      ) : (
-        <>
-          <SectionLabel>Personal offers</SectionLabel>
-          {offers.length === 0 ? (
-            <EmptyState
-              icon="notifications-outline"
-              title="No offers right now"
-              subtitle="New offers arrive here in real time."
-            />
+      <View
+        onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
+        style={[s.sheet, { paddingBottom: 15, maxHeight: height * 0.58 }]}
+      >
+        <View style={s.grabber} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {!profile ? (
+            <View style={s.state}>
+              <ActivityIndicator />
+              <Text color={colors.textMuted}>Loading your driver profile…</Text>
+            </View>
+          ) : !approved ? (
+            <>
+              <LivePill live={false} label="Driver setup" />
+              <Text style={s.title}>
+                {profile.role !== "driver"
+                  ? "Use your driver account"
+                  : driver?.approval_status === "draft"
+                    ? "Finish your driver setup"
+                    : "Your account needs approval"}
+              </Text>
+              <Text style={s.description}>
+                {profile.role !== "driver"
+                  ? "Sign in with the account registered as a driver."
+                  : "Your account is registered. Operations must review your driver documents and vehicle before you receive real trips."}
+              </Text>
+              <Button
+                title="Refresh approval status"
+                variant="outline"
+                fullWidth
+                onPress={() => void refreshProfile()}
+              />
+              <Button title="Sign out" variant="ghost" fullWidth onPress={() => void signOut()} />
+            </>
+          ) : active ? (
+            <>
+              <LivePill live label="ACTIVE TRANSFER" />
+              <Text style={s.title}>
+                {active.status === "claimed"
+                  ? "Your next pickup"
+                  : active.journey_stage === "on_trip"
+                    ? "On the way to drop-off"
+                    : active.journey_stage === "at_pickup"
+                      ? "Meet your traveler"
+                      : "Head to pickup"}
+              </Text>
+              <RouteRail
+                from={active.pickup_address || "Pickup"}
+                to={active.dropoff_address || "Destination"}
+              />
+              <View style={{ height: 20 }} />
+              <Button
+                title="Open active trip"
+                icon="arrow-forward"
+                fullWidth
+                onPress={() => router.push(`/job/${active.id}`)}
+              />
+            </>
           ) : (
-            offers.map((o) => {
-              const cd = countdown(o.expires_at as string | null);
-              const expiring = cd ? cd.secs <= 20 : false;
-              return (
-                <Card key={o.offer_id ?? o.id ?? ""} padded>
-                  <View style={styles.offerHead}>
-                    <View style={styles.offerTag}>
-                      <Icon name="flash" size={13} color={colors.accentDeep} />
-                      <Text
-                        variant="caption"
-                        color={colors.accentDeep}
-                        style={{ fontFamily: fonts.bodySemibold }}
-                      >
-                        New offer
+            <>
+              <LivePill
+                live={online}
+                label={online ? "Online · ready for requests" : "You’re offline"}
+              />
+              <Text style={s.title}>
+                {first
+                  ? "New transfer request"
+                  : online
+                    ? "Ready for your next trip"
+                    : `Let’s go, ${(profile.full_name || "Driver").split(" ")[0]}`}
+              </Text>
+              {first ? (
+                <View key={first.offer_id}>
+                  <View style={s.offerHead}>
+                    <Text style={s.fare}>€{Math.round((first.price_cents || 0) / 100)}</Text>
+                    <View style={s.timer}>
+                      <Icon name="time-outline" size={14} />
+                      <Text variant="caption">
+                        {Math.max(0, Math.ceil((Date.parse(first.expires_at || "") - now) / 1000))}s
+                        to respond
                       </Text>
                     </View>
-                    {cd ? (
-                      <View style={[styles.timer, expiring ? styles.timerHot : null]}>
-                        <Icon
-                          name="time-outline"
-                          size={13}
-                          color={expiring ? colors.danger : colors.textMuted}
-                        />
-                        <Text
-                          variant="caption"
-                          color={expiring ? colors.danger : colors.textMuted}
-                          style={{ fontFamily: fonts.bodySemibold }}
-                        >
-                          {cd.label}
-                        </Text>
-                      </View>
-                    ) : null}
                   </View>
-
-                  <View style={{ marginTop: space.md }}>
-                    <RouteRail
-                      from={(o.pickup_address as string) || "Pickup"}
-                      to={(o.dropoff_address as string) || "Drop-off"}
-                    />
-                  </View>
-
-                  <Divider />
-                  <View style={styles.offerMeta}>
-                    <View>
-                      <Text variant="caption" color={colors.textMuted}>
-                        Pickup
-                      </Text>
-                      <Text variant="subtitle">
-                        {o.pickup_at ? new Date(o.pickup_at).toLocaleString() : "—"}
-                      </Text>
-                    </View>
-                    <Text style={styles.price}>{euros((o.price_cents as number) ?? 0)}</Text>
-                  </View>
-
-                  <View style={styles.offerActions}>
+                  <RouteRail
+                    from={first.pickup_address || "Pickup"}
+                    to={first.dropoff_address || "Destination"}
+                  />
+                  <Text style={s.description}>
+                    {first.pickup_at
+                      ? new Date(first.pickup_at).toLocaleString()
+                      : "Scheduled pickup"}
+                  </Text>
+                  <View style={s.actions}>
                     <Button
                       title="Decline"
                       variant="outline"
-                      onPress={() => void onRespond(o.offer_id as string, false, o.id as string)}
                       style={{ flex: 1 }}
+                      onPress={() => void accept(first, false)}
                     />
                     <Button
-                      title="Accept"
-                      variant="accent"
-                      onPress={() => void onRespond(o.offer_id as string, true, o.id as string)}
-                      loading={busyId === o.offer_id}
-                      style={{ flex: 1 }}
+                      title="Accept transfer"
+                      style={{ flex: 2 }}
+                      loading={busy === first.offer_id}
+                      onPress={() => void accept(first, true)}
                     />
                   </View>
-                </Card>
-              );
-            })
-          )}
-
-          <SectionLabel>Open pool</SectionLabel>
-          {jobs.length === 0 ? (
-            <EmptyState
-              icon="albums-outline"
-              title="Pool is empty"
-              subtitle="Unassigned jobs you can claim show up here."
-            />
-          ) : (
-            jobs.map((j) => (
-              <Card key={j.id} padded>
-                <RouteRail
-                  from={(j.pickup_address as string) || "Pickup"}
-                  to={(j.dropoff_address as string) || "Drop-off"}
-                />
-                <Divider />
-                <View style={styles.offerMeta}>
-                  <View>
-                    <Text variant="caption" color={colors.textMuted}>
-                      Pickup
-                    </Text>
-                    <Text variant="subtitle">
-                      {new Date(j.pickup_at as string).toLocaleString()}
-                    </Text>
-                  </View>
-                  <Text style={styles.price}>{euros(j.price_cents as number)}</Text>
                 </View>
-                <Button
-                  title="Claim job"
-                  variant="primary"
-                  icon="hand-left-outline"
-                  onPress={() => void onClaim(j.id as string)}
-                  loading={busyId === j.id}
-                  fullWidth
-                  style={{ marginTop: space.md }}
-                />
-              </Card>
-            ))
+              ) : (
+                <>
+                  <Text style={s.description}>
+                    {online
+                      ? "New offers will appear here as they arrive. Your location is shared only on an active assigned trip."
+                      : "Go online to receive transfer offers. Review the pickup and fare before you accept."}
+                  </Text>
+                  <Button
+                    title={online ? "Go offline" : "Go online"}
+                    icon={online ? "pause" : "power"}
+                    variant={online ? "outline" : "primary"}
+                    fullWidth
+                    loading={busy === "online"}
+                    onPress={() => void toggle()}
+                  />
+                </>
+              )}
+              {online && jobs.length > 0 && (
+                <>
+                  <Text style={s.section}>AVAILABLE TRANSFERS</Text>
+                  {jobs.slice(0, 3).map((j) => (
+                    <Pressable
+                      key={j.id}
+                      accessibilityRole="button"
+                      style={s.job}
+                      onPress={() => void claim(j)}
+                    >
+                      <View style={{ flex: 1, gap: 3 }}>
+                        <Text variant="subtitle">{j.dropoff_address || "Transfer"}</Text>
+                        <Text variant="caption" color={colors.textMuted}>
+                          {j.pickup_address}
+                        </Text>
+                      </View>
+                      {busy === j.id ? (
+                        <ActivityIndicator />
+                      ) : (
+                        <Text variant="title">€{Math.round((j.price_cents || 0) / 100)}</Text>
+                      )}
+                      <Icon name="chevron-forward" size={18} />
+                    </Pressable>
+                  ))}
+                </>
+              )}
+            </>
           )}
-        </>
-      )}
-
-      <Button
-        title="Sign out"
-        variant="ghost"
-        icon="log-out-outline"
-        onPress={() => void signOut()}
-      />
-    </Screen>
+          {error && (
+            <Text
+              variant="caption"
+              color={colors.danger}
+              accessibilityRole="alert"
+              style={{ marginTop: 12 }}
+            >
+              {error}
+            </Text>
+          )}
+          {loading && <ActivityIndicator style={{ marginTop: 12 }} />}
+        </ScrollView>
+      </View>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  header: { flexDirection: "row", alignItems: "center", gap: space.md },
-  vehicleChip: {
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: "#EDF0F3" },
+  top: {
+    position: "absolute",
+    left: 20,
+    right: 20,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    gap: 6,
-    backgroundColor: colors.primarySoft,
-    paddingVertical: 6,
-    paddingHorizontal: space.md,
-    borderRadius: radius.pill,
   },
-  heroOnline: { backgroundColor: colors.accentSoft, borderColor: colors.accent },
-  heroTop: { flexDirection: "row", alignItems: "center", gap: space.md },
-  statusDot: { width: 12, height: 12, borderRadius: 6 },
-  statsRow: { flexDirection: "row", alignItems: "center" },
-  statDivider: { width: 1, height: 36, backgroundColor: colors.border },
-  errorBox: {
+  circle: {
+    width: 43,
+    height: 43,
+    borderRadius: 23,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+  },
+  earnings: {
+    backgroundColor: colors.primary,
+    borderRadius: 24,
+    paddingHorizontal: 25,
+    paddingVertical: 8,
+    alignItems: "center",
+  },
+  earningsValue: { fontFamily: fonts.bold, fontSize: 22, lineHeight: 28, color: "white" },
+  earningsLabel: {
+    fontFamily: fonts.bodySemibold,
+    fontSize: 7,
+    letterSpacing: 1,
+    color: "#CDD0D8",
+  },
+  sheet: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 24,
+    paddingTop: 12,
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+  },
+  grabber: {
+    width: 34,
+    height: 4,
+    borderRadius: 3,
+    backgroundColor: colors.borderStrong,
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+  title: {
+    fontFamily: fonts.bold,
+    fontSize: 25,
+    lineHeight: 32,
+    letterSpacing: -0.7,
+    marginTop: 13,
+    marginBottom: 12,
+  },
+  description: { fontSize: 13, lineHeight: 20, color: colors.textMuted, marginBottom: 18 },
+  state: { padding: 25, alignItems: "center", gap: 12 },
+  offerHead: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    gap: space.sm,
-    backgroundColor: colors.dangerSoft,
-    padding: space.md,
-    borderRadius: radius.md,
+    marginBottom: 18,
   },
-  offerHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  offerTag: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    backgroundColor: colors.accentSoft,
-    paddingVertical: 4,
-    paddingHorizontal: space.md,
-    borderRadius: radius.pill,
-  },
+  fare: { fontSize: 35, lineHeight: 43, fontFamily: fonts.bold, letterSpacing: -1 },
   timer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    gap: 6,
     backgroundColor: colors.surfaceMuted,
-    paddingVertical: 4,
-    paddingHorizontal: space.md,
-    borderRadius: radius.pill,
+    padding: 9,
+    borderRadius: 15,
   },
-  timerHot: { backgroundColor: colors.dangerSoft },
-  offerMeta: {
+  actions: { flexDirection: "row", gap: 10 },
+  section: {
+    fontFamily: fonts.bodySemibold,
+    fontSize: 10,
+    letterSpacing: 1,
+    color: colors.textMuted,
+    marginTop: 22,
+    marginBottom: 12,
+  },
+  job: {
     flexDirection: "row",
+    gap: 10,
     alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: space.md,
-  },
-  price: { fontFamily: fonts.display, fontSize: 24, color: colors.text, letterSpacing: -0.5 },
-  offerActions: { flexDirection: "row", gap: space.md, marginTop: space.lg },
-  gate: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: space.md,
-    paddingHorizontal: space.xl,
-  },
-  gateIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: radius.xl,
-    backgroundColor: colors.accentSoft,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: space.xs,
+    paddingVertical: 14,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
   },
 });

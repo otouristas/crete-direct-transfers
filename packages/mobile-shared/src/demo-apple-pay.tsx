@@ -57,7 +57,7 @@ export function DemoApplePay({
           <View style={s.grabber} />
           <View style={s.header}>
             <View style={s.logo}>
-              <Icon name="logo-apple" size={28} color="#103F3A" />
+              <Icon name="logo-apple" size={28} color="#101114" />
               <Text style={s.pay}>Pay</Text>
             </View>
             <View style={s.badge}>
@@ -70,15 +70,15 @@ export function DemoApplePay({
               onPress={dismiss}
               hitSlop={12}
             >
-              <Icon name="close" size={22} color="#6A7E6D" />
+              <Icon name="close" size={22} color="#646A74" />
             </Pressable>
           </View>
           {complete ? (
             <View style={s.success}>
               <View style={s.successIcon}>
-                <Icon name="checkmark" size={35} color="#103F3A" />
+                <Icon name="checkmark" size={35} color="#101114" />
               </View>
-              <Text style={s.title}>A lovely start.</Text>
+              <Text style={s.title}>Practice payment complete.</Text>
               <Text style={s.description}>
                 Your practice payment is complete. Your driver can now accept the journey.
               </Text>
@@ -87,11 +87,11 @@ export function DemoApplePay({
             </View>
           ) : (
             <>
-              <Text style={s.title}>One less thing{`\n`}to think about.</Text>
+              <Text style={s.title}>Confirm your{`\n`}practice ride.</Text>
               <View style={s.card}>
                 <View style={s.cardTop}>
                   <Text style={s.cardBrand}>TransferAround</Text>
-                  <Icon name="wifi-outline" size={22} color="#D8ED98" />
+                  <Icon name="wifi-outline" size={22} color="#EBF2FF" />
                 </View>
                 <View style={s.chip} />
                 <Text style={s.cardDigits}>•••• •••• •••• 4242</Text>
@@ -134,7 +134,7 @@ export function DemoApplePay({
 const s = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: "rgba(8,32,27,0.55)", justifyContent: "flex-end" },
   sheet: {
-    backgroundColor: "#F6F4EC",
+    backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 34,
     borderTopRightRadius: 34,
     padding: 24,
@@ -150,47 +150,47 @@ const s = StyleSheet.create({
   },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 10 },
   logo: { flexDirection: "row", alignItems: "center" },
-  pay: { fontSize: 27, lineHeight: 35, fontFamily: fonts.semibold, color: "#103F3A" },
+  pay: { fontSize: 27, lineHeight: 35, fontFamily: fonts.semibold, color: "#101114" },
   badge: {
-    backgroundColor: "#E3EBCF",
+    backgroundColor: "#EBF2FF",
     paddingVertical: 7,
     paddingHorizontal: 10,
     borderRadius: 20,
   },
-  badgeText: { fontSize: 8, fontFamily: fonts.bodySemibold, letterSpacing: 1, color: "#52704F" },
+  badgeText: { fontSize: 8, fontFamily: fonts.bodySemibold, letterSpacing: 1, color: "#2059C2" },
   title: {
-    fontFamily: "Georgia",
+    fontFamily: fonts.bold,
     fontSize: 33,
     lineHeight: 38,
     letterSpacing: -0.8,
-    color: "#103F3A",
+    color: "#101114",
   },
-  card: { backgroundColor: "#103F3A", borderRadius: 24, padding: 23, gap: 20, minHeight: 184 },
+  card: { backgroundColor: "#101114", borderRadius: 24, padding: 23, gap: 20, minHeight: 184 },
   cardTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  cardBrand: { color: "#F8F5E9", fontFamily: fonts.semibold, fontSize: 16 },
+  cardBrand: { color: "#FFFFFF", fontFamily: fonts.semibold, fontSize: 16 },
   chip: {
     width: 30,
     height: 24,
     borderRadius: 6,
-    backgroundColor: "#CBD6AB",
-    borderColor: "#E1E8C2",
+    backgroundColor: "#CCD1D9",
+    borderColor: "#E7E8EC",
     borderWidth: 1,
   },
-  cardDigits: { color: "#D7E6CE", letterSpacing: 3, fontSize: 16, fontFamily: fonts.medium },
-  cardFoot: { color: "#8CB39B", fontSize: 8, letterSpacing: 2, fontFamily: fonts.medium },
+  cardDigits: { color: "#E4E7ED", letterSpacing: 3, fontSize: 16, fontFamily: fonts.medium },
+  cardFoot: { color: "#AEB5C1", fontSize: 8, letterSpacing: 2, fontFamily: fonts.medium },
   summary: { gap: 15 },
   line: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 24 },
-  label: { color: "#7B8C79", fontFamily: fonts.medium, fontSize: 12 },
+  label: { color: "#646A74", fontFamily: fonts.medium, fontSize: 12 },
   value: {
-    color: "#103F3A",
+    color: "#101114",
     fontFamily: fonts.semibold,
     fontSize: 12,
     flex: 1,
     textAlign: "right",
   },
-  separator: { height: 1, backgroundColor: "#DDE1D3" },
+  separator: { height: 1, backgroundColor: "#E7E8EC" },
   amount: {
-    color: "#103F3A",
+    color: "#101114",
     fontFamily: fonts.bold,
     fontSize: 28,
     lineHeight: 36,
@@ -200,7 +200,7 @@ const s = StyleSheet.create({
     fontSize: 10,
     lineHeight: 16,
     fontFamily: fonts.body,
-    color: "#7B8C79",
+    color: "#646A74",
     textAlign: "center",
   },
   error: { fontSize: 12, color: "#B33E35" },
@@ -209,12 +209,12 @@ const s = StyleSheet.create({
     width: 76,
     height: 76,
     borderRadius: 38,
-    backgroundColor: "#D8ED98",
+    backgroundColor: "#EBF2FF",
     alignItems: "center",
     justifyContent: "center",
   },
   description: {
-    color: "#7B8C79",
+    color: "#646A74",
     fontFamily: fonts.body,
     fontSize: 14,
     lineHeight: 23,

@@ -32,6 +32,7 @@ export type PracticeTrip = {
   driverName: string;
 };
 export type PracticeState = {
+  driverLocation?: { lat: number; lng: number; capturedAt: string };
   online: boolean;
   trip: PracticeTrip | null;
   events: { label: string; at: string }[];

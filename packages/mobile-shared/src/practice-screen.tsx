@@ -1,8 +1,26 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { DemoApplePay } from "./demo-apple-pay";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AppState, Platform, Pressable, Share, StyleSheet, Switch, View } from "react-native";
-
+import {
+  AppState,
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  Share,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { DemoApplePay } from "./demo-apple-pay";
+import {
+  getDevicePosition,
+  LocationPermissionError,
+  openLocationSettings,
+  type DevicePosition,
+} from "./location";
 import {
   EMPTY_PRACTICE,
   PRACTICE_ROUTES,
@@ -10,130 +28,137 @@ import {
   practiceFare,
   runPractice,
   type PracticeAction,
-  type PracticeState,
   type PracticeClient,
+  type PracticeState,
 } from "./practice";
-import {
-  Avatar,
-  BrandWordmark,
-  Button,
-  Card,
-  Field,
-  Heading,
-  Icon,
-  RouteMap,
-  RouteRail,
-  Screen,
-  Text,
-  colors,
-  fonts,
-  radius,
-  space,
-} from "./ui";
-
-const euro = (cents: number) => `€${Math.round(cents / 100)}`;
+import { Button, Field, Icon, RouteMap, RouteRail, Text, colors, fonts } from "./ui";
+import { LivePill, VehicleArtwork } from "./ui/mobility";
+const euro = (c: number) => `€${Math.round(c / 100)}`;
 const labels = {
   pending: "Finding your driver",
-  claimed: "Nikos accepted your trip",
+  claimed: "Your driver accepted",
   en_route: "Your driver is on the way",
-  completed: "You’ve arrived. Enjoy Crete.",
-  cancelled: "Practice trip cancelled",
+  completed: "You’ve arrived",
+  cancelled: "Trip cancelled",
 };
-
-/** Both native apps and the website use the same isolated practice API. */
 export function PracticeScreen({
   client,
   role,
   initialSession,
+  onExit,
+  onShareGPS,
+  onStopGPS,
 }: {
   client: PracticeClient;
   role: "rider" | "driver";
   initialSession?: string;
+  onExit?: () => void;
+  onShareGPS?: (token: string) => Promise<{ background: boolean }>;
+  onStopGPS?: () => Promise<void>;
 }) {
+  const { height } = useWindowDimensions();
+  const [sheetHeight, setSheetHeight] = useState(380);
+  const [viewportHeight, setViewportHeight] = useState(height);
+  const insets = useSafeAreaInsets();
+  const driver = role === "driver";
   const [token, setToken] = useState<string | null>(null);
   const [joinCode, setJoinCode] = useState("");
   const [state, setState] = useState<PracticeState>(EMPTY_PRACTICE);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [routeId, setRouteId] = useState<string>(PRACTICE_ROUTES[0].id);
-  const [vehicleId, setVehicleId] = useState<string>("comfort");
+  const [vehicleId, setVehicleId] = useState("comfort");
   const [payVisible, setPayVisible] = useState(false);
-  const [showConnection, setShowConnection] = useState(false);
-  const requestSerial = useRef(0);
-  const driver = role === "driver";
+  const [connection, setConnection] = useState(false);
+  const [routes, setRoutes] = useState(false);
+  const [me, setMe] = useState<DevicePosition | null>(null);
+  const [gpsBusy, setGpsBusy] = useState(false);
+  const [gpsDenied, setGpsDenied] = useState(false);
+  const [now, setNow] = useState(Date.now());
+  const serial = useRef(0);
   const trip = state.trip;
-  const active = trip && !["completed", "cancelled"].includes(trip.status);
+  const active = Boolean(trip && !["completed", "cancelled"].includes(trip.status));
   const route = PRACTICE_ROUTES.find((r) => r.id === routeId)!;
   const vehicle = PRACTICE_VEHICLES.find((v) => v.id === vehicleId)!;
-
   const connect = useCallback(
     async (code?: string) => {
-      const serial = ++requestSerial.current;
+      Keyboard.dismiss();
+      const request = ++serial.current;
       setBusy(true);
       setError(null);
       try {
         const trimmed = code?.trim().toLowerCase();
         if (trimmed && !/^[a-f0-9]{48}$/.test(trimmed))
-          throw new Error("Paste the 48-character session code from the other app or website.");
-        const result = await runPractice(client, trimmed || null, trimmed ? "read" : "create");
-        if (serial !== requestSerial.current) return;
-        const nextToken = result.token || trimmed!;
-        setToken(nextToken);
-        await AsyncStorage.setItem(`transferaround-practice-${role}`, nextToken);
-        setState(result.state);
+          throw new Error("Paste the 48-character code from your other app.");
+        const r = await runPractice(client, trimmed || null, trimmed ? "read" : "create");
+        if (request !== serial.current) return;
+        const next = r.token || trimmed!;
+        setToken(next);
+        setState(r.state);
+        await AsyncStorage.setItem(`transferaround-practice-${role}`, next);
         setJoinCode("");
+        setConnection(false);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Could not connect.");
+        setError(e instanceof Error ? e.message : "Connection failed.");
       } finally {
-        if (serial === requestSerial.current) setBusy(false);
+        if (request === serial.current) setBusy(false);
       }
     },
     [client, role],
   );
-
   useEffect(() => {
-    let active = true;
+    let alive = true;
     if (initialSession) {
       void connect(initialSession);
       return;
     }
     void AsyncStorage.getItem(`transferaround-practice-${role}`)
       .then((saved) => {
-        if (active && saved) void connect(saved);
+        if (alive && saved) void connect(saved);
       })
       .catch(() => {});
     return () => {
-      active = false;
+      alive = false;
     };
   }, [connect, role, initialSession]);
-
   useEffect(() => {
     if (!token) return;
-    let mounted = true;
-    let polling = false;
+    let alive = true,
+      polling = false;
     const poll = async () => {
       if (polling || AppState.currentState === "background") return;
       polling = true;
-      const serial = requestSerial.current;
+      const request = serial.current;
       try {
         const r = await runPractice(client, token, "read");
-        if (mounted && serial === requestSerial.current) setState(r.state);
+        if (alive && request === serial.current) setState(r.state);
       } catch (e) {
-        if (mounted) setError(e instanceof Error ? e.message : "Connection interrupted.");
+        if (alive) setError(e instanceof Error ? e.message : "Connection interrupted.");
       } finally {
         polling = false;
       }
     };
-    const timer = setInterval(poll, 2500);
+    const timer = setInterval(() => void poll(), 2000);
+    const app = AppState.addEventListener("change", (s) => {
+      if (s === "active") void poll();
+    });
     return () => {
-      mounted = false;
+      alive = false;
       clearInterval(timer);
+      app.remove();
     };
-  }, [client, token]);
-
+  }, [token, client]);
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  const closed = Boolean(trip && !active);
+  useEffect(() => {
+    if (driver && closed) void onStopGPS?.();
+  }, [driver, closed, onStopGPS]);
   async function act(action: PracticeAction) {
-    if (!token || busy) return;
-    ++requestSerial.current;
+    if (!token || busy) return false;
+    ++serial.current;
     setBusy(true);
     setError(null);
     try {
@@ -147,8 +172,42 @@ export function PracticeScreen({
       setBusy(false);
     }
   }
-
-  const driverAction =
+  async function locate() {
+    setGpsBusy(true);
+    setError(null);
+    try {
+      setMe(await getDevicePosition());
+      setGpsDenied(false);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "GPS unavailable.");
+      setGpsDenied(e instanceof LocationPermissionError);
+    } finally {
+      setGpsBusy(false);
+    }
+  }
+  async function shareGPS() {
+    if (!token || !onShareGPS) return;
+    setGpsBusy(true);
+    setError(null);
+    try {
+      const result = await onShareGPS(token);
+      if (!result.background)
+        setError(
+          "Live GPS is on while this app is open. Allow Always location in Settings to keep sharing in the other app.",
+        );
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "GPS sharing failed.");
+      setGpsDenied(e instanceof LocationPermissionError);
+    } finally {
+      setGpsBusy(false);
+    }
+  }
+  const position = active ? state.driverLocation : null;
+  const age = position
+    ? Math.max(0, Math.floor((now - Date.parse(position.capturedAt)) / 1000))
+    : null;
+  const fresh = age !== null && age <= 20;
+  const action =
     driver && trip && active && (state.online || trip.status !== "pending")
       ? trip.status === "pending"
         ? "accept"
@@ -156,462 +215,528 @@ export function PracticeScreen({
           ? "start"
           : "complete"
       : null;
-  const canRequest = !driver && !active && trip?.status !== "completed";
-  const footer =
-    token && (canRequest || driverAction) ? (
-      <View style={s.actionBar}>
-        <View>
-          <Text variant="caption" color={colors.textMuted}>
-            {driver ? "Demo earnings" : "Demo total"}
-          </Text>
-          <Text style={s.footerFare}>
-            {euro(
-              driver && trip
-                ? Math.round(trip.priceCents * 0.85)
-                : practiceFare(route.baseCents, vehicle.multiplier),
-            )}
-          </Text>
-        </View>
-        <Button
-          title={
-            driverAction === "accept"
-              ? "Accept practice ride"
-              : driverAction === "start"
-                ? "Start to pickup"
-                : driverAction === "complete"
-                  ? "Complete trip"
-                  : "Demo Apple Pay"
-          }
-          icon={driver ? "arrow-forward" : "logo-apple"}
-          onPress={() => (driverAction ? void act(driverAction) : setPayVisible(true))}
-          loading={busy}
-          style={{ flex: 1 }}
-        />
-      </View>
-    ) : undefined;
-
+  const amount =
+    trip && active ? trip.priceCents : practiceFare(route.baseCents, vehicle.multiplier);
+  const reset = trip && ["completed", "cancelled"].includes(trip.status);
   return (
-    <Screen scroll background="#F6F4EC" footer={footer}>
-      <DemoApplePay
-        visible={payVisible}
-        amountCents={practiceFare(route.baseCents, vehicle.multiplier)}
-        destination={route.to}
-        onClose={() => setPayVisible(false)}
-        onAuthorize={async () => Boolean(await act("request"))}
-      />
-      <View style={s.brandBar}>
-        <BrandWordmark size={21} />
-        <Text style={s.roleLabel}>{driver ? "DRIVER" : "TRAVELER"}</Text>
-      </View>
-      <View style={[s.hero, !driver && s.travelerHero, token && s.compactHero]}>
-        <View style={s.tag}>
-          <Icon name="sparkles-outline" size={14} color="#D4F078" />
-          <Text style={[s.tagText, !driver && s.travelerInk]}>YOUR CONNECTED PRACTICE JOURNEY</Text>
-        </View>
-        <Heading variant="h1" style={[s.title, !driver && s.travelerInk, token && s.compactTitle]}>
-          {token
-            ? driver
-              ? "Your day, in motion."
-              : "Hello, sunshine."
-            : driver
-              ? "A great day,\none journey at a time."
-              : "Leave the planning.\nKeep the feeling."}
-        </Heading>
-        {!token && (
-          <Text style={[s.sub, !driver && { color: "#788773" }]}>
-            Two apps. One smooth arrival. No real charges.
-          </Text>
-        )}
-      </View>
-      {error && (
-        <Card padded>
-          <Text color={colors.danger} accessibilityRole="alert">
-            {error}
-          </Text>
-          <Button
-            title="Start a fresh practice session"
-            variant="outline"
-            onPress={() => void connect()}
-            disabled={busy}
-          />
-        </Card>
-      )}
-      {!token ? (
-        <Card padded>
-          <Heading variant="h2">Let’s take it for a spin.</Heading>
-          <Text color={colors.textMuted} style={s.copy}>
-            Start a session in either app. Share its code, then join the same session in the other
-            app to see both sides of the journey.
-          </Text>
-          <Button
-            title="Start new practice session"
-            icon="add-circle-outline"
-            onPress={() => void connect()}
-            loading={busy}
-            fullWidth
-          />
-          <Text color={colors.textMuted} center style={s.or}>
-            or join your other screen
-          </Text>
-          <Field
-            label="Session code"
-            value={joinCode}
-            onChangeText={setJoinCode}
-            autoCapitalize="none"
-            autoCorrect={false}
-            placeholder="Paste your session code"
-          />
-          <View style={{ height: 12 }} />
-          <Button
-            title="Join shared session"
-            variant="outline"
-            disabled={!joinCode.trim() || busy}
-            onPress={() => void connect(joinCode)}
-            fullWidth
-          />
-        </Card>
-      ) : (
-        <>
-          <View style={s.connected}>
-            <Icon name="radio-outline" size={16} color={colors.accentDeep} />
-            <Text variant="caption" color={colors.accentDeep}>
-              Connected · practice only · expires in 2 hours
-            </Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <View style={s.root} onLayout={(e) => setViewportHeight(e.nativeEvent.layout.height)}>
+        <RouteMap
+          from={trip && active ? trip.from : route.from}
+          to={trip && active ? trip.to : route.to}
+          height={viewportHeight}
+          bottomInset={sheetHeight}
+          userPoint={me}
+          driverPoint={position}
+        />
+        <View style={[s.top, { top: insets.top + 8 }]}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Leave practice"
+            style={s.circle}
+            onPress={onExit}
+          >
+            <Icon name="arrow-back" size={21} />
+          </Pressable>
+          <View style={s.mode}>
+            <Text style={s.modeText}>{driver ? "DRIVER" : "TRAVELER"} · PRACTICE</Text>
           </View>
-          {driver && (
-            <Card padded style={s.availability}>
-              <View>
-                <Text variant="title">{state.online ? "You’re online" : "You’re offline"}</Text>
-                <Text variant="caption" color={colors.textMuted}>
-                  {state.online
-                    ? "Ready for the next journey"
-                    : "Switch on to receive the practice request"}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Use my location"
+            style={s.circle}
+            disabled={gpsBusy}
+            onPress={() => void locate()}
+          >
+            <Icon name="locate" size={22} color={colors.accent} />
+          </Pressable>
+        </View>
+        <View
+          onLayout={(e) => setSheetHeight(e.nativeEvent.layout.height)}
+          style={[
+            s.sheet,
+            {
+              paddingBottom: Math.max(insets.bottom, 14),
+              maxHeight: Math.min(height * 0.65, Math.max(180, viewportHeight - insets.top - 80)),
+            },
+          ]}
+        >
+          <View style={s.grabber} />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 12 }}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
+          >
+            {!token ? (
+              <>
+                <Text accessibilityRole="header" style={s.title}>
+                  Try both sides of the ride.
                 </Text>
-              </View>
-              <Switch
-                value={state.online}
-                onValueChange={(v) => void act(v ? "online" : "offline")}
-                disabled={busy}
-                trackColor={{ false: colors.border, true: colors.accent }}
-                accessibilityLabel="Driver online"
+                <Text style={s.description}>
+                  Connect Traveler and Driver with one private session. The trip and payment are
+                  simulated. GPS sharing uses the driver device’s actual location.
+                </Text>
+                <Button
+                  title="Start new practice session"
+                  icon="arrow-forward"
+                  fullWidth
+                  loading={busy}
+                  onPress={() => void connect()}
+                />
+                <View style={{ height: 18 }} />
+                <Field
+                  label="Or join your other app"
+                  value={joinCode}
+                  onChangeText={setJoinCode}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  placeholder="Paste the session code"
+                  returnKeyType="join"
+                  onSubmitEditing={() => {
+                    if (joinCode.trim()) void connect(joinCode);
+                  }}
+                />
+                <View style={{ height: 12 }} />
+                <Button
+                  title="Join shared session"
+                  variant="outline"
+                  fullWidth
+                  disabled={!joinCode.trim() || busy}
+                  onPress={() => void connect(joinCode)}
+                />
+              </>
+            ) : (
+              <>
+                <View style={s.statusRow}>
+                  <LivePill
+                    live={fresh}
+                    label={
+                      fresh
+                        ? "Real device GPS · live"
+                        : position
+                          ? `GPS updated ${age}s ago`
+                          : "Connected test drive"
+                    }
+                  />
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel="Connect the other app"
+                    onPress={() => setConnection(true)}
+                    hitSlop={10}
+                  >
+                    <Icon name="link-outline" size={21} />
+                  </Pressable>
+                </View>
+                <Text accessibilityRole="header" style={s.title}>
+                  {trip && (active || reset)
+                    ? labels[trip.status]
+                    : driver
+                      ? state.online
+                        ? "Ready for a request"
+                        : "You’re offline"
+                      : "Choose your practice ride"}
+                </Text>
+                {position && !fresh && (
+                  <Text style={s.description}>Showing the last received GPS position.</Text>
+                )}
+                {!active && !reset && !driver ? (
+                  <>
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityLabel="Choose practice route"
+                      style={s.routeRow}
+                      onPress={() => setRoutes(true)}
+                    >
+                      <Icon name="location-outline" size={20} />
+                      <View style={{ flex: 1, gap: 3 }}>
+                        <Text variant="subtitle">{route.to}</Text>
+                        <Text variant="caption" color={colors.textMuted}>
+                          From {route.from}
+                        </Text>
+                      </View>
+                      <Icon name="chevron-down" size={18} />
+                    </Pressable>
+                    {PRACTICE_VEHICLES.map((v) => (
+                      <Pressable
+                        accessibilityRole="radio"
+                        accessibilityState={{ checked: vehicleId === v.id }}
+                        accessibilityLabel={`${v.name} ${euro(practiceFare(route.baseCents, v.multiplier))}`}
+                        key={v.id}
+                        onPress={() => setVehicleId(v.id)}
+                        style={[s.vehicle, vehicleId === v.id && s.selected]}
+                      >
+                        <VehicleArtwork
+                          van={v.id === "minivan"}
+                          style={{ width: 88, height: 60 }}
+                        />
+                        <View style={{ flex: 1, gap: 3 }}>
+                          <Text variant="title">{v.name}</Text>
+                          <Text variant="caption" color={colors.textMuted}>
+                            {v.seats} seats · example car
+                          </Text>
+                        </View>
+                        <Text style={s.price}>
+                          {euro(practiceFare(route.baseCents, v.multiplier))}
+                        </Text>
+                      </Pressable>
+                    ))}
+                  </>
+                ) : driver && !active && !reset ? (
+                  <>
+                    <Text style={s.description}>
+                      {state.online
+                        ? "Send a practice request from Traveler. It will appear here."
+                        : "Go online to receive the connected practice request."}
+                    </Text>
+                    <Button
+                      title={state.online ? "Go offline" : "Go online"}
+                      icon="power"
+                      fullWidth
+                      variant={state.online ? "outline" : "primary"}
+                      loading={busy}
+                      onPress={() => void act(state.online ? "offline" : "online")}
+                    />
+                  </>
+                ) : trip ? (
+                  <>
+                    <View style={s.routeBlock}>
+                      <RouteRail from={trip.from} to={trip.to} />
+                    </View>
+                    <View style={s.tripMeta}>
+                      <VehicleArtwork
+                        van={trip.vehicle === "minivan"}
+                        style={{ width: 94, height: 62 }}
+                      />
+                      <View style={{ flex: 1 }}>
+                        <Text variant="subtitle">{trip.vehicleName}</Text>
+                        <Text variant="caption" color={colors.textMuted}>
+                          Example vehicle · 2 travelers
+                        </Text>
+                      </View>
+                      <Text style={s.price}>{euro(trip.priceCents)}</Text>
+                    </View>
+                    {driver && active && trip.status !== "pending" && onShareGPS && (
+                      <Button
+                        title={fresh ? "Update live GPS sharing" : "Share live device GPS"}
+                        icon="locate"
+                        variant="outline"
+                        loading={gpsBusy}
+                        fullWidth
+                        onPress={() => void shareGPS()}
+                      />
+                    )}
+                    {driver && active && trip.status !== "pending" && (
+                      <Text style={s.privacy}>
+                        Anyone with this session code can see the shared position. Sharing ends with
+                        the practice trip.
+                      </Text>
+                    )}
+                    {!driver && active && !position && (
+                      <Text style={s.description}>
+                        In Driver, choose “Share live device GPS” after accepting to see the real
+                        moving position here.
+                      </Text>
+                    )}
+                    {!driver && active && trip.status !== "en_route" && (
+                      <Button
+                        title="Cancel practice ride"
+                        variant="ghost"
+                        onPress={() => void act("cancel")}
+                      />
+                    )}
+                    {reset && (
+                      <Button
+                        title="Try another journey"
+                        fullWidth
+                        onPress={() => void act("reset")}
+                      />
+                    )}
+                  </>
+                ) : null}
+              </>
+            )}
+            {error && (
+              <Text
+                accessibilityRole="alert"
+                color={colors.danger}
+                variant="caption"
+                style={{ marginTop: 12 }}
+              >
+                {error}
+              </Text>
+            )}
+            {gpsDenied && (
+              <Button
+                title="Open location settings"
+                variant="outline"
+                onPress={() => void openLocationSettings()}
               />
-            </Card>
+            )}
+          </ScrollView>
+          {token && !reset && (!driver || action) && (
+            <View style={s.footer}>
+              <View>
+                <Text variant="caption" color={colors.textMuted}>
+                  Practice fare
+                </Text>
+                <Text style={s.total}>{euro(amount)}</Text>
+              </View>
+              <Button
+                title={
+                  driver
+                    ? action === "accept"
+                      ? "Accept ride"
+                      : action === "start"
+                        ? "Start to pickup"
+                        : "Complete ride"
+                    : active
+                      ? "Connect Driver"
+                      : "Demo Apple Pay"
+                }
+                icon={driver ? "arrow-forward" : active ? "link-outline" : "logo-apple"}
+                style={{ flex: 1 }}
+                loading={busy}
+                onPress={() =>
+                  driver && action
+                    ? void act(action)
+                    : active
+                      ? setConnection(true)
+                      : setPayVisible(true)
+                }
+              />
+            </View>
           )}
-          <RouteMap from={trip?.from || route.from} to={trip?.to || route.to} height={180} />
-          {driver ? (
-            <Card padded>
-              {trip && active && (state.online || trip.status !== "pending") ? (
-                <>
-                  <Text variant="caption" color={colors.accentDeep}>
-                    {trip.status === "pending" ? "NEW PRACTICE REQUEST" : "YOUR ACTIVE JOURNEY"}
-                  </Text>
-                  <Text style={s.fare}>{euro(Math.round(trip.priceCents * 0.85))}</Text>
-                  <Text variant="caption" color={colors.textMuted}>
-                    Illustrative earnings · 85% of {euro(trip.priceCents)}
-                  </Text>
-                  <View style={s.rail}>
-                    <RouteRail from={trip.from} to={trip.to} />
-                  </View>
-                  <View style={s.person}>
-                    <Avatar name="Alex Morgan" size={38} />
-                    <View>
-                      <Text variant="subtitle">Alex Morgan</Text>
+          <Text style={s.disclaimer}>TEST DRIVE · NO REAL BOOKING OR PAYMENT</Text>
+        </View>
+        <DemoApplePay
+          visible={payVisible}
+          amountCents={practiceFare(route.baseCents, vehicle.multiplier)}
+          destination={route.to}
+          onClose={() => setPayVisible(false)}
+          onAuthorize={() => act("request")}
+        />
+        <Modal
+          visible={connection || routes}
+          animationType="slide"
+          presentationStyle="pageSheet"
+          onRequestClose={() => {
+            setConnection(false);
+            setRoutes(false);
+          }}
+        >
+          <SafeAreaView style={s.modal}>
+            <View style={s.modalHeader}>
+              <Text variant="h2">{routes ? "Choose a practice route" : "Connect your apps"}</Text>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Close connection details"
+                style={s.circle}
+                onPress={() => {
+                  setConnection(false);
+                  setRoutes(false);
+                }}
+              >
+                <Icon name="close" size={23} />
+              </Pressable>
+            </View>
+            <ScrollView
+              contentContainerStyle={{ gap: 18, padding: 24 }}
+              keyboardShouldPersistTaps="handled"
+              automaticallyAdjustKeyboardInsets
+              keyboardDismissMode="on-drag"
+            >
+              {routes ? (
+                PRACTICE_ROUTES.map((r) => (
+                  <Pressable
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: r.id === routeId }}
+                    key={r.id}
+                    style={s.routeRow}
+                    onPress={() => {
+                      setRouteId(r.id);
+                      setRoutes(false);
+                    }}
+                  >
+                    <Icon name="airplane-outline" size={22} />
+                    <View style={{ flex: 1 }}>
+                      <Text variant="title">{r.to}</Text>
                       <Text variant="caption" color={colors.textMuted}>
-                        2 travelers · {trip.vehicleName}
+                        From {r.from}
                       </Text>
                     </View>
-                  </View>
-                </>
-              ) : trip?.status === "completed" ? (
-                <>
-                  <Icon name="checkmark-circle-outline" size={44} color={colors.accentDeep} />
-                  <Heading variant="h2" style={{ marginTop: 14 }}>
-                    Beautifully done.
-                  </Heading>
-                  <Text style={s.copy} color={colors.textMuted}>
-                    One journey. Two connected experiences. No payment or payout was made.
-                  </Text>
-                  <Button
-                    title="Try another journey"
-                    onPress={() => void act("reset")}
-                    loading={busy}
-                    fullWidth
-                  />
-                </>
+                    {r.id === routeId && <Icon name="checkmark" size={23} />}
+                  </Pressable>
+                ))
               ) : (
                 <>
-                  <Heading variant="h2">
-                    {state.online ? "Ready for a great day." : "Your next journey awaits."}
-                  </Heading>
-                  <Text style={s.copy} color={colors.textMuted}>
-                    {state.online
-                      ? "Request a trip in the Traveler app or website. It will appear here in a moment."
-                      : "Go online, share your session code and request a ride in the Traveler app."}
+                  <Text color={colors.textMuted}>
+                    Join the same private session on both devices. The code expires after two hours.
                   </Text>
+                  <Text selectable style={s.code}>
+                    {token}
+                  </Text>
+                  <Button
+                    title="Share session link"
+                    icon="share-outline"
+                    fullWidth
+                    onPress={() =>
+                      void Share.share({
+                        message: `TransferAround practice: ${driver ? "transferaround" : "transferaround-driver"}://practice?session=${token}\n\nSession code: ${token}`,
+                      }).catch(() =>
+                        setError("Sharing unavailable. Select and copy the session code."),
+                      )
+                    }
+                  />
+                  <Field
+                    label="Join a different session"
+                    value={joinCode}
+                    onChangeText={setJoinCode}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    placeholder="Paste the other app’s code"
+                    returnKeyType="join"
+                    onSubmitEditing={() => {
+                      if (joinCode.trim()) void connect(joinCode);
+                    }}
+                  />
+                  <Button
+                    title="Join shared session"
+                    variant="outline"
+                    disabled={!joinCode.trim() || busy}
+                    fullWidth
+                    onPress={() => void connect(joinCode)}
+                  />
+                  <Button
+                    title="Reset this practice journey"
+                    variant="ghost"
+                    onPress={() => void act("reset")}
+                  />
+                  {state.events.slice(-5).map((e, i) => (
+                    <Text key={i} variant="caption" color={colors.textMuted}>
+                      {e.label}
+                    </Text>
+                  ))}
                 </>
               )}
-            </Card>
-          ) : active || trip?.status === "completed" ? (
-            <Card padded>
-              <Text variant="caption" color={colors.accentDeep}>
-                YOUR JOURNEY
-              </Text>
-              <Heading variant="h2" style={{ marginVertical: 12 }}>
-                {labels[trip.status]}
-              </Heading>
-              {["claimed", "en_route", "completed"].includes(trip.status) && (
-                <View style={s.person}>
-                  <Avatar name="Nikos" size={44} />
-                  <View>
-                    <Text variant="subtitle">Nikos · ★ 4.9</Text>
-                    <Text variant="caption" color={colors.textMuted}>
-                      {trip.vehicleName} · {trip.plate}
-                    </Text>
-                  </View>
-                </View>
-              )}
-              <RouteRail from={trip.from} to={trip.to} />
-              <Text style={s.fare}>{euro(trip.priceCents)}</Text>
-              <Text variant="caption" color={colors.textMuted}>
-                Fictional fare · no payment taken
-              </Text>
-              {["pending", "claimed"].includes(trip.status) && (
-                <Button
-                  title="Cancel practice trip"
-                  variant="outline"
-                  onPress={() => void act("cancel")}
-                  loading={busy}
-                  fullWidth
-                />
-              )}
-              {trip.status === "completed" && (
-                <Button title="Try another journey" onPress={() => void act("reset")} fullWidth />
-              )}
-            </Card>
-          ) : (
-            <Card padded>
-              <Heading variant="h2">Where are we taking you?</Heading>
-              <View style={s.options}>
-                {PRACTICE_ROUTES.map((r) => (
-                  <Pressable
-                    accessibilityRole="radio"
-                    accessibilityState={{ checked: routeId === r.id }}
-                    key={r.id}
-                    accessibilityLabel={`${r.from} to ${r.to}`}
-                    onPress={() => setRouteId(r.id)}
-                    style={[s.routeOption, routeId === r.id && s.selectedOption]}
-                  >
-                    <View style={s.optionIcon}>
-                      <Icon name="airplane-outline" size={20} color="#365F45" />
-                    </View>
-                    <View style={{ flex: 1, gap: 4 }}>
-                      <Text style={s.optionTitle}>{r.to}</Text>
-                      <Text style={s.optionSubtitle}>From {r.from}</Text>
-                    </View>
-                    <Icon
-                      name={routeId === r.id ? "checkmark-circle" : "ellipse-outline"}
-                      size={21}
-                      color={routeId === r.id ? "#365F45" : "#BBC8AD"}
-                    />
-                  </Pressable>
-                ))}
-              </View>
-              <Text variant="caption" color={colors.textMuted}>
-                Choose your ride · 2 travelers
-              </Text>
-              <View style={s.vehicleOptions}>
-                {PRACTICE_VEHICLES.map((v) => (
-                  <Pressable
-                    accessibilityRole="radio"
-                    accessibilityState={{ checked: vehicleId === v.id }}
-                    key={v.id}
-                    accessibilityLabel={`${v.name} ${euro(practiceFare(route.baseCents, v.multiplier))}`}
-                    onPress={() => setVehicleId(v.id)}
-                    style={[s.vehicleOption, vehicleId === v.id && s.selectedOption]}
-                  >
-                    <Icon
-                      name={v.id === "minivan" ? "bus-outline" : "car-sport-outline"}
-                      size={28}
-                      color="#365F45"
-                    />
-                    <Text style={s.vehicleName}>{v.name}</Text>
-                    <Text style={s.vehiclePrice}>
-                      {euro(practiceFare(route.baseCents, v.multiplier))}
-                    </Text>
-                    {vehicleId === v.id && (
-                      <View style={s.vehicleCheck}>
-                        <Icon name="checkmark" size={11} color="#F6F4EC" />
-                      </View>
-                    )}
-                  </Pressable>
-                ))}
-              </View>
-            </Card>
-          )}
-          <Button
-            title={showConnection ? "Hide connection details" : "Connect the other app"}
-            icon="share-outline"
-            variant="outline"
-            fullWidth
-            onPress={() => setShowConnection(!showConnection)}
-          />
-          {showConnection && (
-            <Card padded>
-              <Text variant="subtitle">Connect the other app</Text>
-              <Text style={s.copy} variant="caption" color={colors.textMuted}>
-                Paste this code into the other mobile app, or open the shared link on any screen.
-              </Text>
-              <Text selectable style={s.code}>
-                {token}
-              </Text>
-              <View style={{ height: 12 }} />
-              <Button
-                title="Share practice session"
-                icon="share-outline"
-                variant="outline"
-                onPress={() =>
-                  void Share.share({
-                    message: `Join my TransferAround practice journey in the ${driver ? "Traveler" : "Driver"} iPhone app:\n${driver ? "transferaround" : "transferaround-driver"}://practice?session=${token}\n\nSession code: ${token}`,
-                  }).catch(() => setError("Could not open sharing. Copy the session code above."))
-                }
-                fullWidth
-              />
-              <View style={{ height: 8 }} />
-              <Button
-                title="Reset this practice journey"
-                variant="ghost"
-                onPress={() => void act("reset")}
-                disabled={busy}
-              />
-            </Card>
-          )}
-          {state.events.length > 0 && (
-            <Card padded>
-              <Text variant="caption" color={colors.accentDeep}>
-                THE JOURNEY, AS IT HAPPENS
-              </Text>
-              {state.events.slice(-5).map((e, i) => (
-                <View key={`${e.at}-${i}`} style={s.event}>
-                  <Icon name="checkmark-circle-outline" size={15} color={colors.accentDeep} />
-                  <Text variant="caption" style={{ flex: 1 }}>
-                    {e.label}
-                  </Text>
-                </View>
-              ))}
-            </Card>
-          )}
-        </>
-      )}
-    </Screen>
+            </ScrollView>
+          </SafeAreaView>
+        </Modal>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 const s = StyleSheet.create({
-  actionBar: { flexDirection: "row", alignItems: "center", gap: 22 },
-  footerFare: {
-    fontFamily: fonts.bold,
-    fontSize: 28,
-    lineHeight: 36,
-    letterSpacing: -1,
-    color: colors.primary,
-  },
-  compactHero: { paddingVertical: 15, gap: 8 },
-  compactTitle: { fontSize: 27, lineHeight: 34 },
-  brandBar: {
+  root: { flex: 1, backgroundColor: "#EDF0F3" },
+  top: {
+    position: "absolute",
+    left: 20,
+    right: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 8,
+    justifyContent: "space-between",
   },
-  roleLabel: { fontFamily: fonts.bodySemibold, fontSize: 8, letterSpacing: 2, color: "#788773" },
-  hero: { backgroundColor: "#103F3A", padding: 24, borderRadius: 24, gap: 15 },
-  travelerHero: { backgroundColor: "#F6F4EC", paddingHorizontal: 0, paddingVertical: 12 },
-  travelerInk: { color: "#103F3A" },
-  tag: { flexDirection: "row", gap: 8, alignItems: "center" },
-  tagText: { fontSize: 9, letterSpacing: 2, color: "#D4F078", fontFamily: fonts.bold },
+  circle: {
+    width: 42,
+    height: 42,
+    borderRadius: 22,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowOpacity: 0.08,
+    shadowRadius: 7,
+  },
+  mode: { backgroundColor: "white", borderRadius: 23, paddingVertical: 12, paddingHorizontal: 15 },
+  modeText: { fontFamily: fonts.bold, fontSize: 9, letterSpacing: 1 },
+  sheet: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    paddingHorizontal: 22,
+    paddingTop: 11,
+    shadowOpacity: 0.12,
+    shadowRadius: 20,
+  },
+  grabber: {
+    width: 34,
+    height: 4,
+    borderRadius: 3,
+    backgroundColor: colors.borderStrong,
+    alignSelf: "center",
+    marginBottom: 19,
+  },
+  statusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   title: {
-    fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
-    color: "#F7F8F2",
-    fontSize: 32,
-    lineHeight: 38,
-    letterSpacing: -1,
+    fontFamily: fonts.bold,
+    fontSize: 25,
+    lineHeight: 31,
+    letterSpacing: -0.8,
+    marginTop: 14,
+    marginBottom: 15,
   },
-  sub: { color: "#ADC6B6", fontSize: 12, lineHeight: 20 },
-  copy: { marginVertical: 15, lineHeight: 21 },
-  or: { marginVertical: 18, fontSize: 11 },
-  connected: { flexDirection: "row", alignItems: "center", gap: 8 },
-  availability: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 8,
-  },
-  fare: {
-    fontFamily: fonts.display,
-    fontSize: 38,
-    lineHeight: 48,
-    letterSpacing: -1.7,
-    color: "#102D32",
-    marginVertical: 12,
-  },
-  rail: { marginVertical: 20 },
-  person: { flexDirection: "row", alignItems: "center", gap: 12, marginVertical: 18 },
-  options: { gap: 8, marginVertical: 18 },
-  routeOption: {
+  description: { fontSize: 13, lineHeight: 20, color: colors.textMuted, marginBottom: 16 },
+  routeRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: 13,
     padding: 14,
-    borderRadius: 17,
-    borderWidth: 1,
-    borderColor: "#E0E4D5",
-    backgroundColor: "#FFFEFA",
+    marginBottom: 9,
   },
-  selectedOption: { backgroundColor: "#EDF3DC", borderColor: "#7F9D66" },
-  optionIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    backgroundColor: "#E7EDDC",
+  vehicle: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    gap: 8,
+    borderWidth: 2,
+    borderColor: "transparent",
+    borderRadius: 14,
+    padding: 6,
+    marginTop: 2,
   },
-  optionTitle: { fontFamily: fonts.semibold, fontSize: 13, color: "#153C35" },
-  optionSubtitle: { fontFamily: fonts.body, fontSize: 10, color: "#788773" },
-  vehicleOptions: { flexDirection: "row", gap: 8, marginVertical: 18 },
-  vehicleOption: {
-    flex: 1,
+  selected: { borderColor: colors.primary, backgroundColor: "#F8F9FB" },
+  price: { fontFamily: fonts.bold, fontSize: 20, lineHeight: 28 },
+  footer: {
+    flexDirection: "row",
     alignItems: "center",
-    gap: 9,
-    paddingVertical: 17,
-    borderWidth: 1,
-    borderColor: "#E0E4D5",
-    borderRadius: 19,
-    backgroundColor: "#FFFEFA",
+    gap: 18,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
   },
-  vehicleName: { fontSize: 10, fontFamily: fonts.semibold, color: "#153C35" },
-  vehiclePrice: {
-    fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
-    fontSize: 24,
-    color: "#103F3A",
+  total: { fontFamily: fonts.bold, fontSize: 27, lineHeight: 35, letterSpacing: -0.8 },
+  disclaimer: {
+    fontFamily: fonts.bodySemibold,
+    fontSize: 8,
+    letterSpacing: 0.7,
+    textAlign: "center",
+    color: colors.textMuted,
+    marginTop: 12,
   },
-  vehicleCheck: {
-    position: "absolute",
-    top: 7,
-    right: 7,
-    backgroundColor: "#365F45",
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+  tripMeta: { flexDirection: "row", alignItems: "center", gap: 9, marginBottom: 16 },
+  routeBlock: { paddingBottom: 16 },
+  privacy: { fontSize: 10, lineHeight: 16, color: colors.textMuted, marginVertical: 10 },
+  modal: { flex: 1, backgroundColor: "white" },
+  modalHeader: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 24,
+    paddingTop: 12,
   },
   code: {
-    fontSize: 11,
-    color: colors.accentDeep,
-    padding: 12,
-    backgroundColor: "#F0F4E9",
-    borderRadius: radius.sm,
-    lineHeight: 19,
+    fontSize: 13,
+    lineHeight: 22,
+    padding: 18,
+    borderRadius: 12,
+    backgroundColor: colors.surfaceMuted,
+    fontFamily: fonts.medium,
   },
-  event: { flexDirection: "row", gap: 9, alignItems: "center", marginTop: 16 },
 });

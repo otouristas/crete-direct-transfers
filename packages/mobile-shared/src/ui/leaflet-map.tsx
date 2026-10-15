@@ -3,6 +3,8 @@ import { Platform, View, StyleSheet, type StyleProp, type ViewStyle } from "reac
 import { WebView, type WebViewMessageEvent } from "react-native-webview";
 import { colors, radius } from "./tokens";
 import { CRETE_CENTER, resolveCoords, type LatLng } from "./coords";
+import { MapSurface } from "./map-surface";
+import type { LiveMapPosition } from "./map-surface-types";
 
 export type MapPoint = LatLng & { type?: "pickup" | "dropoff"; label?: string };
 
@@ -30,7 +32,7 @@ function buildHtml(points: MapPoint[], interactive: boolean, pickMode: boolean):
 <style>
   html,body,#map{height:100%;margin:0;background:${colors.surfaceMuted};}
   .pin{width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);
-       border:2px solid #fff;box-shadow:0 2px 6px rgba(11,37,69,.35);}
+       border:2px solid #fff;box-shadow:0 2px 6px rgba(16,17,20,.35);}
   .pin.pickup{background:${colors.accent};}
   .pin.dropoff{background:${colors.primary};}
   .leaflet-container{font-family:-apple-system,system-ui,sans-serif;background:${colors.surfaceMuted};}
@@ -238,6 +240,10 @@ export function RouteMap({
   rounded,
   style,
   onMapPress,
+  userPoint,
+  driverPoint,
+  followDriver,
+  bottomInset,
 }: {
   from?: string | null;
   to?: string | null;
@@ -249,6 +255,10 @@ export function RouteMap({
   rounded?: boolean;
   style?: StyleProp<ViewStyle>;
   onMapPress?: (point: LatLng) => void;
+  userPoint?: LatLng | null;
+  driverPoint?: LiveMapPosition | null;
+  followDriver?: boolean;
+  bottomInset?: number;
 }) {
   // Prefer explicit lat/lng selections; only fall back to label geocode when points are set.
   const points = useMemo<MapPoint[]>(() => {
@@ -269,7 +279,7 @@ export function RouteMap({
   }, [from, to, fromPoint, toPoint]);
 
   return (
-    <LeafletMap
+    <MapSurface
       points={points}
       height={height}
       interactive={interactive}
@@ -277,6 +287,10 @@ export function RouteMap({
       rounded={rounded}
       style={style}
       onMapPress={onMapPress}
+      userPoint={userPoint}
+      driverPoint={driverPoint}
+      followDriver={followDriver}
+      bottomInset={bottomInset}
     />
   );
 }

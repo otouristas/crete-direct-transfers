@@ -4,40 +4,41 @@
     "slug": "transferaround-driver",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-v3.png",
     "scheme": "transferaround-driver",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icon-v3.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0B2545"
+      "backgroundColor": "#FFFFFF"
     },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.transferaround.driver",
       "infoPlist": {
         "UIBackgroundModes": [
-          "remote-notification"
+          "remote-notification",
+          "location"
         ],
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Share your live position with your traveler during an active trip, including while navigating in another app.",
+        "NSLocationWhenInUseUsageDescription": "Share your live GPS position with the traveler on your assigned transfer."
       },
       "appleTeamId": "S768Y6EZW8",
-      "buildNumber": "1",
+      "buildNumber": "3",
       "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#0B2545",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#101114",
+        "foregroundImage": "./assets/icon-v3.png"
       },
       "package": "com.transferaround.driver",
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/icon-v3.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -45,14 +46,21 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
-          "color": "#0B2545",
+          "color": "#245BEB",
           "sounds": []
         }
       ],
       "expo-apple-authentication",
       "../native-plugins/with-ios-minimum-version.cjs",
-      "../native-plugins/with-ios-scenes.cjs"
+      "../native-plugins/with-ios-scenes.cjs",
+      [
+        "expo-location",
+        {
+          "isIosBackgroundLocationEnabled": true,
+          "locationWhenInUsePermission": "Share your live GPS position with the traveler on your assigned transfer.",
+          "locationAlwaysAndWhenInUsePermission": "Share live trip location while navigating in another app. Location sharing stops when your trip closes."
+        }
+      ]
     ],
     "extra": {
       "router": {}

@@ -88,16 +88,16 @@ export function TouristasAiPanel({ className }: { className?: string }) {
           type="button"
           onClick={() => openTouristas()}
           className={cn(
-            "group relative inline-flex max-w-[min(100vw-2.5rem,22rem)] items-center gap-3 rounded-full bg-primary px-5 py-3.5 text-primary-foreground shadow-[0_12px_40px_-12px_rgba(0,0,0,0.45)] transition",
+            "group relative inline-flex max-w-[min(100vw-2.5rem,22rem)] items-center gap-3 rounded-full bg-primary p-2 text-primary-foreground shadow-[0_12px_40px_-12px_rgba(0,0,0,0.45)] transition",
             "hover:scale-[1.02] hover:opacity-95 active:scale-[0.99]",
-            "md:px-6 md:py-4",
+            "md:gap-3 md:px-6 md:py-4",
           )}
         >
           <span className="absolute -inset-1 -z-10 animate-pulse rounded-full bg-accent/30 blur-md" />
           <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground ring-4 ring-accent/25 md:h-11 md:w-11">
             <Sparkles className="h-5 w-5" />
           </span>
-          <span className="min-w-0 text-left">
+          <span className="sr-only min-w-0 text-left md:not-sr-only">
             <span className="block text-sm font-semibold md:text-base">{t.launcherPrimary}</span>
             <span className="block truncate text-xs text-primary-foreground/75 md:text-sm">
               {fabSecondary}

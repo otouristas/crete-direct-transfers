@@ -19,11 +19,16 @@ application = apps[0]
 info = plistlib.loads((application / "Info.plist").read_bytes())
 identifier = f"{team}.{info['CFBundleIdentifier']}"
 entitlements = plistlib.loads(pathlib.Path(entitlement_source).read_bytes())
-entitlements.update({
-    "application-identifier": identifier,
-    "com.apple.developer.team-identifier": team,
-    "keychain-access-groups": [identifier],
-})
+if "iPhoneSimulator" in info.get("CFBundleSupportedPlatforms", []):
+    # UI/GPS simulator checks need no device capabilities or keychain access.
+    # Apple account authentication is verified on distribution-signed devices.
+    entitlements = {}
+else:
+    entitlements.update({
+        "application-identifier": identifier,
+        "com.apple.developer.team-identifier": team,
+        "keychain-access-groups": [identifier],
+    })
 for framework in sorted((application / "Frameworks").glob("*.framework")):
     subprocess.run(["codesign", "--force", "--sign", "-", str(framework)], check=True)
 with tempfile.TemporaryDirectory(prefix="transferaround-signing-") as temporary:

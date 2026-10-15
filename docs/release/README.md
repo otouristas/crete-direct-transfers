@@ -1,10 +1,12 @@
 # TransferAround — release candidate, 15 October 2026
 
-The website and two native iOS apps are prepared on `codex/launch-readiness`. The native iOS 1.0.0 (1) builds for **TransferAround** and **TransferAround Driver** were compiled, distribution-signed and uploaded successfully to App Store Connect on 15 October 2026. No public App Store review submission or production website deployment has been performed. See [native iOS delivery](IOS.md) for the current verification and installation status.
+The website and two native iOS apps are prepared on `codex/launch-readiness`. The native iOS 1.0.0 (3) candidates for **TransferAround** and **TransferAround Driver** were compiled, tested, distribution-signed and uploaded on 15 October 2026. TestFlight availability is recorded in the native release manifest. The website was deployed to its existing Cloudflare Worker; no public App Store review submission has been made. See [native iOS delivery](IOS.md) for the current verification and installation status.
 
 ## Website and optional browser previews
 
-- Website and connected practice studio: `http://localhost:8081/apps`
+- Live website and connected practice studio: https://crete-direct-transfers.gk-3ae.workers.dev/apps
+- Canonical domain transferaround.com currently serves a parking page. DNS cutover remains required.
+- Local website preview: `http://localhost:8081/apps`
 - Traveler app: `http://localhost:8082/practice`
 - Driver app: `http://localhost:8083/practice`
 
@@ -29,12 +31,12 @@ Only a signed, paid Checkout event can settle the booking. The database checks s
 
 These are concrete external requirements, not completed work:
 
-- Set `SUPABASE_SERVICE_ROLE_KEY` on the production website server for the verified project. The existing secret API key is configured only in ignored local server configuration.
+- The verified project Supabase service configuration is deployed as protected Cloudflare server secrets. No server secret is included in browser or native bundles.
 - Set the correct merchant account's `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` on the website server. A restricted Stripe key can be used with the required Checkout, refunds, Connect and transfer permissions.
 - Register `/api/stripe/webhook` for `checkout.session.completed` and `checkout.session.async_payment_succeeded`.
-- Schedule authenticated POST requests to `/api/events/process` and `/api/dispatch/expire` every minute. `DISPATCH_CRON_SECRET` has been generated only in the ignored local configuration; configure it securely on the deployed server/scheduler.
+- Schedule authenticated POST requests to `/api/events/process` and `/api/dispatch/expire` every minute. `DISPATCH_CRON_SECRET` is configured securely on the deployed server; the external scheduler still needs configuration.
 - Verify a Stripe sandbox checkout, delayed/failed payment, replayed webhook, cancellation/refund and an assigned-driver flow; then verify the live account configuration before accepting customer payments. No Stripe transaction, refund or payout was executed in this work.
-- Two genuine auth accounts were created at the owner’s explicit request: one customer and one driver. Neither email was auto-confirmed, no shared temporary password was assigned, and no invitation email was sent. The driver remains at the normal draft onboarding stage; vehicle/licence approval has not been fabricated.
+- Four genuine auth accounts exist at the owner’s explicit request. The two additional testers have driver draft profiles and can use Traveler too. Neither email was auto-confirmed, no shared temporary password was assigned, and no invitation email was sent. The drivers remain at the normal draft onboarding stage; vehicle/licence approval has not been fabricated.
 
 Until the missing server settings exist, real checkout returns a clear unavailable message and creates no booking. `npm run check:launch` reports the missing configuration without printing secret values. Presence of settings alone is not proof of live payment operation.
 
@@ -77,7 +79,7 @@ The default development website port is 8080. The current review session also ha
 
 Both native apps now have signed iOS binaries and successful App Store Connect uploads. Their real native welcome screens, connected practice flow and simulated Apple Pay sheet were exercised on an iPhone 17 Pro simulator running iOS 27. The full native rider → driver → rider lifecycle passed. Apple sign-in is enabled for both bundle IDs in Supabase and Apple Developer; account sign-in on a physical iPhone remains unverified. Google OAuth setup is tracked in [IOS.md](IOS.md).
 
-The iOS binaries are independent apps with bundled code; they do not require a Metro server or the browser previews. The practice API connects directly to Supabase. Real booking APIs still need the website server to be deployed and Stripe configured. Native remote push delivery and Android distribution remain unverified.
+The iOS binaries are independent apps with bundled code; they do not require a Metro server or the browser previews. The practice API connects directly to Supabase. Real booking APIs are deployed and the app API base points to the working Worker URL. Stripe still needs configuration. Native remote push delivery and Android distribution remain unverified.
 
 ## Configuration and data safety
 
@@ -87,8 +89,8 @@ Practice state lives in the private schema, has RLS, has no direct API grants, a
 
 ## Packaged delivery
 
-Run `npm run package:release` after the builds. That website/browser archive contains the compiled Worker, both browser apps, unsigned iOS JavaScript exports, configuration examples and this documentation. It excludes local environment files and dependencies, and includes SHA-256 checksums.
+Run `npm run package:release` after the builds. That website archive contains the compiled Worker, configuration examples and this documentation. Native iOS binaries are packaged separately. It excludes local environment files and dependencies, and includes SHA-256 checksums.
 
 Signed native iOS delivery is separate, in `release/ios/`, with its own checksums. The browser/JavaScript archive is not an installable iOS app.
 
-The packaged Worker configuration omits the source build command so it can deploy the already compiled output. After configuring the correct Cloudflare account, server secrets and webhook/scheduler, deploy from the extracted `website/server` directory with `npx wrangler deploy --config wrangler.json`. This command publishes the site; it has not been executed in this task. Browser app folders require a static host with SPA route fallback and their API URL must point to the deployed website for real bookings.
+The packaged Worker configuration omits the source build command so it can deploy the already compiled output. After configuring the correct Cloudflare account, server secrets and webhook/scheduler, deploy from the extracted `website/server` directory with `npx wrangler deploy --config wrangler.json`. This command publishes the site. The current verified deployment is https://crete-direct-transfers.gk-3ae.workers.dev, Worker version 468d6b30-8b39-4731-b1dc-7959b034ed29. Browser app folders require a static host with SPA route fallback and their API URL must point to the deployed website for real bookings.

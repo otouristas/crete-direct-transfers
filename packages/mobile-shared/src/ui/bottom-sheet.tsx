@@ -24,6 +24,7 @@ export function BottomSheetScaffold({
   bottomInset = 0,
   contentStyle,
   onExpandedChange,
+  footer,
 }: {
   children: React.ReactNode;
   minHeight: number;
@@ -32,6 +33,7 @@ export function BottomSheetScaffold({
   bottomInset?: number;
   contentStyle?: StyleProp<ViewStyle>;
   onExpandedChange?: (expanded: boolean) => void;
+  footer?: React.ReactNode;
 }) {
   const startValue = initial === "expanded" ? maxHeight : minHeight;
   const height = useRef(new Animated.Value(startValue)).current;
@@ -148,7 +150,7 @@ export function BottomSheetScaffold({
             {
               padding: space.xl,
               paddingTop: space.sm,
-              paddingBottom: bottomInset + space.xxl,
+              paddingBottom: footer ? space.lg : bottomInset + space.xxl,
               gap: space.lg,
             },
             contentStyle,
@@ -163,6 +165,19 @@ export function BottomSheetScaffold({
           {children}
         </ScrollView>
       </View>
+      {footer && (
+        <View
+          style={{
+            paddingHorizontal: space.xl,
+            paddingTop: 10,
+            paddingBottom: Math.max(bottomInset, 12),
+            borderTopWidth: StyleSheet.hairlineWidth,
+            borderTopColor: colors.border,
+          }}
+        >
+          {footer}
+        </View>
+      )}
     </Animated.View>
   );
 }

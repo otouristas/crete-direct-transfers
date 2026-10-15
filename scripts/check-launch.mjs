@@ -48,7 +48,7 @@ console.log(
   "Required before accepting payments: verify one Stripe sandbox checkout and signed webhook, schedule /api/events/process and /api/dispatch/expire, then verify a live-mode checkout.",
 );
 console.log(
-  "Native store submission additionally requires real Expo/EAS project IDs, signed builds and push testing on a device.",
+  "Native Xcode builds use the configured Apple team and bundle IDs. Physical-device authentication and push delivery still require device verification.",
 );
 if (missing.length || issues.length) {
   console.log("NOT CLEARED FOR LIVE PAYMENTS. Practice apps remain available.");

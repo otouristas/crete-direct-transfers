@@ -40,29 +40,29 @@
 :root {
   --radius: 0.75rem;
 
-  /* Cretan Turquoise palette */
-  --background: oklch(0.984 0.003 247.86); /* #F8FAFC cool white */
-  --foreground: oklch(0.208 0.042 265.75); /* #0F172A slate ink */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.208 0.042 265.75);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.208 0.042 265.75);
+  /* TransferAround Interchange identity: cobalt, white and charcoal. */
+  --background: #ffffff;
+  --foreground: #101114;
+  --card: #ffffff;
+  --card-foreground: #101114;
+  --popover: #ffffff;
+  --popover-foreground: #101114;
 
-  --primary: oklch(0.28 0.07 262); /* #0B2545 deep sea navy */
-  --primary-foreground: oklch(0.984 0.003 247.86);
-  --secondary: oklch(0.968 0.007 247.9); /* #F1F5F9 */
-  --secondary-foreground: oklch(0.28 0.07 262);
-  --muted: oklch(0.968 0.007 247.9);
-  --muted-foreground: oklch(0.554 0.046 257.4); /* #64748B */
-  --accent: oklch(0.704 0.14 182.5); /* #14B8A6 turquoise */
-  --accent-foreground: oklch(0.28 0.07 262); /* navy on turquoise (AA) */
-  --accent-deep: oklch(0.511 0.096 186.4); /* #0F766E teal-700 — links on white */
-  --highlight: oklch(0.769 0.188 70.08); /* #F59E0B amber — stars/badges only */
-  --highlight-foreground: oklch(0.28 0.07 262);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.984 0.003 247.86);
-  --border: oklch(0.929 0.013 255.51); /* #E2E8F0 */
-  --input: oklch(0.929 0.013 255.51);
+  --primary: #101114;
+  --primary-foreground: #ffffff;
+  --secondary: #eef3ff;
+  --secondary-foreground: #1b49c6;
+  --muted: #f3f5f9;
+  --muted-foreground: #646a74;
+  --accent: #245beb;
+  --accent-foreground: #ffffff;
+  --accent-deep: #1b49c6;
+  --highlight: #f59e0b;
+  --highlight-foreground: #101114;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e3e7ef;
+  --input: #e3e7ef;
   --ring: var(--accent);
 }
 
@@ -189,7 +189,9 @@
   color: var(--muted-foreground);
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
 }
 
 .tfr-htab:hover {
@@ -328,7 +330,9 @@
   border: 1px solid var(--border);
   background: var(--card);
   color: var(--foreground);
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .tfr-stepbtn:hover:not(:disabled) {
@@ -402,6 +406,19 @@
 }
 
 @media (max-width: 900px) {
+  .tfr-htabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-inline: 0.75rem;
+  }
+
+  .tfr-htab {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding-inline: 0.65rem;
+    font-size: 0.8125rem;
+  }
+
   .tfr-bar {
     flex-direction: column;
   }

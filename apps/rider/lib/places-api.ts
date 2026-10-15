@@ -1,6 +1,24 @@
 import { postJson } from "./api";
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./config";
 import type { MobilePlace, PlaceGroup } from "@transferaround/mobile-shared/ui";
+import { resolveCoords } from "@transferaround/mobile-shared/ui";
+import * as Location from "expo-location";
+import { PRESET_ROUTES } from "./presets";
+
+const knownPlaces: MobilePlace[] = Array.from(
+  new Map(
+    PRESET_ROUTES.flatMap((r) => [r.from, r.to]).map((label) => [
+      label,
+      {
+        id: `known:${label}`,
+        label,
+        kind: label.includes("Airport") ? ("airport" as const) : ("destination" as const),
+        ...resolveCoords(label),
+        countryCode: label.includes("Barcelona") ? "ES" : "GR",
+      },
+    ]),
+  ).values(),
+);
 
 export type PlaceQuote = {
   priceCents: number | null;
@@ -16,11 +34,38 @@ export async function searchPlacesMobile(
   query: string,
   contextPlace?: MobilePlace | null,
 ): Promise<{ places: MobilePlace[]; groups?: PlaceGroup[] }> {
-  return postJson("/api/places/search", {
-    query,
-    limit: 10,
-    contextPlace: contextPlace ?? null,
-  });
+  try {
+    return await postJson("/api/places/search", {
+      query,
+      limit: 10,
+      contextPlace: contextPlace ?? null,
+    });
+  } catch {
+    const q = query.trim();
+    if (!q)
+      return {
+        places: [],
+        groups: [{ key: "known", label: "Airports and cities", places: knownPlaces }],
+      };
+    const local = knownPlaces.filter(
+      (p) =>
+        p.label.toLowerCase().includes(q.toLowerCase()) ||
+        p.label.match(/\(([A-Z]{3})\)/)?.[1] === q.toUpperCase(),
+    );
+    if (local.length) return { places: local };
+    if (q.length < 3) return { places: [] };
+    // Apple's native geocoder keeps address lookup usable when the web API is unavailable.
+    const results = await Location.geocodeAsync(q);
+    return {
+      places: results.slice(0, 5).map((p, i) => ({
+        id: `native:${p.latitude},${p.longitude}:${i}`,
+        label: q,
+        kind: "address",
+        lat: p.latitude,
+        lng: p.longitude,
+      })),
+    };
+  }
 }
 
 export async function quotePlacesMobile(input: {

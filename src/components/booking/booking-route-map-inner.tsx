@@ -8,14 +8,14 @@ import { cn } from "@/lib/utils";
 
 const PICKUP_ICON = divIcon({
   className: "",
-  html: `<div style="width:16px;height:16px;border-radius:3px;background:#0B2545;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></div>`,
+  html: `<div style="width:16px;height:16px;border-radius:3px;background:#101114;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></div>`,
   iconSize: [16, 16],
   iconAnchor: [8, 8],
 });
 
 const DROPOFF_ICON = divIcon({
   className: "",
-  html: `<div style="width:16px;height:16px;border-radius:3px;background:#14B8A6;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></div>`,
+  html: `<div style="width:16px;height:16px;border-radius:3px;background:#245BEB;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)"></div>`,
   iconSize: [16, 16],
   iconAnchor: [8, 8],
 });
@@ -129,7 +129,7 @@ export default function BookingRouteMapInner({
         {geometry && geometry.length > 1 && (
           <Polyline
             positions={geometry}
-            pathOptions={{ color: "#0B2545", weight: 4, opacity: 0.75 }}
+            pathOptions={{ color: "#101114", weight: 4, opacity: 0.75 }}
           />
         )}
         {pickup && (

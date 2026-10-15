@@ -1,3 +1,4 @@
+import { OnboardingGate } from "@transferaround/mobile-shared/onboarding";
 import { Slot, useRootNavigationState, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -73,11 +74,13 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <AuthProvider>
-        <AuthGate>
-          <Slot />
-        </AuthGate>
-      </AuthProvider>
+      <OnboardingGate role="driver">
+        <AuthProvider>
+          <AuthGate>
+            <Slot />
+          </AuthGate>
+        </AuthProvider>
+      </OnboardingGate>
     </SafeAreaProvider>
   );
 }

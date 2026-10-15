@@ -566,7 +566,7 @@ function HotelDetailPage() {
                           ) : null}
                         </div>
                         {r.averageScore != null ? (
-                          <span className="rounded-full bg-teal-50 px-2.5 py-0.5 text-sm font-semibold text-accent-deep">
+                          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-accent-deep">
                             {r.averageScore}/10
                           </span>
                         ) : null}

@@ -27,7 +27,7 @@ export const systemTabScreenOptions = {
   tabBarStyle: {
     position: "relative" as const,
     backgroundColor: Platform.OS === "ios" ? "transparent" : "rgba(255,255,255,0.96)",
-    borderTopColor: "rgba(11,37,69,0.12)",
+    borderTopColor: "rgba(16,17,20,0.12)",
     borderTopWidth: StyleSheet.hairlineWidth,
     elevation: 0,
     shadowOpacity: 0,

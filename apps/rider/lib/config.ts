@@ -17,14 +17,13 @@ export function getApiUrl() {
     if (fromEnv && /localhost|127\.0\.0\.1/.test(fromEnv)) return fromEnv;
     return "http://localhost:8080";
   }
-  return fromEnv || "https://transferaround.com";
+  return fromEnv || "https://crete-direct-transfers.gk-3ae.workers.dev";
 }
 
 /** @deprecated Prefer getApiUrl() so localhost web resolves after window exists. */
-export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? "https://transferaround.com").replace(
-  /\/$/,
-  "",
-);
+export const API_URL = (
+  process.env.EXPO_PUBLIC_API_URL ?? "https://crete-direct-transfers.gk-3ae.workers.dev"
+).replace(/\/$/, "");
 
 /** Temporary: browse UI without signing in. Set false to restore auth gate. */
 export const SKIP_AUTH = false;

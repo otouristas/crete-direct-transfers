@@ -521,7 +521,7 @@ function JobSummaryCard(props: {
     <div
       className={`rounded-2xl border bg-card p-6 ${
         props.highlight
-          ? "border-accent/50 shadow-[0_0_0_1px_rgba(20,184,166,0.12)]"
+          ? "border-accent/50 shadow-[0_0_0_1px_rgba(36,91,235,0.12)]"
           : "border-border"
       }`}
     >

@@ -24,7 +24,14 @@ export function TrustPills({ dark = false, className }: { dark?: boolean; classN
           )}
         >
           <Icon
-            className={cn("h-3.5 w-3.5", star ? "text-highlight fill-highlight" : "text-accent")}
+            className={cn(
+              "h-3.5 w-3.5",
+              star
+                ? "text-highlight fill-highlight"
+                : dark
+                  ? "text-primary-foreground/80"
+                  : "text-accent",
+            )}
           />
           {label}
         </span>

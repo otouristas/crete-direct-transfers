@@ -8,6 +8,7 @@ export default function LoginForm() {
   return (
     <AuthScreen
       role="rider"
+      onBrowse={() => router.replace("/(tabs)")}
       client={supabase}
       onSignIn={signIn}
       onPractice={() => router.push("/practice")}

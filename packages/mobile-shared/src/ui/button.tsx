@@ -80,7 +80,7 @@ export function Button({
       ) : (
         <View style={styles.content}>
           {icon ? <Icon name={icon} size={18} color={v.fg} /> : null}
-          <Text variant="subtitle" color={v.fg}>
+          <Text variant="subtitle" color={v.fg} style={{ flexShrink: 1, textAlign: "center" }}>
             {title}
           </Text>
         </View>
@@ -97,5 +97,11 @@ const styles = StyleSheet.create({
   },
   md: { paddingVertical: 12, paddingHorizontal: space.lg },
   lg: { paddingVertical: 16, paddingHorizontal: space.xl },
-  content: { flexDirection: "row", alignItems: "center", gap: space.sm },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.sm,
+    maxWidth: "100%",
+    flexShrink: 1,
+  },
 });

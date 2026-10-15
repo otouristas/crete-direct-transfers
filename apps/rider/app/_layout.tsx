@@ -1,3 +1,4 @@
+import { OnboardingGate } from "@transferaround/mobile-shared/onboarding";
 import { Slot, useRootNavigationState, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
@@ -18,21 +19,30 @@ export const unstable_settings = {
 
 function AuthGate({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth();
-  const segments = useSegments();
+  const segments = useSegments() as string[];
   const router = useRouter();
   const navigationState = useRootNavigationState();
   const root = segments[0];
   const onPracticeScreen = root === "practice";
+  const onBrowseScreen = root === "(tabs)" && (!segments[1] || segments[1] === "index");
   const onAuthScreen = root === "login" || root === "signup" || root === "auth";
 
   useEffect(() => {
     if (!navigationState?.key || SKIP_AUTH || loading || onPracticeScreen) return;
-    if (!session && !onAuthScreen) {
+    if (!session && !onAuthScreen && !onBrowseScreen) {
       router.replace("/login");
     } else if (session && onAuthScreen) {
       router.replace("/(tabs)");
     }
-  }, [loading, session, onAuthScreen, onPracticeScreen, router, navigationState?.key]);
+  }, [
+    loading,
+    session,
+    onAuthScreen,
+    onPracticeScreen,
+    router,
+    navigationState?.key,
+    onBrowseScreen,
+  ]);
 
   return (
     <>
@@ -73,11 +83,13 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />
-      <AuthProvider>
-        <AuthGate>
-          <Slot />
-        </AuthGate>
-      </AuthProvider>
+      <OnboardingGate role="rider">
+        <AuthProvider>
+          <AuthGate>
+            <Slot />
+          </AuthGate>
+        </AuthProvider>
+      </OnboardingGate>
     </SafeAreaProvider>
   );
 }

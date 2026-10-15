@@ -14,7 +14,7 @@ export type MobileEnv = {
 };
 
 export function createMobileSupabase(env: MobileEnv): SupabaseClient<Database> {
-  return createClient<Database>(env.supabaseUrl, env.supabaseAnonKey, {
+  const client = createClient<Database>(env.supabaseUrl, env.supabaseAnonKey, {
     auth: {
       storage: env.storage,
       persistSession: true,
@@ -23,6 +23,15 @@ export function createMobileSupabase(env: MobileEnv): SupabaseClient<Database> {
       flowType: "pkce",
     },
   });
+  // Explicitly carry the current identity onto Realtime. REST authentication
+  // alone does not establish the JWT used by a Postgres Changes subscription.
+  client.auth.onAuthStateChange((_event, session) => {
+    void client.realtime.setAuth(session?.access_token ?? null);
+  });
+  void client.auth.getSession().then(({ data }) => {
+    void client.realtime.setAuth(data.session?.access_token ?? null);
+  });
+  return client;
 }
 
 export type DeviceRole = "customer" | "driver";

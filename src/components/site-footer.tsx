@@ -103,7 +103,7 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-const linkClass = "text-primary-foreground/80 transition hover:text-accent hover:underline";
+const linkClass = "text-primary-foreground/80 transition hover:text-white hover:underline";
 
 export function SiteFooter() {
   const t = useT();
@@ -203,7 +203,7 @@ export function SiteFooter() {
             <li>
               <Link
                 to="/{-$locale}/routes"
-                className="font-medium text-accent transition hover:opacity-80"
+                className="font-medium text-[#DCE7FF] transition hover:opacity-80"
               >
                 {t.nav.allRoutes} →
               </Link>

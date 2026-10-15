@@ -1,35 +1,30 @@
-/**
- * TransferAround mobile design tokens — light, Uber-authentic system.
- * Mirrors the web brand truth in `src/styles.css`:
- *   navy #103F3A (primary action), turquoise #4D7C61 (accent),
- *   cool-white surfaces, slate ink, Plus Jakarta Sans + Inter.
- */
+/** Native mobility palette: high-contrast ink, white surfaces, blue GPS/selection. */
 
 export const colors = {
-  /** App backdrop — soft cool gray behind white surfaces (Uber-style). */
-  bg: "#F6F4EC",
-  surface: "#FFFEFA",
-  surfaceMuted: "#EEF0E5",
-  surfaceSunken: "#E7EBDF",
-  border: "#E0E4D5",
-  borderStrong: "#CDD6C1",
+  /** App backdrop — white behind the map and booking sheets. */
+  bg: "#FFFFFF",
+  surface: "#FFFFFF",
+  surfaceMuted: "#F3F4F6",
+  surfaceSunken: "#E9EBEF",
+  border: "#E7E8EC",
+  borderStrong: "#CDD0D6",
 
-  text: "#153C35",
-  textMuted: "#75846F",
-  textFaint: "#91A087",
+  text: "#101114",
+  textMuted: "#646A74",
+  textFaint: "#858B95",
   /** Text/icons on dark (navy/accent) surfaces. */
   inverse: "#F8FAFC",
 
-  /** Navy — the bold "black" primary action colour. */
-  primary: "#103F3A",
-  primaryPressed: "#0A302B",
-  primarySoft: "#E4ECDC",
+  /** Primary action ink. */
+  primary: "#245BEB",
+  primaryPressed: "#1946C0",
+  primarySoft: "#EEF3FF",
 
-  /** Turquoise — selection, highlights, focus ring, "on the way". */
-  accent: "#4D7C61",
-  accentPressed: "#3D6651",
-  accentDeep: "#365F45",
-  accentSoft: "#EDF4D8",
+  /** Blue — GPS, selection, focus and live status. */
+  accent: "#245BEB",
+  accentPressed: "#1946C0",
+  accentDeep: "#1B49C6",
+  accentSoft: "#EEF3FF",
 
   highlight: "#F59E0B",
   highlightSoft: "#FEF3C7",

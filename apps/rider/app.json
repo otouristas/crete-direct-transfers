@@ -4,14 +4,14 @@
     "slug": "transferaround-rider",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-v3.png",
     "scheme": "transferaround",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icon-v3.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0B2545"
+      "backgroundColor": "#FFFFFF"
     },
     "ios": {
       "supportsTablet": false,
@@ -25,21 +25,19 @@
         "ITSAppUsesNonExemptEncryption": false
       },
       "appleTeamId": "S768Y6EZW8",
-      "buildNumber": "1",
+      "buildNumber": "3",
       "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#0B2545",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#245BEB",
+        "foregroundImage": "./assets/icon-v3.png"
       },
       "package": "com.transferaround.rider",
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png",
+      "favicon": "./assets/icon-v3.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -53,8 +51,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
-          "color": "#0B2545"
+          "color": "#245BEB"
         }
       ],
       "expo-apple-authentication",

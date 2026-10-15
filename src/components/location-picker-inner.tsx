@@ -7,7 +7,7 @@ import type { PickedLocation } from "./location-picker";
 
 const PIN_ICON = divIcon({
   className: "",
-  html: '<svg viewBox="0 0 24 24" width="34" height="34" style="filter:drop-shadow(0 2px 3px rgba(11,37,69,.4))"><path d="M12 2C7.9 2 4.5 5.2 4.5 9.2c0 5.2 6.1 11.6 6.9 12.4a.8.8 0 0 0 1.2 0c.8-.8 6.9-7.2 6.9-12.4C19.5 5.2 16.1 2 12 2Z" fill="#0B2545"/><circle cx="12" cy="9.4" r="3" fill="#14B8A6"/></svg>',
+  html: '<svg viewBox="0 0 24 24" width="34" height="34" style="filter:drop-shadow(0 2px 3px rgba(16,17,20,.4))"><path d="M12 2C7.9 2 4.5 5.2 4.5 9.2c0 5.2 6.1 11.6 6.9 12.4a.8.8 0 0 0 1.2 0c.8-.8 6.9-7.2 6.9-12.4C19.5 5.2 16.1 2 12 2Z" fill="#101114"/><circle cx="12" cy="9.4" r="3" fill="#245BEB"/></svg>',
   iconSize: [34, 34],
   iconAnchor: [17, 32],
 });

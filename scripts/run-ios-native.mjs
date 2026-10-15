@@ -54,10 +54,18 @@ if (!udid) {
     { encoding: "utf8" },
   ).trim();
 }
-if (!devices.some((d) => d.udid === udid && d.state === "Booted"))
-  run("xcrun", ["simctl", "boot", udid]);
+if (!devices.some((d) => d.udid === udid && d.state === "Booted")) {
+  try {
+    run("xcrun", ["simctl", "boot", udid]);
+  } catch (error) {
+    // Another app build can finish booting the same shared simulator first.
+    const current = Object.values(read(["list", "devices", "available"]).devices).flat();
+    if (!current.some((d) => d.udid === udid && d.state === "Booted")) throw error;
+  }
+}
 run("xcrun", ["simctl", "bootstatus", udid, "-b"]);
-const derived = path.join(os.tmpdir(), "transferaround-native-build", role);
+const derived =
+  process.env.TA_IOS_DERIVED_DATA || path.join(os.tmpdir(), "transferaround-native-build", role);
 run("xcodebuild", [
   "-workspace",
   `ios/${app}.xcworkspace`,

@@ -12,14 +12,22 @@ export class ApiError extends Error {
 
 /** POST JSON with safe empty-body handling (production 404s return ""). */
 export async function postJson<T>(path: string, body: unknown, accessToken?: string): Promise<T> {
-  const res = await fetch(`${getApiUrl()}${path}`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
-    },
-    body: JSON.stringify(body),
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
+  let res: Response;
+  try {
+    res = await fetch(`${getApiUrl()}${path}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}),
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
   const text = await res.text();
   let data: unknown = null;
   if (text) {
@@ -27,7 +35,7 @@ export async function postJson<T>(path: string, body: unknown, accessToken?: str
       data = JSON.parse(text) as unknown;
     } catch {
       throw new ApiError(
-        `Server returned non-JSON (${res.status}). Is the API running at ${getApiUrl()}?`,
+        "The booking service is temporarily unavailable. Please try again shortly.",
         res.status,
       );
     }
@@ -50,7 +58,7 @@ export async function postJson<T>(path: string, body: unknown, accessToken?: str
   }
   if (data == null) {
     throw new ApiError(
-      `Empty response from ${path} (${res.status}). Checkout API is not deployed at ${getApiUrl()}.`,
+      "The booking service is temporarily unavailable. Please try again shortly.",
       res.status,
     );
   }

@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
   },
   photoScrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(11, 37, 69, 0.28)",
+    backgroundColor: "rgba(16, 17, 20, 0.28)",
   },
   photoMeta: {
     position: "absolute",
@@ -522,7 +522,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: space.md,
     left: space.md,
-    backgroundColor: "rgba(11, 37, 69, 0.72)",
+    backgroundColor: "rgba(16, 17, 20, 0.72)",
     borderRadius: radius.pill,
     paddingHorizontal: space.sm + 2,
     paddingVertical: 4,

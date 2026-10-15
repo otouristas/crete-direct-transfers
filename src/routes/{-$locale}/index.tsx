@@ -88,7 +88,7 @@ function HomePage() {
             <h1 className="mt-5 text-4xl font-display leading-[1.05] md:text-5xl lg:text-6xl">
               {t.home.heroTitle1}
               <br />
-              <span className="font-accent text-[1.08em] text-accent">
+              <span className="font-accent text-[1.08em] text-[#DCE7FF]">
                 {t.home.heroTitleAccent}
               </span>
             </h1>
@@ -99,6 +99,19 @@ function HomePage() {
               <AskTouristasInline prompt="HER to Elounda tomorrow at 3pm" />
             </div>
             <TrustPills dark className="mt-8" />
+          </div>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute right-20 top-20 hidden h-80 w-80 items-center justify-center lg:flex"
+          >
+            <div className="absolute inset-0 rounded-full bg-accent/25 blur-3xl" />
+            <img
+              src="/brand/rider-icon-v3.png"
+              alt=""
+              width={280}
+              height={280}
+              className="relative w-64 -rotate-6 rounded-[26%] shadow-2xl ring-1 ring-white/10 xl:w-72"
+            />
           </div>
           <div id="book" className="relative z-[35] mt-10 w-full scroll-mt-32">
             <BookingWidget variant="hbar" />
@@ -244,7 +257,7 @@ function HomePage() {
           <Reveal>
             <h2 className="text-4xl font-display text-primary-foreground md:text-5xl">
               {t.home.closingTitle}{" "}
-              <span className="font-accent text-accent">{t.home.closingAccent}</span>
+              <span className="font-accent text-[#DCE7FF]">{t.home.closingAccent}</span>
             </h2>
             <p className="mx-auto mt-5 max-w-md text-lg text-primary-foreground/75">
               {t.home.closingSubtitle}

@@ -155,7 +155,7 @@ export function BookingSummary({
 
       <div className={cn("mt-4 flex-wrap gap-2", forceActions ? "flex" : "hidden lg:flex")}>
         <TrustChip
-          icon={<BadgeCheck className="h-3.5 w-3.5 text-emerald-500" />}
+          icon={<BadgeCheck className="h-3.5 w-3.5 text-blue-500" />}
           label={labels.freeCancel}
           green
         />
@@ -198,7 +198,7 @@ function TrustChip({
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] text-muted-foreground",
-        green ? "border-emerald-500 text-emerald-600" : "border-border",
+        green ? "border-blue-500 text-blue-600" : "border-border",
       )}
     >
       {icon}
@@ -209,18 +209,18 @@ function TrustChip({
 
 export function FreeCancelBanner({ title, body }: { title: string; body: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-3 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-emerald-50/40 p-4 sm:gap-4 sm:p-5">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">
+    <div className="flex items-start gap-3 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-blue-50/40 p-4 sm:gap-4 sm:p-5">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
         <BadgeCheck className="h-5 w-5" />
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-base font-semibold leading-snug text-emerald-900">{title}</h3>
-          <span className="inline-flex items-center rounded-full bg-emerald-100/70 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700">
+          <h3 className="text-base font-semibold leading-snug text-blue-900">{title}</h3>
+          <span className="inline-flex items-center rounded-full bg-blue-100/70 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-blue-700">
             24h
           </span>
         </div>
-        <p className="mt-1 text-sm leading-relaxed text-emerald-800/90">{body}</p>
+        <p className="mt-1 text-sm leading-relaxed text-blue-800/90">{body}</p>
       </div>
     </div>
   );

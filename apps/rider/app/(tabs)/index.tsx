@@ -1,3 +1,13 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { PICKUP_POSITION_KEY, useOnboarding } from "@transferaround/mobile-shared/onboarding";
+import { VehicleArtwork } from "@transferaround/mobile-shared/ui/mobility";
+import {
+  getDevicePosition,
+  describePosition,
+  LocationPermissionError,
+  openLocationSettings,
+  type DevicePosition,
+} from "@transferaround/mobile-shared/location";
 import { pickupClockToDate, pickupTimeZone } from "@transferaround/mobile-shared/pickup-time";
 import { useRouter } from "expo-router";
 import { randomUUID as makeCheckoutId } from "expo-crypto";
@@ -27,7 +37,6 @@ import {
 } from "@transferaround/mobile-shared/ui";
 import { useAuth } from "../../lib/auth";
 import { getApiUrl } from "../../lib/config";
-import { getCurrentGps } from "../../lib/gps";
 import {
   createStripeCheckoutMobile,
   quotePlacesMobile,
@@ -74,6 +83,7 @@ function placeFromPreset(label: string, kind: MobilePlace["kind"], id: string): 
 
 export default function BookScreen() {
   const { user, profile, isDemo } = useAuth();
+  const { pickupPosition } = useOnboarding();
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -96,69 +106,22 @@ export default function BookScreen() {
   const [error, setError] = useState<string | null>(null);
   const [quote, setQuote] = useState<PlaceQuote | null>(null);
   const [quoting, setQuoting] = useState(false);
+  const [quoteFailed, setQuoteFailed] = useState(false);
+  const [pricingAttempt, setPricingAttempt] = useState(0);
   const [sheetExpanded, setSheetExpanded] = useState(false);
-
-  const sheetMin = Math.round(WIN_H * 0.42);
-  const sheetMax = Math.round(WIN_H * 0.88);
-  const mapHeight = Math.max(220, WIN_H - sheetMin);
-
-  const search = useCallback(
-    (query: string, context?: MobilePlace | null) => searchPlacesMobile(query, context),
-    [],
-  );
-
-  useEffect(() => {
-    let cancelled = false;
-    const ready = service === "hourly" ? Boolean(fromPlace) : Boolean(fromPlace && toPlace);
-    if (!ready) {
-      setQuote(null);
-      return;
-    }
-    setQuoting(true);
-    const t = setTimeout(() => {
-      void quotePlacesMobile({
-        service,
-        from: fromPlace,
-        to: service === "hourly" ? null : toPlace,
-        vehicleClass: vehicle.vehicleClass,
-        hours,
-        pickupAt: pickupLocal,
-      })
-        .then((q) => {
-          if (!cancelled) setQuote(q);
-        })
-        .catch(() => {
-          if (!cancelled) setQuote(null);
-        })
-        .finally(() => {
-          if (!cancelled) setQuoting(false);
-        });
-    }, 220);
-    return () => {
-      cancelled = true;
-      clearTimeout(t);
-    };
-  }, [service, fromPlace, toPlace, vehicle.vehicleClass, hours, pickupLocal]);
-
-  const totalCents = useMemo(() => {
-    if (verifiedPrice != null) return verifiedPrice;
-    if (quote?.priceCents != null) return quote.priceCents;
-    const preset = PRESET_ROUTES.find(
-      (r) => fromPlace?.label === r.from && toPlace?.label === r.to,
-    );
-    if (preset) return priceForClass(preset.priceCents, vehicle);
-    return null;
-  }, [quote, fromPlace, toPlace, vehicle, verifiedPrice]);
-
-  useEffect(() => {
-    setVerifiedPrice(null);
-  }, [quote, fromPlace, toPlace, vehicle, pickupLocal]);
-
-  const totalLabel = totalCents != null ? `€${(totalCents / 100).toFixed(0)}` : "—";
-
-  async function applyMapPoint(target: "from" | "to", lat: number, lng: number) {
+  const [step, setStep] = useState<"home" | "route" | "vehicle" | "details">("home");
+  const [devicePosition, setDevicePosition] = useState<DevicePosition | null>(null);
+  const [gpsDenied, setGpsDenied] = useState(false);
+  const applyMapPoint = useCallback(async (target: "from" | "to", lat: number, lng: number) => {
     try {
-      const { place } = await reverseGeocodeMobile(lat, lng);
+      const label = await describePosition({ lat, lng });
+      const place: MobilePlace = {
+        id: `pin:${lat.toFixed(6)},${lng.toFixed(6)}`,
+        label,
+        kind: "address",
+        lat,
+        lng,
+      };
       if (target === "from") {
         setFromPlace(place);
         setFromQuery(place.label);
@@ -187,15 +150,128 @@ export default function BookScreen() {
       setPickMode(null);
       setError(null);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    let alive = true;
+    void Promise.all([
+      AsyncStorage.getItem("transferaround-booking-draft-v2"),
+      AsyncStorage.getItem(PICKUP_POSITION_KEY),
+    ])
+      .then(async ([draftRaw, positionRaw]) => {
+        if (!alive) return;
+        if (draftRaw) {
+          const draft = JSON.parse(draftRaw);
+          if (draft.fromPlace?.label) {
+            setFromPlace(draft.fromPlace);
+            setFromQuery(draft.fromPlace.label);
+          }
+          if (draft.toPlace?.label) {
+            setToPlace(draft.toPlace);
+            setToQuery(draft.toPlace.label);
+          }
+          const selected = VEHICLE_OPTIONS.find((v) => v.id === draft.vehicleId);
+          if (selected) setVehicle(selected);
+          if (draft.pickupLocal) setPickupLocal(draft.pickupLocal);
+          if (draft.service === "hourly") setService("hourly");
+          if (Number.isInteger(draft.passengers)) setPassengers(draft.passengers);
+          if (Number.isInteger(draft.hours)) setHours(draft.hours);
+          setStep("details");
+          await AsyncStorage.removeItem("transferaround-booking-draft-v2");
+          return;
+        }
+        if (positionRaw) {
+          const p = JSON.parse(positionRaw) as DevicePosition;
+          if (Date.now() - Date.parse(p.capturedAt) < 60000) {
+            setDevicePosition(p);
+            void applyMapPoint("from", p.lat, p.lng);
+          }
+        }
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [applyMapPoint]);
+  useEffect(() => {
+    if (profile?.phone) setPhone(profile.phone);
+    if (profile?.full_name) setName(profile.full_name);
+  }, [profile?.phone, profile?.full_name]);
+
+  const search = useCallback(
+    (query: string, context?: MobilePlace | null) => searchPlacesMobile(query, context),
+    [],
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    const ready = service === "hourly" ? Boolean(fromPlace) : Boolean(fromPlace && toPlace);
+    if (!ready) {
+      setQuote(null);
+      return;
+    }
+    setQuoting(true);
+    setQuoteFailed(false);
+    const t = setTimeout(() => {
+      void quotePlacesMobile({
+        service,
+        from: fromPlace,
+        to: service === "hourly" ? null : toPlace,
+        vehicleClass: vehicle.vehicleClass,
+        hours,
+        pickupAt: pickupLocal,
+      })
+        .then((q) => {
+          if (!cancelled) setQuote(q);
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setQuote(null);
+            setQuoteFailed(true);
+          }
+        })
+        .finally(() => {
+          if (!cancelled) setQuoting(false);
+        });
+    }, 220);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [service, fromPlace, toPlace, vehicle.vehicleClass, hours, pickupLocal, pricingAttempt]);
+
+  const totalCents = useMemo(() => {
+    if (verifiedPrice != null) return verifiedPrice;
+    if (quote?.priceCents != null) return quote.priceCents;
+    const preset = PRESET_ROUTES.find(
+      (r) => fromPlace?.label === r.from && toPlace?.label === r.to,
+    );
+    if (preset) return priceForClass(preset.priceCents, vehicle);
+    return null;
+  }, [quote, fromPlace, toPlace, vehicle, verifiedPrice]);
+
+  useEffect(() => {
+    setVerifiedPrice(null);
+  }, [quote, fromPlace, toPlace, vehicle, pickupLocal]);
+
+  const totalLabel = totalCents != null ? `€${(totalCents / 100).toFixed(0)}` : "—";
+
+  useEffect(() => {
+    if (!pickupPosition) return;
+    setDevicePosition(pickupPosition);
+    void applyMapPoint("from", pickupPosition.lat, pickupPosition.lng);
+  }, [pickupPosition, applyMapPoint]);
 
   async function onGps(target: "from" | "to") {
     setGpsBusy(target);
     setError(null);
     try {
-      const coords = await getCurrentGps();
+      const coords = await getDevicePosition();
+      setDevicePosition(coords);
+      setGpsDenied(false);
       await applyMapPoint(target, coords.lat, coords.lng);
     } catch (e) {
+      setGpsDenied(e instanceof LocationPermissionError);
       setError(e instanceof Error ? e.message : "GPS failed");
     } finally {
       setGpsBusy(null);
@@ -221,7 +297,19 @@ export default function BookScreen() {
       return;
     }
     if (!user?.email) {
-      setError("Sign in required");
+      await AsyncStorage.setItem(
+        "transferaround-booking-draft-v2",
+        JSON.stringify({
+          fromPlace,
+          toPlace,
+          vehicleId: vehicle.id,
+          pickupLocal,
+          service,
+          hours,
+          passengers,
+        }),
+      );
+      router.push("/login");
       return;
     }
     if (!fromPlace || (service === "transfer" && !toPlace)) {
@@ -300,395 +388,544 @@ export default function BookScreen() {
     }
   }
 
+  const compact = step === "home";
+  const [viewportHeight, setViewportHeight] = useState(WIN_H);
+  const sheetHeight = Math.min(
+    viewportHeight * 0.66,
+    compact ? 365 : step === "route" ? 470 : step === "vehicle" ? 490 : 540,
+  );
+  const ready = Boolean(fromPlace && (service === "hourly" || toPlace));
+  const footer =
+    step !== "home" ? (
+      <View style={styles.footer}>
+        {step !== "route" && (
+          <View>
+            <Text variant="caption" color={colors.textMuted}>
+              {quoting
+                ? "Getting fare…"
+                : quote?.priceCents != null
+                  ? "Trip total"
+                  : "Estimated fare"}
+            </Text>
+            <Text style={styles.total}>{totalLabel}</Text>
+          </View>
+        )}
+        <Button
+          title={
+            step === "route"
+              ? "Choose your ride"
+              : step === "vehicle"
+                ? "Continue"
+                : user
+                  ? "Continue to payment"
+                  : "Sign in to book"
+          }
+          icon="arrow-forward"
+          style={{ flex: 1 }}
+          loading={busy}
+          disabled={!ready || (step !== "route" && totalCents == null)}
+          onPress={() =>
+            step === "route"
+              ? setStep("vehicle")
+              : step === "vehicle"
+                ? setStep("details")
+                : void onBook()
+          }
+        />
+      </View>
+    ) : undefined;
   return (
-    <View style={styles.root}>
-      <View
-        style={[
-          styles.mapHost,
-          { height: mapHeight, pointerEvents: sheetExpanded && !pickMode ? "none" : "auto" },
-        ]}
-      >
+    <View style={styles.root} onLayout={(e) => setViewportHeight(e.nativeEvent.layout.height)}>
+      <View style={StyleSheet.absoluteFill}>
         <RouteMap
-          from={fromPlace?.label ?? null}
-          to={service === "hourly" ? null : (toPlace?.label ?? null)}
+          from={fromPlace?.label}
+          to={service === "hourly" ? null : toPlace?.label}
           fromPoint={
-            fromPlace?.lat != null && fromPlace?.lng != null
+            fromPlace?.lat != null && fromPlace.lng != null
               ? { lat: fromPlace.lat, lng: fromPlace.lng }
               : null
           }
           toPoint={
-            toPlace?.lat != null && toPlace?.lng != null
+            toPlace?.lat != null && toPlace.lng != null
               ? { lat: toPlace.lat, lng: toPlace.lng }
               : null
           }
-          height={mapHeight}
+          height={viewportHeight}
+          bottomInset={sheetHeight}
+          userPoint={devicePosition}
           interactive={!sheetExpanded || Boolean(pickMode)}
           pickMode={Boolean(pickMode)}
           onMapPress={(p) => {
-            if (!pickMode) return;
-            void applyMapPoint(pickMode, p.lat, p.lng);
+            if (pickMode) void applyMapPoint(pickMode, p.lat, p.lng);
           }}
         />
       </View>
-
-      <View
-        style={[styles.topBar, { paddingTop: insets.top + space.sm, pointerEvents: "box-none" }]}
-      >
-        <View style={styles.brandPill}>
-          <LogoMark size={22} rounded />
-          <Text style={styles.brandText}>
-            Transfer
-            <Text style={{ fontFamily: fonts.display, fontSize: 15, color: colors.accent }}>
-              Around
-            </Text>
-          </Text>
+      <View style={[styles.topBar, { top: insets.top + 8 }]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={user ? "Your account" : "Sign in"}
+          style={styles.circle}
+          onPress={() => router.push(user ? "/(tabs)/account" : "/login")}
+        >
+          <Icon name="person-outline" size={21} />
+        </Pressable>
+        <View style={styles.brand}>
+          <LogoMark size={24} />
+          <Text style={styles.brandText}>TransferAround</Text>
         </View>
-        {pickMode ? (
-          <Pressable style={styles.pickBanner} onPress={() => setPickMode(null)}>
-            <Icon name="map" size={14} color={colors.inverse} />
-            <Text
-              variant="caption"
-              color={colors.inverse}
-              style={{ fontFamily: fonts.bodySemibold }}
-            >
-              Tap map to set {pickMode === "from" ? "pickup" : "drop-off"} · Done
-            </Text>
-          </Pressable>
-        ) : null}
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Use my location for pickup"
+          disabled={Boolean(gpsBusy)}
+          accessibilityState={{ busy: Boolean(gpsBusy) }}
+          style={styles.circle}
+          onPress={() => void onGps("from")}
+        >
+          <Icon name="locate" size={22} color={colors.accent} />
+        </Pressable>
       </View>
-
-      <View style={styles.sheetAnchor}>
+      {pickMode && (
+        <View style={[styles.pickBanner, { top: insets.top + 65 }]}>
+          <Icon name="location" size={16} color="white" />
+          <Text color="white" variant="caption">
+            Tap the map to set your {pickMode === "from" ? "pickup" : "destination"}
+          </Text>
+          <Pressable onPress={() => setPickMode(null)} accessibilityLabel="Cancel map pin">
+            <Icon name="close" color="white" size={18} />
+          </Pressable>
+        </View>
+      )}
+      <View style={styles.sheetAnchor} pointerEvents="box-none">
         <BottomSheetScaffold
-          minHeight={sheetMin}
-          maxHeight={sheetMax}
+          key={`${step}-${Boolean(pickMode)}`}
+          minHeight={sheetHeight}
+          maxHeight={Math.max(sheetHeight, viewportHeight - insets.top - 20)}
           initial="collapsed"
-          bottomInset={insets.bottom + space.lg}
+          bottomInset={12}
           onExpandedChange={setSheetExpanded}
+          footer={footer}
+          contentStyle={{ gap: 16 }}
         >
           <View style={styles.headingRow}>
-            <Heading variant="h1">Where to?</Heading>
-            {isDemo ? (
-              <View style={styles.demoTag}>
-                <Text
-                  variant="caption"
-                  color={colors.accentDeep}
-                  style={{ fontFamily: fonts.bodySemibold }}
-                >
-                  Demo
-                </Text>
-              </View>
-            ) : null}
+            {!compact && (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Previous booking step"
+                onPress={() =>
+                  setStep(step === "details" ? "vehicle" : step === "vehicle" ? "route" : "home")
+                }
+                hitSlop={12}
+              >
+                <Icon name="arrow-back" size={22} />
+              </Pressable>
+            )}
+            <Heading variant="h1" style={{ flex: 1 }}>
+              {compact
+                ? "Where are you headed?"
+                : step === "route"
+                  ? "Plan your ride"
+                  : step === "vehicle"
+                    ? "Choose your ride"
+                    : "Make it yours"}
+            </Heading>
+            {!compact && (
+              <Text variant="caption" color={colors.textMuted}>
+                {step === "route" ? "1" : step === "vehicle" ? "2" : "3"} / 3
+              </Text>
+            )}
           </View>
-
-          <SegmentedControl
-            options={[
-              { value: "transfer", label: "Transfer" },
-              { value: "hourly", label: "Hourly" },
-            ]}
-            value={service}
-            onChange={setService}
-          />
-
-          <PlaceField
-            label="From"
-            placeholder="Airport code, hotel, address…"
-            value={fromQuery}
-            selected={fromPlace}
-            contextPlace={toPlace}
-            onQueryChange={(q) => {
-              setFromQuery(q);
-              setFromPlace(null);
-            }}
-            onSelect={(p) => {
-              setFromPlace(p);
-              setFromQuery(p.label);
-            }}
-            onPinOnMap={() => setPickMode("from")}
-            onUseGps={() => void onGps("from")}
-            search={search}
-            gpsBusy={gpsBusy === "from"}
-          />
-
-          {service === "transfer" ? (
-            <PlaceField
-              label="To"
-              placeholder="Where are you going?"
-              value={toQuery}
-              selected={toPlace}
-              contextPlace={fromPlace}
-              onQueryChange={(q) => {
-                setToQuery(q);
-                setToPlace(null);
-              }}
-              onSelect={(p) => {
-                setToPlace(p);
-                setToQuery(p.label);
-              }}
-              onPinOnMap={() => setPickMode("to")}
-              onUseGps={() => void onGps("to")}
-              search={search}
-              gpsBusy={gpsBusy === "to"}
-            />
-          ) : (
-            <View style={styles.passengerRow}>
-              <View>
-                <Text variant="subtitle">Hours</Text>
-                <Text variant="caption" color={colors.textMuted}>
-                  Charter with driver
-                </Text>
+          {compact ? (
+            <>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Where to? Search destination"
+                style={styles.destinationSearch}
+                onPress={() => setStep("route")}
+              >
+                <Icon name="search" size={23} />
+                <Text style={styles.searchText}>Where to?</Text>
+                <View style={styles.schedule}>
+                  <Icon name="time-outline" size={14} />
+                  <Text style={styles.scheduleText}>Schedule</Text>
+                </View>
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Use my location for pickup"
+                style={styles.gpsRow}
+                disabled={Boolean(gpsBusy)}
+                onPress={() => void onGps("from")}
+              >
+                <View style={styles.gpsIcon}>
+                  <Icon name="navigate" size={19} color={colors.accent} />
+                </View>
+                <View style={{ flex: 1, gap: 3 }}>
+                  <Text variant="subtitle">
+                    {gpsBusy
+                      ? "Finding your location…"
+                      : fromPlace
+                        ? fromPlace.label
+                        : "Use my location"}
+                  </Text>
+                  <Text variant="caption" color={colors.textMuted}>
+                    {fromPlace ? "Your pickup · tap to update" : "Set a precise pickup with GPS"}
+                  </Text>
+                </View>
+                <Icon name="chevron-forward" size={16} color={colors.textFaint} />
+              </Pressable>
+              <View style={styles.services}>
+                {[
+                  { name: "Airport ride", van: false },
+                  { name: "Group transfer", van: true },
+                ].map((item) => (
+                  <Pressable
+                    accessibilityRole="button"
+                    key={item.name}
+                    style={styles.service}
+                    onPress={() => {
+                      setVehicle(item.van ? VEHICLE_OPTIONS[3] : VEHICLE_OPTIONS[0]);
+                      setStep("route");
+                    }}
+                  >
+                    <VehicleArtwork van={item.van} style={{ width: 120, height: 70 }} />
+                    <Text variant="subtitle">{item.name}</Text>
+                  </Pressable>
+                ))}
               </View>
-              <Stepper value={hours} onChange={setHours} min={2} max={12} />
-            </View>
-          )}
-
-          <SectionLabel>Popular routes</SectionLabel>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: space.sm, paddingRight: space.lg }}
-          >
-            {PRESET_ROUTES.map((r) => {
-              const selected = fromPlace?.label === r.from && toPlace?.label === r.to;
-              return (
-                <Pressable key={r.id} onPress={() => applyPreset(r.id)}>
-                  <View style={[styles.chip, selected ? styles.chipSelected : null]}>
-                    <Text variant="subtitle" numberOfLines={1} style={{ maxWidth: 160 }}>
-                      {r.label}
-                    </Text>
+            </>
+          ) : step === "route" ? (
+            <>
+              <SegmentedControl
+                options={[
+                  { value: "transfer", label: "Transfer" },
+                  { value: "hourly", label: "By the hour" },
+                ]}
+                value={service}
+                onChange={setService}
+              />
+              <PlaceField
+                label="Pickup"
+                placeholder="Airport, hotel or address"
+                value={fromQuery}
+                selected={fromPlace}
+                contextPlace={toPlace}
+                onQueryChange={(q) => {
+                  setFromQuery(q);
+                  setFromPlace(null);
+                }}
+                onSelect={(p) => {
+                  setFromPlace(p);
+                  setFromQuery(p.label);
+                }}
+                onPinOnMap={() => setPickMode("from")}
+                onUseGps={() => void onGps("from")}
+                search={search}
+                gpsLabel="Use my location"
+                gpsBusy={gpsBusy === "from"}
+              />
+              {service === "transfer" ? (
+                <PlaceField
+                  label="Destination"
+                  placeholder="Where are you going?"
+                  value={toQuery}
+                  selected={toPlace}
+                  contextPlace={fromPlace}
+                  onQueryChange={(q) => {
+                    setToQuery(q);
+                    setToPlace(null);
+                  }}
+                  onSelect={(p) => {
+                    setToPlace(p);
+                    setToQuery(p.label);
+                  }}
+                  onPinOnMap={() => setPickMode("to")}
+                  onUseGps={() => void onGps("to")}
+                  search={search}
+                  gpsBusy={gpsBusy === "to"}
+                />
+              ) : (
+                <View style={styles.row}>
+                  <Text variant="subtitle">Hours with your driver</Text>
+                  <Stepper value={hours} onChange={setHours} min={2} max={12} />
+                </View>
+              )}
+              <Text style={styles.sectionTitle}>POPULAR TRANSFERS</Text>
+              {PRESET_ROUTES.slice(0, 3).map((r) => (
+                <Pressable
+                  accessibilityRole="button"
+                  key={r.id}
+                  style={styles.preset}
+                  onPress={() => {
+                    applyPreset(r.id);
+                    setStep("vehicle");
+                  }}
+                >
+                  <View style={styles.presetIcon}>
+                    <Icon name="airplane-outline" size={18} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text variant="subtitle">{r.to}</Text>
                     <Text variant="caption" color={colors.textMuted}>
-                      From €{(r.priceCents / 100).toFixed(0)}
+                      From {r.from}
                     </Text>
                   </View>
+                  <Icon name="chevron-forward" size={17} color={colors.textFaint} />
                 </Pressable>
-              );
-            })}
-          </ScrollView>
-
-          <SectionLabel>Choose a ride</SectionLabel>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: space.md, paddingRight: space.lg }}
-          >
-            {VEHICLE_OPTIONS.map((v) => {
-              const selected = v.id === vehicle.id;
-              const price =
-                quote?.priceCents != null && v.id === vehicle.id
-                  ? quote.priceCents
-                  : quote?.priceCents != null
-                    ? priceForClass(Math.round(quote.priceCents / vehicle.priceMultiplier), v)
+              ))}
+            </>
+          ) : step === "vehicle" ? (
+            <>
+              <Text variant="caption" color={colors.textMuted}>
+                {fromPlace?.label} → {toPlace?.label || `${hours} hours`}
+              </Text>
+              {VEHICLE_OPTIONS.map((v) => {
+                const selected = v.id === vehicle.id;
+                const price =
+                  totalCents != null
+                    ? priceForClass(Math.round(totalCents / vehicle.priceMultiplier), v)
                     : null;
-              return (
-                <Pressable key={v.id} onPress={() => setVehicle(v)}>
-                  <View style={[styles.vehicleCard, selected ? styles.vehicleCardSelected : null]}>
-                    <Image source={v.image} style={styles.vehicleImg} resizeMode="cover" />
-                    <Text variant="subtitle">{v.name}</Text>
-                    <View style={styles.vehicleMeta}>
-                      <Icon name="person" size={12} color={colors.textFaint} />
+                return (
+                  <Pressable
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: selected }}
+                    key={v.id}
+                    style={[styles.vehicleRow, selected && styles.selectedVehicle]}
+                    onPress={() => setVehicle(v)}
+                  >
+                    <VehicleArtwork van={v.id === "minivan"} style={{ width: 91, height: 64 }} />
+                    <View style={{ flex: 1, gap: 3 }}>
+                      <Text variant="title">
+                        {v.name}{" "}
+                        <Text variant="caption" color={colors.textMuted}>
+                          {" "}
+                          · {v.seats}
+                        </Text>
+                      </Text>
                       <Text variant="caption" color={colors.textMuted}>
-                        {v.seats}
+                        {v.tagline}
                       </Text>
                     </View>
                     <Text style={styles.vehiclePrice}>
-                      {price != null ? `€${(price / 100).toFixed(0)}` : "…"}
+                      {price != null ? `€${Math.round(price / 100)}` : "—"}
                     </Text>
-                  </View>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-
-          <SectionLabel>Trip details</SectionLabel>
-          <Field
-            label="Pickup time"
-            icon="calendar-outline"
-            value={pickupLocal}
-            onChangeText={setPickupLocal}
-            placeholder="YYYY-MM-DDTHH:mm"
-            autoCapitalize="none"
-          />
-          <Text variant="caption" color={colors.textMuted} style={{ marginTop: -space.sm }}>
-            {friendlyDate(pickupLocal)}
-          </Text>
-
-          <View style={styles.passengerRow}>
-            <View>
-              <Text variant="subtitle">Passengers</Text>
+                  </Pressable>
+                );
+              })}
               <Text variant="caption" color={colors.textMuted}>
-                Up to {vehicle.seats} in a {vehicle.name}
+                Vehicle images illustrate the class. Your assigned car appears in trip details.
               </Text>
-            </View>
-            <Stepper value={passengers} onChange={setPassengers} min={1} max={vehicle.seats} />
-          </View>
-
-          <Field
-            label="Your name"
-            icon="person-outline"
-            value={name}
-            onChangeText={setName}
-            placeholder="Full name"
-          />
-          <Field
-            label="Phone"
-            icon="call-outline"
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-            placeholder="+30…"
-          />
-
-          <View style={styles.summary}>
-            <View style={styles.summaryTop}>
-              <Text variant="caption" color={colors.textMuted} style={styles.summaryCaption}>
-                {quoting ? "Pricing…" : "Total · fixed price"}
+            </>
+          ) : (
+            <>
+              <View style={styles.rideSummary}>
+                <VehicleArtwork van={vehicle.id === "minivan"} />
+                <View style={{ flex: 1, gap: 4 }}>
+                  <Text variant="title">{vehicle.name}</Text>
+                  <Text variant="caption" color={colors.textMuted}>
+                    {toPlace?.label || `${hours} hours with your driver`}
+                  </Text>
+                </View>
+                <Text style={styles.vehiclePrice}>{totalLabel}</Text>
+              </View>
+              <Field
+                label="Pickup date & time"
+                icon="calendar-outline"
+                value={pickupLocal}
+                onChangeText={setPickupLocal}
+                placeholder="YYYY-MM-DDTHH:mm"
+                autoCapitalize="none"
+              />
+              <Text variant="caption" color={colors.textMuted}>
+                {friendlyDate(pickupLocal)}
               </Text>
-              <View style={styles.summaryBadge}>
-                <Icon name="shield-checkmark" size={14} color={colors.accentDeep} />
-                <Text
-                  variant="caption"
-                  color={colors.accentDeep}
-                  style={{ fontFamily: fonts.bodySemibold }}
-                >
-                  Free cancellation
+              <View style={styles.row}>
+                <View>
+                  <Text variant="subtitle">Travelers</Text>
+                  <Text variant="caption" color={colors.textMuted}>
+                    Up to {vehicle.seats} seats
+                  </Text>
+                </View>
+                <Stepper value={passengers} onChange={setPassengers} min={1} max={vehicle.seats} />
+              </View>
+              <Field
+                label="Your name"
+                value={name}
+                onChangeText={setName}
+                placeholder="Full name"
+                autoComplete="name"
+              />
+              <Field
+                label="Contact phone"
+                value={phone}
+                onChangeText={setPhone}
+                placeholder="Country code + phone"
+                keyboardType="phone-pad"
+              />
+              <View style={styles.paymentNote}>
+                <Icon name="shield-checkmark-outline" size={18} color={colors.accent} />
+                <Text variant="caption" color={colors.textMuted} style={{ flex: 1 }}>
+                  Confirm your fare and complete secure payment before your booking is confirmed.
                 </Text>
               </View>
+            </>
+          )}
+          {quoteFailed && totalCents == null && ready && (
+            <View style={{ gap: 10 }}>
+              <Text variant="caption" color={colors.textMuted}>
+                Live fares are unavailable right now. Your route is saved; please try again shortly.
+              </Text>
+              <Button
+                title="Try getting the fare again"
+                variant="outline"
+                onPress={() => setPricingAttempt((n) => n + 1)}
+              />
             </View>
-            <Text style={styles.summaryPrice}>{totalLabel}</Text>
-          </View>
-
-          {error ? (
-            <Text variant="caption" color={colors.danger}>
+          )}
+          {error && (
+            <Text accessibilityRole="alert" variant="caption" color={colors.danger}>
               {error}
             </Text>
-          ) : null}
-
-          <Button
-            title={`Book & pay ${totalLabel}`}
-            icon="arrow-forward"
-            onPress={() => void onBook()}
-            loading={busy}
-            fullWidth
-            disabled={totalCents == null && !isDemo}
-          />
+          )}
+          {gpsDenied && (
+            <Button
+              title="Open location settings"
+              variant="outline"
+              onPress={() => void openLocationSettings()}
+            />
+          )}
         </BottomSheetScaffold>
       </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: colors.surfaceMuted },
-  mapHost: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-  },
+  root: { flex: 1, backgroundColor: "#EDF0F3" },
   topBar: {
     position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    paddingHorizontal: space.lg,
+    left: 20,
+    right: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     zIndex: 10,
-    gap: space.sm,
   },
-  brandPill: {
+  circle: {
+    width: 43,
+    height: 43,
+    borderRadius: 24,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowOpacity: 0.09,
+    shadowRadius: 8,
+  },
+  brand: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    alignSelf: "flex-start",
-    backgroundColor: colors.surface,
-    paddingVertical: 10,
-    paddingLeft: 10,
-    paddingRight: space.lg,
-    borderRadius: radius.pill,
-    shadowColor: "#0B2545",
-    shadowOpacity: 0.12,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 4,
+    gap: 7,
+    backgroundColor: "white",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 24,
+    shadowOpacity: 0.06,
+    shadowRadius: 7,
   },
-  brandText: { fontFamily: fonts.display, fontSize: 15, color: colors.text, letterSpacing: -0.3 },
+  brandText: { fontFamily: fonts.bold, fontSize: 15, letterSpacing: -0.7 },
+  sheetAnchor: { flex: 1, justifyContent: "flex-end" },
+  headingRow: { flexDirection: "row", gap: 14, alignItems: "center" },
+  destinationSearch: {
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: 13,
+    padding: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  searchText: { flex: 1, fontFamily: fonts.bold, fontSize: 21, letterSpacing: -0.5 },
+  schedule: {
+    flexDirection: "row",
+    gap: 5,
+    alignItems: "center",
+    paddingLeft: 10,
+    borderLeftWidth: 1,
+    borderLeftColor: colors.borderStrong,
+  },
+  scheduleText: { fontSize: 11, fontFamily: fonts.bodySemibold },
+  gpsRow: { flexDirection: "row", gap: 12, alignItems: "center" },
+  gpsIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.accentSoft,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  services: { flexDirection: "row", gap: 12 },
+  service: {
+    flex: 1,
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: 16,
+    padding: 12,
+    paddingTop: 0,
+  },
   pickBanner: {
-    alignSelf: "flex-start",
+    position: "absolute",
+    left: 20,
+    right: 20,
+    backgroundColor: colors.primary,
+    borderRadius: 15,
+    padding: 13,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    zIndex: 10,
+    gap: 8,
+  },
+  footer: { flexDirection: "row", alignItems: "center", gap: 20 },
+  total: { fontFamily: fonts.bold, fontSize: 26, lineHeight: 33, letterSpacing: -0.8 },
+  sectionTitle: {
+    fontSize: 10,
+    letterSpacing: 1,
+    color: colors.textMuted,
+    fontFamily: fonts.bodySemibold,
+    marginTop: 6,
+  },
+  preset: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 9 },
+  presetIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.surfaceMuted,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  vehicleRow: {
+    flexDirection: "row",
+    gap: 6,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "transparent",
+    borderRadius: 15,
+    padding: 8,
+    marginVertical: -5,
+  },
+  selectedVehicle: { borderColor: colors.primary, backgroundColor: "#F7F8FA" },
+  vehiclePrice: { fontFamily: fonts.bold, fontSize: 19, lineHeight: 27, letterSpacing: -0.4 },
+  rideSummary: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: colors.primary,
-    paddingHorizontal: space.md,
-    paddingVertical: 8,
-    borderRadius: radius.pill,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
   },
-  sheetAnchor: { flex: 1, justifyContent: "flex-end" },
-  headingRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  demoTag: {
-    backgroundColor: colors.accentSoft,
-    paddingHorizontal: space.md,
-    paddingVertical: 4,
-    borderRadius: radius.pill,
-  },
-  chip: {
-    paddingHorizontal: space.md,
-    paddingVertical: space.md,
-    borderRadius: radius.lg,
-    borderWidth: 1.5,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    gap: 2,
-    minWidth: 140,
-  },
-  chipSelected: { borderColor: colors.accent, backgroundColor: colors.accentSoft },
-  vehicleCard: {
-    width: 132,
-    padding: space.md,
-    borderRadius: radius.lg,
-    borderWidth: 2,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    gap: 4,
-  },
-  vehicleCardSelected: { borderColor: colors.accent, backgroundColor: colors.accentSoft },
-  vehicleImg: { width: "100%", height: 64, borderRadius: radius.md, marginBottom: space.sm },
-  vehicleMeta: { flexDirection: "row", alignItems: "center", gap: 4 },
-  vehiclePrice: { fontFamily: fonts.bold, fontSize: 18, color: colors.text, marginTop: 2 },
-  passengerRow: {
+  paymentNote: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    gap: space.md,
-  },
-  summary: {
+    gap: 9,
     backgroundColor: colors.surfaceMuted,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-    borderColor: colors.border,
-    paddingVertical: space.xl,
-    paddingHorizontal: space.xl,
-    gap: space.sm,
-  },
-  summaryTop: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: space.md,
-  },
-  summaryCaption: { flexShrink: 1 },
-  summaryBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    backgroundColor: colors.accentSoft,
-    paddingHorizontal: space.md,
-    paddingVertical: 6,
-    borderRadius: radius.pill,
-  },
-  summaryPrice: {
-    fontFamily: fonts.display,
-    fontSize: 32,
-    lineHeight: 38,
-    color: colors.text,
-    letterSpacing: -0.8,
-    marginTop: 2,
+    padding: 13,
+    borderRadius: 12,
   },
 });

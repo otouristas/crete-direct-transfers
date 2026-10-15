@@ -112,7 +112,7 @@ function hubIcon(kind: Hub["kind"]) {
   if (kind === "town") {
     return divIcon({
       className: "",
-      html: '<span style="display:block;width:14px;height:14px;border-radius:9999px;background:#14B8A6;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(11,37,69,.4)"></span>',
+      html: '<span style="display:block;width:14px;height:14px;border-radius:9999px;background:#245BEB;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(16,17,20,.4)"></span>',
       iconSize: [14, 14],
       iconAnchor: [7, 7],
     });
@@ -120,7 +120,7 @@ function hubIcon(kind: Hub["kind"]) {
   const glyph = kind === "airport" ? PLANE_SVG : ANCHOR_SVG;
   return divIcon({
     className: "",
-    html: `<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:9999px;background:#0B2545;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(11,37,69,.45)">${glyph}</span>`,
+    html: `<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:9999px;background:#101114;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(16,17,20,.45)">${glyph}</span>`,
     iconSize: [28, 28],
     iconAnchor: [14, 14],
   });
@@ -143,13 +143,13 @@ export default function CreteMapInner() {
         <Marker key={hub.name} position={[hub.lat, hub.lng]} icon={hubIcon(hub.kind)}>
           <Popup>
             <div style={{ fontFamily: "Inter, sans-serif" }}>
-              <strong style={{ color: "#0B2545" }}>{hub.name}</strong>
+              <strong style={{ color: "#101114" }}>{hub.name}</strong>
               {hub.routeSlug && (
                 <div style={{ marginTop: 4 }}>
                   <Link
                     to="/{-$locale}/routes/$slug"
                     params={{ slug: hub.routeSlug }}
-                    style={{ color: "#0F766E", fontWeight: 600 }}
+                    style={{ color: "#1B49C6", fontWeight: 600 }}
                   >
                     See transfers →
                   </Link>

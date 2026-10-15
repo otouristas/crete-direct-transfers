@@ -111,12 +111,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:image", content: OG_DEFAULT_IMAGE },
       { name: "twitter:image", content: OG_DEFAULT_IMAGE },
-      { name: "theme-color", content: "#0B2545" },
+      { name: "theme-color", content: "#245BEB" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "apple-touch-icon", href: "/favicon.svg" },
+      { rel: "icon", href: "/brand/icon-32.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/brand/icon-180.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
     ],
     scripts: [

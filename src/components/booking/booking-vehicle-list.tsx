@@ -6,7 +6,7 @@ import { getLocalizedVehicles } from "@/i18n/content";
 import { cn } from "@/lib/utils";
 
 const BADGES: Partial<Record<VehicleClass, { label: string; className: string }>> = {
-  economy: { label: "Best value", className: "bg-emerald-50 text-emerald-700" },
+  economy: { label: "Best value", className: "bg-blue-50 text-blue-700" },
   comfort: { label: "Most popular", className: "bg-rose-50 text-rose-700" },
   luxury: { label: "Top class", className: "bg-slate-100 text-slate-600" },
   "van-first": { label: "Top class", className: "bg-slate-100 text-slate-600" },

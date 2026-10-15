@@ -10,10 +10,6 @@ const destination = path.join(root, "release", name);
 await mkdir(destination, { recursive: true });
 const entries = [
   [".output", "website"],
-  ["apps/rider/dist", "traveler-web"],
-  ["apps/driver/dist", "driver-web"],
-  ["apps/rider/dist-ios", "ios-javascript/traveler"],
-  ["apps/driver/dist-ios", "ios-javascript/driver"],
   ["docs/release", "documentation"],
   [".env.example", "server.env.example"],
   ["apps/rider/.env.example", "traveler.env.example"],
@@ -32,14 +28,16 @@ delete config.build;
 await writeFile(configPath, JSON.stringify(config, null, 2) + "\n");
 await writeFile(
   path.join(destination, "README.txt"),
-  `TransferAround release candidate\n\n` +
-    `website/ is the compiled Cloudflare Worker and public assets.\n` +
-    `After configuring the required server secrets and verifying the target account,\n` +
-    `deploy from website/server using: npx wrangler deploy --config wrangler.json\n` +
-    `traveler-web/ and driver-web/ are browser app previews; serve with SPA fallback.\n` +
-    `ios-javascript/ contains Hermes JavaScript exports, NOT signed installable apps.\n` +
-    `See documentation/README.md for activation requirements and test instructions.\n` +
-    `No production deployment or real Stripe payment has been performed.\n`,
+  `TransferAround website release\n\n` +
+    `website/ contains the compiled Cloudflare Worker and public assets.\n` +
+    `The verified live deployment is https://crete-direct-transfers.gk-3ae.workers.dev.\n` +
+    `transferaround.com still needs DNS cutover.\n` +
+    `Deploy this compiled output from website/server using: npx wrangler deploy --config wrangler.json\n` +
+    `Configure protected server secrets in the intended Cloudflare account.\n` +
+    `Native iOS apps are delivered separately through TestFlight and signed IPA files.\n` +
+    `This website archive does not contain installable iOS apps or local credentials.\n` +
+    `See documentation/README.md for payment activation and verification limits.\n` +
+    `No real Stripe charge, refund or payout has been performed.\n`,
 );
 const checksums = [];
 async function scan(directory) {

@@ -70,7 +70,7 @@ export function AskTouristasBand({
         className,
       )}
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_left,rgba(20,184,166,0.28),transparent_55%),radial-gradient(ellipse_at_right,rgba(255,255,255,0.08),transparent_45%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_left,rgba(36,91,235,0.28),transparent_55%),radial-gradient(ellipse_at_right,rgba(255,255,255,0.08),transparent_45%)]" />
       <div className="relative mx-auto max-w-7xl px-6 py-12 md:py-16">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">

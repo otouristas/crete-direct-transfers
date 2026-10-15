@@ -31,7 +31,7 @@ export function AskTouristasInline({
         className,
       )}
     >
-      <Sparkles className="h-4 w-4 text-accent" />
+      <Sparkles className="h-4 w-4 text-primary-foreground" />
       {label ?? t.askInline}
     </button>
   );

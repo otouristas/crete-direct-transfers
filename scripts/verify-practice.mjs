@@ -22,6 +22,16 @@ async function rpc(token, action, input = {}) {
   if (!res.ok) throw new Error(data.message || "Practice failed");
   return data;
 }
+async function gps(token, position) {
+  const response = await fetch(`${url}/rest/v1/rpc/transfer_practice_gps`, {
+    method: "POST",
+    headers: { apikey: key, "content-type": "application/json" },
+    body: JSON.stringify({ p_token: token, p_position: position }),
+  });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.message || "Practice GPS failed");
+  return result;
+}
 const created = await rpc(null, "create");
 const token = created.token;
 assert.match(token, /^[a-f0-9]{48}$/);
@@ -34,10 +44,19 @@ await rpc(token, "online");
 await rpc(token, "accept");
 assert.equal((await rpc(token, "read")).state.trip.status, "claimed");
 await assert.rejects(() => rpc(token, "request"));
+await gps(token, { lat: 35.5317, lng: 24.1497, capturedAt: new Date().toISOString() });
+assert.equal((await rpc(token, "read")).state.driverLocation.lat, 35.5317);
+await assert.rejects(() =>
+  gps("0".repeat(48), { lat: 35, lng: 24, capturedAt: new Date().toISOString() }),
+);
+await assert.rejects(() => gps(token, { lat: 200, lng: 24, capturedAt: new Date().toISOString() }));
+await gps(token, null);
+assert.equal((await rpc(token, "read")).state.driverLocation, undefined);
 await rpc(token, "start");
 await rpc(token, "complete");
 assert.equal((await rpc(token, "read")).state.trip.status, "completed");
 await assert.rejects(() => rpc(token, "cancel"));
+await assert.rejects(() => gps(token, { lat: 35, lng: 24, capturedAt: new Date().toISOString() }));
 await rpc(token, "reset");
 await rpc(token, "request");
 await rpc(token, "cancel");
