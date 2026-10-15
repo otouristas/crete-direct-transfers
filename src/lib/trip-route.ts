@@ -55,8 +55,9 @@ export async function fetchTripRoute(
   const hit = cache.get(key);
   if (hit) return hit;
 
-  const osrmBase = (import.meta.env.VITE_OSRM_URL as string | undefined)?.replace(/\/$/, "")
-    ?? "https://router.project-osrm.org";
+  const osrmBase =
+    (import.meta.env.VITE_OSRM_URL as string | undefined)?.replace(/\/$/, "") ??
+    "https://router.project-osrm.org";
 
   try {
     const url =

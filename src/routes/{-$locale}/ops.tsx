@@ -6,6 +6,7 @@ import { useProfile } from "@/queries/profile";
 import {
   openIncidentsQuery,
   opsPartnersQuery,
+  pendingPayoutsQuery,
   pendingRefundsQuery,
   resolveIncidentAdmin,
   setPartnerStatusAdmin,
@@ -16,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { buildHead } from "@/lib/seo";
 import type { Locale } from "@/i18n";
 import { expireOffersAndEscalate } from "@/functions/dispatch";
+import { payoutCarrierForBooking } from "@/functions/stripe";
 
 export const Route = createFileRoute("/{-$locale}/ops")({
   head: ({ params }) => {
@@ -41,6 +43,7 @@ function OpsPage() {
   const refunds = useQuery({ ...pendingRefundsQuery, enabled: isAdmin });
   const unassigned = useQuery({ ...unassignedBookingsQuery, enabled: isAdmin });
   const partners = useQuery({ ...opsPartnersQuery, enabled: isAdmin });
+  const payouts = useQuery({ ...pendingPayoutsQuery, enabled: isAdmin });
 
   const resolve = useMutation({
     mutationFn: resolveIncidentAdmin,
@@ -50,6 +53,21 @@ function OpsPage() {
       toast.success("Resolved");
     },
     onError: () => toast.error("Could not resolve — are you an admin?"),
+  });
+
+  const retryPayout = useMutation({
+    mutationFn: (bookingId: string) => payoutCarrierForBooking({ data: { bookingId } }),
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ["ops-payouts"] });
+      if (res.ok && res.payoutStatus === "transferred") {
+        toast.success("Carrier payout transferred");
+      } else if (res.payoutStatus === "skipped_no_account") {
+        toast.message("Skipped — carrier has no Connect account");
+      } else {
+        toast.error(res.error ?? `Payout ${res.payoutStatus}`);
+      }
+    },
+    onError: () => toast.error("Payout request failed"),
   });
 
   const pausePartner = useMutation({
@@ -79,7 +97,10 @@ function OpsPage() {
       <div className="mx-auto max-w-lg px-6 py-20 text-center">
         <h1 className="font-display text-2xl text-primary">Ops</h1>
         <p className="mt-3 text-sm text-muted-foreground">Admin access required.</p>
-        <Link to="/{-$locale}/account" className="mt-6 inline-block text-sm text-accent-deep underline">
+        <Link
+          to="/{-$locale}/account"
+          className="mt-6 inline-block text-sm text-accent-deep underline"
+        >
           {t.account.backToBookings}
         </Link>
       </div>
@@ -127,6 +148,7 @@ function OpsPage() {
                   {formatEur(b.price_cents / 100)} ·{" "}
                   <Link
                     to="/{-$locale}/partner"
+                    search={{ connect: undefined }}
                     className="text-accent-deep underline"
                   >
                     Partner inbox
@@ -249,6 +271,40 @@ function OpsPage() {
                   {b.id.slice(0, 8)} · {b.customer_email} · {b.refund_percent ?? "?"}%
                 </span>
                 <span className="text-muted-foreground">{formatEur(b.price_cents / 100)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section>
+        <h2 className="font-display text-xl text-primary">Carrier payouts</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Completed prepaid trips awaiting the 85% Connect transfer (or flagged for no account).
+        </p>
+        {payouts.isPending ? (
+          <Skeleton className="mt-4 h-32 w-full rounded-2xl" />
+        ) : payouts.data?.length === 0 ? (
+          <p className="mt-4 text-sm text-muted-foreground">No pending carrier payouts.</p>
+        ) : (
+          <ul className="mt-4 space-y-2">
+            {payouts.data?.map((b) => (
+              <li
+                key={b.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border px-4 py-3 text-sm"
+              >
+                <span>
+                  {b.id.slice(0, 8)} · {b.payout_status} · {b.customer_name} ·{" "}
+                  {formatEur(b.price_cents / 100)}
+                </span>
+                <button
+                  type="button"
+                  disabled={retryPayout.isPending}
+                  className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium hover:bg-muted disabled:opacity-50"
+                  onClick={() => retryPayout.mutate(b.id)}
+                >
+                  Retry 85% transfer
+                </button>
               </li>
             ))}
           </ul>

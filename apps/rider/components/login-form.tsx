@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, StyleSheet, View } from "react-native";
 import { BrandHeader, Button, Field, Text, colors, space } from "@transferaround/mobile-shared/ui";
@@ -6,6 +6,7 @@ import { useAuth } from "../lib/auth";
 
 export default function LoginForm() {
   const { signIn } = useAuth();
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -49,6 +50,13 @@ export default function LoginForm() {
           error={error}
         />
         <Button title="Sign in" onPress={onSubmit} loading={busy} fullWidth />
+        <Button
+          title="Try a practice journey"
+          variant="outline"
+          icon="sparkles-outline"
+          onPress={() => router.push("/practice")}
+          fullWidth
+        />
         <Link href="/signup" style={styles.link}>
           <Text variant="subtitle" color={colors.accentDeep} center>
             Create an account

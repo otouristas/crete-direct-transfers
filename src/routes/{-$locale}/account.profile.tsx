@@ -6,11 +6,7 @@ import { getDict } from "@/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useProfile } from "@/queries/profile";
-import {
-  createSavedTraveler,
-  deleteSavedTraveler,
-  savedTravelersQuery,
-} from "@/queries/travelers";
+import { createSavedTraveler, deleteSavedTraveler, savedTravelersQuery } from "@/queries/travelers";
 import { Field, InputStyles } from "@/components/form/field";
 import { Skeleton } from "@/components/ui/skeleton";
 

@@ -43,7 +43,11 @@ async function ensureCategory() {
   }
   await Notifications.setNotificationCategoryAsync(RIDE_OFFER_CATEGORY, [
     { identifier: ACCEPT_ACTION, buttonTitle: "Accept", options: { opensAppToForeground: true } },
-    { identifier: DECLINE_ACTION, buttonTitle: "Decline", options: { opensAppToForeground: false, isDestructive: true } },
+    {
+      identifier: DECLINE_ACTION,
+      buttonTitle: "Decline",
+      options: { opensAppToForeground: false, isDestructive: true },
+    },
   ]);
   categoryReady = true;
 }

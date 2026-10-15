@@ -1,8 +1,11 @@
 /**
  * Flight tracking helpers.
- * When VITE_FLIGHT_API_URL + VITE_FLIGHT_API_KEY are set, lookups hit that API.
- * Otherwise we return a structured stub so UI/waiting clocks still work.
+ * Live lookups go through a server function (Aviationstack + FLIGHT_API_KEY).
+ * Without a key, callers still get a structured stub so UI/waiting clocks work.
  */
+
+import { lookupFlightStatus } from "@/functions/flights";
+import { BOOKING_POLICY } from "@/lib/booking-policy";
 
 export type FlightStatus = {
   flightNumber: string;
@@ -12,43 +15,42 @@ export type FlightStatus = {
   source: "live" | "stub";
 };
 
-function normalizeFlight(n: string): string {
+export function normalizeFlightNumber(n: string): string {
   return n.replace(/\s+/g, "").toUpperCase();
 }
 
 export async function lookupFlight(flightNumber: string): Promise<FlightStatus> {
-  const normalized = normalizeFlight(flightNumber);
-  const base = import.meta.env.VITE_FLIGHT_API_URL as string | undefined;
-  const key = import.meta.env.VITE_FLIGHT_API_KEY as string | undefined;
-
-  if (base && key) {
-    try {
-      const res = await fetch(
-        `${base.replace(/\/$/, "")}/flights/${encodeURIComponent(normalized)}`,
-        { headers: { Authorization: `Bearer ${key}` } },
-      );
-      if (res.ok) {
-        const json = (await res.json()) as Partial<FlightStatus>;
-        return {
-          flightNumber: normalized,
-          status: json.status ?? "unknown",
-          scheduledArrival: json.scheduledArrival ?? null,
-          estimatedArrival: json.estimatedArrival ?? null,
-          source: "live",
-        };
-      }
-    } catch {
-      /* fall through to stub */
-    }
+  try {
+    return await lookupFlightStatus({ data: { flightNumber } });
+  } catch {
+    return {
+      flightNumber: normalizeFlightNumber(flightNumber),
+      status: "scheduled",
+      scheduledArrival: null,
+      estimatedArrival: null,
+      source: "stub",
+    };
   }
+}
 
-  return {
-    flightNumber: normalized,
-    status: "scheduled",
-    scheduledArrival: null,
-    estimatedArrival: null,
-    source: "stub",
-  };
+/** Free wait window: 60 min airports/ports (flight), 30 min hotels/addresses. */
+export function waitMinutesForBooking(input: {
+  flightNumber?: string | null;
+  pickupAddress?: string | null;
+  routeSlug?: string | null;
+}): number {
+  const flight = (input.flightNumber ?? "").trim();
+  if (flight) return BOOKING_POLICY.waitMinutesAirportPort;
+
+  const hay = `${input.pickupAddress ?? ""} ${input.routeSlug ?? ""}`.toLowerCase();
+  if (
+    /(airport|aiport|αεροδρ|aeroporto|flughafen|aéroport|port|λιμάν|ferry|harbour|harbor)/i.test(
+      hay,
+    )
+  ) {
+    return BOOKING_POLICY.waitMinutesAirportPort;
+  }
+  return BOOKING_POLICY.waitMinutesHotelAddress;
 }
 
 /** Extend free wait clock when a tracked flight is delayed past pickup. */
@@ -60,6 +62,7 @@ export function effectiveWaitEnd(input: {
   const base = new Date(new Date(input.pickupAt).getTime() + input.waitMinutes * 60_000);
   if (!input.estimatedArrival) return base;
   const eta = new Date(input.estimatedArrival);
+  if (Number.isNaN(eta.getTime())) return base;
   const etaPlus = new Date(eta.getTime() + input.waitMinutes * 60_000);
   return etaPlus > base ? etaPlus : base;
 }

@@ -79,14 +79,7 @@ async function main() {
     const cc = (row.iso_country || "").trim().toUpperCase();
     if (!name || !cc) continue;
     seen.add(iata);
-    out.push([
-      iata,
-      name,
-      city,
-      cc,
-      Math.round(lat * 1e5) / 1e5,
-      Math.round(lng * 1e5) / 1e5,
-    ]);
+    out.push([iata, name, city, cc, Math.round(lat * 1e5) / 1e5, Math.round(lng * 1e5) / 1e5]);
   }
   out.sort((a, b) => a[0].localeCompare(b[0]));
 

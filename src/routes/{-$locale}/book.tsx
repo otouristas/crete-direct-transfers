@@ -1,3 +1,4 @@
+import { pickupClockToDate, pickupTimeZone } from "../../../packages/mobile-shared/src/pickup-time";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
@@ -13,7 +14,12 @@ import {
   type TripType,
 } from "@/lib/pricing";
 import { fetchTripRoute, type TripGeometry } from "@/lib/trip-route";
-import { matchRouteSlug, placeCountry, searchLocalPlaces, type PlaceResult } from "@/lib/place-search";
+import {
+  matchRouteSlug,
+  placeCountry,
+  searchLocalPlaces,
+  type PlaceResult,
+} from "@/lib/place-search";
 import { getIataAirport } from "@/data/iata-airports";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -34,13 +40,10 @@ import {
 import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { ArrowLeftRight, ChevronUp, Info } from "lucide-react";
-import { createAndPersistQuote } from "@/lib/quote-engine";
-import { bookingCreatedEmail, sendTransactionalEmail } from "@/functions/email";
-import { createCheckoutSession } from "@/functions/stripe";
+import { bookingCheckout } from "@/functions/booking-checkout";
 import { attachReferral } from "@/lib/referrals";
 import { cn } from "@/lib/utils";
 import { marketFromCountryCode } from "@/lib/dispatch";
-import { dispatchNewBooking } from "@/functions/dispatch";
 
 const vehicleClassEnum = z.enum([
   "economy",
@@ -190,6 +193,8 @@ function BookPage() {
   const navigate = useNavigate();
   const bp = t.bookPage;
 
+  const checkoutAttempt = useRef<{ fingerprint: string; id: string; token: string } | null>(null);
+  const [serverPriceCents, setServerPriceCents] = useState<number | null>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [service, setService] = useState<"transfer" | "hourly">(search.service ?? "transfer");
   const [hours, setHours] = useState(search.hours ?? 6);
@@ -326,13 +331,15 @@ function BookPage() {
     search.route,
   ]);
 
+  const timeZone = pickupTimeZone(fromPlace?.countryCode || toPlace?.countryCode);
   const classQuotes = useMemo(() => {
     if (isHourly) {
       return VEHICLE_CLASSES.flatMap((vc) => {
         const hq = quoteHourly({
           hours,
           vehicleClass: vc.id,
-          pickupAt: pickupAt ? new Date(pickupAt) : undefined,
+          pickupAt: pickupAt ? pickupClockToDate(pickupAt, timeZone) || undefined : undefined,
+          timeZone,
         });
         if (!hq) return [];
         return [
@@ -360,8 +367,9 @@ function BookPage() {
       routeSlug: matched,
       distanceKm: hasDistance ? routeInfo!.distanceKm : undefined,
       durationMin: hasDistance ? routeInfo!.durationMin : undefined,
-      pickupAt: pickupAt ? new Date(pickupAt) : undefined,
-      returnAt: returnAt ? new Date(returnAt) : undefined,
+      pickupAt: pickupAt ? pickupClockToDate(pickupAt, timeZone) || undefined : undefined,
+      timeZone,
+      returnAt: returnAt ? pickupClockToDate(returnAt, timeZone) || undefined : undefined,
       tripType,
       extras,
     });
@@ -376,9 +384,10 @@ function BookPage() {
     returnAt,
     tripType,
     extras,
+    timeZone,
   ]);
 
-  const q = useMemo(() => {
+  const initialQuote = useMemo(() => {
     const row = classQuotes.find((c) => c.vehicleClass === vehicleClass);
     if (row) return row.quote;
     return quoteTrip({
@@ -386,13 +395,35 @@ function BookPage() {
       distanceKm: routeInfo?.distanceKm,
       durationMin: routeInfo?.durationMin,
       vehicleClass,
-      pickupAt: pickupAt ? new Date(pickupAt) : undefined,
-      returnAt: returnAt ? new Date(returnAt) : undefined,
+      pickupAt: pickupAt ? pickupClockToDate(pickupAt, timeZone) || undefined : undefined,
+      timeZone,
+      returnAt: returnAt ? pickupClockToDate(returnAt, timeZone) || undefined : undefined,
       tripType,
       extras,
     });
-  }, [classQuotes, vehicleClass, routeInfo, search.route, pickupAt, returnAt, tripType, extras]);
+  }, [
+    classQuotes,
+    vehicleClass,
+    routeInfo,
+    search.route,
+    pickupAt,
+    returnAt,
+    tripType,
+    extras,
+    timeZone,
+  ]);
 
+  useEffect(() => {
+    setServerPriceCents(null);
+  }, [initialQuote]);
+  const q =
+    initialQuote && serverPriceCents != null
+      ? {
+          ...initialQuote,
+          totalEur: serverPriceCents / 100,
+          breakdown: [{ label: "Server verified fare", amountEur: serverPriceCents / 100 }],
+        }
+      : initialQuote;
   const overCapacity = bagsChecked > bagCapacity(vehicleClass);
   const canContinue =
     !!pickupAt &&
@@ -405,7 +436,12 @@ function BookPage() {
 
   const proceed = () => {
     const errs: Record<string, string> = {};
-    if (!pickupAt) errs.pickupAt = "Please pick a date and time";
+    if (
+      !pickupAt ||
+      (pickupClockToDate(pickupAt, timeZone)?.getTime() || 0) <= Date.now() + 15 * 60_000
+    )
+      errs.pickupAt = "Choose a pickup at least 15 minutes from now";
+    if (overCapacity) errs.quote = "Choose a larger vehicle for your luggage";
     if (!isHourly && tripType === "return" && !returnAt) {
       errs.returnAt = "Please pick your return date and time";
     }
@@ -443,165 +479,83 @@ function BookPage() {
       return;
     }
 
-    const hourlyNote = isHourly
-      ? `Hourly chauffeur · ${hours}h${parsed.data.notes ? ` · ${parsed.data.notes}` : ""}`
-      : parsed.data.notes || null;
-
-    const routeSlug = isHourly
-      ? `hourly-${hours}h`
-      : routeInfo?.routeSlug || search.route || `distance-${Math.round(routeInfo?.distanceKm ?? 0)}km`;
-
-    let quoteId: string | null = null;
-    let lockedPriceCents = q.totalEur * 100;
-    let bookableMode: "instant" | "quote" = "instant";
-    const countryCode = placeCountry(fromPlace) ?? placeCountry(toPlace);
-    const market = marketFromCountryCode(countryCode);
     try {
-      const persisted = await createAndPersistQuote({
-        service: isHourly ? "hourly" : "transfer",
-        routeSlug,
+      if (!fromCoords || (!isHourly && !toCoords))
+        throw new Error("Choose pickup and destination on the map.");
+      const input = {
+        service: isHourly ? ("hourly" as const) : ("transfer" as const),
+        hours,
+        from: {
+          id: fromPlace?.id || "pickup",
+          label: fromQuery.trim() || fromPlace?.label || "Pickup",
+          kind: fromPlace?.kind || ("address" as const),
+          ...fromCoords,
+          countryCode: fromPlace?.countryCode,
+        },
+        to: isHourly
+          ? null
+          : {
+              id: toPlace?.id || "dropoff",
+              label: toQuery.trim() || toPlace?.label || "Destination",
+              kind: toPlace?.kind || ("address" as const),
+              ...toCoords!,
+              countryCode: toPlace?.countryCode,
+            },
         vehicleClass,
-        tripType: isHourly ? "oneway" : tripType,
-        extras,
-        pickupAt: new Date(pickupAt).toISOString(),
+        passengers,
+        bagsChecked,
+        bagsCabin,
+        pickupAt: pickupClockToDate(pickupAt, timeZone)!.toISOString(),
+        tripType: isHourly ? ("oneway" as const) : tripType,
         returnAt:
           !isHourly && tripType === "return" && returnAt
-            ? new Date(returnAt).toISOString()
+            ? pickupClockToDate(returnAt, timeZone)!.toISOString()
             : null,
-        distanceKm: routeInfo?.distanceKm ?? null,
-        durationMin: routeInfo?.durationMin ?? null,
-        hours: isHourly ? hours : null,
-        market,
-      });
-      quoteId = persisted.quoteId;
-      lockedPriceCents = persisted.priceCents;
-      bookableMode = persisted.bookableMode;
-    } catch {
-      // Quote persistence optional until migration is applied; fall back to client price.
-    }
-
-    const base = {
-      route_slug: routeSlug,
-      vehicle_class: vehicleClass,
-      passengers,
-      pickup_at: new Date(pickupAt).toISOString(),
-      customer_name: parsed.data.customer_name,
-      customer_email: parsed.data.customer_email,
-      customer_phone: parsed.data.customer_phone,
-      flight_number: parsed.data.flight_number || null,
-      notes: hourlyNote,
-      extras: extras as never,
-      price_cents: lockedPriceCents,
-      currency: "EUR",
-      status: "pending",
-      user_id: user?.id ?? null,
-      quote_id: quoteId,
-      payment_status: "unpaid" as const,
-      market,
-    };
-    const v2 = {
-      trip_type: isHourly ? "oneway" : tripType,
-      return_at:
-        !isHourly && tripType === "return" && returnAt ? new Date(returnAt).toISOString() : null,
-      return_flight_number: parsed.data.return_flight_number || null,
-      bags_checked: bagsChecked,
-      bags_cabin: bagsCabin,
-      pickup_address: fromQuery.trim() || fromPlace?.label || null,
-      dropoff_address: isHourly ? null : toQuery.trim() || toPlace?.label || null,
-      pickup_point: fromCoords ?? null,
-      dropoff_point: isHourly ? null : toCoords ?? null,
-    };
-
-    let { data, error } = await supabase
-      .from("bookings")
-      .insert({ ...base, ...v2 } as never)
-      .select("id")
-      .single();
-
-    if (error && user && /user_id/i.test(error.message)) {
-      const { user_id: _omit, ...withoutUser } = { ...base, ...v2 };
-      void _omit;
-      ({ data, error } = await supabase
-        .from("bookings")
-        .insert(withoutUser as never)
-        .select("id")
-        .single());
-    }
-
-    setSubmitting(false);
-    if (error || !data) {
-      setSubmitError(error?.message ?? "Something went wrong. Please try again.");
-      return;
-    }
-
-    try {
-      await attachReferral(data.id, search.ref);
-    } catch {
-      /* referral is best-effort */
-    }
-
-    try {
-      await dispatchNewBooking({
+        customerName: parsed.data.customer_name,
+        customerEmail: parsed.data.customer_email,
+        customerPhone: parsed.data.customer_phone,
+        flightNumber: parsed.data.flight_number || undefined,
+        returnFlightNumber: parsed.data.return_flight_number || undefined,
+        notes: parsed.data.notes || undefined,
+        extras,
+        locale,
+      };
+      const fingerprint = JSON.stringify(input);
+      if (checkoutAttempt.current?.fingerprint !== fingerprint)
+        checkoutAttempt.current = {
+          fingerprint,
+          id: crypto.randomUUID(),
+          token: crypto.randomUUID().replaceAll("-", "") + crypto.randomUUID().replaceAll("-", ""),
+        };
+      const attempt = checkoutAttempt.current;
+      const result = await bookingCheckout({
         data: {
-          bookingId: data.id,
-          market,
-          countryCode: countryCode ?? null,
-          lat: fromCoords?.lat ?? fromPlace?.lat ?? null,
-          lng: fromCoords?.lng ?? fromPlace?.lng ?? null,
-          locale,
+          ...input,
+          requestId: attempt.id,
+          checkoutToken: attempt.token,
+          expectedPriceCents: Math.round(q.totalEur * 100),
         },
       });
-    } catch (err) {
-      console.error("[book] dispatch failed", err);
-    }
-
-    const routeLabel = isHourly
-      ? `Hourly · ${hours}h`
-      : `${fromQuery.trim() || fromPlace?.label || "Pickup"} → ${toQuery.trim() || toPlace?.label || "Drop-off"}`;
-
-    try {
-      await sendTransactionalEmail({
-        data: bookingCreatedEmail({
-          to: parsed.data.customer_email,
-          name: parsed.data.customer_name,
-          bookingId: data.id,
-          routeLabel,
-          pickupAt: new Date(pickupAt).toLocaleString(),
-          priceLabel: formatEur(lockedPriceCents / 100),
-          locale,
-        }),
-      });
-    } catch {
-      // Email is best-effort
-    }
-
-    if (bookableMode === "instant") {
-      try {
-        const checkout = await createCheckoutSession({
-          data: {
-            bookingId: data.id,
-            priceCents: lockedPriceCents,
-            customerEmail: parsed.data.customer_email,
-            description: routeLabel,
-            locale,
-          },
-        });
-        if (!checkout.skipped && checkout.url) {
-          if (checkout.paymentIntentId) {
-            await supabase
-              .from("bookings")
-              .update({ stripe_payment_intent_id: checkout.paymentIntentId } as never)
-              .eq("id", data.id);
-          }
-          window.location.href = checkout.url;
-          return;
-        }
-      } catch {
-        // Fall through to success without prepaid checkout
+      if (!result.ok) {
+        if (result.status === 409 && "priceCents" in result && result.priceCents)
+          setServerPriceCents(result.priceCents);
+        throw new Error(result.error);
       }
+      sessionStorage.setItem(`checkout-token:${result.bookingId}`, attempt.token);
+      try {
+        await attachReferral(result.bookingId, search.ref);
+      } catch {
+        /* optional attribution */
+      }
+      if (!result.url) throw new Error("Could not open secure payment. Please try again.");
+      window.location.assign(result.url);
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error ? err.message : "Could not start payment. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
     }
-
-    navigate({ to: "/{-$locale}/book/success", search: { id: data.id } });
   };
 
   const kindLabels = {

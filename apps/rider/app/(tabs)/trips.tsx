@@ -73,7 +73,11 @@ export default function TripsScreen() {
           </View>
           <Divider />
           <View style={{ marginTop: space.md }}>
-            <RouteRail from={t.pickup_address || "Pickup"} to={t.dropoff_address || "Drop-off"} compact />
+            <RouteRail
+              from={t.pickup_address || "Pickup"}
+              to={t.dropoff_address || "Drop-off"}
+              compact
+            />
           </View>
           <Text variant="caption" color={colors.textMuted} style={{ marginTop: space.md }}>
             {new Date(t.pickup_at).toLocaleString()}

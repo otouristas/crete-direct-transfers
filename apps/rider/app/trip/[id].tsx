@@ -13,6 +13,7 @@ import {
   RouteRail,
   StatusBadge,
   Text,
+  type IconName,
   colors,
   fonts,
   radius,
@@ -35,7 +36,7 @@ function stepIndex(status: string, hasDriver: boolean) {
   return 0;
 }
 
-function DetailRow({ icon, label, value }: { icon: any; label: string; value: string }) {
+function DetailRow({ icon, label, value }: { icon: IconName; label: string; value: string }) {
   return (
     <View style={styles.detailRow}>
       <Icon name={icon} size={18} color={colors.textFaint} />
@@ -107,8 +108,16 @@ export default function TripDetailScreen() {
   return (
     <View style={styles.root}>
       {header}
-      <ScrollView contentContainerStyle={{ paddingBottom: space.xxxl }} showsVerticalScrollIndicator={false}>
-        <RouteMap from={booking.pickup_address} to={booking.dropoff_address} height={220} interactive />
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: space.xxxl }}
+        showsVerticalScrollIndicator={false}
+      >
+        <RouteMap
+          from={booking.pickup_address}
+          to={booking.dropoff_address}
+          height={220}
+          interactive
+        />
 
         <View style={styles.body}>
           <Card padded>
@@ -122,19 +131,39 @@ export default function TripDetailScreen() {
           </Card>
 
           <Card padded>
-            <RouteRail from={booking.pickup_address || "Pickup"} to={booking.dropoff_address || "Drop-off"} />
+            <RouteRail
+              from={booking.pickup_address || "Pickup"}
+              to={booking.dropoff_address || "Drop-off"}
+            />
             <Divider inset={0} />
             <View style={{ gap: space.sm, marginTop: space.md }}>
-              <DetailRow icon="calendar-outline" label="Pickup" value={new Date(booking.pickup_at).toLocaleString()} />
-              <DetailRow icon="card-outline" label="Payment" value={String(booking.payment_status)} />
-              <DetailRow icon="people-outline" label="Passengers" value={String(booking.passengers ?? 1)} />
+              <DetailRow
+                icon="calendar-outline"
+                label="Pickup"
+                value={new Date(booking.pickup_at).toLocaleString()}
+              />
+              <DetailRow
+                icon="card-outline"
+                label="Payment"
+                value={String(booking.payment_status)}
+              />
+              <DetailRow
+                icon="people-outline"
+                label="Passengers"
+                value={String(booking.passengers ?? 1)}
+              />
             </View>
           </Card>
 
           {hasDriver ? (
             <Card padded>
               <View style={styles.driverRow}>
-                <Avatar name="Your Driver" size={52} bg={colors.accentSoft} fg={colors.accentDeep} />
+                <Avatar
+                  name="Your Driver"
+                  size={52}
+                  bg={colors.accentSoft}
+                  fg={colors.accentDeep}
+                />
                 <View style={{ flex: 1 }}>
                   <Text variant="subtitle">Driver assigned</Text>
                   <Text variant="caption" color={colors.textMuted}>
@@ -163,7 +192,13 @@ export default function TripDetailScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
-  center: { flex: 1, backgroundColor: colors.bg, alignItems: "center", justifyContent: "center", gap: space.md },
+  center: {
+    flex: 1,
+    backgroundColor: colors.bg,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: space.md,
+  },
   body: { padding: space.lg, gap: space.lg },
   statusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   price: { fontFamily: fonts.display, fontSize: 24, color: colors.text, letterSpacing: -0.5 },

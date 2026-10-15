@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
+  Building2,
   CalendarDays,
   Car,
   ChevronDown,
@@ -9,6 +10,7 @@ import {
   Info,
   MapPin,
   Minus,
+  Plane,
   Plus,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
@@ -23,9 +25,10 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useLocale, useT } from "@/i18n";
 import { getLocalizedVehicles } from "@/i18n/content";
+import { LitePlaceCombobox, type LitePlaceOption } from "@/components/lite-place-combobox";
 import { cn } from "@/lib/utils";
 
-type ServiceMode = "transfer" | "hourly";
+type ServiceMode = "transfer" | "hourly" | "hotels" | "flights";
 
 function placeFromIata(iata?: string): PlaceResult | null {
   if (!iata) return null;
@@ -168,6 +171,25 @@ function BookingWidgetBar({
   const [dropoffPoint, setDropoffPoint] = useState<PickedLocation | null>(null);
   const [dateOpen, setDateOpen] = useState(false);
   const [returnOpen, setReturnOpen] = useState(false);
+  const [hotelPlace, setHotelPlace] = useState<LitePlaceOption | null>(null);
+  const [hotelVibe, setHotelVibe] = useState("");
+  const [checkIn, setCheckIn] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().slice(0, 10);
+  });
+  const [checkOut, setCheckOut] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 10);
+    return d.toISOString().slice(0, 10);
+  });
+  const [flightOrigin, setFlightOrigin] = useState("HER");
+  const [flightDest, setFlightDest] = useState("ATH");
+  const [flightDate, setFlightDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 14);
+    return d.toISOString().slice(0, 10);
+  });
 
   const kindLabels = {
     airport: t.bookPage.kindAirport,
@@ -186,6 +208,35 @@ function BookingWidgetBar({
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (service === "hotels") {
+      navigate({
+        to: "/{-$locale}/hotels",
+        search: {
+          placeId: hotelPlace?.placeId,
+          placeName: hotelPlace?.displayName,
+          aiSearch: hotelVibe.trim() || undefined,
+          checkin: checkIn,
+          checkout: checkOut,
+          adults: pax,
+        },
+      });
+      return;
+    }
+
+    if (service === "flights") {
+      navigate({
+        to: "/{-$locale}/flights",
+        search: {
+          origin: flightOrigin.trim().toUpperCase(),
+          destination: flightDest.trim().toUpperCase(),
+          date: flightDate,
+          adults: pax,
+        },
+      });
+      return;
+    }
+
     const isHourly = service === "hourly";
     const matched = !isHourly ? matchRouteSlug(fromPlace, toPlace) : undefined;
     const trip: TripType = !isHourly && addReturn ? "return" : "oneway";
@@ -245,209 +296,354 @@ function BookingWidgetBar({
             <Clock className="tfr-htab-ic" aria-hidden />
             <span>{t.widget.byTheHour}</span>
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={service === "hotels"}
+            className={cn("tfr-htab", service === "hotels" && "is-on")}
+            onClick={() => setService("hotels")}
+          >
+            <Building2 className="tfr-htab-ic" aria-hidden />
+            <span>{t.widget.hotels}</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={service === "flights"}
+            className={cn("tfr-htab", service === "flights" && "is-on")}
+            onClick={() => setService("flights")}
+          >
+            <Plane className="tfr-htab-ic" aria-hidden />
+            <span>{t.widget.flights}</span>
+          </button>
         </div>
 
         <form onSubmit={submit} className="tfr-bar">
-          <PlaceCombobox
-            label={t.widget.from}
-            placeholder={t.widget.placePlaceholder}
-            value={fromQuery}
-            selected={fromPlace}
-            cellClassName="tfr-cell--from"
-            onQueryChange={(q) => {
-              setFromQuery(q);
-              setFromPlace(null);
-            }}
-            onSelect={(place) => {
-              setFromPlace(place);
-              setFromQuery(place.label);
-              if (place.lat != null && place.lng != null) {
-                setPickupPoint({ lat: place.lat, lng: place.lng });
-              }
-            }}
-            onPinOnMap={() => setMapPicker("from")}
-            pinLabel={t.widget.pinOnMap}
-            noPlacesLabel={t.widget.noPlaces}
-            kindLabels={kindLabels}
-            groupLabels={groupLabels}
-            contextPlace={toPlace}
-          />
-
-          {service === "transfer" ? (
-            <PlaceCombobox
-              label={t.widget.to}
-              placeholder={t.widget.placePlaceholder}
-              value={toQuery}
-              selected={toPlace}
-              cellClassName="tfr-cell--to"
-              onQueryChange={(q) => {
-                setToQuery(q);
-                setToPlace(null);
-              }}
-              onSelect={(place) => {
-                setToPlace(place);
-                setToQuery(place.label);
-                if (place.lat != null && place.lng != null) {
-                  setDropoffPoint({ lat: place.lat, lng: place.lng });
-                }
-              }}
-              onPinOnMap={() => setMapPicker("to")}
-              pinLabel={t.widget.pinOnMap}
-              noPlacesLabel={t.widget.noPlaces}
-              kindLabels={kindLabels}
-              groupLabels={groupLabels}
-              contextPlace={fromPlace}
-            />
-          ) : (
-            <div className="tfr-cell tfr-cell--hours">
-              <Clock className="tfr-cell-ic" aria-hidden />
-              <span className="tfr-cell-field">
-                <span className="tfr-cell-label">{t.widget.hours}</span>
-                <span className="tfr-step">
-                  <button
-                    type="button"
-                    className="tfr-stepbtn"
-                    aria-label="−"
-                    disabled={hours <= 2}
-                    onClick={() => setHours((h) => Math.max(2, h - 1))}
-                  >
-                    <Minus className="h-3.5 w-3.5" />
-                  </button>
-                  <b className="tabular-nums">{hours}</b>
-                  <button
-                    type="button"
-                    className="tfr-stepbtn"
-                    aria-label="+"
-                    disabled={hours >= 12}
-                    onClick={() => setHours((h) => Math.min(12, h + 1))}
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                  </button>
-                </span>
-              </span>
-            </div>
-          )}
-
-          <Popover open={dateOpen} onOpenChange={setDateOpen}>
-            <PopoverTrigger asChild>
-              <button type="button" className="tfr-cell tfr-cell--datetime">
-                <CalendarDays className="tfr-cell-ic" aria-hidden />
-                <span className="tfr-cell-field">
-                  <span className="tfr-cell-label">{t.widget.pickupDate}</span>
-                  <span className="tfr-cell-value capitalize">{formatPickupLabel(date)}</span>
-                </span>
-              </button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-3" align="start">
-              <DateTimePicker
-                selected={calDate}
-                time={time}
-                onDateChange={(d) => setDate(joinLocal(d, time))}
-                onTimeChange={(tm) => setDate(joinLocal(calDate, tm))}
-              />
-            </PopoverContent>
-          </Popover>
-
-          {service === "transfer" && (
+          {service === "hotels" ? (
             <>
-              {!addReturn ? (
-                <button
-                  type="button"
-                  className="tfr-cell tfr-cell--addret"
-                  onClick={() => {
-                    setAddReturn(true);
-                    if (!returnDate && date) {
-                      const d = parseISO(date);
-                      d.setDate(d.getDate() + 7);
-                      setReturnDate(joinLocal(d, time));
+              <div className="tfr-cell tfr-cell--from min-w-[200px] flex-1 px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.destination}
+                </div>
+                <LitePlaceCombobox
+                  value={hotelPlace}
+                  onChange={setHotelPlace}
+                  placeholder={t.widget.hotelPlacePlaceholder}
+                />
+              </div>
+              <div className="tfr-cell px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.checkIn}
+                </label>
+                <input
+                  type="date"
+                  className="mt-1 w-full bg-transparent text-sm outline-none"
+                  value={checkIn}
+                  onChange={(e) => setCheckIn(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="tfr-cell px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.checkOut}
+                </label>
+                <input
+                  type="date"
+                  className="mt-1 w-full bg-transparent text-sm outline-none"
+                  value={checkOut}
+                  onChange={(e) => setCheckOut(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="tfr-cell px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.guests}
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  max={8}
+                  className="mt-1 w-16 bg-transparent text-sm outline-none"
+                  value={pax}
+                  onChange={(e) => setPax(Number(e.target.value) || 2)}
+                />
+              </div>
+              <div className="tfr-cell flex-[1.2] px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Vibe
+                </label>
+                <input
+                  className="mt-1 w-full bg-transparent text-sm outline-none"
+                  placeholder={t.widget.vibePlaceholder}
+                  value={hotelVibe}
+                  onChange={(e) => setHotelVibe(e.target.value)}
+                />
+              </div>
+              <button type="submit" className="tfr-go">
+                {t.widget.searchHotels}
+                <ArrowRight className="size-4" />
+              </button>
+            </>
+          ) : service === "flights" ? (
+            <>
+              <div className="tfr-cell px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.originAirport}
+                </label>
+                <input
+                  className="mt-1 w-24 bg-transparent text-sm uppercase outline-none"
+                  value={flightOrigin}
+                  maxLength={3}
+                  onChange={(e) => setFlightOrigin(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="tfr-cell px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.destAirport}
+                </label>
+                <input
+                  className="mt-1 w-24 bg-transparent text-sm uppercase outline-none"
+                  value={flightDest}
+                  maxLength={3}
+                  onChange={(e) => setFlightDest(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="tfr-cell px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.pickupDate}
+                </label>
+                <input
+                  type="date"
+                  className="mt-1 w-full bg-transparent text-sm outline-none"
+                  value={flightDate}
+                  onChange={(e) => setFlightDate(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="tfr-cell px-3 py-2">
+                <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t.widget.passengers}
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  max={9}
+                  className="mt-1 w-16 bg-transparent text-sm outline-none"
+                  value={pax}
+                  onChange={(e) => setPax(Number(e.target.value) || 1)}
+                />
+              </div>
+              <button type="submit" className="tfr-go">
+                {t.widget.searchFlights}
+                <ArrowRight className="size-4" />
+              </button>
+            </>
+          ) : (
+            <>
+              <PlaceCombobox
+                label={t.widget.from}
+                placeholder={t.widget.placePlaceholder}
+                value={fromQuery}
+                selected={fromPlace}
+                cellClassName="tfr-cell--from"
+                onQueryChange={(q) => {
+                  setFromQuery(q);
+                  setFromPlace(null);
+                }}
+                onSelect={(place) => {
+                  setFromPlace(place);
+                  setFromQuery(place.label);
+                  if (place.lat != null && place.lng != null) {
+                    setPickupPoint({ lat: place.lat, lng: place.lng });
+                  }
+                }}
+                onPinOnMap={() => setMapPicker("from")}
+                pinLabel={t.widget.pinOnMap}
+                noPlacesLabel={t.widget.noPlaces}
+                kindLabels={kindLabels}
+                groupLabels={groupLabels}
+                contextPlace={toPlace}
+              />
+
+              {service === "transfer" ? (
+                <PlaceCombobox
+                  label={t.widget.to}
+                  placeholder={t.widget.placePlaceholder}
+                  value={toQuery}
+                  selected={toPlace}
+                  cellClassName="tfr-cell--to"
+                  onQueryChange={(q) => {
+                    setToQuery(q);
+                    setToPlace(null);
+                  }}
+                  onSelect={(place) => {
+                    setToPlace(place);
+                    setToQuery(place.label);
+                    if (place.lat != null && place.lng != null) {
+                      setDropoffPoint({ lat: place.lat, lng: place.lng });
                     }
                   }}
-                >
-                  <Plus className="tfr-cell-ic" aria-hidden />
-                  <span className="tfr-cell-field">
-                    <span className="tfr-cell-value tfr-addret">{t.widget.addReturn}</span>
-                  </span>
-                </button>
+                  onPinOnMap={() => setMapPicker("to")}
+                  pinLabel={t.widget.pinOnMap}
+                  noPlacesLabel={t.widget.noPlaces}
+                  kindLabels={kindLabels}
+                  groupLabels={groupLabels}
+                  contextPlace={fromPlace}
+                />
               ) : (
-                <Popover open={returnOpen} onOpenChange={setReturnOpen}>
-                  <PopoverTrigger asChild>
-                    <button type="button" className="tfr-cell tfr-cell--datetime">
-                      <CalendarDays className="tfr-cell-ic" aria-hidden />
-                      <span className="tfr-cell-field">
-                        <span className="tfr-cell-label">{t.widget.returnDate}</span>
-                        <span className="tfr-cell-value capitalize">
-                          {formatPickupLabel(returnDate)}
-                        </span>
-                      </span>
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-3" align="start">
-                    <DateTimePicker
-                      selected={returnCalDate}
-                      time={returnTime}
-                      onDateChange={(d) => setReturnDate(joinLocal(d, returnTime))}
-                      onTimeChange={(tm) => setReturnDate(joinLocal(returnCalDate, tm))}
-                    />
+                <div className="tfr-cell tfr-cell--hours">
+                  <Clock className="tfr-cell-ic" aria-hidden />
+                  <span className="tfr-cell-field">
+                    <span className="tfr-cell-label">{t.widget.hours}</span>
+                    <span className="tfr-step">
+                      <button
+                        type="button"
+                        className="tfr-stepbtn"
+                        aria-label="−"
+                        disabled={hours <= 2}
+                        onClick={() => setHours((h) => Math.max(2, h - 1))}
+                      >
+                        <Minus className="h-3.5 w-3.5" />
+                      </button>
+                      <b className="tabular-nums">{hours}</b>
+                      <button
+                        type="button"
+                        className="tfr-stepbtn"
+                        aria-label="+"
+                        disabled={hours >= 12}
+                        onClick={() => setHours((h) => Math.min(12, h + 1))}
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                      </button>
+                    </span>
+                  </span>
+                </div>
+              )}
+
+              <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                <PopoverTrigger asChild>
+                  <button type="button" className="tfr-cell tfr-cell--datetime">
+                    <CalendarDays className="tfr-cell-ic" aria-hidden />
+                    <span className="tfr-cell-field">
+                      <span className="tfr-cell-label">{t.widget.pickupDate}</span>
+                      <span className="tfr-cell-value capitalize">{formatPickupLabel(date)}</span>
+                    </span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-3" align="start">
+                  <DateTimePicker
+                    selected={calDate}
+                    time={time}
+                    onDateChange={(d) => setDate(joinLocal(d, time))}
+                    onTimeChange={(tm) => setDate(joinLocal(calDate, tm))}
+                  />
+                </PopoverContent>
+              </Popover>
+
+              {service === "transfer" && (
+                <>
+                  {!addReturn ? (
                     <button
                       type="button"
-                      className="mt-2 w-full text-left text-xs font-semibold text-accent-deep"
+                      className="tfr-cell tfr-cell--addret"
                       onClick={() => {
-                        setAddReturn(false);
-                        setReturnDate("");
-                        setReturnOpen(false);
+                        setAddReturn(true);
+                        if (!returnDate && date) {
+                          const d = parseISO(date);
+                          d.setDate(d.getDate() + 7);
+                          setReturnDate(joinLocal(d, time));
+                        }
                       }}
                     >
-                      {t.widget.removeReturn}
+                      <Plus className="tfr-cell-ic" aria-hidden />
+                      <span className="tfr-cell-field">
+                        <span className="tfr-cell-value tfr-addret">{t.widget.addReturn}</span>
+                      </span>
                     </button>
-                  </PopoverContent>
-                </Popover>
+                  ) : (
+                    <Popover open={returnOpen} onOpenChange={setReturnOpen}>
+                      <PopoverTrigger asChild>
+                        <button type="button" className="tfr-cell tfr-cell--datetime">
+                          <CalendarDays className="tfr-cell-ic" aria-hidden />
+                          <span className="tfr-cell-field">
+                            <span className="tfr-cell-label">{t.widget.returnDate}</span>
+                            <span className="tfr-cell-value capitalize">
+                              {formatPickupLabel(returnDate)}
+                            </span>
+                          </span>
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-3" align="start">
+                        <DateTimePicker
+                          selected={returnCalDate}
+                          time={returnTime}
+                          onDateChange={(d) => setReturnDate(joinLocal(d, returnTime))}
+                          onTimeChange={(tm) => setReturnDate(joinLocal(returnCalDate, tm))}
+                        />
+                        <button
+                          type="button"
+                          className="mt-2 w-full text-left text-xs font-semibold text-accent-deep"
+                          onClick={() => {
+                            setAddReturn(false);
+                            setReturnDate("");
+                            setReturnOpen(false);
+                          }}
+                        >
+                          {t.widget.removeReturn}
+                        </button>
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </>
               )}
+
+              <div className="tfr-cell tfr-cell--pax">
+                <span className="tfr-cell-field">
+                  <span className="tfr-cell-label">{t.widget.passengers}</span>
+                  <span className="tfr-step">
+                    <button
+                      type="button"
+                      className="tfr-stepbtn"
+                      aria-label="−"
+                      disabled={pax <= 1}
+                      onClick={() => setPax((n) => Math.max(1, n - 1))}
+                    >
+                      <Minus className="h-3.5 w-3.5" />
+                    </button>
+                    <b className="tabular-nums">{pax}</b>
+                    <button
+                      type="button"
+                      className="tfr-stepbtn"
+                      aria-label="+"
+                      disabled={pax >= 16}
+                      onClick={() => setPax((n) => Math.min(16, n + 1))}
+                    >
+                      <Plus className="h-3.5 w-3.5" />
+                    </button>
+                  </span>
+                </span>
+              </div>
+
+              <button type="submit" className="tfr-go">
+                <span>{t.widget.seePrices}</span>
+                <svg
+                  viewBox="0 0 20 20"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M3.5 10h12.5M11.5 5.5 16 10l-4.5 4.5" />
+                </svg>
+              </button>
             </>
           )}
-
-          <div className="tfr-cell tfr-cell--pax">
-            <span className="tfr-cell-field">
-              <span className="tfr-cell-label">{t.widget.passengers}</span>
-              <span className="tfr-step">
-                <button
-                  type="button"
-                  className="tfr-stepbtn"
-                  aria-label="−"
-                  disabled={pax <= 1}
-                  onClick={() => setPax((n) => Math.max(1, n - 1))}
-                >
-                  <Minus className="h-3.5 w-3.5" />
-                </button>
-                <b className="tabular-nums">{pax}</b>
-                <button
-                  type="button"
-                  className="tfr-stepbtn"
-                  aria-label="+"
-                  disabled={pax >= 16}
-                  onClick={() => setPax((n) => Math.min(16, n + 1))}
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                </button>
-              </span>
-            </span>
-          </div>
-
-          <button type="submit" className="tfr-go">
-            <span>{t.widget.seePrices}</span>
-            <svg
-              viewBox="0 0 20 20"
-              width="16"
-              height="16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d="M3.5 10h12.5M11.5 5.5 16 10l-4.5 4.5" />
-            </svg>
-          </button>
         </form>
 
         {mapPicker && (
@@ -804,7 +1000,13 @@ function BookingWidgetCard({
         </div>
 
         <div className={cn("grid sm:grid-cols-3", compact ? "gap-2" : "gap-3")}>
-          <CounterInput label={t.widget.passengers} value={pax} onChange={setPax} min={1} max={16} />
+          <CounterInput
+            label={t.widget.passengers}
+            value={pax}
+            onChange={setPax}
+            min={1}
+            max={16}
+          />
           <CounterInput
             label={t.widget.checkedBags}
             value={bagsChecked}

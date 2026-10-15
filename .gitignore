@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+node_modules.incomplete
 dist
 dist-ssr
 .output
@@ -37,3 +38,8 @@ apps/*/.env
 *.njsproj
 *.sln
 *.sw?
+
+# Local release artifacts and native bundle exports
+/release/
+apps/*/dist-ios/
+.eslintcache

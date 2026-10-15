@@ -6,31 +6,62 @@
   "types": "src/index.ts",
   "exports": {
     ".": "./src/index.ts",
-    "./ui": "./src/ui/index.ts"
+    "./ui": "./src/ui/index.ts",
+    "./practice": "./src/practice.ts",
+    "./practice-screen": "./src/practice-screen.tsx",
+    "./pickup-time": "./src/pickup-time.ts"
   },
   "peerDependencies": {
     "@expo-google-fonts/inter": "*",
     "@expo-google-fonts/plus-jakarta-sans": "*",
     "@expo/vector-icons": "*",
     "@supabase/supabase-js": "^2.110.0",
+    "expo-blur": "*",
     "expo-font": "*",
+    "expo-location": "*",
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*",
     "react-native-svg": "*",
-    "react-native-webview": "*"
+    "react-native-webview": "*",
+    "@react-native-async-storage/async-storage": "2.2.0"
   },
   "peerDependenciesMeta": {
-    "@expo-google-fonts/inter": { "optional": true },
-    "@expo-google-fonts/plus-jakarta-sans": { "optional": true },
-    "@expo/vector-icons": { "optional": true },
-    "expo-font": { "optional": true },
-    "react-native-safe-area-context": { "optional": true },
-    "react-native-svg": { "optional": true },
-    "react-native-webview": { "optional": true }
+    "@expo-google-fonts/inter": {
+      "optional": true
+    },
+    "@expo-google-fonts/plus-jakarta-sans": {
+      "optional": true
+    },
+    "@expo/vector-icons": {
+      "optional": true
+    },
+    "expo-font": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "react-native-svg": {
+      "optional": true
+    },
+    "react-native-webview": {
+      "optional": true
+    },
+    "expo-blur": {
+      "optional": true
+    },
+    "expo-location": {
+      "optional": true
+    },
+    "@react-native-async-storage/async-storage": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.110.0",
+    "expo-blur": "~15.0.8",
     "typescript": "^5.8.3"
-  }
+  },
+  "type": "module"
 }

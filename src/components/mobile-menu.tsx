@@ -30,6 +30,8 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
   const primaryLinks: NavLink[] = [
     { label: t.nav.airports, to: "/{-$locale}/airports", hint: t.navHints.airports },
+    { label: t.nav.hotels, to: "/{-$locale}/hotels", hint: t.navHints.hotels },
+    { label: t.nav.flights, to: "/{-$locale}/flights", hint: t.navHints.flights },
     { label: t.nav.greece, to: "/{-$locale}/greece", hint: t.navHints.greece },
     { label: t.nav.routes, to: "/{-$locale}/routes", hint: t.navHints.routes },
     { label: t.nav.fleet, to: "/{-$locale}/fleet", hint: t.navHints.fleet },
@@ -98,12 +100,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
         </button>
       </div>
 
-      <div
-        className={cn(
-          "relative flex-1 overflow-y-auto px-6",
-          stickyVisible ? "pb-28" : "pb-8",
-        )}
-      >
+      <div className={cn("relative flex-1 overflow-y-auto px-6", stickyVisible ? "pb-28" : "pb-8")}>
         <TrustPills
           dark
           className="flex-nowrap gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"

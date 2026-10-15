@@ -49,6 +49,8 @@ export const nl: Dict = {
     partners: "Partners",
     forHotels: "Voor hotels",
     forDrivers: "Voor chauffeurs",
+    hotels: "Hotels",
+    flights: "Vluchten",
     company: "Bedrijf",
     popularRoutes: "Populaire routes",
     allRoutes: "Alle routes",
@@ -66,6 +68,8 @@ export const nl: Dict = {
     routes: "Vasteprijskaart",
     fleet: "Sedan tot van",
     faq: "Voor je vertrek",
+    hotels: "Verblijf + transfer",
+    flights: "Aankomsten",
   },
   settings: {
     title: "Instellingen",
@@ -109,7 +113,7 @@ export const nl: Dict = {
     licensed: "Lokale chauffeurs met vergunning",
     freeCancel: "Gratis annuleren 24u",
     flightTracked: "Ophalen met vluchtvolging",
-    payOnArrival: "Betalen bij aankomst",
+    payOnArrival: "Veilig online betalen",
     support: "24/7 ondersteuning",
   },
   stats: {
@@ -138,9 +142,8 @@ export const nl: Dict = {
     cancelTitle: "Gratis annuleren",
     cancelBody:
       "Plannen veranderen. Annuleer tot 24 uur voor het ophalen en betaal helemaal niets.",
-    payTitle: "Betalen bij aankomst",
-    payBody:
-      "Boek nu, betaal de chauffeur bij aankomst met kaart of contant. Geen vooruitbetaling, geen risico.",
+    payTitle: "Veilig online betalen",
+    payBody: "Betaal veilig met Stripe voordat je transfer wordt bevestigd.",
     meetTitle: "Meet & greet inbegrepen",
     meetBody:
       "Uw chauffeur wacht bij de aankomsthal met een naambordje, helpt met de bagage en kent de snelste weg naar buiten.",
@@ -159,6 +162,19 @@ export const nl: Dict = {
       "Naambordje bij aankomst, hulp met de bagage, vaste prijs betaald bij aankomst. Dat is het hele verhaal.",
   },
   widget: {
+    hotels: "Hotels",
+    flights: "Vluchten",
+    destination: "Bestemming",
+    checkIn: "Inchecken",
+    checkOut: "Uitchecken",
+    guests: "Gasten",
+    searchHotels: "Hotels zoeken",
+    searchFlights: "Vluchten zoeken",
+    originAirport: "Van (IATA)",
+    destAirport: "Naar (IATA)",
+    vibePlaceholder: "Beschrijf je droomverblijf…",
+    hotelPlacePlaceholder: "Stad of regio…",
+
     title: "Boek uw transfer",
     oneWay: "Enkele reis",
     return: "Retour",
@@ -190,7 +206,7 @@ export const nl: Dict = {
     returnDiscount: "Retourkorting (−5%)",
     nightSurcharge: "Nachttoeslag (22:00–06:00)",
     guaranteed: "Gegarandeerd vaste prijs",
-    payOnBoard: "Betalen bij aankomst — kaart of contant",
+    payOnBoard: "Veilig online betalen",
     minivanHint: "Tip: met zoveel bagage reist u comfortabeler in een minivan.",
     distance: (km: number, min: number) => `${km} km · ${min} min · Vaste prijs`,
     selectRoute: "Selecteer route",
@@ -207,8 +223,7 @@ export const nl: Dict = {
     heroEyebrow: "Privetransfers tegen vaste prijs",
     heroTitle1: "Jouw eiland.",
     heroTitleAccent: "Jouw chauffeur.",
-    heroSubtitle:
-      "Op de luchthaven of haven — vaste prijs, vluchttracking, gratis annulering.",
+    heroSubtitle: "Op de luchthaven of haven — vaste prijs, vluchttracking, gratis annulering.",
     manifestoLead: "De beste aankomsten voelen",
     manifestoAccent: "moeiteloos.",
     manifestoBody:
@@ -219,14 +234,16 @@ export const nl: Dict = {
     routesChapterSubtitle:
       "Dertig routes tegen vaste prijs. Beweeg over een route om te zien waarheen — en wat het kost.",
     fleetTitle: "Een auto voor elke aankomst",
-    fleetSubtitle: "Economy tot Luxury — dezelfde gelicenseerde chauffeurs, dezelfde vaste prijzen.",
+    fleetSubtitle:
+      "Economy tot Luxury — dezelfde gelicenseerde chauffeurs, dezelfde vaste prijzen.",
     proofTitle: "Beoordeeld met 4,9 door reizigers zoals jij",
     proofSubtitle: "Echte reviews van echte ophalingen over heel Kreta.",
     regionsTitle: "Een eiland, van eind tot eind",
     regionsSubtitle: "Twee internationale luchthavens, drie havens, 260 km kustlijn.",
     closingTitle: "Jij verkent.",
     closingAccent: "Wij rijden.",
-    closingSubtitle: "Vaste prijs, gelicenseerde chauffeur, gratis annulering. Boek in twee minuten.",
+    closingSubtitle:
+      "Vaste prijs, gelicenseerde chauffeur, gratis annulering. Boek in twee minuten.",
     popularTitle: "Populaire routes",
     popularSubtitle: "Vaste prijzen op de routes die reizigers het meest boeken.",
     reviewsTitle: "Beoordeeld met 4,9 door reizigers zoals jij",
@@ -391,7 +408,7 @@ export const nl: Dict = {
     stepDetails: "Uw gegevens",
     continue: "Doorgaan",
     back: "Terug",
-    confirm: "Boeking bevestigen",
+    confirm: "Verder naar veilig betalen",
     submitting: "Bezig met boeken…",
     fullName: "Volledige naam",
     emailLabel: "E-mail",
@@ -408,7 +425,7 @@ export const nl: Dict = {
     extraStop: "Extra stop",
     meetGreet: "Meet & greet met naambordje",
     yourQuote: "Uw prijsopgave",
-    payOnArrival: "Betalen bij aankomst — kaart of contant. Online betalen komt binnenkort.",
+    payOnArrival: "Veilig online betalen",
     successTitle: "Boeking ontvangen!",
     successBody:
       "We hebben uw aanvraag ontvangen en bevestigen uw chauffeur binnenkort per e-mail. Vragen? Onze centrale antwoordt 24/7.",
@@ -459,7 +476,8 @@ export const nl: Dict = {
   },
   howItWorksPage: {
     metaTitle: "Hoe het werkt | Boek een Kreta Transfer in 3 stappen",
-    metaDescription: "Kies een route met een vaste prijs, boek binnen twee minuten en ontmoet uw chauffeur bij aankomst. Hoe TransferAround werkt, stap voor stap.",
+    metaDescription:
+      "Kies een route met een vaste prijs, boek binnen twee minuten en ontmoet uw chauffeur bij aankomst. Hoe TransferAround werkt, stap voor stap.",
     eyebrow: "Hoe het werkt",
     title: "Drie stappen. Nul heen en weer.",
     cta: "Start uw boeking →",
@@ -467,19 +485,19 @@ export const nl: Dict = {
       {
         n: "01",
         title: "Ontvang uw vaste prijs",
-        body: "Voer uw route, datum en aantal passagiers in. Onze prijsengine retourneert een gegarandeerde vaste prijs voor vier voertuigklassen: u hoeft niet te bieden en u hoeft niet te wachten tot een chauffeur reageert."
+        body: "Voer uw route, datum en aantal passagiers in. Onze prijsengine retourneert een gegarandeerde vaste prijs voor vier voertuigklassen: u hoeft niet te bieden en u hoeft niet te wachten tot een chauffeur reageert.",
       },
       {
         n: "02",
         title: "Boek binnen een minuut",
-        body: "Naam, contactpersoon en vluchtnummer van de passagier. Dat is het. U ontvangt onmiddellijk een e-mailbevestiging en de naam van uw chauffeur, foto en WhatsApp 24 uur vóór het ophalen."
+        body: "Naam, contactpersoon en vluchtnummer van de passagier. Dat is het. U ontvangt onmiddellijk een e-mailbevestiging en de naam van uw chauffeur, foto en WhatsApp 24 uur vóór het ophalen.",
       },
       {
         n: "03",
         title: "Ontmoet elkaar bij de poort",
-        body: "Uw chauffeur volgt uw vlucht of veerboot, arriveert 15 minuten voordat u landt en wacht bij aankomst met uw naam. Betaal contant, per pin of vooraf online."
-      }
-    ]
+        body: "Uw chauffeur volgt uw vlucht of veerboot, arriveert 15 minuten voordat u landt en wacht bij aankomst met uw naam. Betaal contant, per pin of vooraf online.",
+      },
+    ],
   },
   reviewsPage: {
     metaTitle: "Beoordelingen | Kreta-transfers met een 4,9",
@@ -491,10 +509,12 @@ export const nl: Dict = {
   },
   forHotels: {
     metaTitle: "Voor hotels | Transferpartnerprogramma op Kreta",
-    metaDescription: "Bied uw gasten gelicentieerde transfers tegen een vaste prijs aan met een chauffeur met naam. Partnerdashboard, commissie en prioriteitsverzending voor hotels op Kreta.",
+    metaDescription:
+      "Bied uw gasten gelicentieerde transfers tegen een vaste prijs aan met een chauffeur met naam. Partnerdashboard, commissie en prioriteitsverzending voor hotels op Kreta.",
     eyebrow: "Partnerschap",
     title: "Voor hotels.",
-    subtitle: "Een gastentransfer die uw normen weerspiegelt. Vaste prijzen, chauffeurs met naam, één nummer dat uw conciërge kan bellen.",
+    subtitle:
+      "Een gastentransfer die uw normen weerspiegelt. Vaste prijzen, chauffeurs met naam, één nummer dat uw conciërge kan bellen.",
     formTitle: "Neem contact op",
     benefitsTitle: "Wat partnerhotels krijgen",
     benefits: [
@@ -504,20 +524,24 @@ export const nl: Dict = {
       "Commissie op elke geboekte transfer",
       "Maandelijkse rapportage en afstemming",
       "Voorkeurschauffeurspool toegewezen aan uw accommodatie",
-      "Aangepaste prijzen voor groeps- en bruiloftsboekingen"
+      "Aangepaste prijzen voor groeps- en bruiloftsboekingen",
     ],
     referralsTitle: "Hoe verwijzingen werken",
-    referralsBody: "Na goedkeuring ontvangt u een code zoals HOTEL-CHANIA. Gasten boeken met ?ref=HOTEL-CHANIA op de boekings-URL – de commissie wordt automatisch geregistreerd wanneer de reis is voltooid.",
-    partnersNote: "We werken al samen met boetiekhotels in Chania, Rethymnon, Heraklion en Lasithi – van accommodaties met 10 kamers tot grote resorts.",
+    referralsBody:
+      "Na goedkeuring ontvangt u een code zoals HOTEL-CHANIA. Gasten boeken met ?ref=HOTEL-CHANIA op de boekings-URL – de commissie wordt automatisch geregistreerd wanneer de reis is voltooid.",
+    partnersNote:
+      "We werken al samen met boetiekhotels in Chania, Rethymnon, Heraklion en Lasithi – van accommodaties met 10 kamers tot grote resorts.",
     submitLabel: "Vraag partnerschapsinformatie aan",
-    placeholder: "Vertel ons over uw accommodatie en het typische gastenvolume."
+    placeholder: "Vertel ons over uw accommodatie en het typische gastenvolume.",
   },
   forDrivers: {
     metaTitle: "Voor chauffeurs | Sluit u aan bij het TransferAround Netwerk",
-    metaDescription: "Gelicentieerde chauffeur op Kreta? Sluit u aan bij een netwerk met vaste routes, eerlijke beloning en geen biedoorlogen. Minimaal drie jaar ervaring vereist.",
+    metaDescription:
+      "Gelicentieerde chauffeur op Kreta? Sluit u aan bij een netwerk met vaste routes, eerlijke beloning en geen biedoorlogen. Minimaal drie jaar ervaring vereist.",
     eyebrow: "Rijd met ons mee",
     title: "Voor chauffeurs.",
-    subtitle: "Een netwerk tegen een vaste prijs, gebouwd voor professionele Kretenzische chauffeurs die zich bekommeren om terugkerende gasten en reputatie, en niet om oorlogen.",
+    subtitle:
+      "Een netwerk tegen een vaste prijs, gebouwd voor professionele Kretenzische chauffeurs die zich bekommeren om terugkerende gasten en reputatie, en niet om oorlogen.",
     formTitle: "Meld je aan om mee te doen",
     applyCta: "Solliciteren om te rijden",
     requirementsTitle: "Vereisten",
@@ -527,20 +551,20 @@ export const nl: Dict = {
       "Minimaal 3 jaar professioneel rijden op Kreta",
       "Werkend Engels (basis)",
       "Smartphone met WhatsApp",
-      "Bereidheid om te werken volgens een fixed price model"
+      "Bereidheid om te werken volgens een fixed price model",
     ],
     perksTitle: "Wat je krijgt",
     perks: [
       "Gegarandeerd tarief per route – geen biedingen, geen onderbieding",
       "Wekelijkse uitbetalingen, geen contant geld",
       "Lokale verzending (Heraklion en Chania) 24/7 beschikbaar",
-      "Prioriteit voor herhalings- en partnerhotelboekingen"
+      "Prioriteit voor herhalings- en partnerhotelboekingen",
     ],
     applyIntroBefore: "Klaar om te beginnen?",
     applyIntroLink: "Maak uw chauffeursaccount aan",
     applyIntroAfter: "— of stuur ons eerst een bericht.",
     submitLabel: "Sollicitatie versturen",
-    placeholder: "Woonplaats, merk/model/jaar voertuig, jaren gereden op Kreta."
+    placeholder: "Woonplaats, merk/model/jaar voertuig, jaren gereden op Kreta.",
   },
   legal: {
     eyebrow: "Juridisch",
@@ -570,19 +594,26 @@ export const nl: Dict = {
     serviceTitle: (name: string) => `${name} op Kreta | Vaste prijs · TransferAround`,
     regionTitle: (name: string) => `${name}, Kreta transfers | TransferAround`,
     routeTitle: (from: string, to: string) => `${from} naar ${to} | Vaste prijs · TransferAround`,
-    airportTitle: (name: string, iata: string) => `${name} (${iata}) transfers | Vaste prijs · TransferAround`,
-    airportRouteTitle: (from: string, to: string) => `${from} naar ${to} privétransfer | TransferAround`,
+    airportTitle: (name: string, iata: string) =>
+      `${name} (${iata}) transfers | Vaste prijs · TransferAround`,
+    airportRouteTitle: (from: string, to: string) =>
+      `${from} naar ${to} privétransfer | TransferAround`,
     fleetTitle: (label: string) => `${label} transfers op Kreta | TransferAround`,
     fleetIndexTitle: "Vloot | Voertuigklassen voor transfers naar Kreta",
-    fleetIndexDescription: "Van Economy tot minibus: kies de juiste voertuigklasse voor uw Kreta-transfer. Vaste prijzen, erkende chauffeurs.",
+    fleetIndexDescription:
+      "Van Economy tot minibus: kies de juiste voertuigklasse voor uw Kreta-transfer. Vaste prijzen, erkende chauffeurs.",
     servicesIndexTitle: "Transferdiensten op Kreta | TransferAround",
-    servicesIndexDescription: "Luchthaven-, haven-, resort- en uurchauffeursdiensten op heel Kreta – vaste prijzen, met naam lokale chauffeurs.",
+    servicesIndexDescription:
+      "Luchthaven-, haven-, resort- en uurchauffeursdiensten op heel Kreta – vaste prijzen, met naam lokale chauffeurs.",
     regionsIndexTitle: "Kreta Regio | Chania, Rethymnon, Heraklion, Lasithi",
-    regionsIndexDescription: "Ontdek de transferdekking in de vier prefecturen van Kreta: luchthavens, havens en vakantieoorden.",
+    regionsIndexDescription:
+      "Ontdek de transferdekking in de vier prefecturen van Kreta: luchthavens, havens en vakantieoorden.",
     routesIndexTitle: "Transferroutes naar Kreta | Vaste prijzen · TransferAround",
-    routesIndexDescription: "Blader door alle privétransferroutes met een vaste prijs op Kreta: luchthavens, havens en resorts.",
+    routesIndexDescription:
+      "Blader door alle privétransferroutes met een vaste prijs op Kreta: luchthavens, havens en resorts.",
     airportsIndexTitle: "Luchthaventransfers in Griekenland | TransferAround",
-    airportsIndexDescription: "Privéluchthaventransfers met erkende chauffeurs - Kreta en daarbuiten. Vaste prijzen, meet & greet.",
+    airportsIndexDescription:
+      "Privéluchthaventransfers met erkende chauffeurs - Kreta en daarbuiten. Vaste prijzen, meet & greet.",
     citiesIndexTitle: "Stadstransfers | TransferAround",
     citiesIndexDescription: "Privétransfers naar steden en resorts op onze dekkingskaart.",
     cityTitle: (name: string) => `${name} transfers | TransferAround`,
@@ -622,6 +653,13 @@ export const nl: Dict = {
     checkEmailTitle: "Controleer uw e-mail",
     checkEmailBody: (email: string) =>
       `We hebben een bevestigingslink naar ${email} gestuurd. Klik erop om uw account te activeren.`,
+    withPassword: "Wachtwoord",
+    withMagicLink: "Magic link",
+    magicLinkSubtitle: "We mailen je een inloglink met één tik. Geen wachtwoord nodig.",
+    sendMagicLink: "Stuur me een magic link",
+    magicLinkSent: (email: string) =>
+      `Als er een account bestaat voor ${email}, is er een magic link onderweg. Open die op dit apparaat.`,
+    magicLinkFailed: "Kon de magic link niet versturen. Probeer opnieuw of gebruik je wachtwoord.",
     resetTitle: "Wachtwoord opnieuw instellen",
     resetSubtitle: "Voer uw e-mail in en we sturen u een resetlink.",
     resetSent: "Als er een account voor die e-mail bestaat, is er een resetlink onderweg.",
@@ -676,18 +714,21 @@ export const nl: Dict = {
     backToBookings: "Terug naar mijn boekingen",
     driverTitle: "Uw chauffeur",
     findingDriverTitle: "Je chauffeur wordt gezocht",
-    findingDriverBody: "We koppelen een gelicentieerde lokale chauffeur. Je krijgt een e-mail met naam en telefoon zodra toegewezen.",
+    findingDriverBody:
+      "We koppelen een gelicentieerde lokale chauffeur. Je krijgt een e-mail met naam en telefoon zodra toegewezen.",
     driverPendingBody:
       "Er wordt binnenkort een chauffeur met vergunning toegewezen — naam, telefoon en voertuig verschijnen hier.",
     plate: "Kenteken",
     cancelBooking: "Boeking annuleren",
     cancelTitle: "Deze boeking annuleren?",
-    cancelBody:       "Gratis annuleren tot 24 uur voor ophalen. Binnen 24 uur geldt een toeslag van 50%. Kies een reden.",
+    cancelBody:
+      "Gratis annuleren tot 24 uur voor ophalen. Binnen 24 uur geldt een toeslag van 50%. Kies een reden.",
     cancelConfirm: "Ja, annuleer",
     cancelKeep: "Boeking behouden",
     cancelled: "Boeking geannuleerd.",
     cancelFailed: "We konden deze boeking niet online annuleren — bel ons en we regelen het.",
-    tooLateToCancel: (phone: string) => `Minder dan 24u tot ophalen — bel ${phone} voor wijzigingen`,
+    tooLateToCancel: (phone: string) =>
+      `Minder dan 24u tot ophalen — bel ${phone} voor wijzigingen`,
     cancelReasonLabel: "Reden",
     cancelNoteLabel: "Details (optioneel)",
     cancelNotePlaceholder: "Is er iets dat we moeten weten?",
@@ -772,7 +813,8 @@ export const nl: Dict = {
     suspendedTitle: "Account geschorst",
     suspendedBody:
       "Uw chauffeursaccount is momenteel geschorst. Neem contact op met de centrale voor details.",
-    poolEmpty: "Op dit moment geen openstaande ritten. Nieuwe boekingen verschijnen hier automatisch.",
+    poolEmpty:
+      "Op dit moment geen openstaande ritten. Nieuwe boekingen verschijnen hier automatisch.",
     claim: "Rit claimen",
     claiming: "Bezig met claimen…",
     claimedToast: "Rit geclaimd — hij is van u.",
@@ -788,7 +830,8 @@ export const nl: Dict = {
     offersTitle: "Ritaanbiedingen",
     offersEmpty: "Geen actieve aanbiedingen. Blijf online.",
     asapTitle: "NU / ASAP",
-    asapEmpty: "Geen live NU-verzoeken. Als een gast Touristas om een directe transfer vraagt, verschijnt die hier.",
+    asapEmpty:
+      "Geen live NU-verzoeken. Als een gast Touristas om een directe transfer vraagt, verschijnt die hier.",
     asapBadge: "NU",
     asapExpires: "Verloopt over {sec}s",
     asapNewToast: "Nieuw NU-transferverzoek",
@@ -816,12 +859,18 @@ export const nl: Dict = {
     completeTrip: "Voltooid",
     noShow: "Niet komen opdagen",
     confirmComplete: "Deze rit als voltooid markeren?",
-    confirmNoShow:       "Markeren als no-show? Alleen na gratis wachten (60 min luchthaven/haven, 30 min elders).",
+    confirmNoShow:
+      "Markeren als no-show? Alleen na gratis wachten (60 min luchthaven/haven, 30 min elders).",
     unableToComplete: "Kan niet afronden",
-    confirmUnable:
-      "Melden dat je deze rit niet kunt afronden? De klant krijgt compensatie.",
+    confirmUnable: "Melden dat je deze rit niet kunt afronden? De klant krijgt compensatie.",
     unableReported: "Gemeld — dispatch helpt de klant.",
     waitNotElapsed: "Gratis wachttijd is nog niet verstreken — blijf wachten of bel de gast.",
+    waitUntilLabel: "Free wait until",
+    waitUntilLive: (until: string) => `Free wait until ${until} (adjusted for flight ETA)`,
+    waitUntilBase: (until: string) => `Free wait until ${until}`,
+    flightChecking: "Checking flight…",
+    flightLive: (status: string, eta: string) => `${status} · ETA ${eta}`,
+    flightStub: (flight: string) => `Tracking ready (${flight}) — live ETA unavailable`,
 
     statusUpdated: "Status bijgewerkt.",
     updateFailed: "Kon de status niet bijwerken — probeer het opnieuw.",
@@ -830,7 +879,16 @@ export const nl: Dict = {
     earningsMonth: "Deze maand",
     earningsChartTitle: "Verdiensten per maand",
     earningsEmpty: "Voltooi uw eerste rit om hier uw verdiensten te zien.",
-    payoutNote: "Bruto ritprijzen geïnd bij aankomst, vóór eventuele commissie.",
+    payoutNote:
+      "Net earnings after the {fee}% platform fee. Prepaid trips are remitted when the job is marked completed.",
+    connectTitle: "Connect payouts",
+    connectBody:
+      "Link your Stripe Express account to receive 85% of each completed prepaid transfer automatically.",
+    connectCta: "Set up payouts",
+    connectBusy: "Opening Stripe…",
+    connectReady: "Payouts connected — you’ll receive 85% after each completed prepaid trip.",
+    connectSynced: "Payout account updated.",
+    connectFailed: "Couldn’t open Stripe Connect — try again or contact ops.",
     applyTitle: "Solliciteer als chauffeur",
     applySubtitle:
       "Voor chauffeurs met vergunning en minstens drie jaar op de wegen van Kreta. Goedkeuring duurt meestal minder dan 48 uur.",
@@ -859,6 +917,14 @@ export const nl: Dict = {
     pickDriver: "Select an online driver",
     offlineDriver: "Offline",
     onlineDriver: "Online",
+    connectTitle: "Company payouts",
+    connectBody:
+      "Connect the partner Stripe account to receive 85% of completed prepaid jobs assigned to your fleet.",
+    connectCta: "Connect Stripe",
+    connectBusy: "Opening Stripe…",
+    connectReady: "Payouts connected for this partner.",
+    connectFailed: "Couldn’t start Stripe Connect — try again.",
+    connectSynced: "Partner payout account updated.",
   },
   touristasAi: {
     title: "Touristas AI",
@@ -928,7 +994,8 @@ export const nl: Dict = {
     fullPageTitle: "Touristas AI",
     fullPageSubtitle: "Quote private transfers, vergelijk voertuigen en open het formulier.",
     fullPageMetaTitle: "Touristas AI | TransferAround",
-    fullPageMetaDescription: "Vraag Touristas AI om vaste transferprijzen op Kreta, Griekenland, Spanje en Italië.",
+    fullPageMetaDescription:
+      "Vraag Touristas AI om vaste transferprijzen op Kreta, Griekenland, Spanje en Italië.",
 
     contextPrefix: "Context:",
   },

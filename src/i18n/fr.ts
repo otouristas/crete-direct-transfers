@@ -49,6 +49,8 @@ export const fr: Dict = {
     partners: "Partenaires",
     forHotels: "Pour les hôtels",
     forDrivers: "Pour les chauffeurs",
+    hotels: "Hôtels",
+    flights: "Vols",
     company: "Entreprise",
     popularRoutes: "Itinéraires populaires",
     allRoutes: "Tous les itinéraires",
@@ -66,6 +68,8 @@ export const fr: Dict = {
     routes: "Carte à prix fixe",
     fleet: "Berline au van",
     faq: "Avant de voler",
+    hotels: "Séjour + transfert",
+    flights: "Arrivées",
   },
   settings: {
     title: "Paramètres",
@@ -109,7 +113,7 @@ export const fr: Dict = {
     licensed: "Chauffeurs locaux agréés",
     freeCancel: "Annulation gratuite 24h",
     flightTracked: "Prise en charge avec suivi des vols",
-    payOnArrival: "Paiement à l'arrivée",
+    payOnArrival: "Paiement sécurisé en ligne",
     support: "Assistance 24h/24 et 7j/7",
   },
   stats: {
@@ -138,9 +142,8 @@ export const fr: Dict = {
     cancelTitle: "Annulation gratuite",
     cancelBody:
       "Les plans changent. Annulez jusqu'à 24 heures avant la prise en charge sans rien payer.",
-    payTitle: "Paiement à l'arrivée",
-    payBody:
-      "Réservez maintenant, payez le chauffeur par carte ou en espèces à votre arrivée. Aucun prépaiement, aucun risque.",
+    payTitle: "Paiement sécurisé en ligne",
+    payBody: "Payez en toute sécurité avec Stripe avant la confirmation du transfert.",
     meetTitle: "Accueil personnalisé inclus",
     meetBody:
       "Votre chauffeur vous attend à l'arrivée avec une pancarte à votre nom, vous aide avec les bagages et connaît le chemin le plus rapide.",
@@ -159,6 +162,19 @@ export const fr: Dict = {
       "Pancarte à votre nom à l'arrivée, aide avec les bagages, prix fixe payé à l'arrivée. Voilà toute l'histoire.",
   },
   widget: {
+    hotels: "Hôtels",
+    flights: "Vols",
+    destination: "Destination",
+    checkIn: "Arrivée",
+    checkOut: "Départ",
+    guests: "Voyageurs",
+    searchHotels: "Rechercher des hôtels",
+    searchFlights: "Rechercher des vols",
+    originAirport: "De (IATA)",
+    destAirport: "Vers (IATA)",
+    vibePlaceholder: "Décrivez le séjour de vos rêves…",
+    hotelPlacePlaceholder: "Ville ou région…",
+
     title: "Réservez votre transfert",
     oneWay: "Aller simple",
     return: "Aller-retour",
@@ -190,7 +206,7 @@ export const fr: Dict = {
     returnDiscount: "Réduction aller-retour (−5 %)",
     nightSurcharge: "Supplément de nuit (22h00–06h00)",
     guaranteed: "Prix fixe garanti",
-    payOnBoard: "Paiement à l'arrivée — carte ou espèces",
+    payOnBoard: "Paiement sécurisé en ligne",
     minivanHint: "Astuce : avec autant de bagages, un minivan est plus confortable.",
     distance: (km: number, min: number) => `${km} km · ${min} min · Prix fixe`,
     selectRoute: "Sélectionner un itinéraire",
@@ -208,8 +224,7 @@ export const fr: Dict = {
     heroEyebrow: "Transferts prives a prix fixe",
     heroTitle1: "Votre ile.",
     heroTitleAccent: "Votre chauffeur.",
-    heroSubtitle:
-      "A l'aeroport ou au port — prix fixe, suivi de vol, annulation gratuite.",
+    heroSubtitle: "A l'aeroport ou au port — prix fixe, suivi de vol, annulation gratuite.",
     manifestoLead: "Les meilleures arrivees sont",
     manifestoAccent: "sans effort.",
     manifestoBody:
@@ -227,7 +242,8 @@ export const fr: Dict = {
     regionsSubtitle: "Deux aeroports internationaux, trois ports, 260 km de cote.",
     closingTitle: "Vous explorez.",
     closingAccent: "Nous conduisons.",
-    closingSubtitle: "Prix fixe, chauffeur licencie, annulation gratuite. Reservez en deux minutes.",
+    closingSubtitle:
+      "Prix fixe, chauffeur licencie, annulation gratuite. Reservez en deux minutes.",
     popularTitle: "Trajets populaires",
     popularSubtitle: "Prix fixes sur les trajets les plus reserves.",
     reviewsTitle: "Note 4,9 par des voyageurs comme vous",
@@ -329,14 +345,12 @@ export const fr: Dict = {
   },
   servicesPages: {
     indexTitle: "Nous vous y emmenons.",
-    indexSubtitle:
-      "Dites-nous ou commencer — aeroport, port, ou une journee sur l'ile.",
+    indexSubtitle: "Dites-nous ou commencer — aeroport, port, ou une journee sur l'ile.",
     routesFor: "Itinéraires populaires pour ce service",
   },
   fleetPages: {
     indexTitle: "Nous vous deplaçons.",
-    indexSubtitle:
-      "Agréés, assurés et contrôlés — choisissez la taille adaptée à votre voyage.",
+    indexSubtitle: "Agréés, assurés et contrôlés — choisissez la taille adaptée à votre voyage.",
     upTo: (pax: number, bags: number) => `Jusqu'à ${pax} passagers · ${bags} bagages`,
     multiplier: "Facteur de prix",
     bookClass: "Réserver ce véhicule",
@@ -347,8 +361,7 @@ export const fr: Dict = {
       "TransferAround a été créé par des locaux pour corriger ce qui ne va pas dans les transferts aéroport : enchères, tarifs dynamiques et absence de responsabilité. Une île, des prix fixes, des chauffeurs agréés.",
     eyebrow: "À propos",
     title: "Notre ADN.",
-    intro:
-      "TransferAround existe parce que le marché du transfert sur notre île était défaillant.",
+    intro: "TransferAround existe parce que le marché du transfert sur notre île était défaillant.",
     body1:
       "Les voyageurs arrivant a Heraklion ou La Cannee devaient comparer des offres d'inconnus, negocier sur WhatsApp, ou faire confiance au compteur apres un long vol. Les prix bougeaient. Les chauffeurs tournaient. La responsabilite n'etait le travail de personne.",
     body2:
@@ -366,7 +379,8 @@ export const fr: Dict = {
     value2Title: "Transparence",
     value2Body: "Un prix fixe par itinéraire. Fixé avant la réservation, jamais après.",
     value3Title: "Responsabilité",
-    value3Body: "Une entreprise, un seul numéro à appeler, un chauffeur nommé sur chaque réservation.",
+    value3Body:
+      "Une entreprise, un seul numéro à appeler, un chauffeur nommé sur chaque réservation.",
     value4Title: "Ancrage local",
     value4Body:
       "Nous couvrons une seule île et connaissons chacune de ses routes d'accès aux hôtels.",
@@ -397,7 +411,7 @@ export const fr: Dict = {
     stepDetails: "Vos coordonnées",
     continue: "Continuer",
     back: "Retour",
-    confirm: "Confirmer la réservation",
+    confirm: "Passer au paiement sécurisé",
     submitting: "Réservation…",
     fullName: "Nom complet",
     emailLabel: "E-mail",
@@ -409,14 +423,13 @@ export const fr: Dict = {
       "Cliquez sur la carte ou faites glisser le repère jusqu'à votre lieu de prise en charge exact.",
     returnFlightNumber: "Numéro du vol retour",
     notes: "Notes pour le chauffeur",
-    notesPlaceholder:
-      "Porte d'arrivée, position du siège bébé, adresse d'un arrêt supplémentaire…",
+    notesPlaceholder: "Porte d'arrivée, position du siège bébé, adresse d'un arrêt supplémentaire…",
     extrasTitle: "Options",
     childSeat: "Siège enfant",
     extraStop: "Arrêt supplémentaire",
     meetGreet: "Accueil avec pancarte au nom",
     yourQuote: "Votre devis",
-    payOnArrival: "Paiement à l'arrivée — carte ou espèces. Paiement en ligne bientôt disponible.",
+    payOnArrival: "Paiement sécurisé en ligne",
     successTitle: "Réservation reçue !",
     successBody:
       "Nous avons bien reçu votre demande et confirmerons votre chauffeur par e-mail sous peu. Des questions ? Notre régulation répond 24h/24 et 7j/7.",
@@ -443,10 +456,12 @@ export const fr: Dict = {
     freeCancelTitle: "Annulation GRATUITE 24H",
     freeCancelBodyBefore: "Réservez aujourd'hui, prix garanti. Annulation gratuite jusqu'au",
     freeCancelBodyAfter: "avec remboursement intégral.",
-    freeCancelBodyGeneric: "Réservez aujourd'hui. Annulation gratuite jusqu'à 24 h avant la prise en charge.",
+    freeCancelBodyGeneric:
+      "Réservez aujourd'hui. Annulation gratuite jusqu'à 24 h avant la prise en charge.",
     seeVehicles: "Voir les prix des véhicules",
     needPlaces: "Sélectionnez départ et arrivée avec une position précise.",
-    needQuote: "Tarif indisponible pour l'instant. Choisissez des lieux dans la liste ou sur la carte.",
+    needQuote:
+      "Tarif indisponible pour l'instant. Choisissez des lieux dans la liste ou sur la carte.",
     kindAirport: "Aéroport",
     kindPort: "Port",
     kindPlace: "Lieu",
@@ -467,7 +482,8 @@ export const fr: Dict = {
   },
   howItWorksPage: {
     metaTitle: "Comment ça marche | Réservez un transfert en Crète en 3 étapes",
-    metaDescription: "Choisissez un itinéraire à prix fixe, réservez en deux minutes, rencontrez votre chauffeur aux arrivées. Comment fonctionne le TransferAround, étape par étape.",
+    metaDescription:
+      "Choisissez un itinéraire à prix fixe, réservez en deux minutes, rencontrez votre chauffeur aux arrivées. Comment fonctionne le TransferAround, étape par étape.",
     eyebrow: "Comment ça marche",
     title: "Trois étapes. Zéro aller-retour.",
     cta: "Commencez votre réservation →",
@@ -475,19 +491,19 @@ export const fr: Dict = {
       {
         n: "01",
         title: "Obtenez votre prix fixe",
-        body: "Entrez votre itinéraire, la date et le nombre de passagers. Notre moteur de tarification renvoie un prix fixe garanti pour quatre classes de véhicules : pas d'enchères, pas d'attente de réponse d'un conducteur."
+        body: "Entrez votre itinéraire, la date et le nombre de passagers. Notre moteur de tarification renvoie un prix fixe garanti pour quatre classes de véhicules : pas d'enchères, pas d'attente de réponse d'un conducteur.",
       },
       {
         n: "02",
         title: "Réservez en une minute",
-        body: "Nom du passager, contact et numéro de vol. C'est ça. Vous recevrez immédiatement un e-mail de confirmation ainsi que le nom, la photo et le WhatsApp de votre chauffeur 24 heures avant la prise en charge."
+        body: "Nom du passager, contact et numéro de vol. C'est ça. Vous recevrez immédiatement un e-mail de confirmation ainsi que le nom, la photo et le WhatsApp de votre chauffeur 24 heures avant la prise en charge.",
       },
       {
         n: "03",
         title: "Rendez-vous à la porte",
-        body: "Votre chauffeur suit votre vol ou votre ferry, arrive 15 minutes avant votre atterrissage et attend aux arrivées avec votre nom. Payez en espèces, par carte ou en ligne à l'avance."
-      }
-    ]
+        body: "Votre chauffeur suit votre vol ou votre ferry, arrive 15 minutes avant votre atterrissage et attend aux arrivées avec votre nom. Payez en espèces, par carte ou en ligne à l'avance.",
+      },
+    ],
   },
   reviewsPage: {
     metaTitle: "Avis | Transferts en Crète notés 4,9",
@@ -499,10 +515,12 @@ export const fr: Dict = {
   },
   forHotels: {
     metaTitle: "Pour les hôtels | Programme de partenariat de transfert en Crète",
-    metaDescription: "Proposez à vos invités des transferts sous licence à prix fixe avec un chauffeur nommé. Tableau de bord des partenaires, commission et expédition prioritaire pour les hôtels de Crète.",
+    metaDescription:
+      "Proposez à vos invités des transferts sous licence à prix fixe avec un chauffeur nommé. Tableau de bord des partenaires, commission et expédition prioritaire pour les hôtels de Crète.",
     eyebrow: "Partenariat",
     title: "Pour les hôtels.",
-    subtitle: "Un transfert invité qui reflète vos normes. Des prix fixes, des chauffeurs nommés, un seul numéro à appeler pour votre concierge.",
+    subtitle:
+      "Un transfert invité qui reflète vos normes. Des prix fixes, des chauffeurs nommés, un seul numéro à appeler pour votre concierge.",
     formTitle: "Entrer en contact",
     benefitsTitle: "Ce que les hôtels partenaires obtiennent",
     benefits: [
@@ -512,20 +530,24 @@ export const fr: Dict = {
       "Commission sur chaque transfert réservé",
       "Reporting mensuel et rapprochement",
       "Pool de chauffeurs préférés attribué à votre propriété",
-      "Tarifs personnalisés pour les réservations de groupe et de mariage"
+      "Tarifs personnalisés pour les réservations de groupe et de mariage",
     ],
     referralsTitle: "Comment fonctionnent les références",
-    referralsBody: "Après approbation, vous recevez un code du type HOTEL-CHANIA. Les clients réservent avec ?ref=HOTEL-CHANIA sur l'URL de réservation — la commission est enregistrée automatiquement une fois le voyage terminé.",
-    partnersNote: "Nous travaillons déjà en partenariat avec des hôtels-boutiques à La Canée, Réthymnon, Héraklion et Lassithi – des propriétés de 10 chambres aux grands complexes hôteliers.",
+    referralsBody:
+      "Après approbation, vous recevez un code du type HOTEL-CHANIA. Les clients réservent avec ?ref=HOTEL-CHANIA sur l'URL de réservation — la commission est enregistrée automatiquement une fois le voyage terminé.",
+    partnersNote:
+      "Nous travaillons déjà en partenariat avec des hôtels-boutiques à La Canée, Réthymnon, Héraklion et Lassithi – des propriétés de 10 chambres aux grands complexes hôteliers.",
     submitLabel: "Demander des informations sur le partenariat",
-    placeholder: "Parlez-nous de votre propriété et du nombre typique de clients."
+    placeholder: "Parlez-nous de votre propriété et du nombre typique de clients.",
   },
   forDrivers: {
     metaTitle: "Pour les conducteurs | Rejoignez le réseau TransferAround",
-    metaDescription: "Chauffeur titulaire d'un permis en Crète ? Rejoignez un réseau avec des itinéraires fixes, une rémunération équitable et sans guerre d'enchères. Minimum de trois années d'expérience requises.",
+    metaDescription:
+      "Chauffeur titulaire d'un permis en Crète ? Rejoignez un réseau avec des itinéraires fixes, une rémunération équitable et sans guerre d'enchères. Minimum de trois années d'expérience requises.",
     eyebrow: "Conduisez avec nous",
     title: "Pour les conducteurs.",
-    subtitle: "Un réseau à prix fixe conçu pour les chauffeurs crétois professionnels soucieux des clients réguliers et de leur réputation, et non des guerres d'enchères.",
+    subtitle:
+      "Un réseau à prix fixe conçu pour les chauffeurs crétois professionnels soucieux des clients réguliers et de leur réputation, et non des guerres d'enchères.",
     formTitle: "Postuler pour rejoindre",
     applyCta: "Postuler pour conduire",
     requirementsTitle: "Exigences",
@@ -535,20 +557,20 @@ export const fr: Dict = {
       "Minimum 3 ans de conduite professionnelle en Crète",
       "Anglais de travail (base)",
       "Smartphone avec WhatsApp",
-      "Volonté de travailler selon un modèle à prix fixe"
+      "Volonté de travailler selon un modèle à prix fixe",
     ],
     perksTitle: "Ce que vous obtenez",
     perks: [
       "Tarif garanti par itinéraire — pas d'enchères, pas de sous-cotation",
       "Paiements hebdomadaires, pas d'argent détenu",
       "Expédition locale (Héraklion et Chania) disponible 24h/24 et 7j/7",
-      "Priorité aux réservations répétées et dans les hôtels partenaires"
+      "Priorité aux réservations répétées et dans les hôtels partenaires",
     ],
     applyIntroBefore: "Prêt à commencer ?",
     applyIntroLink: "Créez votre compte chauffeur",
     applyIntroAfter: "- ou envoyez-nous d'abord un message.",
     submitLabel: "Envoyer la candidature",
-    placeholder: "Ville de base, marque/modèle/année du véhicule, années de conduite en Crète."
+    placeholder: "Ville de base, marque/modèle/année du véhicule, années de conduite en Crète.",
   },
   legal: {
     eyebrow: "Mentions légales",
@@ -578,21 +600,29 @@ export const fr: Dict = {
     serviceTitle: (name: string) => `${name} en Crète | Prix fixe · TransferAround`,
     regionTitle: (name: string) => `${name}, transferts Crète | TransferAround`,
     routeTitle: (from: string, to: string) => `${from} vers ${to} | Prix fixe · TransferAround`,
-    airportTitle: (name: string, iata: string) => `${name} (${iata}) transferts | Prix fixe · TransferAround`,
-    airportRouteTitle: (from: string, to: string) => `${from} vers ${to} transfert privé | TransferAround`,
+    airportTitle: (name: string, iata: string) =>
+      `${name} (${iata}) transferts | Prix fixe · TransferAround`,
+    airportRouteTitle: (from: string, to: string) =>
+      `${from} vers ${to} transfert privé | TransferAround`,
     fleetTitle: (label: string) => `${label} transferts en Crète | TransferAround`,
     fleetIndexTitle: "Flotte | Classes de véhicules pour les transferts en Crète",
-    fleetIndexDescription: "De la classe économique au minibus — choisissez la bonne classe de véhicule pour votre transfert en Crète. Tarifs fixes, chauffeurs agréés.",
+    fleetIndexDescription:
+      "De la classe économique au minibus — choisissez la bonne classe de véhicule pour votre transfert en Crète. Tarifs fixes, chauffeurs agréés.",
     servicesIndexTitle: "Services de transfert en Crète | TransfertAutour",
-    servicesIndexDescription: "Services de chauffeur aux aéroports, ports, centres de villégiature et horaires à travers la Crète — prix fixes, chauffeurs locaux nommés.",
+    servicesIndexDescription:
+      "Services de chauffeur aux aéroports, ports, centres de villégiature et horaires à travers la Crète — prix fixes, chauffeurs locaux nommés.",
     regionsIndexTitle: "Régions de Crète | La Canée, Réthymnon, Héraklion, Lassithi",
-    regionsIndexDescription: "Découvrez la couverture des transferts dans les quatre préfectures de Crète : aéroports, ports et zones de villégiature.",
+    regionsIndexDescription:
+      "Découvrez la couverture des transferts dans les quatre préfectures de Crète : aéroports, ports et zones de villégiature.",
     routesIndexTitle: "Itinéraires de transfert en Crète | Prix ​​fixes · TransferAround",
-    routesIndexDescription: "Parcourez tous les itinéraires de transfert privés à prix fixe en Crète — aéroports, ports et centres de villégiature.",
+    routesIndexDescription:
+      "Parcourez tous les itinéraires de transfert privés à prix fixe en Crète — aéroports, ports et centres de villégiature.",
     airportsIndexTitle: "Transferts aéroport en Grèce | TransfertAutour",
-    airportsIndexDescription: "Transferts aéroport privés avec chauffeurs agréés — Crète et au-delà. Prix ​​fixes, rencontre et accueil.",
+    airportsIndexDescription:
+      "Transferts aéroport privés avec chauffeurs agréés — Crète et au-delà. Prix ​​fixes, rencontre et accueil.",
     citiesIndexTitle: "Transferts de ville | TransfertAutour",
-    citiesIndexDescription: "Transferts privés vers les villes et stations balnéaires sur notre carte de couverture.",
+    citiesIndexDescription:
+      "Transferts privés vers les villes et stations balnéaires sur notre carte de couverture.",
     cityTitle: (name: string) => `${name} transferts | TransferAround`,
     postTitle: (title: string) => `${title} · Blog TransferAround`,
     countryEyebrow: "Pays",
@@ -626,11 +656,20 @@ export const fr: Dict = {
     noAccountCta: "Créer un compte",
     haveAccount: "Vous avez déjà un compte ?",
     invalidCredentials: "E-mail ou mot de passe incorrect.",
-    emailNotConfirmed: "Veuillez d'abord confirmer votre e-mail — vérifiez votre boîte de réception.",
+    emailNotConfirmed:
+      "Veuillez d'abord confirmer votre e-mail — vérifiez votre boîte de réception.",
     alreadyRegistered: "Un compte avec cet e-mail existe déjà. Essayez de vous connecter.",
     checkEmailTitle: "Vérifiez votre e-mail",
     checkEmailBody: (email: string) =>
       `Nous avons envoyé un lien de confirmation à ${email}. Cliquez dessus pour activer votre compte.`,
+    withPassword: "Mot de passe",
+    withMagicLink: "Lien magique",
+    magicLinkSubtitle: "Nous vous enverrons un lien de connexion en un clic. Pas de mot de passe.",
+    sendMagicLink: "M'envoyer un lien magique",
+    magicLinkSent: (email: string) =>
+      `Si un compte existe pour ${email}, un lien magique est en route. Ouvrez-le sur cet appareil.`,
+    magicLinkFailed:
+      "Impossible d'envoyer le lien magique. Réessayez ou utilisez votre mot de passe.",
     resetTitle: "Réinitialiser votre mot de passe",
     resetSubtitle: "Saisissez votre e-mail et nous vous enverrons un lien de réinitialisation.",
     resetSent: "Si un compte existe pour cet e-mail, un lien de réinitialisation est en route.",
@@ -686,14 +725,15 @@ export const fr: Dict = {
     backToBookings: "Retour à mes réservations",
     driverTitle: "Votre chauffeur",
     findingDriverTitle: "Recherche de votre chauffeur",
-    findingDriverBody: "Nous trouvons un chauffeur local agréé. Vous recevrez un e-mail avec nom et téléphone une fois assigné.",
+    findingDriverBody:
+      "Nous trouvons un chauffeur local agréé. Vous recevrez un e-mail avec nom et téléphone une fois assigné.",
     driverPendingBody:
       "Un chauffeur agréé sera assigné sous peu — son nom, son téléphone et son véhicule apparaîtront ici.",
     plate: "Plaque",
     cancelBooking: "Annuler la réservation",
     cancelTitle: "Annuler cette réservation ?",
     cancelBody:
-            "Annulation gratuite jusqu'à 24 h avant la prise en charge. Dans les 24 h, des frais de 50 % s'appliquent. Choisissez un motif.",
+      "Annulation gratuite jusqu'à 24 h avant la prise en charge. Dans les 24 h, des frais de 50 % s'appliquent. Choisissez un motif.",
     cancelConfirm: "Oui, l'annuler",
     cancelKeep: "Conserver la réservation",
     cancelled: "Réservation annulée.",
@@ -713,7 +753,8 @@ export const fr: Dict = {
     cancelFeeFull: "Remboursement intégral / annulation gratuite — aucun frais.",
     cancelFeeHalf: "Annulation tardive — frais de 50 %.",
     cancelNeedsReview: "L'équipe confirmera le remboursement partiel sous peu.",
-    preferCreditHint: "Préférer un crédit TransferAround à 100 % plutôt qu'un remboursement (recommandé).",
+    preferCreditHint:
+      "Préférer un crédit TransferAround à 100 % plutôt qu'un remboursement (recommandé).",
     policyBlurb:
       "Attente gratuite : 60 min aéroports/ports avec suivi de vol, 30 min hôtels/adresses. Chauffeur absent ? Signalez un problème pour une compensation totale.",
     paidOnline: "Payé en ligne",
@@ -803,7 +844,8 @@ export const fr: Dict = {
     offersTitle: "Offres de courses",
     offersEmpty: "Aucune offre active. Restez en ligne.",
     asapTitle: "MAINTENANT / ASAP",
-    asapEmpty: "Aucune demande MAINTENANT. Quand un passager demande un transfert immédiat à Touristas, elle apparaît ici.",
+    asapEmpty:
+      "Aucune demande MAINTENANT. Quand un passager demande un transfert immédiat à Touristas, elle apparaît ici.",
     asapBadge: "MAINTENANT",
     asapExpires: "Expire dans {sec}s",
     asapNewToast: "Nouvelle demande de transfert MAINTENANT",
@@ -831,12 +873,20 @@ export const fr: Dict = {
     completeTrip: "Terminée",
     noShow: "Non-présentation",
     confirmComplete: "Marquer cette course comme terminée ?",
-    confirmNoShow:       "Marquer comme no-show ? Uniquement après l'attente gratuite (60 min aéroport/port, 30 min ailleurs).",
+    confirmNoShow:
+      "Marquer comme no-show ? Uniquement après l'attente gratuite (60 min aéroport/port, 30 min ailleurs).",
     unableToComplete: "Impossible de terminer",
     confirmUnable:
       "Signaler que vous ne pouvez pas terminer cette course ? Le client sera indemnisé.",
     unableReported: "Signalé — le dispatch aidera le client.",
-    waitNotElapsed: "Le temps d'attente gratuit n'est pas écoulé — continuez d'attendre ou contactez le client.",
+    waitNotElapsed:
+      "Le temps d'attente gratuit n'est pas écoulé — continuez d'attendre ou contactez le client.",
+    waitUntilLabel: "Free wait until",
+    waitUntilLive: (until: string) => `Free wait until ${until} (adjusted for flight ETA)`,
+    waitUntilBase: (until: string) => `Free wait until ${until}`,
+    flightChecking: "Checking flight…",
+    flightLive: (status: string, eta: string) => `${status} · ETA ${eta}`,
+    flightStub: (flight: string) => `Tracking ready (${flight}) — live ETA unavailable`,
 
     statusUpdated: "Statut mis à jour.",
     updateFailed: "Impossible de mettre à jour le statut — réessayez.",
@@ -845,7 +895,16 @@ export const fr: Dict = {
     earningsMonth: "Ce mois-ci",
     earningsChartTitle: "Revenus par mois",
     earningsEmpty: "Effectuez votre première course pour voir vos revenus ici.",
-    payoutNote: "Tarifs bruts encaissés à l'arrivée, avant toute commission.",
+    payoutNote:
+      "Net earnings after the {fee}% platform fee. Prepaid trips are remitted when the job is marked completed.",
+    connectTitle: "Connect payouts",
+    connectBody:
+      "Link your Stripe Express account to receive 85% of each completed prepaid transfer automatically.",
+    connectCta: "Set up payouts",
+    connectBusy: "Opening Stripe…",
+    connectReady: "Payouts connected — you’ll receive 85% after each completed prepaid trip.",
+    connectSynced: "Payout account updated.",
+    connectFailed: "Couldn’t open Stripe Connect — try again or contact ops.",
     applyTitle: "Postuler comme chauffeur",
     applySubtitle:
       "Pour les chauffeurs agréés avec au moins trois ans sur les routes de Crète. L'approbation prend généralement moins de 48 heures.",
@@ -874,6 +933,14 @@ export const fr: Dict = {
     pickDriver: "Select an online driver",
     offlineDriver: "Offline",
     onlineDriver: "Online",
+    connectTitle: "Company payouts",
+    connectBody:
+      "Connect the partner Stripe account to receive 85% of completed prepaid jobs assigned to your fleet.",
+    connectCta: "Connect Stripe",
+    connectBusy: "Opening Stripe…",
+    connectReady: "Payouts connected for this partner.",
+    connectFailed: "Couldn’t start Stripe Connect — try again.",
+    connectSynced: "Partner payout account updated.",
   },
   touristasAi: {
     title: "Touristas AI",
@@ -896,9 +963,11 @@ export const fr: Dict = {
     identityDefault: "Votre assistant transfert",
     welcome:
       "Bonjour. Je peux calculer des transferts privés et ouvrir le formulaire. Essayez HER to Elounda tomorrow at 3pm.",
-    welcomeAirport: "Demandez des transferts depuis {place}. Je peux cotiser et ouvrir le formulaire.",
+    welcomeAirport:
+      "Demandez des transferts depuis {place}. Je peux cotiser et ouvrir le formulaire.",
     welcomeCity: "Transfert vers ou depuis {place} ? Demandez un devis ou de l'aide.",
-    welcomeCorridor: "Cette page : {from} vers {to}. Demandez un prix ou changez passagers et heure.",
+    welcomeCorridor:
+      "Cette page : {from} vers {to}. Demandez un prix ou changez passagers et heure.",
     welcomeCountry: "Transferts privés en {market}. Demandez un aéroport ou une ville.",
     welcomeRoutes: "Demandez pour {place}, ou choisissez une puce pour ce corridor.",
     welcomeBook: "Je peux suggérer des véhicules moins chers, un retour et les règles d'attente.",
@@ -943,7 +1012,8 @@ export const fr: Dict = {
     fullPageTitle: "Touristas AI",
     fullPageSubtitle: "Cotisez des transferts privés, comparez et ouvrez le formulaire.",
     fullPageMetaTitle: "Touristas AI | TransferAround",
-    fullPageMetaDescription: "Demandez à Touristas AI des prix fixes en Crète, Grèce, Espagne et Italie.",
+    fullPageMetaDescription:
+      "Demandez à Touristas AI des prix fixes en Crète, Grèce, Espagne et Italie.",
 
     contextPrefix: "Contexte :",
   },

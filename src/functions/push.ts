@@ -33,9 +33,7 @@ async function requireUserId(): Promise<string> {
 }
 
 export const registerDeviceToken = createServerFn({ method: "POST" })
-  .inputValidator(
-    (d: { expoPushToken: string; role: DeviceRole; platform: DevicePlatform }) => d,
-  )
+  .inputValidator((d: { expoPushToken: string; role: DeviceRole; platform: DevicePlatform }) => d)
   .handler(async ({ data }) => {
     const userId = await requireUserId();
     return upsertDeviceToken({

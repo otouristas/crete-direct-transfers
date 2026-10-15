@@ -6,7 +6,7 @@ export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? "https://transferarou
 );
 
 /** Temporary: browse UI without signing in. Set false to restore auth gate. */
-export const SKIP_AUTH = true;
+export const SKIP_AUTH = false;
 
 export function assertConfig() {
   if (SKIP_AUTH) return;

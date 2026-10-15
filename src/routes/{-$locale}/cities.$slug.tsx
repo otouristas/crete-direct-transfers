@@ -24,10 +24,7 @@ export const Route = createFileRoute("/{-$locale}/cities/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("City") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("City") }, { name: "robots", content: "noindex" }],
       };
     }
     const { city } = loaderData;
@@ -84,16 +81,16 @@ function CityPage() {
             <span>/</span>
             <span>{city.name}</span>
           </nav>
-          <h1 className="text-4xl font-display md:text-6xl">
-            Private transfers in {city.name}
-          </h1>
+          <h1 className="text-4xl font-display md:text-6xl">Private transfers in {city.name}</h1>
           <p className="mt-4 max-w-2xl text-lg text-primary-foreground/80">
             Fixed-price airport pickups and local chauffeur rides in {city.name}
             {city.island ? `, ${city.island}` : ""}
             {city.region && !city.island ? `, ${city.region}` : ""}.
           </p>
           <div className="mt-6">
-            <AskTouristasInline prompt={`Airport transfer to ${city.name} tomorrow for 2 passengers`} />
+            <AskTouristasInline
+              prompt={`Airport transfer to ${city.name} tomorrow for 2 passengers`}
+            />
           </div>
         </div>
       </section>
@@ -104,8 +101,8 @@ function CityPage() {
         <p className="max-w-3xl text-lg leading-relaxed text-foreground/90">
           Arriving in <strong>{city.name}</strong> is easier when your driver is already waiting.
           TransferAround arranges licensed local chauffeurs with meet & greet, flight monitoring,
-          and a price agreed before you travel — whether you need an airport run or a hotel
-          transfer across town.
+          and a price agreed before you travel — whether you need an airport run or a hotel transfer
+          across town.
         </p>
 
         {airports.length > 0 ? (
@@ -134,9 +131,7 @@ function CityPage() {
 
         {routesTo.length > 0 ? (
           <div className="mt-12">
-            <h2 className="text-2xl font-display text-primary">
-              Popular transfers to {city.name}
-            </h2>
+            <h2 className="text-2xl font-display text-primary">Popular transfers to {city.name}</h2>
             <ul className="mt-4 grid gap-3 sm:grid-cols-2">
               {routesTo.map((r) => (
                 <li key={r.routeSlug}>

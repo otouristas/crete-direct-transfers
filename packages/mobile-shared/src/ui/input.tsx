@@ -38,15 +38,10 @@ export function Field({
           {label}
         </Text>
       ) : null}
-      <View
-        style={[
-          styles.field,
-          focused ? styles.focused : null,
-          error ? styles.errored : null,
-        ]}
-      >
+      <View style={[styles.field, focused ? styles.focused : null, error ? styles.errored : null]}>
         {icon ? <Icon name={icon} size={18} color={colors.textFaint} /> : null}
         <TextInput
+          accessibilityLabel={label}
           placeholderTextColor={colors.textFaint}
           {...rest}
           onFocus={(e) => {
@@ -84,6 +79,8 @@ export function Stepper({
   return (
     <View style={styles.stepper}>
       <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Decrease quantity"
         onPress={() => onChange(Math.max(min, value - 1))}
         disabled={value <= min}
         style={({ pressed }) => [
@@ -98,6 +95,8 @@ export function Stepper({
         {value}
       </Text>
       <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Increase quantity"
         onPress={() => onChange(Math.min(max, value + 1))}
         disabled={value >= max}
         style={({ pressed }) => [

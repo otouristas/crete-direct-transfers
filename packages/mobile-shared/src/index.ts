@@ -6,11 +6,17 @@ export type { Database };
 export type MobileEnv = {
   supabaseUrl: string;
   supabaseAnonKey: string;
+  storage?: {
+    getItem: (key: string) => Promise<string | null>;
+    setItem: (key: string, value: string) => Promise<void>;
+    removeItem: (key: string) => Promise<void>;
+  };
 };
 
 export function createMobileSupabase(env: MobileEnv): SupabaseClient<Database> {
   return createClient<Database>(env.supabaseUrl, env.supabaseAnonKey, {
     auth: {
+      storage: env.storage,
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: false,
@@ -100,8 +106,8 @@ export async function reportUnableToComplete(
   const { error } = await client.rpc("open_incident", {
     p_booking_id: bookingId,
     p_type: "unable_to_complete",
-    p_note: note ?? null,
-    p_claimed_wait_until: null,
+    p_note: note ?? undefined,
+    p_claimed_wait_until: undefined,
     p_evidence_urls: [],
   });
   if (error) throw error;

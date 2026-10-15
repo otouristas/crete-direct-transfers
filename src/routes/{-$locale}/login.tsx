@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
+import { MailCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { getDict, type Locale } from "@/i18n";
+import { getDict, localePath, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { Field, InputStyles } from "@/components/form/field";
 import { User, Car } from "lucide-react";
@@ -39,13 +40,20 @@ function LoginPage() {
   const { session, ready } = useAuth();
 
   const [loginRole, setLoginRole] = useState<"user" | "driver">(search.role ?? "user");
+  const [mode, setMode] = useState<"password" | "magic">("password");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [magicSentTo, setMagicSentTo] = useState<string | null>(null);
 
   const goAfterLogin = (role: "user" | "driver" = loginRole) => {
-    if (redirect && redirect.startsWith("/")) {
+    if (
+      redirect &&
+      redirect.startsWith("/") &&
+      !redirect.startsWith("//") &&
+      !redirect.includes("\\")
+    ) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       navigate({ to: redirect as any, replace: true });
     } else if (role === "driver") {
@@ -55,13 +63,24 @@ function LoginPage() {
     }
   };
 
+  const postAuthPath = () => {
+    if (
+      redirect &&
+      redirect.startsWith("/") &&
+      !redirect.startsWith("//") &&
+      !redirect.includes("\\")
+    )
+      return redirect;
+    return loginRole === "driver" ? localePath(locale, "/driver") : localePath(locale, "/account");
+  };
+
   // Already signed in? Straight to the respective dashboard.
   useEffect(() => {
     if (ready && session) goAfterLogin(loginRole);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready, !!session]);
 
-  const submit = async (e: React.FormEvent) => {
+  const submitPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
@@ -78,6 +97,48 @@ function LoginPage() {
     }
     goAfterLogin(loginRole);
   };
+
+  const submitMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    const trimmed = email.trim();
+    const { error: err } = await supabase.auth.signInWithOtp({
+      email: trimmed,
+      options: {
+        emailRedirectTo: `${window.location.origin}${postAuthPath()}`,
+        shouldCreateUser: false,
+      },
+    });
+    setSubmitting(false);
+    if (err) {
+      setError(t.auth.magicLinkFailed);
+      return;
+    }
+    setMagicSentTo(trimmed);
+  };
+
+  if (magicSentTo) {
+    return (
+      <div className="mx-auto max-w-md px-6 py-16">
+        <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-sm">
+          <MailCheck className="mx-auto h-12 w-12 text-accent" strokeWidth={1.5} />
+          <h1 className="mt-4 text-2xl font-display text-primary">{t.auth.checkEmailTitle}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{t.auth.magicLinkSent(magicSentTo)}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setMagicSentTo(null);
+              setError(null);
+            }}
+            className="mt-6 inline-flex rounded-xl border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
+          >
+            {t.auth.signIn}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-md px-6 py-16">
@@ -114,10 +175,51 @@ function LoginPage() {
 
         <h1 className="text-3xl font-display text-primary">{t.auth.loginTitle}</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          {loginRole === "driver" ? t.auth.driverLoginSubtitle : t.auth.loginSubtitle}
+          {mode === "magic"
+            ? t.auth.magicLinkSubtitle
+            : loginRole === "driver"
+              ? t.auth.driverLoginSubtitle
+              : t.auth.loginSubtitle}
         </p>
 
-        <form onSubmit={submit} className="mt-6 space-y-4">
+        {/* Password vs magic link */}
+        <div className="mt-5 grid grid-cols-2 gap-1 rounded-xl bg-muted p-1">
+          <button
+            type="button"
+            onClick={() => {
+              setMode("password");
+              setError(null);
+            }}
+            className={cn(
+              "rounded-lg py-2 text-xs font-semibold transition",
+              mode === "password"
+                ? "bg-card text-primary shadow-sm"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {t.auth.withPassword}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMode("magic");
+              setError(null);
+            }}
+            className={cn(
+              "rounded-lg py-2 text-xs font-semibold transition",
+              mode === "magic"
+                ? "bg-card text-primary shadow-sm"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {t.auth.withMagicLink}
+          </button>
+        </div>
+
+        <form
+          onSubmit={mode === "magic" ? submitMagicLink : submitPassword}
+          className="mt-6 space-y-4"
+        >
           <Field label={t.auth.email}>
             <input
               type="email"
@@ -128,16 +230,18 @@ function LoginPage() {
               required
             />
           </Field>
-          <Field label={t.auth.password}>
-            <input
-              type="password"
-              className="input"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </Field>
+          {mode === "password" && (
+            <Field label={t.auth.password}>
+              <input
+                type="password"
+                className="input"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </Field>
+          )}
           {error && (
             <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">{error}</div>
           )}
@@ -146,7 +250,13 @@ function LoginPage() {
             disabled={submitting}
             className="w-full rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
           >
-            {submitting ? t.auth.signingIn : t.auth.signIn}
+            {submitting
+              ? mode === "magic"
+                ? t.auth.sending
+                : t.auth.signingIn
+              : mode === "magic"
+                ? t.auth.sendMagicLink
+                : t.auth.signIn}
           </button>
         </form>
 

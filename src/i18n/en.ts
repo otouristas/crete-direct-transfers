@@ -48,6 +48,8 @@ export const en = {
     partners: "Partners",
     forHotels: "For hotels",
     forDrivers: "For drivers",
+    hotels: "Hotels",
+    flights: "Flights",
     company: "Company",
     popularRoutes: "Popular routes",
     allRoutes: "All routes",
@@ -65,6 +67,8 @@ export const en = {
     routes: "Fixed-price map",
     fleet: "Sedan to van",
     faq: "Before you fly",
+    hotels: "Stay + transfer",
+    flights: "Airport arrivals",
   },
   settings: {
     title: "Settings",
@@ -108,7 +112,7 @@ export const en = {
     licensed: "Licensed local drivers",
     freeCancel: "Free cancellation 24h",
     flightTracked: "Flight-tracked pickups",
-    payOnArrival: "Pay on arrival",
+    payOnArrival: "Secure online payment",
     support: "24/7 support",
   },
   stats: {
@@ -136,8 +140,8 @@ export const en = {
       "Every driver is licensed, insured and has driven Crete's roads for at least three years.",
     cancelTitle: "Free cancellation",
     cancelBody: "Plans change. Cancel up to 24 hours before pickup and pay nothing at all.",
-    payTitle: "Pay on arrival",
-    payBody: "Book now, pay the driver by card or cash when you arrive. No prepayment, no risk.",
+    payTitle: "Secure online payment",
+    payBody: "Pay securely with Stripe before your transfer is confirmed.",
     meetTitle: "Meet & greet included",
     meetBody:
       "Your driver waits in arrivals with a name sign, helps with bags and knows the fastest way out.",
@@ -162,6 +166,18 @@ export const en = {
     route: "Route",
     transfer: "Transfer",
     byTheHour: "By the Hour",
+    hotels: "Hotels",
+    flights: "Flights",
+    destination: "Destination",
+    checkIn: "Check-in",
+    checkOut: "Check-out",
+    guests: "Guests",
+    searchHotels: "Search hotels",
+    searchFlights: "Search flights",
+    originAirport: "From (IATA)",
+    destAirport: "To (IATA)",
+    vibePlaceholder: "Or describe a vibe — romantic stay in Chania…",
+    hotelPlacePlaceholder: "City or area…",
     from: "From",
     to: "To",
     addReturn: "ADD RETURN",
@@ -187,7 +203,7 @@ export const en = {
     returnDiscount: "Return discount (−5%)",
     nightSurcharge: "Night surcharge (22:00–06:00)",
     guaranteed: "Guaranteed fixed price",
-    payOnBoard: "Pay on arrival — card or cash",
+    payOnBoard: "Secure online payment",
     minivanHint: "Tip: with this much luggage, a van or minibus travels more comfortably.",
     distance: (km: number, min: number) => `${km} km · ${min} min · Fixed price`,
     selectRoute: "Select route",
@@ -220,8 +236,7 @@ export const en = {
     proofTitle: "Rated 4.9 by travellers like you",
     proofSubtitle: "Real reviews from real pickups across Crete.",
     regionsTitle: "One island, covered end to end",
-    regionsSubtitle:
-      "Two international airports, three ferry ports, 260 km of coastline.",
+    regionsSubtitle: "Two international airports, three ferry ports, 260 km of coastline.",
     closingTitle: "You explore.",
     closingAccent: "We drive.",
     closingSubtitle: "Fixed price, licensed driver, free cancellation. Book in two minutes.",
@@ -319,7 +334,8 @@ export const en = {
     indexSubtitle: "Local drivers in all four prefectures — from Balos to Vai.",
     routesIn: "Routes in this region",
     hotelsTitle: "Popular areas & hotels",
-    hotelsNote: "Not on the list? We serve every hotel and villa in {name} — enter your address at booking.",
+    hotelsNote:
+      "Not on the list? We serve every hotel and villa in {name} — enter your address at booking.",
     bookAsideBody: "Local drivers who live here — not shipped in from elsewhere on the island.",
   },
   servicesPages: {
@@ -382,12 +398,12 @@ export const en = {
   bookPage: {
     metaTitle: "Book Your Crete Transfer | Fixed Price, Instant Confirmation",
     metaDescription:
-      "Book a fixed-price transfer in Crete. Choose your route and vehicle, get instant confirmation. Pay on arrival.",
+      "Book a fixed-price transfer in Crete. Choose your route and vehicle, get instant confirmation. Pay securely online.",
     stepTrip: "Your trip",
     stepDetails: "Your details",
     continue: "Continue",
     back: "Back",
-    confirm: "Confirm booking",
+    confirm: "Continue to secure payment",
     submitting: "Booking…",
     fullName: "Full name",
     emailLabel: "Email",
@@ -404,7 +420,7 @@ export const en = {
     extraStop: "Extra stop",
     meetGreet: "Meet & greet with name sign",
     yourQuote: "Your quote",
-    payOnArrival: "Pay on arrival — card or cash. Online payment coming soon.",
+    payOnArrival: "Secure online payment",
     successTitle: "Booking received!",
     successBody:
       "We've got your request and will confirm your driver by email shortly. Questions? Our dispatch answers 24/7.",
@@ -431,7 +447,8 @@ export const en = {
     freeCancelTitle: "FREE Cancellation 24H",
     freeCancelBodyBefore: "Book today, lock the price. Cancel free until",
     freeCancelBodyAfter: "for a full refund.",
-    freeCancelBodyGeneric: "Book today, lock the price. Free cancellation up to 24 hours before pickup.",
+    freeCancelBodyGeneric:
+      "Book today, lock the price. Free cancellation up to 24 hours before pickup.",
     seeVehicles: "See vehicle prices",
     needPlaces: "Please select pickup and drop-off with a precise location.",
     needQuote: "Unable to price this trip yet. Pick places on the map or from the list.",
@@ -572,7 +589,8 @@ export const en = {
     notFound: (entity: string) => `${entity} not found | TransferAround`,
     serviceTitle: (name: string) => `${name} in Crete | Fixed Price · TransferAround`,
     regionTitle: (name: string) => `${name}, Crete Transfers | TransferAround`,
-    routeTitle: (from: string, to: string) => `${from} to ${to} Transfer | Fixed Price · TransferAround`,
+    routeTitle: (from: string, to: string) =>
+      `${from} to ${to} Transfer | Fixed Price · TransferAround`,
     airportTitle: (name: string, iata: string) =>
       `${name} (${iata}) Transfers | Fixed Price · TransferAround`,
     airportRouteTitle: (from: string, to: string) =>
@@ -631,6 +649,13 @@ export const en = {
     checkEmailTitle: "Check your email",
     checkEmailBody: (email: string) =>
       `We've sent a confirmation link to ${email}. Click it to activate your account.`,
+    withPassword: "Password",
+    withMagicLink: "Magic link",
+    magicLinkSubtitle: "We'll email you a one-tap sign-in link. No password needed.",
+    sendMagicLink: "Email me a magic link",
+    magicLinkSent: (email: string) =>
+      `If an account exists for ${email}, a magic link is on its way. Open it on this device to finish signing in.`,
+    magicLinkFailed: "Couldn't send the magic link. Try again or use your password.",
     resetTitle: "Reset your password",
     resetSubtitle: "Enter your email and we'll send you a reset link.",
     resetSent: "If an account exists for that email, a reset link is on its way.",
@@ -796,7 +821,8 @@ export const en = {
     offersTitle: "Job offers",
     offersEmpty: "No active offers. Stay online — new ones appear here.",
     asapTitle: "NOW / ASAP",
-    asapEmpty: "No live NOW requests. When a passenger asks Touristas for a transfer now, it shows here.",
+    asapEmpty:
+      "No live NOW requests. When a passenger asks Touristas for a transfer now, it shows here.",
     asapBadge: "NOW",
     asapExpires: "Expires in {sec}s",
     asapNewToast: "New NOW transfer request",
@@ -831,6 +857,12 @@ export const en = {
       "Report that you cannot complete this job? The customer will be offered a make-good.",
     unableReported: "Reported — dispatch will help the customer.",
     waitNotElapsed: "Free waiting time has not elapsed yet — keep waiting or contact the guest.",
+    waitUntilLabel: "Free wait until",
+    waitUntilLive: (until: string) => `Free wait until ${until} (adjusted for flight ETA)`,
+    waitUntilBase: (until: string) => `Free wait until ${until}`,
+    flightChecking: "Checking flight…",
+    flightLive: (status: string, eta: string) => `${status} · ETA ${eta}`,
+    flightStub: (flight: string) => `Tracking ready (${flight}) — live ETA unavailable`,
     statusUpdated: "Status updated.",
     updateFailed: "Couldn't update the status — try again.",
     earningsTotal: "Total earned",
@@ -838,7 +870,16 @@ export const en = {
     earningsMonth: "This month",
     earningsChartTitle: "Earnings by month",
     earningsEmpty: "Complete your first job to see earnings here.",
-    payoutNote: "Gross fares collected on arrival, before any commission.",
+    payoutNote:
+      "Net earnings after the {fee}% platform fee. Prepaid trips are remitted when the job is marked completed.",
+    connectTitle: "Connect payouts",
+    connectBody:
+      "Link your Stripe Express account to receive 85% of each completed prepaid transfer automatically.",
+    connectCta: "Set up payouts",
+    connectBusy: "Opening Stripe…",
+    connectReady: "Payouts connected — you’ll receive 85% after each completed prepaid trip.",
+    connectSynced: "Payout account updated.",
+    connectFailed: "Couldn’t open Stripe Connect — try again or contact ops.",
     applyTitle: "Apply to drive",
     applySubtitle:
       "For licensed drivers with at least three years on Crete's roads. Approval usually takes under 48 hours.",
@@ -867,6 +908,14 @@ export const en = {
     pickDriver: "Select an online driver",
     offlineDriver: "Offline",
     onlineDriver: "Online",
+    connectTitle: "Company payouts",
+    connectBody:
+      "Connect the partner Stripe account to receive 85% of completed prepaid jobs assigned to your fleet.",
+    connectCta: "Connect Stripe",
+    connectBusy: "Opening Stripe…",
+    connectReady: "Payouts connected for this partner.",
+    connectFailed: "Couldn’t start Stripe Connect — try again.",
+    connectSynced: "Partner payout account updated.",
   },
   touristasAi: {
     title: "Touristas AI",
@@ -889,9 +938,11 @@ export const en = {
     identityDefault: "Your transfer assistant",
     welcome:
       "Hi. I can quote private transfers and open the booking form. Try HER to Elounda tomorrow at 3pm.",
-    welcomeAirport: "Ask about transfers from {place}. I can quote vehicles and open the booking form.",
+    welcomeAirport:
+      "Ask about transfers from {place}. I can quote vehicles and open the booking form.",
     welcomeCity: "Planning a transfer to or from {place}? Ask for a quote or booking help.",
-    welcomeCorridor: "This page is {from} to {to}. Ask me to quote it or change passengers and time.",
+    welcomeCorridor:
+      "This page is {from} to {to}. Ask me to quote it or change passengers and time.",
     welcomeCountry: "Private transfers in {market}. Ask for an airport or city quote.",
     welcomeRoutes: "Ask about {place}, or pick a chip to book this corridor.",
     welcomeBook: "I can suggest cheaper vehicles, returns, and waiting rules for your booking.",

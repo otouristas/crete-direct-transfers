@@ -14,8 +14,17 @@ function daysFromNow(days: number, hour = 12, minute = 0): string {
   return d.toISOString();
 }
 
-function base(partial: Partial<Booking> & Pick<Booking, "id" | "route_slug" | "status" | "pickup_at" | "price_cents" | "vehicle_class">): Booking {
+function base(
+  partial: Partial<Booking> &
+    Pick<Booking, "id" | "route_slug" | "status" | "pickup_at" | "price_cents" | "vehicle_class">,
+): Booking {
   return {
+    checkout_access_hash: null,
+    stripe_checkout_session_id: null,
+    stripe_checkout_session_url: null,
+    stripe_checkout_version: 1,
+    stripe_checkout_status: null,
+    locale: "en",
     assigned_at: null,
     bags_cabin: 1,
     bags_checked: 2,
@@ -52,6 +61,10 @@ function base(partial: Partial<Booking> & Pick<Booking, "id" | "route_slug" | "s
     return_at: null,
     return_flight_number: null,
     stripe_payment_intent_id: null,
+    platform_fee_cents: null,
+    carrier_payout_cents: null,
+    stripe_transfer_id: null,
+    payout_status: "pending",
     trip_type: "oneway",
     updated_at: daysFromNow(-1, 9, 0),
     urgency: "scheduled",

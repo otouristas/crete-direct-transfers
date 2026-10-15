@@ -35,10 +35,7 @@ export const Route = createFileRoute("/{-$locale}/airports/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("Airport") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("Airport") }, { name: "robots", content: "noindex" }],
       };
     }
     const { airport, routes } = loaderData;
@@ -151,14 +148,9 @@ function AirportHubPage() {
     <>
       <AirportHero
         airport={airport}
-        bookingSlot={
-          <AirportBookingSlot airport={airport} defaultRouteSlug={defaultLegacy} />
-        }
+        bookingSlot={<AirportBookingSlot airport={airport} defaultRouteSlug={defaultLegacy} />}
       />
-      <AskTouristasBand
-        pageType="airport"
-        entityLabel={`${airport.name} (${airport.iata})`}
-      />
+      <AskTouristasBand pageType="airport" entityLabel={`${airport.name} (${airport.iata})`} />
       <AirportInPageNav />
       <AirportFacts airport={airport} />
       <AirportTrustStrip />

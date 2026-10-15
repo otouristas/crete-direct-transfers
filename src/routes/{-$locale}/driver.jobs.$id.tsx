@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, MessageCircle, Navigation, Phone } from "lucide-react";
 import { toast } from "sonner";
@@ -20,6 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { getRoute, VEHICLE_CLASSES } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
+import { effectiveWaitEnd, lookupFlight, waitMinutesForBooking } from "@/lib/flight-tracking";
 
 export const Route = createFileRoute("/{-$locale}/driver/jobs/$id")({
   component: DriverJobDetailPage,
@@ -48,7 +50,13 @@ function DriverJobDetailPage() {
   const b = booking.data;
 
   const move = useMutation({
-    mutationFn: (status: "en_route" | "completed" | "no_show") => updateJobStatus(id, status),
+    mutationFn: async (status: "en_route" | "completed" | "no_show") => {
+      await updateJobStatus(id, status);
+      if (status === "completed") {
+        const { payoutCarrierForBooking } = await import("@/functions/stripe");
+        await payoutCarrierForBooking({ data: { bookingId: id } }).catch(() => null);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["booking", id] });
       queryClient.invalidateQueries({ queryKey: ["driver-jobs"] });
@@ -141,6 +149,29 @@ function DriverJobDetailPage() {
             value={`${b.bags_checked} ${t.widget.checkedBags.toLowerCase()} · ${b.bags_cabin} ${t.widget.cabinBags.toLowerCase()}`}
           />
           {b.flight_number && <Item label={t.widget.flightNumber} value={b.flight_number} />}
+          {b.flight_number && (
+            <FlightWaitRow
+              flightNumber={b.flight_number}
+              pickupAt={b.pickup_at}
+              pickupAddress={b.pickup_address}
+              routeSlug={b.route_slug}
+              fmt={fmt}
+            />
+          )}
+          {!b.flight_number && (
+            <Item
+              label={t.driver.waitUntilLabel}
+              value={fmt(
+                effectiveWaitEnd({
+                  pickupAt: b.pickup_at,
+                  waitMinutes: waitMinutesForBooking({
+                    pickupAddress: b.pickup_address,
+                    routeSlug: b.route_slug,
+                  }),
+                }).toISOString(),
+              )}
+            />
+          )}
           {b.trip_type === "return" && b.return_at && (
             <Item label={t.account.returnTitle} value={fmt(b.return_at)} />
           )}
@@ -311,5 +342,66 @@ function Item({ label, value }: { label: string; value: string }) {
       <dt className="text-xs uppercase tracking-widest text-muted-foreground">{label}</dt>
       <dd className="mt-1 text-foreground">{value}</dd>
     </div>
+  );
+}
+
+function FlightWaitRow({
+  flightNumber,
+  pickupAt,
+  pickupAddress,
+  routeSlug,
+  fmt,
+}: {
+  flightNumber: string;
+  pickupAt: string;
+  pickupAddress: string | null;
+  routeSlug: string;
+  fmt: (iso: string) => string;
+}) {
+  const { locale } = Route.useRouteContext();
+  const t = getDict(locale);
+  const waitMinutes = waitMinutesForBooking({
+    flightNumber,
+    pickupAddress,
+    routeSlug,
+  });
+  const [waitLabel, setWaitLabel] = useState(() =>
+    t.driver.waitUntilBase(fmt(effectiveWaitEnd({ pickupAt, waitMinutes }).toISOString())),
+  );
+  const [flightLabel, setFlightLabel] = useState(t.driver.flightChecking);
+
+  useEffect(() => {
+    let cancelled = false;
+    void lookupFlight(flightNumber).then((f) => {
+      if (cancelled) return;
+      const until = effectiveWaitEnd({
+        pickupAt,
+        waitMinutes,
+        estimatedArrival: f.estimatedArrival,
+      });
+      const untilText = fmt(until.toISOString());
+      if (f.source === "live") {
+        const eta = f.estimatedArrival ? fmt(f.estimatedArrival) : "—";
+        setFlightLabel(t.driver.flightLive(f.status, eta));
+        setWaitLabel(
+          f.estimatedArrival
+            ? t.driver.waitUntilLive(untilText)
+            : t.driver.waitUntilBase(untilText),
+        );
+      } else {
+        setFlightLabel(t.driver.flightStub(f.flightNumber));
+        setWaitLabel(t.driver.waitUntilBase(untilText));
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [flightNumber, pickupAt, waitMinutes, fmt, t.driver]);
+
+  return (
+    <>
+      <Item label="Flight status" value={flightLabel} />
+      <Item label={t.driver.waitUntilLabel} value={waitLabel} />
+    </>
   );
 }

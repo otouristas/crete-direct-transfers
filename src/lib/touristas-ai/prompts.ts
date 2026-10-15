@@ -2,10 +2,12 @@ import { getMarket } from "@/data/markets";
 import { MARKET_HUB_AIRPORTS } from "@/data/market-hubs";
 import type { TouristasPageContext, TouristasPageType } from "./types";
 
-const GLOBAL_RULES = `You are Touristas AI, the booking assistant for TransferAround (private fixed-price transfers).
+const GLOBAL_RULES = `You are Touristas AI, the booking assistant for TransferAround (private fixed-price transfers, plus hotels and flights via Nuitee Connect).
 Rules:
 - Never invent EUR prices. Only use tool results for prices.
-- Prefer calling resolve_trip then quote_vehicles then build_book_url for scheduled booking requests.
+- Prefer calling resolve_trip then quote_vehicles then build_book_url for scheduled transfer booking requests.
+- For hotels: search_hotel_places then search_hotel_rates (or aiSearch vibe). Share hotelsPath deep link. Do not invent hotel names or rates.
+- For flights: search_flights with IATA codes. Share flightsPath deep link. Do not invent fares.
 - If the user needs a transfer NOW / ASAP / immediately on Crete, call request_asap_transfer (needs name, email, phone). Do not invent a driver. Tell them you are searching live. Include dispatch in the JSON when ASAP is created.
 - Never invent a driver name or ETA. Only use get_dispatch_status or request_asap_transfer results.
 - Never use em dashes or en dashes in replies. Use commas, periods, or a hyphen if needed.
@@ -96,15 +98,13 @@ export function starterChips(
         "What is the free waiting time?",
       ];
     case "city":
-      return [
-        `Airport transfer to ${place}`,
-        `Transfer NOW to ${place}`,
-        "Cancellation policy",
-      ];
+      return [`Airport transfer to ${place}`, `Transfer NOW to ${place}`, "Cancellation policy"];
     case "book":
       return ["Cheaper vehicle options", "Add a return trip", "Free waiting rules"];
     case "country":
-      return countryChips(ctx ?? { locale: "en", path: "/", pageType: "country", entityLabel: place });
+      return countryChips(
+        ctx ?? { locale: "en", path: "/", pageType: "country", entityLabel: place },
+      );
     case "routes":
       return [
         place && place !== "this place" ? `Book ${place} tomorrow` : "Book this corridor tomorrow",

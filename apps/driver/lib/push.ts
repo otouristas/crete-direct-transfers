@@ -1,5 +1,6 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 import { Platform } from "react-native";
 import { registerDeviceToken, unregisterDeviceToken } from "@transferaround/mobile-shared";
 import { supabase } from "./supabase";
@@ -13,6 +14,17 @@ Notifications.setNotificationHandler({
     shouldShowList: true,
   }),
 });
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function resolveEasProjectId(): string | null {
+  const fromEnv = process.env.EXPO_PUBLIC_EAS_PROJECT_ID?.trim();
+  const fromExtra = (Constants.expoConfig?.extra as { eas?: { projectId?: string } } | undefined)
+    ?.eas?.projectId;
+  const id = fromEnv || fromExtra || null;
+  if (!id || !UUID_RE.test(id)) return null;
+  return id;
+}
 
 export async function ensurePushPermissions(): Promise<boolean> {
   if (!Device.isDevice) return false;
@@ -34,11 +46,13 @@ export async function ensurePushPermissions(): Promise<boolean> {
 }
 
 export async function syncDriverPushToken(userId: string): Promise<string | null> {
+  const projectId = resolveEasProjectId();
+  if (!projectId) return null;
   const ok = await ensurePushPermissions();
   if (!ok) return null;
   const token = (
     await Notifications.getExpoPushTokenAsync({
-      projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
+      projectId,
     })
   ).data;
   await registerDeviceToken(supabase, {

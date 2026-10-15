@@ -69,6 +69,24 @@ export const opsPartnersQuery = queryOptions({
   },
 });
 
+/** Completed + paid trips that still need a Connect transfer (or failed / no account). */
+export const pendingPayoutsQuery = queryOptions({
+  queryKey: ["ops-payouts"],
+  queryFn: async (): Promise<Booking[]> => {
+    const { data, error } = await supabase
+      .from("bookings")
+      .select("*")
+      .eq("status", "completed")
+      .in("payment_status", ["paid", "deposit_paid"])
+      .in("payout_status", ["pending", "failed", "skipped_no_account"])
+      .order("updated_at", { ascending: true })
+      .limit(50);
+    if (error) throw error;
+    return (data as Booking[]) ?? [];
+  },
+  refetchInterval: 30_000,
+});
+
 export async function resolveIncidentAdmin(input: {
   incidentId: string;
   resolution: "full_refund" | "partial_refund" | "credit" | "rebook" | "no_action";
@@ -78,7 +96,7 @@ export async function resolveIncidentAdmin(input: {
   const { error } = await supabase.rpc("resolve_incident", {
     p_incident_id: input.incidentId,
     p_resolution: input.resolution,
-    p_notes: input.notes ?? null,
+    p_notes: input.notes ?? undefined,
     p_reject: input.reject ?? false,
   });
   if (error) throw error;

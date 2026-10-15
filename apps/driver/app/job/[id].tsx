@@ -1,7 +1,11 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Linking, ScrollView, StyleSheet, View } from "react-native";
-import { fetchBooking, reportUnableToComplete, updateJobStatus } from "@transferaround/mobile-shared";
+import {
+  fetchBooking,
+  reportUnableToComplete,
+  updateJobStatus,
+} from "@transferaround/mobile-shared";
 import {
   Avatar,
   Button,
@@ -49,6 +53,14 @@ export default function JobDetailScreen() {
     setError(null);
     try {
       await updateJobStatus(supabase, id, status);
+      if (status === "completed") {
+        const { API_URL } = await import("../../lib/config");
+        await fetch(`${API_URL}/api/stripe/payout`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ bookingId: id }),
+        }).catch(() => null);
+      }
       await load();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Update failed");
@@ -104,7 +116,7 @@ export default function JobDetailScreen() {
   }
 
   const status = String(booking.status);
-  const canStart = status === "confirmed" || status === "assigned" || status === "pending";
+  const canStart = status === "claimed";
   const enRoute = status === "en_route";
   const maps = booking.dropoff_address
     ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(booking.dropoff_address)}`
@@ -113,8 +125,16 @@ export default function JobDetailScreen() {
   return (
     <View style={styles.root}>
       {header}
-      <ScrollView contentContainerStyle={{ paddingBottom: space.xxxl }} showsVerticalScrollIndicator={false}>
-        <RouteMap from={booking.pickup_address} to={booking.dropoff_address} height={220} interactive />
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: space.xxxl }}
+        showsVerticalScrollIndicator={false}
+      >
+        <RouteMap
+          from={booking.pickup_address}
+          to={booking.dropoff_address}
+          height={220}
+          interactive
+        />
 
         <View style={styles.body}>
           <Card padded>
@@ -124,7 +144,10 @@ export default function JobDetailScreen() {
             </View>
             <Divider />
             <View style={{ marginTop: space.md }}>
-              <RouteRail from={booking.pickup_address || "Pickup"} to={booking.dropoff_address || "Drop-off"} />
+              <RouteRail
+                from={booking.pickup_address || "Pickup"}
+                to={booking.dropoff_address || "Drop-off"}
+              />
             </View>
             <Text variant="caption" color={colors.textMuted} style={{ marginTop: space.md }}>
               {new Date(booking.pickup_at).toLocaleString()}
@@ -153,7 +176,13 @@ export default function JobDetailScreen() {
           </Card>
 
           {maps ? (
-            <Button title="Navigate" variant="primary" icon="navigate" onPress={() => void Linking.openURL(maps)} fullWidth />
+            <Button
+              title="Navigate"
+              variant="primary"
+              icon="navigate"
+              onPress={() => void Linking.openURL(maps)}
+              fullWidth
+            />
           ) : null}
 
           {error ? (
@@ -210,9 +239,20 @@ export default function JobDetailScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
-  center: { flex: 1, backgroundColor: colors.bg, alignItems: "center", justifyContent: "center", gap: space.md },
+  center: {
+    flex: 1,
+    backgroundColor: colors.bg,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: space.md,
+  },
   body: { padding: space.lg, gap: space.lg },
-  statusRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: space.md },
+  statusRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: space.md,
+  },
   price: { fontFamily: fonts.display, fontSize: 24, color: colors.text, letterSpacing: -0.5 },
   customer: { flexDirection: "row", alignItems: "center", gap: space.md },
   errorBox: {

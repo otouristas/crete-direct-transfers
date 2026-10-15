@@ -54,7 +54,10 @@ function PartnerGate() {
       <div className="mx-auto max-w-lg px-6 py-20 text-center">
         <h1 className="font-display text-2xl text-primary">{t.partner.title}</h1>
         <p className="mt-3 text-sm text-muted-foreground">{t.partner.noAccess}</p>
-        <Link to="/{-$locale}/account" className="mt-6 inline-block text-sm text-accent-deep underline">
+        <Link
+          to="/{-$locale}/account"
+          className="mt-6 inline-block text-sm text-accent-deep underline"
+        >
           {t.account.backToBookings}
         </Link>
       </div>
@@ -64,7 +67,10 @@ function PartnerGate() {
   const partnerId = dispatcher[0]?.partner_id ?? memberships.data?.[0]?.partner_id;
 
   return (
-    <DashboardShell title={t.partner.title} tabs={[{ label: t.partner.inboxTitle, to: "/partner" }]}>
+    <DashboardShell
+      title={t.partner.title}
+      tabs={[{ label: t.partner.inboxTitle, to: "/partner" }]}
+    >
       <Outlet />
       {/* partnerId available via query on index; admin sees first membership or picks via URL later */}
       <span className="sr-only" data-partner-id={partnerId ?? ""} />

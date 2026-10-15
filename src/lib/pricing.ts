@@ -1,9 +1,7 @@
+import { isNightAtPickup as isNight } from "../../packages/mobile-shared/src/pickup-time";
 import { getRoute, VEHICLE_CLASSES, type VehicleClass } from "@/data/routes";
 import { getAirport, type AirportData } from "@/data/airports";
-import {
-  getAirportRoute,
-  type AirportRouteData,
-} from "@/data/airport-routes";
+import { getAirportRoute, type AirportRouteData } from "@/data/airport-routes";
 import { formatMoney } from "@/lib/currency";
 
 export type Extras = {
@@ -31,15 +29,11 @@ const EXTRA_PRICES = {
 
 const RETURN_DISCOUNT = 0.05;
 
-function isNight(at: Date): boolean {
-  const h = at.getHours();
-  return h >= 22 || h < 6;
-}
-
 export function quote(input: {
   routeSlug: string;
   vehicleClass: VehicleClass;
   pickupAt?: Date;
+  timeZone?: string;
   extras?: Extras;
   tripType?: TripType;
   returnAt?: Date;
@@ -67,7 +61,7 @@ export function quote(input: {
   let outboundSubtotal = breakdown.reduce((s, b) => s + b.amountEur, 0);
 
   // Night surcharge 22:00–06:00 (+15%) per leg, based on that leg's pickup time
-  if (input.pickupAt && isNight(input.pickupAt)) {
+  if (input.pickupAt && isNight(input.pickupAt, input.timeZone)) {
     const surcharge = Math.round(outboundSubtotal * 0.15);
     breakdown.push({ label: "Night surcharge (22:00–06:00)", amountEur: surcharge });
     outboundSubtotal += surcharge;
@@ -80,7 +74,7 @@ export function quote(input: {
     let returnSubtotal = breakdown
       .filter((b) => !b.label.startsWith("Night surcharge"))
       .reduce((s, b) => s + b.amountEur, 0);
-    if (input.returnAt && isNight(input.returnAt)) {
+    if (input.returnAt && isNight(input.returnAt, input.timeZone)) {
       returnSubtotal += Math.round(returnSubtotal * 0.15);
     }
     breakdown.push({ label: "Return trip", amountEur: returnSubtotal });
@@ -116,6 +110,7 @@ export function quoteHourly(input: {
   hours: number;
   vehicleClass: VehicleClass;
   pickupAt?: Date;
+  timeZone?: string;
 }): HourlyQuote | null {
   const vc = VEHICLE_CLASSES.find((c) => c.id === input.vehicleClass);
   const hours = Math.max(2, Math.min(12, Math.round(input.hours)));
@@ -127,7 +122,7 @@ export function quoteHourly(input: {
   ];
 
   let total = base;
-  if (input.pickupAt && isNight(input.pickupAt)) {
+  if (input.pickupAt && isNight(input.pickupAt, input.timeZone)) {
     const surcharge = Math.round(total * 0.15);
     breakdown.push({ label: "Night surcharge (22:00–06:00)", amountEur: surcharge });
     total += surcharge;
@@ -175,7 +170,12 @@ export function quoteAirportRoute(input: {
   airportSlug: string;
   routeSlug?: string;
   vehicleClass: VehicleClass;
-}): { totalEur: number; baseEur: number; vehicleClass: VehicleClass; bookable: "instant" | "quote" } | null {
+}): {
+  totalEur: number;
+  baseEur: number;
+  vehicleClass: VehicleClass;
+  bookable: "instant" | "quote";
+} | null {
   const airport = getAirport(input.airportSlug);
   const vc = VEHICLE_CLASSES.find((c) => c.id === input.vehicleClass);
   if (!airport || !vc) return null;
@@ -204,7 +204,14 @@ export function quoteAirportRoute(input: {
 export function vehicleFromPrices(
   airport: AirportData,
   route?: AirportRouteData,
-): { id: VehicleClass; label: string; capacity: string; bags: string; example: string; fromEur: number }[] {
+): {
+  id: VehicleClass;
+  label: string;
+  capacity: string;
+  bags: string;
+  example: string;
+  fromEur: number;
+}[] {
   const base = route
     ? route.legacyRouteSlug
       ? (getRoute(route.legacyRouteSlug)?.basePriceEur ?? route.basePriceEur)
@@ -241,6 +248,7 @@ export function quoteFromBase(input: {
   baseEur: number;
   vehicleClass: VehicleClass;
   pickupAt?: Date;
+  timeZone?: string;
   extras?: Extras;
   tripType?: TripType;
   returnAt?: Date;
@@ -269,7 +277,7 @@ export function quoteFromBase(input: {
 
   let outboundSubtotal = breakdown.reduce((s, b) => s + b.amountEur, 0);
 
-  if (input.pickupAt && isNight(input.pickupAt)) {
+  if (input.pickupAt && isNight(input.pickupAt, input.timeZone)) {
     const surcharge = Math.round(outboundSubtotal * 0.15);
     breakdown.push({ label: "Night surcharge (22:00–06:00)", amountEur: surcharge });
     outboundSubtotal += surcharge;
@@ -281,7 +289,7 @@ export function quoteFromBase(input: {
     let returnSubtotal = breakdown
       .filter((b) => !b.label.startsWith("Night surcharge"))
       .reduce((s, b) => s + b.amountEur, 0);
-    if (input.returnAt && isNight(input.returnAt)) {
+    if (input.returnAt && isNight(input.returnAt, input.timeZone)) {
       returnSubtotal += Math.round(returnSubtotal * 0.15);
     }
     breakdown.push({ label: "Return trip", amountEur: returnSubtotal });
@@ -312,6 +320,7 @@ export function quoteTrip(input: {
   durationMin?: number;
   vehicleClass: VehicleClass;
   pickupAt?: Date;
+  timeZone?: string;
   extras?: Extras;
   tripType?: TripType;
   returnAt?: Date;
@@ -321,6 +330,7 @@ export function quoteTrip(input: {
       routeSlug: input.routeSlug,
       vehicleClass: input.vehicleClass,
       pickupAt: input.pickupAt,
+      timeZone: input.timeZone,
       extras: input.extras,
       tripType: input.tripType,
       returnAt: input.returnAt,
@@ -343,6 +353,7 @@ export function quoteTrip(input: {
     baseEur: distanceBaseEur(input.distanceKm),
     vehicleClass: input.vehicleClass,
     pickupAt: input.pickupAt,
+    timeZone: input.timeZone,
     extras: input.extras,
     tripType: input.tripType,
     returnAt: input.returnAt,
@@ -358,6 +369,7 @@ export function quoteAllClasses(input: {
   distanceKm?: number;
   durationMin?: number;
   pickupAt?: Date;
+  timeZone?: string;
   extras?: Extras;
   tripType?: TripType;
   returnAt?: Date;

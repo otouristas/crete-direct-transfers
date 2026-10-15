@@ -51,7 +51,10 @@ export function ListRow({
     return (
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => [styles.row, pressed ? { backgroundColor: colors.surfaceMuted } : null]}
+        style={({ pressed }) => [
+          styles.row,
+          pressed ? { backgroundColor: colors.surfaceMuted } : null,
+        ]}
       >
         {inner}
       </Pressable>

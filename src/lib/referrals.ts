@@ -19,9 +19,7 @@ export async function attachReferral(bookingId: string, code: string | undefined
     .maybeSingle();
   if (!booking) return;
 
-  const commission = Math.round(
-    (booking.price_cents * Number(partner.commission_percent)) / 100,
-  );
+  const commission = Math.round((booking.price_cents * Number(partner.commission_percent)) / 100);
 
   await supabase.from("booking_referrals").insert({
     booking_id: bookingId,

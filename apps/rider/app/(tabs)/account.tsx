@@ -73,7 +73,12 @@ export default function AccountScreen() {
           </Text>
         </Card>
       ) : (
-        <Button title="Sign out" variant="outline" icon="log-out-outline" onPress={() => void signOut()} />
+        <Button
+          title="Sign out"
+          variant="outline"
+          icon="log-out-outline"
+          onPress={() => void signOut()}
+        />
       )}
     </Screen>
   );

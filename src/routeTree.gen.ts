@@ -22,20 +22,25 @@ import { Route as Char123LocaleChar125OpsRouteImport } from './routes/{-$locale}
 import { Route as Char123LocaleChar125LoginRouteImport } from './routes/{-$locale}/login'
 import { Route as Char123LocaleChar125ItalyRouteImport } from './routes/{-$locale}/italy'
 import { Route as Char123LocaleChar125HowItWorksRouteImport } from './routes/{-$locale}/how-it-works'
+import { Route as Char123LocaleChar125HotelsRouteImport } from './routes/{-$locale}/hotels'
 import { Route as Char123LocaleChar125GreeceRouteImport } from './routes/{-$locale}/greece'
 import { Route as Char123LocaleChar125ForgotPasswordRouteImport } from './routes/{-$locale}/forgot-password'
 import { Route as Char123LocaleChar125ForHotelsRouteImport } from './routes/{-$locale}/for-hotels'
 import { Route as Char123LocaleChar125ForDriversRouteImport } from './routes/{-$locale}/for-drivers'
+import { Route as Char123LocaleChar125FlightsRouteImport } from './routes/{-$locale}/flights'
 import { Route as Char123LocaleChar125FaqRouteImport } from './routes/{-$locale}/faq'
 import { Route as Char123LocaleChar125DriverRouteImport } from './routes/{-$locale}/driver'
 import { Route as Char123LocaleChar125ContactRouteImport } from './routes/{-$locale}/contact'
 import { Route as Char123LocaleChar125BookRouteImport } from './routes/{-$locale}/book'
+import { Route as Char123LocaleChar125AppsRouteImport } from './routes/{-$locale}/apps'
 import { Route as Char123LocaleChar125AccountRouteImport } from './routes/{-$locale}/account'
 import { Route as Char123LocaleChar125AboutRouteImport } from './routes/{-$locale}/about'
 import { Route as Char123LocaleChar125ServicesIndexRouteImport } from './routes/{-$locale}/services.index'
 import { Route as Char123LocaleChar125RoutesIndexRouteImport } from './routes/{-$locale}/routes.index'
 import { Route as Char123LocaleChar125RegionsIndexRouteImport } from './routes/{-$locale}/regions.index'
 import { Route as Char123LocaleChar125PartnerIndexRouteImport } from './routes/{-$locale}/partner.index'
+import { Route as Char123LocaleChar125HotelsIndexRouteImport } from './routes/{-$locale}/hotels.index'
+import { Route as Char123LocaleChar125FlightsIndexRouteImport } from './routes/{-$locale}/flights.index'
 import { Route as Char123LocaleChar125FleetIndexRouteImport } from './routes/{-$locale}/fleet.index'
 import { Route as Char123LocaleChar125DriverIndexRouteImport } from './routes/{-$locale}/driver.index'
 import { Route as Char123LocaleChar125CitiesIndexRouteImport } from './routes/{-$locale}/cities.index'
@@ -52,6 +57,9 @@ import { Route as Char123LocaleChar125LegalKycRouteImport } from './routes/{-$lo
 import { Route as Char123LocaleChar125LegalImprintRouteImport } from './routes/{-$locale}/legal.imprint'
 import { Route as Char123LocaleChar125LegalDriverPartnershipRouteImport } from './routes/{-$locale}/legal.driver-partnership'
 import { Route as Char123LocaleChar125LegalCookiesRouteImport } from './routes/{-$locale}/legal.cookies'
+import { Route as Char123LocaleChar125HotelsCheckoutRouteImport } from './routes/{-$locale}/hotels.checkout'
+import { Route as Char123LocaleChar125HotelsHotelIdRouteImport } from './routes/{-$locale}/hotels.$hotelId'
+import { Route as Char123LocaleChar125FlightsCheckoutRouteImport } from './routes/{-$locale}/flights.checkout'
 import { Route as Char123LocaleChar125FleetClassRouteImport } from './routes/{-$locale}/fleet.$class'
 import { Route as Char123LocaleChar125DriverApplyRouteImport } from './routes/{-$locale}/driver_.apply'
 import { Route as Char123LocaleChar125DriverEarningsRouteImport } from './routes/{-$locale}/driver.earnings'
@@ -61,6 +69,8 @@ import { Route as Char123LocaleChar125BlogSlugRouteImport } from './routes/{-$lo
 import { Route as Char123LocaleChar125AirportsSlugRouteImport } from './routes/{-$locale}/airports.$slug'
 import { Route as Char123LocaleChar125AccountProfileRouteImport } from './routes/{-$locale}/account.profile'
 import { Route as Char123LocaleChar125DriverJobsIndexRouteImport } from './routes/{-$locale}/driver.jobs.index'
+import { Route as Char123LocaleChar125HotelsConfirmationBookingIdRouteImport } from './routes/{-$locale}/hotels.confirmation.$bookingId'
+import { Route as Char123LocaleChar125FlightsConfirmationBookingIdRouteImport } from './routes/{-$locale}/flights.confirmation.$bookingId'
 import { Route as Char123LocaleChar125DriverJobsIdRouteImport } from './routes/{-$locale}/driver.jobs.$id'
 import { Route as Char123LocaleChar125AirportsSlugRouteSlugRouteImport } from './routes/{-$locale}/airports.$slug.$routeSlug'
 import { Route as Char123LocaleChar125AccountBookingsIdRouteImport } from './routes/{-$locale}/account.bookings.$id'
@@ -141,6 +151,12 @@ const Char123LocaleChar125HowItWorksRoute =
     path: '/how-it-works',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125HotelsRoute =
+  Char123LocaleChar125HotelsRouteImport.update({
+    id: '/hotels',
+    path: '/hotels',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125GreeceRoute =
   Char123LocaleChar125GreeceRouteImport.update({
     id: '/greece',
@@ -165,6 +181,12 @@ const Char123LocaleChar125ForDriversRoute =
     path: '/for-drivers',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125FlightsRoute =
+  Char123LocaleChar125FlightsRouteImport.update({
+    id: '/flights',
+    path: '/flights',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125FaqRoute = Char123LocaleChar125FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -186,6 +208,12 @@ const Char123LocaleChar125BookRoute =
   Char123LocaleChar125BookRouteImport.update({
     id: '/book',
     path: '/book',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125AppsRoute =
+  Char123LocaleChar125AppsRouteImport.update({
+    id: '/apps',
+    path: '/apps',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
 const Char123LocaleChar125AccountRoute =
@@ -223,6 +251,18 @@ const Char123LocaleChar125PartnerIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => Char123LocaleChar125PartnerRoute,
+  } as any)
+const Char123LocaleChar125HotelsIndexRoute =
+  Char123LocaleChar125HotelsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125HotelsRoute,
+  } as any)
+const Char123LocaleChar125FlightsIndexRoute =
+  Char123LocaleChar125FlightsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125FlightsRoute,
   } as any)
 const Char123LocaleChar125FleetIndexRoute =
   Char123LocaleChar125FleetIndexRouteImport.update({
@@ -320,6 +360,24 @@ const Char123LocaleChar125LegalCookiesRoute =
     path: '/legal/cookies',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125HotelsCheckoutRoute =
+  Char123LocaleChar125HotelsCheckoutRouteImport.update({
+    id: '/checkout',
+    path: '/checkout',
+    getParentRoute: () => Char123LocaleChar125HotelsRoute,
+  } as any)
+const Char123LocaleChar125HotelsHotelIdRoute =
+  Char123LocaleChar125HotelsHotelIdRouteImport.update({
+    id: '/$hotelId',
+    path: '/$hotelId',
+    getParentRoute: () => Char123LocaleChar125HotelsRoute,
+  } as any)
+const Char123LocaleChar125FlightsCheckoutRoute =
+  Char123LocaleChar125FlightsCheckoutRouteImport.update({
+    id: '/checkout',
+    path: '/checkout',
+    getParentRoute: () => Char123LocaleChar125FlightsRoute,
+  } as any)
 const Char123LocaleChar125FleetClassRoute =
   Char123LocaleChar125FleetClassRouteImport.update({
     id: '/fleet/$class',
@@ -374,6 +432,18 @@ const Char123LocaleChar125DriverJobsIndexRoute =
     path: '/jobs/',
     getParentRoute: () => Char123LocaleChar125DriverRoute,
   } as any)
+const Char123LocaleChar125HotelsConfirmationBookingIdRoute =
+  Char123LocaleChar125HotelsConfirmationBookingIdRouteImport.update({
+    id: '/confirmation/$bookingId',
+    path: '/confirmation/$bookingId',
+    getParentRoute: () => Char123LocaleChar125HotelsRoute,
+  } as any)
+const Char123LocaleChar125FlightsConfirmationBookingIdRoute =
+  Char123LocaleChar125FlightsConfirmationBookingIdRouteImport.update({
+    id: '/confirmation/$bookingId',
+    path: '/confirmation/$bookingId',
+    getParentRoute: () => Char123LocaleChar125FlightsRoute,
+  } as any)
 const Char123LocaleChar125DriverJobsIdRoute =
   Char123LocaleChar125DriverJobsIdRouteImport.update({
     id: '/jobs/$id',
@@ -398,14 +468,17 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
   '/{-$locale}/account': typeof Char123LocaleChar125AccountRouteWithChildren
+  '/{-$locale}/apps': typeof Char123LocaleChar125AppsRoute
   '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
   '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverRouteWithChildren
   '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
+  '/{-$locale}/flights': typeof Char123LocaleChar125FlightsRouteWithChildren
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
   '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
+  '/{-$locale}/hotels': typeof Char123LocaleChar125HotelsRouteWithChildren
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
   '/{-$locale}/italy': typeof Char123LocaleChar125ItalyRoute
   '/{-$locale}/login': typeof Char123LocaleChar125LoginRoute
@@ -425,6 +498,9 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/flights/checkout': typeof Char123LocaleChar125FlightsCheckoutRoute
+  '/{-$locale}/hotels/$hotelId': typeof Char123LocaleChar125HotelsHotelIdRoute
+  '/{-$locale}/hotels/checkout': typeof Char123LocaleChar125HotelsCheckoutRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
   '/{-$locale}/legal/driver-partnership': typeof Char123LocaleChar125LegalDriverPartnershipRoute
   '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
@@ -441,6 +517,8 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/flights/': typeof Char123LocaleChar125FlightsIndexRoute
+  '/{-$locale}/hotels/': typeof Char123LocaleChar125HotelsIndexRoute
   '/{-$locale}/partner/': typeof Char123LocaleChar125PartnerIndexRoute
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
@@ -448,11 +526,14 @@ export interface FileRoutesByFullPath {
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
   '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
+  '/{-$locale}/flights/confirmation/$bookingId': typeof Char123LocaleChar125FlightsConfirmationBookingIdRoute
+  '/{-$locale}/hotels/confirmation/$bookingId': typeof Char123LocaleChar125HotelsConfirmationBookingIdRoute
   '/{-$locale}/driver/jobs/': typeof Char123LocaleChar125DriverJobsIndexRoute
 }
 export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
+  '/{-$locale}/apps': typeof Char123LocaleChar125AppsRoute
   '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
   '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
   '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
@@ -478,6 +559,9 @@ export interface FileRoutesByTo {
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver/apply': typeof Char123LocaleChar125DriverApplyRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/flights/checkout': typeof Char123LocaleChar125FlightsCheckoutRoute
+  '/{-$locale}/hotels/$hotelId': typeof Char123LocaleChar125HotelsHotelIdRoute
+  '/{-$locale}/hotels/checkout': typeof Char123LocaleChar125HotelsCheckoutRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
   '/{-$locale}/legal/driver-partnership': typeof Char123LocaleChar125LegalDriverPartnershipRoute
   '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
@@ -494,6 +578,8 @@ export interface FileRoutesByTo {
   '/{-$locale}/cities': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/fleet': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/flights': typeof Char123LocaleChar125FlightsIndexRoute
+  '/{-$locale}/hotels': typeof Char123LocaleChar125HotelsIndexRoute
   '/{-$locale}/partner': typeof Char123LocaleChar125PartnerIndexRoute
   '/{-$locale}/regions': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes': typeof Char123LocaleChar125RoutesIndexRoute
@@ -501,6 +587,8 @@ export interface FileRoutesByTo {
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
   '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
+  '/{-$locale}/flights/confirmation/$bookingId': typeof Char123LocaleChar125FlightsConfirmationBookingIdRoute
+  '/{-$locale}/hotels/confirmation/$bookingId': typeof Char123LocaleChar125HotelsConfirmationBookingIdRoute
   '/{-$locale}/driver/jobs': typeof Char123LocaleChar125DriverJobsIndexRoute
 }
 export interface FileRoutesById {
@@ -509,14 +597,17 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$locale}/about': typeof Char123LocaleChar125AboutRoute
   '/{-$locale}/account': typeof Char123LocaleChar125AccountRouteWithChildren
+  '/{-$locale}/apps': typeof Char123LocaleChar125AppsRoute
   '/{-$locale}/book': typeof Char123LocaleChar125BookRouteWithChildren
   '/{-$locale}/contact': typeof Char123LocaleChar125ContactRoute
   '/{-$locale}/driver': typeof Char123LocaleChar125DriverRouteWithChildren
   '/{-$locale}/faq': typeof Char123LocaleChar125FaqRoute
+  '/{-$locale}/flights': typeof Char123LocaleChar125FlightsRouteWithChildren
   '/{-$locale}/for-drivers': typeof Char123LocaleChar125ForDriversRoute
   '/{-$locale}/for-hotels': typeof Char123LocaleChar125ForHotelsRoute
   '/{-$locale}/forgot-password': typeof Char123LocaleChar125ForgotPasswordRoute
   '/{-$locale}/greece': typeof Char123LocaleChar125GreeceRoute
+  '/{-$locale}/hotels': typeof Char123LocaleChar125HotelsRouteWithChildren
   '/{-$locale}/how-it-works': typeof Char123LocaleChar125HowItWorksRoute
   '/{-$locale}/italy': typeof Char123LocaleChar125ItalyRoute
   '/{-$locale}/login': typeof Char123LocaleChar125LoginRoute
@@ -536,6 +627,9 @@ export interface FileRoutesById {
   '/{-$locale}/driver/earnings': typeof Char123LocaleChar125DriverEarningsRoute
   '/{-$locale}/driver_/apply': typeof Char123LocaleChar125DriverApplyRoute
   '/{-$locale}/fleet/$class': typeof Char123LocaleChar125FleetClassRoute
+  '/{-$locale}/flights/checkout': typeof Char123LocaleChar125FlightsCheckoutRoute
+  '/{-$locale}/hotels/$hotelId': typeof Char123LocaleChar125HotelsHotelIdRoute
+  '/{-$locale}/hotels/checkout': typeof Char123LocaleChar125HotelsCheckoutRoute
   '/{-$locale}/legal/cookies': typeof Char123LocaleChar125LegalCookiesRoute
   '/{-$locale}/legal/driver-partnership': typeof Char123LocaleChar125LegalDriverPartnershipRoute
   '/{-$locale}/legal/imprint': typeof Char123LocaleChar125LegalImprintRoute
@@ -552,6 +646,8 @@ export interface FileRoutesById {
   '/{-$locale}/cities/': typeof Char123LocaleChar125CitiesIndexRoute
   '/{-$locale}/driver/': typeof Char123LocaleChar125DriverIndexRoute
   '/{-$locale}/fleet/': typeof Char123LocaleChar125FleetIndexRoute
+  '/{-$locale}/flights/': typeof Char123LocaleChar125FlightsIndexRoute
+  '/{-$locale}/hotels/': typeof Char123LocaleChar125HotelsIndexRoute
   '/{-$locale}/partner/': typeof Char123LocaleChar125PartnerIndexRoute
   '/{-$locale}/regions/': typeof Char123LocaleChar125RegionsIndexRoute
   '/{-$locale}/routes/': typeof Char123LocaleChar125RoutesIndexRoute
@@ -559,6 +655,8 @@ export interface FileRoutesById {
   '/{-$locale}/account/bookings/$id': typeof Char123LocaleChar125AccountBookingsIdRoute
   '/{-$locale}/airports/$slug/$routeSlug': typeof Char123LocaleChar125AirportsSlugRouteSlugRoute
   '/{-$locale}/driver/jobs/$id': typeof Char123LocaleChar125DriverJobsIdRoute
+  '/{-$locale}/flights/confirmation/$bookingId': typeof Char123LocaleChar125FlightsConfirmationBookingIdRoute
+  '/{-$locale}/hotels/confirmation/$bookingId': typeof Char123LocaleChar125HotelsConfirmationBookingIdRoute
   '/{-$locale}/driver/jobs/': typeof Char123LocaleChar125DriverJobsIndexRoute
 }
 export interface FileRouteTypes {
@@ -568,14 +666,17 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/{-$locale}/about'
     | '/{-$locale}/account'
+    | '/{-$locale}/apps'
     | '/{-$locale}/book'
     | '/{-$locale}/contact'
     | '/{-$locale}/driver'
     | '/{-$locale}/faq'
+    | '/{-$locale}/flights'
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
     | '/{-$locale}/forgot-password'
     | '/{-$locale}/greece'
+    | '/{-$locale}/hotels'
     | '/{-$locale}/how-it-works'
     | '/{-$locale}/italy'
     | '/{-$locale}/login'
@@ -595,6 +696,9 @@ export interface FileRouteTypes {
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
     | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/flights/checkout'
+    | '/{-$locale}/hotels/$hotelId'
+    | '/{-$locale}/hotels/checkout'
     | '/{-$locale}/legal/cookies'
     | '/{-$locale}/legal/driver-partnership'
     | '/{-$locale}/legal/imprint'
@@ -611,6 +715,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
     | '/{-$locale}/fleet/'
+    | '/{-$locale}/flights/'
+    | '/{-$locale}/hotels/'
     | '/{-$locale}/partner/'
     | '/{-$locale}/regions/'
     | '/{-$locale}/routes/'
@@ -618,11 +724,14 @@ export interface FileRouteTypes {
     | '/{-$locale}/account/bookings/$id'
     | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
+    | '/{-$locale}/flights/confirmation/$bookingId'
+    | '/{-$locale}/hotels/confirmation/$bookingId'
     | '/{-$locale}/driver/jobs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/sitemap.xml'
     | '/{-$locale}/about'
+    | '/{-$locale}/apps'
     | '/{-$locale}/book'
     | '/{-$locale}/contact'
     | '/{-$locale}/faq'
@@ -648,6 +757,9 @@ export interface FileRouteTypes {
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver/apply'
     | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/flights/checkout'
+    | '/{-$locale}/hotels/$hotelId'
+    | '/{-$locale}/hotels/checkout'
     | '/{-$locale}/legal/cookies'
     | '/{-$locale}/legal/driver-partnership'
     | '/{-$locale}/legal/imprint'
@@ -664,6 +776,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities'
     | '/{-$locale}/driver'
     | '/{-$locale}/fleet'
+    | '/{-$locale}/flights'
+    | '/{-$locale}/hotels'
     | '/{-$locale}/partner'
     | '/{-$locale}/regions'
     | '/{-$locale}/routes'
@@ -671,6 +785,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/account/bookings/$id'
     | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
+    | '/{-$locale}/flights/confirmation/$bookingId'
+    | '/{-$locale}/hotels/confirmation/$bookingId'
     | '/{-$locale}/driver/jobs'
   id:
     | '__root__'
@@ -678,14 +794,17 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/{-$locale}/about'
     | '/{-$locale}/account'
+    | '/{-$locale}/apps'
     | '/{-$locale}/book'
     | '/{-$locale}/contact'
     | '/{-$locale}/driver'
     | '/{-$locale}/faq'
+    | '/{-$locale}/flights'
     | '/{-$locale}/for-drivers'
     | '/{-$locale}/for-hotels'
     | '/{-$locale}/forgot-password'
     | '/{-$locale}/greece'
+    | '/{-$locale}/hotels'
     | '/{-$locale}/how-it-works'
     | '/{-$locale}/italy'
     | '/{-$locale}/login'
@@ -705,6 +824,9 @@ export interface FileRouteTypes {
     | '/{-$locale}/driver/earnings'
     | '/{-$locale}/driver_/apply'
     | '/{-$locale}/fleet/$class'
+    | '/{-$locale}/flights/checkout'
+    | '/{-$locale}/hotels/$hotelId'
+    | '/{-$locale}/hotels/checkout'
     | '/{-$locale}/legal/cookies'
     | '/{-$locale}/legal/driver-partnership'
     | '/{-$locale}/legal/imprint'
@@ -721,6 +843,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/cities/'
     | '/{-$locale}/driver/'
     | '/{-$locale}/fleet/'
+    | '/{-$locale}/flights/'
+    | '/{-$locale}/hotels/'
     | '/{-$locale}/partner/'
     | '/{-$locale}/regions/'
     | '/{-$locale}/routes/'
@@ -728,6 +852,8 @@ export interface FileRouteTypes {
     | '/{-$locale}/account/bookings/$id'
     | '/{-$locale}/airports/$slug/$routeSlug'
     | '/{-$locale}/driver/jobs/$id'
+    | '/{-$locale}/flights/confirmation/$bookingId'
+    | '/{-$locale}/hotels/confirmation/$bookingId'
     | '/{-$locale}/driver/jobs/'
   fileRoutesById: FileRoutesById
 }
@@ -829,6 +955,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125HowItWorksRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
+    '/{-$locale}/hotels': {
+      id: '/{-$locale}/hotels'
+      path: '/hotels'
+      fullPath: '/{-$locale}/hotels'
+      preLoaderRoute: typeof Char123LocaleChar125HotelsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/greece': {
       id: '/{-$locale}/greece'
       path: '/greece'
@@ -857,6 +990,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125ForDriversRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
+    '/{-$locale}/flights': {
+      id: '/{-$locale}/flights'
+      path: '/flights'
+      fullPath: '/{-$locale}/flights'
+      preLoaderRoute: typeof Char123LocaleChar125FlightsRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/faq': {
       id: '/{-$locale}/faq'
       path: '/faq'
@@ -883,6 +1023,13 @@ declare module '@tanstack/react-router' {
       path: '/book'
       fullPath: '/{-$locale}/book'
       preLoaderRoute: typeof Char123LocaleChar125BookRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/apps': {
+      id: '/{-$locale}/apps'
+      path: '/apps'
+      fullPath: '/{-$locale}/apps'
+      preLoaderRoute: typeof Char123LocaleChar125AppsRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
     '/{-$locale}/account': {
@@ -926,6 +1073,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/{-$locale}/partner/'
       preLoaderRoute: typeof Char123LocaleChar125PartnerIndexRouteImport
       parentRoute: typeof Char123LocaleChar125PartnerRoute
+    }
+    '/{-$locale}/hotels/': {
+      id: '/{-$locale}/hotels/'
+      path: '/'
+      fullPath: '/{-$locale}/hotels/'
+      preLoaderRoute: typeof Char123LocaleChar125HotelsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125HotelsRoute
+    }
+    '/{-$locale}/flights/': {
+      id: '/{-$locale}/flights/'
+      path: '/'
+      fullPath: '/{-$locale}/flights/'
+      preLoaderRoute: typeof Char123LocaleChar125FlightsIndexRouteImport
+      parentRoute: typeof Char123LocaleChar125FlightsRoute
     }
     '/{-$locale}/fleet/': {
       id: '/{-$locale}/fleet/'
@@ -1039,6 +1200,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125LegalCookiesRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
+    '/{-$locale}/hotels/checkout': {
+      id: '/{-$locale}/hotels/checkout'
+      path: '/checkout'
+      fullPath: '/{-$locale}/hotels/checkout'
+      preLoaderRoute: typeof Char123LocaleChar125HotelsCheckoutRouteImport
+      parentRoute: typeof Char123LocaleChar125HotelsRoute
+    }
+    '/{-$locale}/hotels/$hotelId': {
+      id: '/{-$locale}/hotels/$hotelId'
+      path: '/$hotelId'
+      fullPath: '/{-$locale}/hotels/$hotelId'
+      preLoaderRoute: typeof Char123LocaleChar125HotelsHotelIdRouteImport
+      parentRoute: typeof Char123LocaleChar125HotelsRoute
+    }
+    '/{-$locale}/flights/checkout': {
+      id: '/{-$locale}/flights/checkout'
+      path: '/checkout'
+      fullPath: '/{-$locale}/flights/checkout'
+      preLoaderRoute: typeof Char123LocaleChar125FlightsCheckoutRouteImport
+      parentRoute: typeof Char123LocaleChar125FlightsRoute
+    }
     '/{-$locale}/fleet/$class': {
       id: '/{-$locale}/fleet/$class'
       path: '/fleet/$class'
@@ -1101,6 +1283,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/{-$locale}/driver/jobs/'
       preLoaderRoute: typeof Char123LocaleChar125DriverJobsIndexRouteImport
       parentRoute: typeof Char123LocaleChar125DriverRoute
+    }
+    '/{-$locale}/hotels/confirmation/$bookingId': {
+      id: '/{-$locale}/hotels/confirmation/$bookingId'
+      path: '/confirmation/$bookingId'
+      fullPath: '/{-$locale}/hotels/confirmation/$bookingId'
+      preLoaderRoute: typeof Char123LocaleChar125HotelsConfirmationBookingIdRouteImport
+      parentRoute: typeof Char123LocaleChar125HotelsRoute
+    }
+    '/{-$locale}/flights/confirmation/$bookingId': {
+      id: '/{-$locale}/flights/confirmation/$bookingId'
+      path: '/confirmation/$bookingId'
+      fullPath: '/{-$locale}/flights/confirmation/$bookingId'
+      preLoaderRoute: typeof Char123LocaleChar125FlightsConfirmationBookingIdRouteImport
+      parentRoute: typeof Char123LocaleChar125FlightsRoute
     }
     '/{-$locale}/driver/jobs/$id': {
       id: '/{-$locale}/driver/jobs/$id'
@@ -1184,6 +1380,50 @@ const Char123LocaleChar125DriverRouteWithChildren =
     Char123LocaleChar125DriverRouteChildren,
   )
 
+interface Char123LocaleChar125FlightsRouteChildren {
+  Char123LocaleChar125FlightsCheckoutRoute: typeof Char123LocaleChar125FlightsCheckoutRoute
+  Char123LocaleChar125FlightsIndexRoute: typeof Char123LocaleChar125FlightsIndexRoute
+  Char123LocaleChar125FlightsConfirmationBookingIdRoute: typeof Char123LocaleChar125FlightsConfirmationBookingIdRoute
+}
+
+const Char123LocaleChar125FlightsRouteChildren: Char123LocaleChar125FlightsRouteChildren =
+  {
+    Char123LocaleChar125FlightsCheckoutRoute:
+      Char123LocaleChar125FlightsCheckoutRoute,
+    Char123LocaleChar125FlightsIndexRoute:
+      Char123LocaleChar125FlightsIndexRoute,
+    Char123LocaleChar125FlightsConfirmationBookingIdRoute:
+      Char123LocaleChar125FlightsConfirmationBookingIdRoute,
+  }
+
+const Char123LocaleChar125FlightsRouteWithChildren =
+  Char123LocaleChar125FlightsRoute._addFileChildren(
+    Char123LocaleChar125FlightsRouteChildren,
+  )
+
+interface Char123LocaleChar125HotelsRouteChildren {
+  Char123LocaleChar125HotelsHotelIdRoute: typeof Char123LocaleChar125HotelsHotelIdRoute
+  Char123LocaleChar125HotelsCheckoutRoute: typeof Char123LocaleChar125HotelsCheckoutRoute
+  Char123LocaleChar125HotelsIndexRoute: typeof Char123LocaleChar125HotelsIndexRoute
+  Char123LocaleChar125HotelsConfirmationBookingIdRoute: typeof Char123LocaleChar125HotelsConfirmationBookingIdRoute
+}
+
+const Char123LocaleChar125HotelsRouteChildren: Char123LocaleChar125HotelsRouteChildren =
+  {
+    Char123LocaleChar125HotelsHotelIdRoute:
+      Char123LocaleChar125HotelsHotelIdRoute,
+    Char123LocaleChar125HotelsCheckoutRoute:
+      Char123LocaleChar125HotelsCheckoutRoute,
+    Char123LocaleChar125HotelsIndexRoute: Char123LocaleChar125HotelsIndexRoute,
+    Char123LocaleChar125HotelsConfirmationBookingIdRoute:
+      Char123LocaleChar125HotelsConfirmationBookingIdRoute,
+  }
+
+const Char123LocaleChar125HotelsRouteWithChildren =
+  Char123LocaleChar125HotelsRoute._addFileChildren(
+    Char123LocaleChar125HotelsRouteChildren,
+  )
+
 interface Char123LocaleChar125PartnerRouteChildren {
   Char123LocaleChar125PartnerIndexRoute: typeof Char123LocaleChar125PartnerIndexRoute
 }
@@ -1217,14 +1457,17 @@ const Char123LocaleChar125AirportsSlugRouteWithChildren =
 interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125AboutRoute: typeof Char123LocaleChar125AboutRoute
   Char123LocaleChar125AccountRoute: typeof Char123LocaleChar125AccountRouteWithChildren
+  Char123LocaleChar125AppsRoute: typeof Char123LocaleChar125AppsRoute
   Char123LocaleChar125BookRoute: typeof Char123LocaleChar125BookRouteWithChildren
   Char123LocaleChar125ContactRoute: typeof Char123LocaleChar125ContactRoute
   Char123LocaleChar125DriverRoute: typeof Char123LocaleChar125DriverRouteWithChildren
   Char123LocaleChar125FaqRoute: typeof Char123LocaleChar125FaqRoute
+  Char123LocaleChar125FlightsRoute: typeof Char123LocaleChar125FlightsRouteWithChildren
   Char123LocaleChar125ForDriversRoute: typeof Char123LocaleChar125ForDriversRoute
   Char123LocaleChar125ForHotelsRoute: typeof Char123LocaleChar125ForHotelsRoute
   Char123LocaleChar125ForgotPasswordRoute: typeof Char123LocaleChar125ForgotPasswordRoute
   Char123LocaleChar125GreeceRoute: typeof Char123LocaleChar125GreeceRoute
+  Char123LocaleChar125HotelsRoute: typeof Char123LocaleChar125HotelsRouteWithChildren
   Char123LocaleChar125HowItWorksRoute: typeof Char123LocaleChar125HowItWorksRoute
   Char123LocaleChar125ItalyRoute: typeof Char123LocaleChar125ItalyRoute
   Char123LocaleChar125LoginRoute: typeof Char123LocaleChar125LoginRoute
@@ -1265,16 +1508,21 @@ const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChil
     Char123LocaleChar125AboutRoute: Char123LocaleChar125AboutRoute,
     Char123LocaleChar125AccountRoute:
       Char123LocaleChar125AccountRouteWithChildren,
+    Char123LocaleChar125AppsRoute: Char123LocaleChar125AppsRoute,
     Char123LocaleChar125BookRoute: Char123LocaleChar125BookRouteWithChildren,
     Char123LocaleChar125ContactRoute: Char123LocaleChar125ContactRoute,
     Char123LocaleChar125DriverRoute:
       Char123LocaleChar125DriverRouteWithChildren,
     Char123LocaleChar125FaqRoute: Char123LocaleChar125FaqRoute,
+    Char123LocaleChar125FlightsRoute:
+      Char123LocaleChar125FlightsRouteWithChildren,
     Char123LocaleChar125ForDriversRoute: Char123LocaleChar125ForDriversRoute,
     Char123LocaleChar125ForHotelsRoute: Char123LocaleChar125ForHotelsRoute,
     Char123LocaleChar125ForgotPasswordRoute:
       Char123LocaleChar125ForgotPasswordRoute,
     Char123LocaleChar125GreeceRoute: Char123LocaleChar125GreeceRoute,
+    Char123LocaleChar125HotelsRoute:
+      Char123LocaleChar125HotelsRouteWithChildren,
     Char123LocaleChar125HowItWorksRoute: Char123LocaleChar125HowItWorksRoute,
     Char123LocaleChar125ItalyRoute: Char123LocaleChar125ItalyRoute,
     Char123LocaleChar125LoginRoute: Char123LocaleChar125LoginRoute,

@@ -31,7 +31,13 @@ export default function SignupForm() {
     >
       <BrandHeader subtitle="Create your account to book transfers." />
       <View style={styles.form}>
-        <Field label="Full name" icon="person-outline" placeholder="Your name" value={name} onChangeText={setName} />
+        <Field
+          label="Full name"
+          icon="person-outline"
+          placeholder="Your name"
+          value={name}
+          onChangeText={setName}
+        />
         <Field
           label="Email"
           icon="mail-outline"

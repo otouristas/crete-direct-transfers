@@ -108,7 +108,10 @@ function ContactPage() {
             </Reveal>
           </div>
 
-          <Reveal delay={3} className="mt-5 flex items-center gap-3 rounded-2xl border border-border bg-muted/40 px-6 py-4 text-sm text-muted-foreground">
+          <Reveal
+            delay={3}
+            className="mt-5 flex items-center gap-3 rounded-2xl border border-border bg-muted/40 px-6 py-4 text-sm text-muted-foreground"
+          >
             <Clock className="h-4 w-4 shrink-0 text-accent-deep" />
             <span>
               <strong className="font-medium text-foreground">{t.contact.hoursTitle}:</strong>{" "}

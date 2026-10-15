@@ -146,11 +146,14 @@ function RootShell({ children }: { children: ReactNode }) {
   const params = useParams({ strict: false }) as { locale?: string };
   const lang = params.locale && isLocale(params.locale) ? params.locale : "en";
   return (
-    <html lang={lang}>
-      <head>
+    // suppressHydrationWarning: browser extensions and TanStack DevTools often
+    // mutate <html>/<body>/<head> (inline styles, data-tsd-source, injected
+    // <style> tags) before React hydrates — that is not an app bug.
+    <html lang={lang} suppressHydrationWarning>
+      <head suppressHydrationWarning>
         <HeadContent />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>

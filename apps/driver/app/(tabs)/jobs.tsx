@@ -73,7 +73,11 @@ export default function JobsScreen() {
           </View>
           <Divider />
           <View style={{ marginTop: space.md }}>
-            <RouteRail from={j.pickup_address || "Pickup"} to={j.dropoff_address || "Drop-off"} compact />
+            <RouteRail
+              from={j.pickup_address || "Pickup"}
+              to={j.dropoff_address || "Drop-off"}
+              compact
+            />
           </View>
           <Text variant="caption" color={colors.textMuted} style={{ marginTop: space.md }}>
             {new Date(j.pickup_at).toLocaleString()}
@@ -85,6 +89,11 @@ export default function JobsScreen() {
 }
 
 const styles = StyleSheet.create({
-  head: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: space.md },
+  head: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: space.md,
+  },
   price: { fontFamily: fonts.bold, fontSize: 18, color: colors.text },
 });

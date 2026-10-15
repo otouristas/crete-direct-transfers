@@ -4,12 +4,7 @@ import { Check, Coins, Globe, X } from "lucide-react";
 import { LOCALES, LOCALE_LABELS, useLocale, useT, type Locale } from "@/i18n";
 import { CURRENCIES, type CurrencyCode } from "@/lib/currency";
 import { useCurrency } from "@/hooks/use-currency";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 export function LanguageSwitcher({
@@ -49,9 +44,7 @@ export function LanguageSwitcher({
         onClick={() => setOpen(true)}
         className={cn(
           "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
-          onDark
-            ? "text-primary-foreground hover:bg-primary-foreground/10"
-            : "hover:bg-muted",
+          onDark ? "text-primary-foreground hover:bg-primary-foreground/10" : "hover:bg-muted",
           className,
         )}
         aria-label={t.settings.title}

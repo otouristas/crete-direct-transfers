@@ -41,7 +41,10 @@ export function hoursUntilPickup(pickupAt: string): number {
 }
 
 /** Preview cancel fee before calling the RPC. */
-export function previewCancelRefund(pickupAt: string, reason: CancellationReason): {
+export function previewCancelRefund(
+  pickupAt: string,
+  reason: CancellationReason,
+): {
   refundPercent: 50 | 100;
   needsReview: boolean;
 } {
@@ -66,6 +69,7 @@ export function previewCancelRefund(pickupAt: string, reason: CancellationReason
 export const myBookingsQuery = (userId: string, email: string) =>
   queryOptions({
     queryKey: ["my-bookings", userId, "demo"],
+    refetchInterval: 10000,
     queryFn: async (): Promise<Booking[]> => {
       let real: Booking[] = [];
       try {
@@ -90,6 +94,7 @@ export const myBookingsQuery = (userId: string, email: string) =>
 export const bookingQuery = (id: string) =>
   queryOptions({
     queryKey: ["booking", id],
+    refetchInterval: 5000,
     queryFn: async (): Promise<Booking | null> => {
       if (isDemoBookingId(id)) return getDemoBooking(id);
       const { data, error } = await supabase
@@ -139,7 +144,7 @@ export async function requestCancellation(input: {
   const { data, error } = await supabase.rpc("request_cancellation", {
     p_booking_id: input.id,
     p_reason: input.reason,
-    p_note: input.note ?? null,
+    p_note: input.note ?? undefined,
     p_prefer_credit: input.preferCredit ?? true,
   });
   if (error) throw error;
@@ -161,8 +166,8 @@ export async function openIncident(input: {
   const { data, error } = await supabase.rpc("open_incident", {
     p_booking_id: input.bookingId,
     p_type: input.type,
-    p_note: input.note ?? null,
-    p_claimed_wait_until: input.claimedWaitUntil ?? null,
+    p_note: input.note ?? undefined,
+    p_claimed_wait_until: input.claimedWaitUntil ?? undefined,
     p_evidence_urls: [],
   });
   if (error) throw error;

@@ -95,9 +95,7 @@ export default function LocationPickerInner({
   onPick: (point: PickedLocation, address: string) => void;
 }) {
   const [point, setPoint] = useState<PickedLocation | null>(value ?? null);
-  const center: [number, number] = value
-    ? [value.lat, value.lng]
-    : [35.34, 25.13]; // Crete default start
+  const center: [number, number] = value ? [value.lat, value.lng] : [35.34, 25.13]; // Crete default start
 
   const select = async (p: PickedLocation) => {
     setPoint(p);
@@ -113,8 +111,8 @@ export default function LocationPickerInner({
       style={{ minHeight: 256 }}
     >
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url={import.meta.env.VITE_MAP_TILE_URL || "https://tile.openstreetmap.org/{z}/{x}/{y}.png"}
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
       <Recenter value={value} />
       <ClickHandler onSelect={select} />

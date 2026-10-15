@@ -1,10 +1,18 @@
 import { createServerFn } from "@tanstack/react-start";
 import { CONTACT_EMAIL, SITE_NAME, SITE_URL } from "@/lib/site";
 
+function escapeHtml(value: string) {
+  return value.replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
+  );
+}
+
 type EmailPayload = {
   to: string;
   subject: string;
   html: string;
+  idempotencyKey?: string;
 };
 
 async function sendViaResend(payload: EmailPayload): Promise<{ ok: boolean; skipped?: boolean }> {
@@ -19,6 +27,7 @@ async function sendViaResend(payload: EmailPayload): Promise<{ ok: boolean; skip
     headers: {
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
+      ...(payload.idempotencyKey ? { "Idempotency-Key": payload.idempotencyKey } : {}),
     },
     body: JSON.stringify({
       from,
@@ -41,10 +50,6 @@ export async function sendEmailDirect(payload: EmailPayload) {
   return sendViaResend(payload);
 }
 
-export const sendTransactionalEmail = createServerFn({ method: "POST" })
-  .inputValidator((d: EmailPayload) => d)
-  .handler(async ({ data }) => sendViaResend(data));
-
 export function bookingCreatedEmail(input: {
   to: string;
   name: string;
@@ -59,9 +64,9 @@ export function bookingCreatedEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} booking confirmed · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
-<p>Your transfer <strong>${input.routeLabel}</strong> on <strong>${input.pickupAt}</strong> is confirmed.</p>
-<p>Total: <strong>${input.priceLabel}</strong></p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
+<p>Your transfer <strong>${escapeHtml(input.routeLabel)}</strong> on <strong>${escapeHtml(input.pickupAt)}</strong> is confirmed.</p>
+<p>Total: <strong>${escapeHtml(input.priceLabel)}</strong></p>
 <p><a href="${url}">View booking</a></p>
 <p>Free cancel up to 24h before pickup. Free waiting: 60 min airports/ports, 30 min elsewhere.</p>
 <p>— ${SITE_NAME}</p>`,
@@ -77,9 +82,9 @@ export function bookingCancelledEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} booking cancelled · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
 <p>Your booking <strong>${input.bookingId.slice(0, 8)}</strong> has been cancelled.</p>
-<p>${input.refundSummary}</p>
+<p>${escapeHtml(input.refundSummary)}</p>
 <p>— ${SITE_NAME}</p>`,
   };
 }
@@ -93,8 +98,8 @@ export function incidentOpenedEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} we received your report · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
-<p>We received your report (<strong>${input.typeLabel}</strong>) for booking ${input.bookingId.slice(0, 8)}. Our team will review and follow up.</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
+<p>We received your report (<strong>${escapeHtml(input.typeLabel)}</strong>) for booking ${input.bookingId.slice(0, 8)}. Our team will review and follow up.</p>
 <p>— ${SITE_NAME}</p>`,
   };
 }
@@ -108,7 +113,7 @@ export function refundProcessedEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} refund processed · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
 <p>A refund of <strong>${input.amountLabel}</strong> for booking ${input.bookingId.slice(0, 8)} has been processed.</p>
 <p>— ${SITE_NAME}</p>`,
   };
@@ -137,10 +142,10 @@ export function driverJobOfferEmail(input: {
   const url = `${SITE_URL}${path}/driver`;
   return {
     to: input.to,
-    subject: `${SITE_NAME} new job offer · ${input.routeLabel}`,
-    html: `<p>Hi ${input.driverName},</p>
-<p>New transfer offer: <strong>${input.routeLabel}</strong> on <strong>${input.pickupAt}</strong>.</p>
-<p>Fare: <strong>${input.priceLabel}</strong>. Expires in about ${Math.round(input.expiresInSec / 60)} min.</p>
+    subject: `${SITE_NAME} new job offer · ${escapeHtml(input.routeLabel)}`,
+    html: `<p>Hi ${escapeHtml(input.driverName)},</p>
+<p>New transfer offer: <strong>${escapeHtml(input.routeLabel)}</strong> on <strong>${escapeHtml(input.pickupAt)}</strong>.</p>
+<p>Fare: <strong>${escapeHtml(input.priceLabel)}</strong>. Expires in about ${Math.round(input.expiresInSec / 60)} min.</p>
 <p>Customer details unlock after you accept.</p>
 <p><a href="${url}">Open driver dashboard</a></p>
 <p>— ${SITE_NAME}</p>`,
@@ -161,9 +166,9 @@ export function partnerNewJobEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} assign driver · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.partnerName},</p>
-<p>New booking needs a driver: <strong>${input.routeLabel}</strong> on <strong>${input.pickupAt}</strong>.</p>
-<p>Fare: <strong>${input.priceLabel}</strong></p>
+    html: `<p>Hi ${escapeHtml(input.partnerName)},</p>
+<p>New booking needs a driver: <strong>${escapeHtml(input.routeLabel)}</strong> on <strong>${escapeHtml(input.pickupAt)}</strong>.</p>
+<p>Fare: <strong>${escapeHtml(input.priceLabel)}</strong></p>
 <p><a href="${url}">Open partner inbox</a></p>
 <p>— ${SITE_NAME}</p>`,
   };
@@ -183,12 +188,12 @@ export function driverAssignedCustomerEmail(input: {
   return {
     to: input.to,
     subject: `${SITE_NAME} driver assigned · ${input.bookingId.slice(0, 8)}`,
-    html: `<p>Hi ${input.name},</p>
+    html: `<p>Hi ${escapeHtml(input.name)},</p>
 <p>Your driver is confirmed:</p>
 <ul>
-<li><strong>${input.driverName}</strong></li>
-<li>Phone: ${input.driverPhone}</li>
-<li>Vehicle: ${input.vehicleLabel}</li>
+<li><strong>${escapeHtml(input.driverName)}</strong></li>
+<li>Phone: ${escapeHtml(input.driverPhone)}</li>
+<li>Vehicle: ${escapeHtml(input.vehicleLabel)}</li>
 </ul>
 <p><a href="${url}">View booking</a></p>
 <p>— ${SITE_NAME}</p>`,
@@ -203,6 +208,6 @@ export function offerExpiredOpsEmail(input: {
 }) {
   return opsNotifyEmail({
     subject: `${SITE_NAME} unassigned after offer cascade · ${input.bookingId.slice(0, 8)}`,
-    body: `Booking ${input.bookingId} still has no driver after offer batches.\nRoute: ${input.routeLabel}\nPickup: ${input.pickupAt}\nMarket: ${input.market ?? "—"}\nAssign via /ops or partner inbox.`,
+    body: `Booking ${input.bookingId} still has no driver after offer batches.\nRoute: ${escapeHtml(input.routeLabel)}\nPickup: ${escapeHtml(input.pickupAt)}\nMarket: ${input.market ?? "—"}\nAssign via /ops or partner inbox.`,
   });
 }

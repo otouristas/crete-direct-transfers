@@ -32,7 +32,7 @@ export const legalDocsEn: LegalDocs = {
       {
         title: "3. Payment",
         paragraphs: [
-          "At booking, the User may choose to pay online in advance through the Platform's payment processor, or, where the assigned Carrier allows it, to pay the driver directly (cash or card) at the time of the Transfer.",
+          "The transfer is confirmed after successful online payment through Stripe. Booking confirmation is issued only after payment is verified.",
           "The Company does not store full card payment details; online payments are processed by a licensed third-party payment provider.",
           "The confirmed Transfer Price may only be adjusted where the User requests additional stops, additional waiting time beyond the free grace period stated at booking, extra luggage, or other add-ons not included in the original booking; any such additional charge is disclosed to the User before it is applied.",
           "All amounts displayed include applicable taxes unless stated otherwise.",
@@ -98,9 +98,7 @@ export const legalDocsEn: LegalDocs = {
       },
       {
         title: "12. Contact",
-        paragraphs: [
-          "Questions about these Terms can be sent to {email:support}.",
-        ],
+        paragraphs: ["Questions about these Terms can be sent to {email:support}."],
       },
     ],
   },
@@ -204,9 +202,7 @@ export const legalDocsEn: LegalDocs = {
       },
       {
         title: "13. Contact",
-        paragraphs: [
-          "For any privacy-related question or request, contact {email:privacy}.",
-        ],
+        paragraphs: ["For any privacy-related question or request, contact {email:privacy}."],
       },
     ],
   },
@@ -506,9 +502,7 @@ export const legalDocsEn: LegalDocs = {
       },
       {
         title: "Dispute resolution",
-        paragraphs: [
-          "The EU online dispute resolution platform is available at {url:odr}.",
-        ],
+        paragraphs: ["The EU online dispute resolution platform is available at {url:odr}."],
       },
     ],
   },

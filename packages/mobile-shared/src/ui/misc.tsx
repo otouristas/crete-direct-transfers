@@ -25,7 +25,12 @@ export function Avatar({
     .map((p) => p[0]?.toUpperCase() ?? "")
     .join("");
   return (
-    <View style={[styles.avatar, { width: size, height: size, borderRadius: size / 2, backgroundColor: bg }]}>
+    <View
+      style={[
+        styles.avatar,
+        { width: size, height: size, borderRadius: size / 2, backgroundColor: bg },
+      ]}
+    >
       <Text style={{ fontFamily: "PlusJakartaSans_700Bold", fontSize: size * 0.36, color: fg }}>
         {initials || "?"}
       </Text>

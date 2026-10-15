@@ -24,7 +24,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
     items: [
       {
         q: "When do I pay?",
-        a: "Right now, we operate on a reserve-then-confirm model: you reserve online with no card required, we confirm within a few hours, and you pay the driver in cash or by card on arrival. Online payment via Stripe is coming shortly.",
+        a: "Pay securely online with Stripe. Your transfer is confirmed only after your payment is verified; the fare is calculated before checkout.",
       },
       {
         q: "Do you accept cards?",

@@ -78,22 +78,26 @@ export const partnerDriversQuery = (partnerId: string) =>
 
       const { data: profiles, error: pErr } = await supabase
         .from("profiles")
-        .select("id, full_name, phone, driver_profiles(is_online, vehicle_class, vehicle_make_model, vehicle_plate, approval_status)")
+        .select(
+          "id, full_name, phone, driver_profiles(is_online, vehicle_class, vehicle_make_model, vehicle_plate, approval_status)",
+        )
         .in("id", ids);
       if (pErr) throw pErr;
 
-      return ((profiles as unknown as {
-        id: string;
-        full_name: string | null;
-        phone: string | null;
-        driver_profiles: {
-          is_online: boolean;
-          vehicle_class: string | null;
-          vehicle_make_model: string | null;
-          vehicle_plate: string | null;
-          approval_status: string;
-        } | null;
-      }[]) ?? [])
+      return (
+        (profiles as unknown as {
+          id: string;
+          full_name: string | null;
+          phone: string | null;
+          driver_profiles: {
+            is_online: boolean;
+            vehicle_class: string | null;
+            vehicle_make_model: string | null;
+            vehicle_plate: string | null;
+            approval_status: string;
+          } | null;
+        }[]) ?? []
+      )
         .filter((p) => p.driver_profiles?.approval_status === "approved")
         .map((p) => ({
           id: p.id,

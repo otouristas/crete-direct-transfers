@@ -154,7 +154,11 @@ export function BookingSummary({
       </div>
 
       <div className={cn("mt-4 flex-wrap gap-2", forceActions ? "flex" : "hidden lg:flex")}>
-        <TrustChip icon={<BadgeCheck className="h-3.5 w-3.5 text-emerald-500" />} label={labels.freeCancel} green />
+        <TrustChip
+          icon={<BadgeCheck className="h-3.5 w-3.5 text-emerald-500" />}
+          label={labels.freeCancel}
+          green
+        />
         <TrustChip icon={<Check className="h-3.5 w-3.5" />} label={labels.doorToDoor} />
         <TrustChip icon={<Check className="h-3.5 w-3.5" />} label={labels.meetGreet} />
         <TrustChip icon={<Plane className="h-3.5 w-3.5" />} label={labels.flightTracking} />
@@ -164,7 +168,8 @@ export function BookingSummary({
       <div className={cn("mt-5 gap-3", forceActions ? "flex" : "hidden lg:flex")}>
         {vehicleLabel && (
           <p className="flex flex-1 items-center gap-1.5 self-center text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">{labels.yourChoice}:</span> {vehicleLabel}
+            <span className="font-semibold text-foreground">{labels.yourChoice}:</span>{" "}
+            {vehicleLabel}
           </p>
         )}
         <button
@@ -202,13 +207,7 @@ function TrustChip({
   );
 }
 
-export function FreeCancelBanner({
-  title,
-  body,
-}: {
-  title: string;
-  body: React.ReactNode;
-}) {
+export function FreeCancelBanner({ title, body }: { title: string; body: React.ReactNode }) {
   return (
     <div className="flex items-start gap-3 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-emerald-50/40 p-4 sm:gap-4 sm:p-5">
       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-700">

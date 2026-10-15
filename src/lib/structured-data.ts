@@ -3,13 +3,7 @@
 // identity for the brand — the key signal for a Google knowledge panel and for
 // GEO citation (ChatGPT / Perplexity / Gemini / AI Overviews). Per-page schema
 // (LocalBusiness, TaxiService, Article…) references these by @id.
-import {
-  SITE_URL,
-  SITE_NAME,
-  CONTACT_EMAIL,
-  CONTACT_PHONE,
-  OG_DEFAULT_IMAGE,
-} from "./site";
+import { SITE_URL, SITE_NAME, CONTACT_EMAIL, CONTACT_PHONE, OG_DEFAULT_IMAGE } from "./site";
 import { LOCALES } from "@/i18n";
 
 /** BCP-47 language tags we publish in — drives availableLanguage / inLanguage. */

@@ -74,7 +74,7 @@ function BookingDetailPage() {
 
   const [cancelReason, setCancelReason] = useState<CancellationReason>("customer_plans_changed");
   const [cancelNote, setCancelNote] = useState("");
-  const [preferCredit, setPreferCredit] = useState(true);
+  const [preferCredit, setPreferCredit] = useState(false);
   const [incidentType, setIncidentType] =
     useState<Exclude<IncidentType, "unable_to_complete">>("driver_no_show");
   const [incidentNote, setIncidentNote] = useState("");
@@ -102,27 +102,6 @@ function BookingDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["booking", id] });
       queryClient.invalidateQueries({ queryKey: ["my-bookings"] });
       toast.success(t.account.cancelled);
-      try {
-        const { bookingCancelledEmail, sendTransactionalEmail } = await import("@/functions/email");
-        const summary =
-          updated.refund_status === "credit_issued"
-            ? "A 100% booking credit has been issued."
-            : updated.refund_percent === 100
-              ? "A full refund was approved."
-              : updated.refund_percent === 50
-                ? "A 50% refund is pending review / processing."
-                : "No prepaid refund applies.";
-        await sendTransactionalEmail({
-          data: bookingCancelledEmail({
-            to: updated.customer_email,
-            name: updated.customer_name,
-            bookingId: updated.id,
-            refundSummary: summary,
-          }),
-        });
-      } catch {
-        /* best-effort */
-      }
     },
     onError: () => toast.error(t.account.cancelFailed),
   });
@@ -143,29 +122,6 @@ function BookingDetailPage() {
       queryClient.invalidateQueries({ queryKey: ["booking-incidents", id] });
       setIncidentNote("");
       toast.success(t.account.incidentOpened);
-      if (b) {
-        try {
-          const { incidentOpenedEmail, opsNotifyEmail, sendTransactionalEmail } = await import(
-            "@/functions/email"
-          );
-          await sendTransactionalEmail({
-            data: incidentOpenedEmail({
-              to: b.customer_email,
-              name: b.customer_name,
-              bookingId: b.id,
-              typeLabel: t.account.incidentTypes[incidentType],
-            }),
-          });
-          await sendTransactionalEmail({
-            data: opsNotifyEmail({
-              subject: `Incident ${incidentType} · ${b.id.slice(0, 8)}`,
-              body: `${incidentType}\n${incidentNote}\nBooking ${b.id}`,
-            }),
-          });
-        } catch {
-          /* best-effort */
-        }
-      }
     },
     onError: () => toast.error(t.account.incidentFailed),
   });
@@ -249,9 +205,7 @@ function BookingDetailPage() {
             value={`${b.bags_checked} ${t.widget.checkedBags.toLowerCase()} · ${b.bags_cabin} ${t.widget.cabinBags.toLowerCase()}`}
           />
           {b.flight_number && <Item label={t.widget.flightNumber} value={b.flight_number} />}
-          {b.flight_number && (
-            <FlightStatusRow flightNumber={b.flight_number} />
-          )}
+          {b.flight_number && <FlightStatusRow flightNumber={b.flight_number} />}
           {b.return_flight_number && (
             <Item label={t.bookPage.returnFlightNumber} value={b.return_flight_number} />
           )}
@@ -345,18 +299,16 @@ function BookingDetailPage() {
           <h3 className="font-display text-lg text-primary">{t.account.incidentsTitle}</h3>
           <ul className="mt-4 space-y-3">
             {incidents.data.map((inc) => (
-              <li
-                key={inc.id}
-                className="rounded-xl border border-border px-4 py-3 text-sm"
-              >
+              <li key={inc.id} className="rounded-xl border border-border px-4 py-3 text-sm">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <span className="font-medium">
                     {t.account.incidentTypes[inc.type as keyof typeof t.account.incidentTypes] ??
                       inc.type}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {t.account.incidentStatus[inc.status as keyof typeof t.account.incidentStatus] ??
-                      inc.status}
+                    {t.account.incidentStatus[
+                      inc.status as keyof typeof t.account.incidentStatus
+                    ] ?? inc.status}
                   </span>
                 </div>
                 {inc.note && <p className="mt-1 text-muted-foreground">{inc.note}</p>}
@@ -532,23 +484,29 @@ function Item({ label, value }: { label: string; value: string }) {
 }
 
 function FlightStatusRow({ flightNumber }: { flightNumber: string }) {
-  const [label, setLabel] = useState("Checking flight…");
+  const { locale } = Route.useRouteContext();
+  const t = getDict(locale);
+  const dateLocale = locale === "en" ? "en-GB" : locale;
+  const [label, setLabel] = useState(t.driver.flightChecking);
   useEffect(() => {
     let cancelled = false;
     void lookupFlight(flightNumber).then((f) => {
       if (cancelled) return;
-      const eta = f.estimatedArrival
-        ? new Date(f.estimatedArrival).toLocaleString()
-        : "—";
-      setLabel(
-        f.source === "live"
-          ? `${f.status} · ETA ${eta}`
-          : `Tracking ready (${f.flightNumber}) — connect flight API for live ETA`,
-      );
+      if (f.source === "live") {
+        const eta = f.estimatedArrival
+          ? new Date(f.estimatedArrival).toLocaleString(dateLocale, {
+              dateStyle: "medium",
+              timeStyle: "short",
+            })
+          : "—";
+        setLabel(t.driver.flightLive(f.status, eta));
+      } else {
+        setLabel(t.driver.flightStub(f.flightNumber));
+      }
     });
     return () => {
       cancelled = true;
     };
-  }, [flightNumber]);
+  }, [flightNumber, dateLocale, t.driver]);
   return <Item label="Flight status" value={label} />;
 }

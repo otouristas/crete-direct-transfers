@@ -1,0 +1,51 @@
+{
+  "verified_at": "2026-10-15T15:04:02+00:00",
+  "supabase_project": "mlrgwkgiazmrsfjhfrnq",
+  "checks": {
+    "unit_tests": {
+      "passed": 7,
+      "failed": 0
+    },
+    "typescript": [
+      "website",
+      "traveler",
+      "driver"
+    ],
+    "lint": {
+      "errors": 0,
+      "baseline_warnings": 28
+    },
+    "production_build": "passed",
+    "expo_web_exports": [
+      "traveler",
+      "driver"
+    ],
+    "ios_hermes_javascript_exports": [
+      "traveler",
+      "driver"
+    ],
+    "connected_practice_lifecycle": "passed with browser app and website using shared Supabase session",
+    "practice_rpc_and_write_guards": "passed",
+    "payment_integrity_sql": "passed in rolled-back transactions",
+    "portable_lockfile_validation": [
+      "website",
+      "traveler",
+      "driver"
+    ],
+    "secret_scan_of_browser_and_worker_artifacts": "passed"
+  },
+  "missing_server_settings": [
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET"
+  ],
+  "unverified": [
+    "real Stripe Checkout and webhook delivery",
+    "refund and payout provider execution",
+    "production deployment",
+    "signed native binaries",
+    "native push delivery"
+  ],
+  "real_customer_accounts_created": 0,
+  "real_payments_executed": 0
+}

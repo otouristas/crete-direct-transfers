@@ -81,7 +81,9 @@ export function TouristasChatShell({
                 <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-highlight ring-2 ring-primary" />
               </span>
               <div>
-                <p className="font-accent text-xl leading-none tracking-tight md:text-2xl">{t.title}</p>
+                <p className="font-accent text-xl leading-none tracking-tight md:text-2xl">
+                  {t.title}
+                </p>
                 <p className="mt-1 text-xs text-primary-foreground/70">{t.subtitle}</p>
               </div>
             </div>

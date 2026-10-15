@@ -59,13 +59,7 @@ function OptionalLink({
 }) {
   if (href) {
     return (
-      <a
-        href={href}
-        title={title}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-      >
+      <a href={href} title={title} target="_blank" rel="noopener noreferrer" className={className}>
         {children}
       </a>
     );
@@ -109,8 +103,7 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-const linkClass =
-  "text-primary-foreground/80 transition hover:text-accent hover:underline";
+const linkClass = "text-primary-foreground/80 transition hover:text-accent hover:underline";
 
 export function SiteFooter() {
   const t = useT();
@@ -127,7 +120,10 @@ export function SiteFooter() {
             </Link>
           </div>
           <div className="flex items-center justify-start md:justify-end">
-            <LanguageSwitcher onDark className="text-primary-foreground hover:bg-primary-foreground/10" />
+            <LanguageSwitcher
+              onDark
+              className="text-primary-foreground hover:bg-primary-foreground/10"
+            />
           </div>
         </div>
 
@@ -199,17 +195,16 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2 text-sm leading-relaxed">
             {TOP_ROUTES.map((r) => (
               <li key={r.slug}>
-                <Link
-                  to="/{-$locale}/routes/$slug"
-                  params={{ slug: r.slug }}
-                  className={linkClass}
-                >
+                <Link to="/{-$locale}/routes/$slug" params={{ slug: r.slug }} className={linkClass}>
                   {r.label}
                 </Link>
               </li>
             ))}
             <li>
-              <Link to="/{-$locale}/routes" className="font-medium text-accent transition hover:opacity-80">
+              <Link
+                to="/{-$locale}/routes"
+                className="font-medium text-accent transition hover:opacity-80"
+              >
                 {t.nav.allRoutes} →
               </Link>
             </li>
@@ -334,28 +329,38 @@ export function SiteFooter() {
       {/* Bottom: apps + copyright + payments */}
       <div className="mx-auto max-w-7xl border-t border-primary-foreground/10 px-6 pb-10 pt-6 lg:px-10">
         <div className="flex flex-wrap items-center gap-3">
-          <OptionalLink href={APP_STORE_URL} title={t.footer.downloadAppStore}>
-            <img
-              src="/footer/apple-store.svg"
-              alt={t.footer.downloadAppStore}
-              className="h-10 w-[145px] object-contain"
-              width={145}
-              height={40}
-              loading="lazy"
-              decoding="async"
-            />
-          </OptionalLink>
-          <OptionalLink href={PLAY_STORE_URL} title={t.footer.downloadPlayStore}>
-            <img
-              src="/footer/google-play.svg"
-              alt={t.footer.downloadPlayStore}
-              className="h-10 w-[145px] object-contain"
-              width={145}
-              height={40}
-              loading="lazy"
-              decoding="async"
-            />
-          </OptionalLink>
+          {APP_STORE_URL && (
+            <OptionalLink href={APP_STORE_URL} title={t.footer.downloadAppStore}>
+              <img
+                src="/footer/apple-store.svg"
+                alt={t.footer.downloadAppStore}
+                className="h-10 w-[145px] object-contain"
+                width={145}
+                height={40}
+                loading="lazy"
+                decoding="async"
+              />
+            </OptionalLink>
+          )}
+          {PLAY_STORE_URL && (
+            <OptionalLink href={PLAY_STORE_URL} title={t.footer.downloadPlayStore}>
+              <img
+                src="/footer/google-play.svg"
+                alt={t.footer.downloadPlayStore}
+                className="h-10 w-[145px] object-contain"
+                width={145}
+                height={40}
+                loading="lazy"
+                decoding="async"
+              />
+            </OptionalLink>
+          )}
+          <Link
+            to="/{-$locale}/apps"
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-xs font-medium transition hover:bg-white/10"
+          >
+            Traveler + Driver apps <span aria-hidden="true">↗</span>
+          </Link>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 text-sm text-primary-foreground/70 lg:grid-cols-2">

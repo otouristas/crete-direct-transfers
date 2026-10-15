@@ -6,7 +6,6 @@ import { ROUTES, VEHICLE_CLASSES } from "@/data/routes";
 import { MARKETS, type Market } from "@/data/markets";
 import { MARKET_HUB_AIRPORTS, MARKET_HUB_CITIES } from "@/data/market-hubs";
 import { AIRPORTS, type AirportData } from "@/data/airports";
-import { getAirportResolved } from "@/lib/airport-resolve";
 import { AIRPORT_ROUTES, type AirportRouteData } from "@/data/airport-routes";
 import { POSTS, type Post } from "@/data/posts";
 import type {
@@ -23,35 +22,14 @@ import type {
   VehicleOverlay,
 } from "./types";
 
-type OverlayModule = Partial<ContentOverlays>;
-
-const overlayLoaders: Record<Exclude<Locale, "en">, () => Promise<OverlayModule>> = {
-  el: () => import("./overlays/el").then((m) => m.default),
-  de: () => import("./overlays/de").then((m) => m.default),
-  fr: () => import("./overlays/fr").then((m) => m.default),
-  it: () => import("./overlays/it").then((m) => m.default),
-  nl: () => import("./overlays/nl").then((m) => m.default),
-  es: () => import("./overlays/es").then((m) => m.default),
-};
-
-const cache = new Map<Locale, OverlayModule>();
-
-async function loadOverlay(locale: Locale): Promise<OverlayModule> {
-  if (locale === "en") return {};
-  const cached = cache.get(locale);
-  if (cached) return cached;
-  const data = await overlayLoaders[locale]();
-  cache.set(locale, data);
-  return data;
-}
-
-/** Sync access after warm — overlays are imported eagerly for SSR/head. */
 import elOverlay from "./overlays/el";
 import deOverlay from "./overlays/de";
 import frOverlay from "./overlays/fr";
 import itOverlay from "./overlays/it";
 import nlOverlay from "./overlays/nl";
 import esOverlay from "./overlays/es";
+
+type OverlayModule = Partial<ContentOverlays>;
 
 const SYNC: Record<Locale, OverlayModule> = {
   en: {},
@@ -160,11 +138,7 @@ export function getLocalizedAirports(locale: Locale): AirportData[] {
 }
 
 export function getLocalizedAirport(locale: Locale, slug: string): AirportData | undefined {
-  const curated = getLocalizedAirports(locale).find((a) => a.slug === slug);
-  if (curated) return curated;
-  // Global fallback: any of the 8,927 IATA airports renders with generated
-  // (English) content so no real airport 404s. Not locale-overlaid yet.
-  return getAirportResolved(slug);
+  return getLocalizedAirports(locale).find((a) => a.slug === slug);
 }
 
 export function airportRouteKey(airportSlug: string, routeSlug: string) {
@@ -214,6 +188,3 @@ export function getLocalizedPosts(locale: Locale): Post[] {
 export function getLocalizedPost(locale: Locale, slug: string): Post | undefined {
   return getLocalizedPosts(locale).find((p) => p.slug === slug);
 }
-
-// Keep async loader available for future lazy splitting
-export { loadOverlay };

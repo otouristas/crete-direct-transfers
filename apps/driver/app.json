@@ -17,7 +17,9 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.transferaround.driver",
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notification"]
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
       }
     },
     "android": {
@@ -46,10 +48,7 @@
       ]
     ],
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "transferaround-driver-placeholder"
-      }
+      "router": {}
     },
     "owner": "transferaround"
   }

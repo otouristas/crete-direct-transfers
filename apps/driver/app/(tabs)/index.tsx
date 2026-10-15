@@ -21,6 +21,7 @@ import {
   SectionLabel,
   StatTile,
   Text,
+  type IconName,
   colors,
   fonts,
   radius,
@@ -29,7 +30,11 @@ import {
 import { useAuth } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
 import { API_URL } from "../../lib/config";
-import { ACCEPT_ACTION, DECLINE_ACTION, presentDemoOfferNotification } from "../../lib/demo-notifications";
+import {
+  ACCEPT_ACTION,
+  DECLINE_ACTION,
+  presentDemoOfferNotification,
+} from "../../lib/demo-notifications";
 
 type Offer = Awaited<ReturnType<typeof fetchMyJobOffers>>[number];
 type OpenJob = Awaited<ReturnType<typeof fetchOpenJobs>>[number];
@@ -71,7 +76,7 @@ function GateScreen({
   subtitle,
   onSignOut,
 }: {
-  icon: any;
+  icon: IconName;
   title: string;
   subtitle: string;
   onSignOut: () => void;
@@ -103,7 +108,7 @@ export default function OffersScreen() {
       | null
       | undefined;
     if (!dp) return null;
-    return Array.isArray(dp) ? dp[0] ?? null : dp;
+    return Array.isArray(dp) ? (dp[0] ?? null) : dp;
   })();
   const isOnline = Boolean(driverRow?.is_online);
   const approved = profile?.role === "driver" && driverRow?.approval_status === "approved";
@@ -229,7 +234,9 @@ export default function OffersScreen() {
 
   async function onRespond(offerId: string, accept: boolean, bookingId: string) {
     if (isDemo) {
-      setError(accept ? "Demo mode — accept is preview only." : "Demo mode — offer declined (local).");
+      setError(
+        accept ? "Demo mode — accept is preview only." : "Demo mode — offer declined (local).",
+      );
       if (!accept) setOffers((prev) => prev.filter((o) => o.offer_id !== offerId));
       return;
     }
@@ -314,7 +321,11 @@ export default function OffersScreen() {
         {driverRow?.vehicle_make_model ? (
           <View style={styles.vehicleChip}>
             <Icon name="car-sport" size={14} color={colors.primary} />
-            <Text variant="caption" color={colors.primary} style={{ fontFamily: fonts.bodySemibold }}>
+            <Text
+              variant="caption"
+              color={colors.primary}
+              style={{ fontFamily: fonts.bodySemibold }}
+            >
               {driverRow.vehicle_make_model}
             </Text>
           </View>
@@ -323,11 +334,18 @@ export default function OffersScreen() {
 
       <Card padded elevated style={isOnline ? styles.heroOnline : undefined}>
         <View style={styles.heroTop}>
-          <View style={[styles.statusDot, { backgroundColor: isOnline ? colors.success : colors.textFaint }]} />
+          <View
+            style={[
+              styles.statusDot,
+              { backgroundColor: isOnline ? colors.success : colors.textFaint },
+            ]}
+          />
           <View style={{ flex: 1 }}>
             <Text variant="h2">{isOnline ? "You’re online" : "You’re offline"}</Text>
             <Text variant="caption" color={colors.textMuted}>
-              {isOnline ? "You’ll receive nearby transfer offers." : "Go online to start receiving offers."}
+              {isOnline
+                ? "You’ll receive nearby transfer offers."
+                : "Go online to start receiving offers."}
             </Text>
           </View>
         </View>
@@ -344,11 +362,23 @@ export default function OffersScreen() {
 
       <Card padded>
         <View style={styles.statsRow}>
-          <StatTile label="Today" value={stats.earnings} icon={<Icon name="cash-outline" size={18} color={colors.accentDeep} />} />
+          <StatTile
+            label="Today"
+            value={stats.earnings}
+            icon={<Icon name="cash-outline" size={18} color={colors.accentDeep} />}
+          />
           <View style={styles.statDivider} />
-          <StatTile label="Trips" value={stats.trips} icon={<Icon name="navigate-outline" size={18} color={colors.accentDeep} />} />
+          <StatTile
+            label="Trips"
+            value={stats.trips}
+            icon={<Icon name="navigate-outline" size={18} color={colors.accentDeep} />}
+          />
           <View style={styles.statDivider} />
-          <StatTile label="Rating" value={stats.rating} icon={<Icon name="star-outline" size={18} color={colors.accentDeep} />} />
+          <StatTile
+            label="Rating"
+            value={stats.rating}
+            icon={<Icon name="star-outline" size={18} color={colors.accentDeep} />}
+          />
         </View>
       </Card>
 
@@ -371,7 +401,11 @@ export default function OffersScreen() {
         <>
           <SectionLabel>Personal offers</SectionLabel>
           {offers.length === 0 ? (
-            <EmptyState icon="notifications-outline" title="No offers right now" subtitle="New offers arrive here in real time." />
+            <EmptyState
+              icon="notifications-outline"
+              title="No offers right now"
+              subtitle="New offers arrive here in real time."
+            />
           ) : (
             offers.map((o) => {
               const cd = countdown(o.expires_at as string | null);
@@ -381,13 +415,21 @@ export default function OffersScreen() {
                   <View style={styles.offerHead}>
                     <View style={styles.offerTag}>
                       <Icon name="flash" size={13} color={colors.accentDeep} />
-                      <Text variant="caption" color={colors.accentDeep} style={{ fontFamily: fonts.bodySemibold }}>
+                      <Text
+                        variant="caption"
+                        color={colors.accentDeep}
+                        style={{ fontFamily: fonts.bodySemibold }}
+                      >
                         New offer
                       </Text>
                     </View>
                     {cd ? (
                       <View style={[styles.timer, expiring ? styles.timerHot : null]}>
-                        <Icon name="time-outline" size={13} color={expiring ? colors.danger : colors.textMuted} />
+                        <Icon
+                          name="time-outline"
+                          size={13}
+                          color={expiring ? colors.danger : colors.textMuted}
+                        />
                         <Text
                           variant="caption"
                           color={expiring ? colors.danger : colors.textMuted}
@@ -441,7 +483,11 @@ export default function OffersScreen() {
 
           <SectionLabel>Open pool</SectionLabel>
           {jobs.length === 0 ? (
-            <EmptyState icon="albums-outline" title="Pool is empty" subtitle="Unassigned jobs you can claim show up here." />
+            <EmptyState
+              icon="albums-outline"
+              title="Pool is empty"
+              subtitle="Unassigned jobs you can claim show up here."
+            />
           ) : (
             jobs.map((j) => (
               <Card key={j.id} padded>
@@ -455,7 +501,9 @@ export default function OffersScreen() {
                     <Text variant="caption" color={colors.textMuted}>
                       Pickup
                     </Text>
-                    <Text variant="subtitle">{new Date(j.pickup_at as string).toLocaleString()}</Text>
+                    <Text variant="subtitle">
+                      {new Date(j.pickup_at as string).toLocaleString()}
+                    </Text>
                   </View>
                   <Text style={styles.price}>{euros(j.price_cents as number)}</Text>
                 </View>
@@ -474,7 +522,12 @@ export default function OffersScreen() {
         </>
       )}
 
-      <Button title="Sign out" variant="ghost" icon="log-out-outline" onPress={() => void signOut()} />
+      <Button
+        title="Sign out"
+        variant="ghost"
+        icon="log-out-outline"
+        onPress={() => void signOut()}
+      />
     </Screen>
   );
 }
@@ -531,7 +584,13 @@ const styles = StyleSheet.create({
   },
   price: { fontFamily: fonts.display, fontSize: 24, color: colors.text, letterSpacing: -0.5 },
   offerActions: { flexDirection: "row", gap: space.md, marginTop: space.lg },
-  gate: { flex: 1, alignItems: "center", justifyContent: "center", gap: space.md, paddingHorizontal: space.xl },
+  gate: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: space.md,
+    paddingHorizontal: space.xl,
+  },
   gateIcon: {
     width: 64,
     height: 64,

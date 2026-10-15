@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- Metro bundles local images through static require calls. */
 import type { IconName } from "@transferaround/mobile-shared/ui";
 import type { ImageSourcePropType } from "react-native";
 

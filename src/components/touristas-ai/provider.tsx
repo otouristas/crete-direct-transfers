@@ -92,14 +92,7 @@ export function TouristasAiProvider({ children }: { children: ReactNode }) {
       closeTouristas,
       consumePendingPrompt,
     }),
-    [
-      isOpen,
-      pendingPrompt,
-      pendingAutoSend,
-      openTouristas,
-      closeTouristas,
-      consumePendingPrompt,
-    ],
+    [isOpen, pendingPrompt, pendingAutoSend, openTouristas, closeTouristas, consumePendingPrompt],
   );
 
   return <TouristasAiContext.Provider value={value}>{children}</TouristasAiContext.Provider>;

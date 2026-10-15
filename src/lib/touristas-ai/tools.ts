@@ -4,17 +4,8 @@ import { getAirport } from "@/data/airports";
 import { getDestination, listCityDestinations } from "@/data/destinations";
 import { computeQuotePrice } from "@/lib/quote-engine";
 import { explainPolicy } from "@/lib/booking-policy";
-import {
-  matchRouteSlug,
-  searchLocalPlaces,
-  type PlaceResult,
-} from "@/lib/place-search";
-import type {
-  AssistantResponse,
-  QuoteCard,
-  TouristasPageContext,
-  TripSummary,
-} from "./types";
+import { matchRouteSlug, searchLocalPlaces, type PlaceResult } from "@/lib/place-search";
+import type { AssistantResponse, QuoteCard, TouristasPageContext, TripSummary } from "./types";
 import { stripEmDashes } from "./types";
 
 const PLACE_ALIASES: Record<string, string> = {
@@ -29,7 +20,7 @@ const PLACE_ALIASES: Record<string, string> = {
   "domotel rethymno": "Rethymno",
   "domotel rethimno": "Rethymno",
   "hotel domotel": "Rethymno",
-  "domotel": "Rethymno",
+  domotel: "Rethymno",
 };
 
 function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
@@ -71,7 +62,7 @@ function resolvePlaceQuery(raw: string): PlaceResult | null {
   const hits = searchLocalPlaces(lookup, 5);
   if (!hits.length) return null;
   if (aliased) {
-    const dest = hits.find((h) => h.kind === "destination" || h.kind === "city");
+    const dest = hits.find((h) => h.kind === "destination");
     if (dest) return dest;
   }
   return hits[0];
@@ -93,7 +84,10 @@ export function resolveTrip(text: string): {
   const asap = detectAsapFromText(working);
   if (asap) {
     working = working
-      .replace(/\b(right now|as soon as possible|asap|immediately|urgent|now|jetzt|τώρα|transfert maintenant)\b/gi, " ")
+      .replace(
+        /\b(right now|as soon as possible|asap|immediately|urgent|now|jetzt|τώρα|transfert maintenant)\b/gi,
+        " ",
+      )
       .replace(/\s+/g, " ")
       .trim();
   }
@@ -108,9 +102,7 @@ export function resolveTrip(text: string): {
   let date: string | undefined;
   let time: string | undefined;
 
-  const timeMatch = working.match(
-    /\b(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/i,
-  );
+  const timeMatch = working.match(/\b(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b/i);
   if (timeMatch) {
     let h = Number(timeMatch[1]);
     const m = timeMatch[2] ? Number(timeMatch[2]) : 0;
@@ -133,7 +125,10 @@ export function resolveTrip(text: string): {
   }
 
   working = working
-    .replace(/\b(i\s+need|i\s+want|i'?d\s+like|please|book|a\s+transfer|transfer|private\s+transfer)\b/gi, " ")
+    .replace(
+      /\b(i\s+need|i\s+want|i'?d\s+like|please|book|a\s+transfer|transfer|private\s+transfer)\b/gi,
+      " ",
+    )
     .replace(/\bfrom\b/gi, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -291,10 +286,7 @@ export function toolQuoteVehicles(input: {
     )}km`;
 
   const distanceKm =
-    input.from.lat != null &&
-    input.to.lat != null &&
-    input.from.lng != null &&
-    input.to.lng != null
+    input.from.lat != null && input.to.lat != null && input.from.lng != null && input.to.lng != null
       ? haversineKm(
           { lat: input.from.lat, lng: input.from.lng },
           { lat: input.to.lat, lng: input.to.lng },
@@ -353,10 +345,7 @@ export function toolBuildBookUrl(input: {
   if (input.vehicleClass) params.set("class", input.vehicleClass);
   if (input.pax) params.set("pax", String(input.pax));
   if (input.date) {
-    const iso =
-      input.time != null
-        ? `${input.date}T${input.time}:00`
-        : `${input.date}T12:00:00`;
+    const iso = input.time != null ? `${input.date}T${input.time}:00` : `${input.date}T12:00:00`;
     params.set("date", iso);
   }
   return `${prefix}/book?${params.toString()}`;
@@ -474,10 +463,7 @@ export async function offlineAssist(
   }
 
   if (trip.from && trip.to && trip.from.lat != null && trip.to.lat != null) {
-    const pickupAt =
-      trip.date != null
-        ? `${trip.date}T${trip.time ?? "12:00"}:00`
-        : undefined;
+    const pickupAt = trip.date != null ? `${trip.date}T${trip.time ?? "12:00"}:00` : undefined;
     const { quotes, routeSlug } = toolQuoteVehicles({
       from: trip.from,
       to: trip.to,
@@ -558,7 +544,8 @@ export const OPENAI_TOOLS = [
     type: "function" as const,
     function: {
       name: "resolve_trip",
-      description: "Parse a natural language transfer request into from/to places, date, time, pax.",
+      description:
+        "Parse a natural language transfer request into from/to places, date, time, pax.",
       parameters: {
         type: "object",
         properties: { text: { type: "string" } },
@@ -661,6 +648,73 @@ export const OPENAI_TOOLS = [
       parameters: { type: "object", properties: {} },
     },
   },
+  {
+    type: "function" as const,
+    function: {
+      name: "search_hotel_places",
+      description: "Search hotel destinations via Nuitee LiteAPI places autocomplete.",
+      parameters: {
+        type: "object",
+        properties: {
+          textQuery: { type: "string" },
+          type: { type: "string", description: "Optional place type e.g. locality" },
+        },
+        required: ["textQuery"],
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "search_hotel_rates",
+      description:
+        "Search hotel rates by placeId and/or aiSearch vibe. Returns summarized hotels with prices and a deep link.",
+      parameters: {
+        type: "object",
+        properties: {
+          checkin: { type: "string", description: "YYYY-MM-DD" },
+          checkout: { type: "string", description: "YYYY-MM-DD" },
+          adults: { type: "number" },
+          placeId: { type: "string" },
+          aiSearch: { type: "string", description: "Vibe search e.g. beach boutique Chania" },
+          placeName: { type: "string" },
+          locale: { type: "string" },
+        },
+        required: ["checkin", "checkout"],
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "get_hotel_details",
+      description: "Get hotel details by LiteAPI hotelId.",
+      parameters: {
+        type: "object",
+        properties: { hotelId: { type: "string" } },
+        required: ["hotelId"],
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "search_flights",
+      description: "Search Nuitee Connect flight rates by IATA origin/destination and date.",
+      parameters: {
+        type: "object",
+        properties: {
+          origin: { type: "string", description: "IATA e.g. HER" },
+          destination: { type: "string", description: "IATA e.g. ATH" },
+          date: { type: "string", description: "YYYY-MM-DD" },
+          adults: { type: "number" },
+          returnDate: { type: "string" },
+          locale: { type: "string" },
+        },
+        required: ["origin", "destination", "date"],
+      },
+    },
+  },
 ];
 
 export async function executeTool(
@@ -680,10 +734,22 @@ export async function executeTool(
     const trip = resolveTripWithContext(String(args.text ?? ""), pageContext);
     return {
       from: trip.from
-        ? { id: trip.from.id, label: trip.from.label, lat: trip.from.lat, lng: trip.from.lng, iata: trip.from.iata }
+        ? {
+            id: trip.from.id,
+            label: trip.from.label,
+            lat: trip.from.lat,
+            lng: trip.from.lng,
+            iata: trip.from.iata,
+          }
         : null,
       to: trip.to
-        ? { id: trip.to.id, label: trip.to.label, lat: trip.to.lat, lng: trip.to.lng, iata: trip.to.iata }
+        ? {
+            id: trip.to.id,
+            label: trip.to.label,
+            lat: trip.to.lat,
+            lng: trip.to.lng,
+            iata: trip.to.iata,
+          }
         : null,
       when: trip.when,
       date: trip.date,
@@ -701,52 +767,26 @@ export async function executeTool(
   }
 
   if (name === "request_asap_transfer") {
-    const { canRequestAsap, createAsapBooking } = await import("@/lib/asap-dispatch");
-    let from = resolvePlaceQuery(String(args.fromQuery ?? ""));
-    let to = resolvePlaceQuery(String(args.toQuery ?? ""));
     const defaults = placesFromPageContext(pageContext);
-    if (!from && defaults.from) from = defaults.from;
-    if (!to && defaults.to) to = defaults.to;
-    if (!from || !to) return { error: "places_not_found", from, to };
-    if (!canRequestAsap(from, to)) {
-      return {
-        error: "asap_not_available",
-        message:
-          "ASAP live dispatch is available on Crete corridors only. Offer a scheduled quote instead.",
-      };
-    }
-    const email = String(args.customerEmail ?? "").trim();
-    const phone = String(args.customerPhone ?? "").trim();
-    if (!email.includes("@") || phone.length < 6) {
-      return {
-        error: "contact_required",
-        message: "Ask for the passenger name, email, and phone before requesting ASAP.",
-      };
-    }
-    try {
-      const created = await createAsapBooking({
-        from,
-        to,
-        customerName: String(args.customerName ?? "ASAP guest"),
-        customerEmail: email,
-        customerPhone: phone,
-        pax: args.pax as number | undefined,
-        vehicleClass: args.vehicleClass as string | undefined,
-        notes: args.notes as string | undefined,
-      });
-      return {
-        ok: true,
-        bookingId: created.bookingId,
-        priceEur: created.priceCents / 100,
-        etaHintMinutes: created.etaHintMinutes,
-        expiresAt: created.expiresAt,
-        from: from.label,
-        to: to.label,
-        status: "searching",
-      };
-    } catch (e) {
-      return { error: "asap_create_failed", message: e instanceof Error ? e.message : "failed" };
-    }
+    const from = resolvePlaceQuery(String(args.fromQuery ?? "")) || defaults.from;
+    const to = resolvePlaceQuery(String(args.toQuery ?? "")) || defaults.to;
+    if (!from || !to) return { error: "places_not_found" };
+    return {
+      paymentRequired: true,
+      bookPath: toolBuildBookUrl({
+        locale: locale || "en",
+        fromLabel: from.label,
+        toLabel: to.label,
+        fromLat: from.lat,
+        fromLng: from.lng,
+        toLat: to.lat,
+        toLng: to.lng,
+        routeSlug: matchRouteSlug(from, to),
+        pax: Number(args.pax || 2),
+      }),
+      message:
+        "Choose the pickup time and complete secure payment before the transfer is confirmed. Do not claim a driver has been dispatched.",
+    };
   }
 
   if (name === "get_dispatch_status") {
@@ -770,9 +810,7 @@ export async function executeTool(
     if (!to && defaults.to) to = defaults.to;
     if (!from || !to) return { error: "places_not_found", from, to };
     const pickupAt =
-      args.date != null
-        ? `${String(args.date)}T${String(args.time ?? "12:00")}:00`
-        : undefined;
+      args.date != null ? `${String(args.date)}T${String(args.time ?? "12:00")}:00` : undefined;
     return toolQuoteVehicles({ from, to, pickupAt, pax: args.pax as number | undefined });
   }
 
@@ -804,6 +842,163 @@ export async function executeTool(
 
   if (name === "explain_policy") {
     return toolExplainPolicy();
+  }
+
+  if (name === "search_hotel_places") {
+    const { searchLitePlaces } = await import("@/server/liteapi");
+    try {
+      const res = await searchLitePlaces(
+        String(args.textQuery ?? ""),
+        args.type ? String(args.type) : undefined,
+      );
+      return {
+        places: (res.data ?? []).slice(0, 8).map((p) => ({
+          placeId: p.placeId,
+          displayName: p.displayName,
+          formattedAddress: p.formattedAddress,
+        })),
+      };
+    } catch (e) {
+      return { error: "hotel_places_failed", message: e instanceof Error ? e.message : "failed" };
+    }
+  }
+
+  if (name === "search_hotel_rates") {
+    const { searchHotelRates } = await import("@/server/liteapi");
+    const checkin = String(args.checkin ?? "");
+    const checkout = String(args.checkout ?? "");
+    if (!checkin || !checkout) return { error: "dates_required" };
+    if (!args.placeId && !args.aiSearch) {
+      return { error: "place_or_vibe_required", message: "Provide placeId or aiSearch." };
+    }
+    try {
+      const res = await searchHotelRates({
+        checkin,
+        checkout,
+        adults: Number(args.adults ?? 2),
+        placeId: args.placeId ? String(args.placeId) : undefined,
+        aiSearch: args.aiSearch ? String(args.aiSearch) : undefined,
+        currency: "EUR",
+        guestNationality: "GR",
+        maxRatesPerHotel: 1,
+        includeHotelData: true,
+      });
+      const body = res as {
+        data?: Array<{
+          hotelId: string;
+          roomTypes?: Array<{
+            offerId?: string;
+            rates?: Array<{ retailRate?: { total?: Array<{ amount: number }> } }>;
+          }>;
+        }>;
+        hotels?: Array<{ id: string; name: string; main_photo?: string }>;
+      };
+      const rates = body.data ?? [];
+      const hotels = body.hotels ?? [];
+      const byId = new Map(rates.map((h) => [h.hotelId, h]));
+      const summarized = (
+        hotels.length ? hotels : rates.map((r) => ({ id: r.hotelId, name: r.hotelId }))
+      )
+        .slice(0, 8)
+        .map((h) => {
+          const r = byId.get(h.id);
+          const rt = r?.roomTypes?.[0];
+          return {
+            hotelId: h.id,
+            name: h.name,
+            priceEur: rt?.rates?.[0]?.retailRate?.total?.[0]?.amount,
+            offerId: rt?.offerId,
+          };
+        });
+      const loc = (args.locale as string) || locale || "en";
+      const prefix = loc !== "en" ? `/${loc}` : "";
+      const qs = new URLSearchParams({
+        checkin,
+        checkout,
+        adults: String(args.adults ?? 2),
+      });
+      if (args.placeId) qs.set("placeId", String(args.placeId));
+      if (args.placeName) qs.set("placeName", String(args.placeName));
+      if (args.aiSearch) qs.set("aiSearch", String(args.aiSearch));
+      return {
+        hotels: summarized,
+        hotelsPath: `${prefix}/hotels?${qs.toString()}`,
+      };
+    } catch (e) {
+      return { error: "hotel_rates_failed", message: e instanceof Error ? e.message : "failed" };
+    }
+  }
+
+  if (name === "get_hotel_details") {
+    const { getHotelDetails } = await import("@/server/liteapi");
+    try {
+      const res = await getHotelDetails(String(args.hotelId ?? ""));
+      const d = res.data ?? {};
+      return {
+        hotelId: args.hotelId,
+        name: d.name,
+        address: d.address,
+        starRating: d.starRating ?? d.rating,
+        description:
+          typeof d.hotelDescription === "string" ? d.hotelDescription.slice(0, 400) : undefined,
+      };
+    } catch (e) {
+      return { error: "hotel_details_failed", message: e instanceof Error ? e.message : "failed" };
+    }
+  }
+
+  if (name === "search_flights") {
+    const { searchFlightRates } = await import("@/server/liteapi");
+    const origin = String(args.origin ?? "").toUpperCase();
+    const destination = String(args.destination ?? "").toUpperCase();
+    const date = String(args.date ?? "");
+    if (!origin || !destination || !date) return { error: "flight_params_required" };
+    try {
+      const legs: Array<{ origin: string; destination: string; date: string }> = [
+        { origin, destination, date },
+      ];
+      if (args.returnDate) {
+        legs.push({
+          origin: destination,
+          destination: origin,
+          date: String(args.returnDate),
+        });
+      }
+      const res = await searchFlightRates({
+        legs,
+        adults: Number(args.adults ?? 1),
+        currency: "EUR",
+        country: "GR",
+      });
+      const body = res as {
+        data?: Array<Record<string, unknown>>;
+        offers?: Array<Record<string, unknown>>;
+      };
+      const list = (body.data ?? body.offers ?? []).slice(0, 8);
+      const offers = list.map((o, i) => {
+        const pricing = o.pricing as { display?: { total?: number } } | undefined;
+        return {
+          offerId: String(o.offerId ?? o.id ?? `f-${i}`),
+          priceEur: pricing?.display?.total,
+          summary: String(o.summary ?? `${origin} → ${destination}`),
+        };
+      });
+      const loc = (args.locale as string) || locale || "en";
+      const prefix = loc !== "en" ? `/${loc}` : "";
+      const qs = new URLSearchParams({
+        origin,
+        destination,
+        date,
+        adults: String(args.adults ?? 1),
+      });
+      if (args.returnDate) qs.set("returnDate", String(args.returnDate));
+      return {
+        offers,
+        flightsPath: `${prefix}/flights?${qs.toString()}`,
+      };
+    } catch (e) {
+      return { error: "flight_search_failed", message: e instanceof Error ? e.message : "failed" };
+    }
   }
 
   return { error: "unknown_tool" };

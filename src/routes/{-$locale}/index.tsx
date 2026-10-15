@@ -9,16 +9,13 @@ import { RoutesChapter } from "@/components/sections/routes-chapter";
 import { InpageNav } from "@/components/inpage-nav";
 import { Reveal } from "@/components/reveal";
 import { getDict, useLocale, useT, type Locale } from "@/i18n";
-import {
-  getLocalizedRegions,
-  getLocalizedRoutes,
-  getLocalizedVehicles,
-} from "@/i18n/content";
+import { getLocalizedRegions, getLocalizedRoutes, getLocalizedVehicles } from "@/i18n/content";
 import { buildHead } from "@/lib/seo";
 import { SITE_URL, CONTACT_PHONE, CONTACT_WHATSAPP_HREF } from "@/lib/site";
 import { Phone } from "lucide-react";
 import { AskTouristasBand } from "@/components/touristas-ai/ask-band";
 import { AskTouristasInline } from "@/components/touristas-ai/ask-inline";
+import { AppsShowcase } from "@/components/sections/apps-showcase";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1601161221525-6b3e0f0e13db?auto=format&fit=crop&w=2400&q=80";
@@ -91,9 +88,13 @@ function HomePage() {
             <h1 className="mt-5 text-4xl font-display leading-[1.05] md:text-5xl lg:text-6xl">
               {t.home.heroTitle1}
               <br />
-              <span className="font-accent text-[1.08em] text-accent">{t.home.heroTitleAccent}</span>
+              <span className="font-accent text-[1.08em] text-accent">
+                {t.home.heroTitleAccent}
+              </span>
             </h1>
-            <p className="mt-6 max-w-md text-lg text-primary-foreground/80">{t.home.heroSubtitle}</p>
+            <p className="mt-6 max-w-md text-lg text-primary-foreground/80">
+              {t.home.heroSubtitle}
+            </p>
             <div className="mt-6">
               <AskTouristasInline prompt="HER to Elounda tomorrow at 3pm" />
             </div>
@@ -106,6 +107,7 @@ function HomePage() {
       </section>
 
       <AskTouristasBand pageType="home" />
+      <AppsShowcase />
 
       <InpageNav items={navItems} />
 

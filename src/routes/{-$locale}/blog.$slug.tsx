@@ -18,10 +18,7 @@ export const Route = createFileRoute("/{-$locale}/blog/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("Post") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("Post") }, { name: "robots", content: "noindex" }],
       };
     }
     const p = loaderData.post;

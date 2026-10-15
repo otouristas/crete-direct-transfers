@@ -18,10 +18,7 @@ export const Route = createFileRoute("/{-$locale}/services/$slug")({
     const t = getDict(locale);
     if (!loaderData) {
       return {
-        meta: [
-          { title: t.seo.notFound("Service") },
-          { name: "robots", content: "noindex" },
-        ],
+        meta: [{ title: t.seo.notFound("Service") }, { name: "robots", content: "noindex" }],
       };
     }
     const s = loaderData.service;
@@ -69,7 +66,9 @@ function ServicePage() {
             ? routesByService("hotel")
             : ROUTES.slice(0, 6);
 
-  const others = getLocalizedServices(locale).filter((s) => s.slug !== service.slug).slice(0, 3);
+  const others = getLocalizedServices(locale)
+    .filter((s) => s.slug !== service.slug)
+    .slice(0, 3);
 
   return (
     <>

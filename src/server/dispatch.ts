@@ -99,6 +99,8 @@ export async function runDispatchNewBooking(input: DispatchNewBookingInput) {
     return { ok: false as const, reason: "booking_not_found" as const };
   }
 
+  if (booking.payment_status !== "paid")
+    return { ok: false as const, reason: "payment_required" as const };
   const point = parsePickupPoint(booking.pickup_point);
   const market: DispatchMarket =
     input.market ??
@@ -108,9 +110,9 @@ export async function runDispatchNewBooking(input: DispatchNewBookingInput) {
   const { data: dispatched, error: dErr } = await admin.rpc("create_dispatch_for_booking", {
     p_booking_id: input.bookingId,
     p_market: market,
-    p_lat: input.lat ?? point?.lat ?? null,
-    p_lng: input.lng ?? point?.lng ?? null,
-    p_preferred_partner_id: input.preferredPartnerId ?? null,
+    p_lat: input.lat ?? point?.lat ?? undefined,
+    p_lng: input.lng ?? point?.lng ?? undefined,
+    p_preferred_partner_id: input.preferredPartnerId ?? undefined,
   });
 
   if (dErr || !dispatched) {
