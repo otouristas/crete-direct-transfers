@@ -48,6 +48,20 @@ export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const url = new URL(request.url);
+      if (request.method === "POST" && url.pathname === "/api/ride-ai") {
+        const { runRideAI } = await import("./server/ride-ai");
+        return runRideAI(request);
+      }
+      if (request.method === "POST" && url.pathname === "/api/notifications/flush") {
+        const body = (await request.json()) as { bookingId?: string; isTest?: boolean };
+        if (!body.bookingId || !/^[0-9a-f-]{36}$/i.test(body.bookingId))
+          return Response.json({ error: "Invalid transfer reference" }, { status: 400 });
+        const { authorizePushFlush, processNativePush } = await import("./server/native-push");
+        if (!(await authorizePushFlush(request, body.bookingId, body.isTest === true)))
+          return Response.json({ error: "Unauthorized" }, { status: 401 });
+        const result = await processNativePush();
+        return Response.json(result, { status: result.ok ? 200 : 503 });
+      }
       if (request.method === "POST" && url.pathname === "/api/stripe/webhook") {
         const { handleStripeWebhook } = await import("./server/stripe-checkout");
         const { getServiceSupabase } = await import("./integrations/supabase/service");
@@ -110,6 +124,8 @@ export default {
           return Response.json({ error: "Unauthorized" }, { status: 401 });
         const { processEventOutbox } = await import("./server/event-outbox");
         const result = await processEventOutbox();
+        const { processNativePush } = await import("./server/native-push");
+        await processNativePush();
         return Response.json(result, { status: result.ok ? 200 : 503 });
       }
 

@@ -1,96 +1,35 @@
-# TransferAround — release candidate, 15 October 2026
+# TransferAround release candidate — 16 October 2026
 
-The website and two native iOS apps are prepared on `codex/launch-readiness`. The native iOS 1.0.0 (3) candidates for **TransferAround** and **TransferAround Driver** were compiled, tested, distribution-signed and uploaded on 15 October 2026. TestFlight availability is recorded in the native release manifest. The website was deployed to its existing Cloudflare Worker; no public App Store review submission has been made. See [native iOS delivery](IOS.md) for the current verification and installation status.
+The canonical iOS implementation is `apps/ios-native`: two Swift/SwiftUI iPhone apps, version 1.0.0 build 5. See [IOS.md](IOS.md) for build, delivery and verification limits. Older Expo directories and the build-3 notes are historical and are not the current iOS targets.
 
-## Website and optional browser previews
+The working website and API are https://crete-direct-transfers.gk-3ae.workers.dev. The canonical domain transferaround.com still serves a parking page and needs DNS cutover. Driver and Traveler web dashboards read the same protected booking, offer, test-transfer and GPS state as the native apps.
 
-- Live website and connected practice studio: https://crete-direct-transfers.gk-3ae.workers.dev/apps
-- Canonical domain transferaround.com currently serves a parking page. DNS cutover remains required.
-- Local website preview: `http://localhost:8081/apps`
-- Traveler app: `http://localhost:8082/practice`
-- Driver app: `http://localhost:8083/practice`
+## Connected no-charge test
 
-The practice studio and both Expo apps use the same `transfer_practice` database API in the verified Supabase project **mlrgwkgiazmrsfjhfrnq** (`Transferaround.com`). Start a session, copy its code, and join it from the other app. Practice sessions expire after two hours. Only fictional traveler/driver details are used; practice never creates a real booking, sends a customer message or charges a payment method.
+1. Install both latest Swift TestFlight builds. Sign in with designated tester accounts.
+2. Driver: open Test transfers, enable Apple notifications and go online for tests.
+3. Traveler: select pickup/destination, review the road line, distance and time, choose a vehicle and future pickup, enable Test this transfer, then confirm Demo payment.
+4. Driver: accept the timed offer, start GPS sharing, arrive, board and complete the transfer.
+5. Follow the same journey from Traveler and the website dashboards. GPS disappears when the trip closes.
 
-### Suggested test
+Test rides use separate tester-gated tables and guarded RPCs. They create no Stripe charge, payout, refund or normal financial booking. Driver acceptance has one winner. Availability lasts 20 minutes and offers expire after 90 seconds. The approved test accounts retain normal compliance gates for paid Driver access.
 
-1. Start a practice session in the Traveler app, or open `/apps` on the website.
-2. Share the 48-character session code with the Driver app and join it.
-3. Put the driver online; choose a route and vehicle as the traveler, then confirm the clearly labeled demo Apple Pay step.
-4. Accept, start and complete the trip in the Driver app.
-5. Check the Traveler app and website: all show the same trip state.
-6. Reset; also test cancellation and trying to accept while offline.
+Native APNs uses a bundle-restricted production credential held in server secrets, a durable per-device outbox and retry leases. The Cloudflare dispatch scheduler is deployed. Simulator registration, authenticated Apple transport and queue behavior were checked; delivery to a physical TestFlight iPhone remains a device check.
 
-## Payment behavior
+## Ride with AI
 
-The user selected **online Stripe payment before booking confirmation**. The server validates the itinerary, recalculates the fare and saves an unpaid checkout. Guests use a separately hashed access capability; signed-in users can access their own booking. Client prices, payment flags and return-page query parameters cannot confirm payment.
+Traveler and website share the authenticated Claude planner described in [RIDE-WITH-AI.md](RIDE-WITH-AI.md). The dedicated workspace has a verified $10 monthly cap. The key is held only in server secrets. Trip messages require explicit consent. GPS-button coordinates are excluded from the model payload. Choosing an address preserves the agreed intent; the booking service computes the fare and route. Review and payment remain explicit.
 
-Only a signed, paid Checkout event can settle the booking. The database checks session ID, amount, currency and event ID before updating payment status. A durable outbox then dispatches the trip and sends confirmation. Direct anonymous/authenticated booking writes are revoked; an unpaid trip cannot be assigned to a driver. Stripe session creation and carrier transfers have idempotency keys. Database-approved cash refunds are retried separately with idempotency keys; pending reviews and booking credits do not trigger cash refunds.
+## Paid launch requirements
 
-### Remaining activation requirements
+Live payments remain unavailable until the correct merchant Stripe keys and signed webhook are configured and tested. A sandbox checkout, failed/delayed payment, replayed webhook, cancellation/refund, dispatch and carrier payout flow must be verified before taking customer money. No real charge, refund or payout was executed during this release.
 
-These are concrete external requirements, not completed work:
+The site recalculates fares on the server. A return-page parameter or client payment flag cannot confirm a booking. Only a verified paid Stripe event can settle payment and dispatch paid jobs. Missing payment configuration fails closed. Hotel/flight provider purchases remain independently gated by TRAVEL_BOOKING_ENABLED.
 
-- The verified project Supabase service configuration is deployed as protected Cloudflare server secrets. No server secret is included in browser or native bundles.
-- Set the correct merchant account's `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` on the website server. A restricted Stripe key can be used with the required Checkout, refunds, Connect and transfer permissions.
-- Register `/api/stripe/webhook` for `checkout.session.completed` and `checkout.session.async_payment_succeeded`.
-- Schedule authenticated POST requests to `/api/events/process` and `/api/dispatch/expire` every minute. `DISPATCH_CRON_SECRET` is configured securely on the deployed server; the external scheduler still needs configuration.
-- Verify a Stripe sandbox checkout, delayed/failed payment, replayed webhook, cancellation/refund and an assigned-driver flow; then verify the live account configuration before accepting customer payments. No Stripe transaction, refund or payout was executed in this work.
-- Four genuine auth accounts exist at the owner’s explicit request. The two additional testers have driver draft profiles and can use Traveler too. Neither email was auto-confirmed, no shared temporary password was assigned, and no invitation email was sent. The drivers remain at the normal draft onboarding stage; vehicle/licence approval has not been fabricated.
+The supplied public phone/WhatsApp is +30 695 588 5718. Operating-company registration, VAT/GEMI details and the existing legal copy still require owner confirmation before public commercial launch. No company registration or legal approval has been inferred from a working beta. Unverified seeded reviews and aggregate rating claims were removed; private/API paths remain excluded from indexing.
 
-Until the missing server settings exist, real checkout returns a clear unavailable message and creates no booking. `npm run check:launch` reports the missing configuration without printing secret values. Presence of settings alone is not proof of live payment operation.
+## Validation and artifacts
 
-The placeholder telephone and business details were deferred by the user. Hotel/flight purchases remain gated by `TRAVEL_BOOKING_ENABLED=true` until their independent provider payment/fulfillment flow is verified. Their search/UI code is retained. Do not enable provider purchases solely because the transfer checkout passes.
+Run npm test, npm run typecheck, npm run lint and npm run build from the root. Native build commands are documented in IOS.md. Use npm run check:launch for local configuration diagnostics; it does not establish which secrets are deployed. npm run package:release packages compiled website output, release documentation and Swift source, excluding local credentials and Xcode user data. Signed IPAs are delivered separately.
 
-## Build and verification
-
-From the repository root:
-
-```sh
-npm ci
-npm --prefix apps/rider ci
-npm --prefix apps/driver ci
-npm test
-npm run typecheck
-npm --prefix apps/rider run typecheck
-npm --prefix apps/driver run typecheck
-npm run lint
-npm run verify:practice
-npm run build
-npm run build:apps
-npm run check:launch
-```
-
-`verify:practice` exercises only the isolated practice API and rejected direct booking writes. The SQL payment-integrity tests ran inside rolled-back transactions. The lint baseline has non-blocking React refresh/hooks warnings; there are no lint errors.
-
-The production website build is a **Cloudflare Worker with server rendering**, in `.output/`; uploading only its static assets to generic static hosting will not provide the booking API. Use the existing Cloudflare/Lovable deployment flow and configure server secrets there. Keep published Git history intact. The local database migration filenames from July differ from the August versions already applied to this existing project; reconcile migration history before running a blanket `supabase db push`. The missing August onboarding/outbox/hardening/payment SQL has been saved from the actual remote migration history. The October migration filenames match the applied versions.
-
-For local previews:
-
-```sh
-npm run dev -- --host 0.0.0.0 --port 8080
-npm run preview:rider
-npm run preview:driver
-```
-
-The default development website port is 8080. The current review session also has an active website preview at 8081. For physical-device API testing, set each app's `EXPO_PUBLIC_API_URL` to the computer's reachable LAN URL; a phone's `localhost` is the phone itself. The practice API connects directly to Supabase and does not need the website API to be deployed.
-
-## Native distribution
-
-Both native apps now have signed iOS binaries and successful App Store Connect uploads. Their real native welcome screens, connected practice flow and simulated Apple Pay sheet were exercised on an iPhone 17 Pro simulator running iOS 27. The full native rider → driver → rider lifecycle passed. Apple sign-in is enabled for both bundle IDs in Supabase and Apple Developer; account sign-in on a physical iPhone remains unverified. Google OAuth setup is tracked in [IOS.md](IOS.md).
-
-The iOS binaries are independent apps with bundled code; they do not require a Metro server or the browser previews. The practice API connects directly to Supabase. Real booking APIs are deployed and the app API base points to the working Worker URL. Stripe still needs configuration. Native remote push delivery and Android distribution remain unverified.
-
-## Configuration and data safety
-
-Configured provider/server secrets were moved out of the tracked `.env` into ignored `.env.local`. Release bundles must exclude all `.env*` files except `.env.example`. Browser bundles must contain only publishable Supabase configuration. Existing published Git history has not been rewritten.
-
-Practice state lives in the private schema, has RLS, has no direct API grants, and is accessed only through a random 192-bit session capability. The intentionally anonymous practice RPC and legacy RPCs are listed by Supabase's security advisor; those warnings are not a declaration that every privileged routine has undergone a full independent security audit.
-
-## Packaged delivery
-
-Run `npm run package:release` after the builds. That website archive contains the compiled Worker, configuration examples and this documentation. Native iOS binaries are packaged separately. It excludes local environment files and dependencies, and includes SHA-256 checksums.
-
-Signed native iOS delivery is separate, in `release/ios/`, with its own checksums. The browser/JavaScript archive is not an installable iOS app.
-
-The packaged Worker configuration omits the source build command so it can deploy the already compiled output. After configuring the correct Cloudflare account, server secrets and webhook/scheduler, deploy from the extracted `website/server` directory with `npx wrangler deploy --config wrangler.json`. This command publishes the site. The current verified deployment is https://crete-direct-transfers.gk-3ae.workers.dev, Worker version 468d6b30-8b39-4731-b1dc-7959b034ed29. Browser app folders require a static host with SPA route fallback and their API URL must point to the deployed website for real bookings.
+Never commit or package server secrets, .env files, APNs keys, local QA/review credentials or release/ios/testing. The Apple review accounts were submitted only after the owner's explicit authorization and have no approved paid-driver access.

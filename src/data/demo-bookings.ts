@@ -19,6 +19,7 @@ function base(
     Pick<Booking, "id" | "route_slug" | "status" | "pickup_at" | "price_cents" | "vehicle_class">,
 ): Booking {
   return {
+    journey_stage: "to_pickup",
     checkout_access_hash: null,
     stripe_checkout_session_id: null,
     stripe_checkout_session_url: null,

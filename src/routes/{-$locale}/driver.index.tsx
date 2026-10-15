@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Inbox, Luggage, Radio, Users, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { getDict, useLocale } from "@/i18n";
+import { TestTransfers } from "@/components/dashboard/test-transfers";
 import {
   myJobOffersQuery,
   openJobsQuery,
@@ -151,6 +152,7 @@ function OpenJobsPage() {
 
   return (
     <div className="space-y-6">
+      <TestTransfers driver />
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4">
         <div>
           <p className="text-sm font-medium text-primary">

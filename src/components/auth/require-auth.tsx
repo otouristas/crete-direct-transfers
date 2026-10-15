@@ -31,7 +31,10 @@ export function RequireAuth({ children, role }: { children: ReactNode; role?: "d
   const profile = useProfile();
 
   const needsLogin = ready && !session;
-  const wrongRole = role === "driver" && profile.data ? profile.data.role !== "driver" : false;
+  const wrongRole =
+    role === "driver" && profile.data
+      ? profile.data.role !== "driver" && !profile.data.driver_profiles
+      : false;
 
   useEffect(() => {
     if (needsLogin) {

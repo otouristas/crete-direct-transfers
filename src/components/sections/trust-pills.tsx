@@ -1,19 +1,17 @@
-import { Star, ShieldCheck, CalendarX2, PlaneLanding, Wallet } from "lucide-react";
+import { ShieldCheck, CalendarX2, Wallet } from "lucide-react";
 import { useT } from "@/i18n";
 import { cn } from "@/lib/utils";
 
 export function TrustPills({ dark = false, className }: { dark?: boolean; className?: string }) {
   const t = useT();
   const pills = [
-    { icon: Star, label: t.trust.rating, star: true },
     { icon: ShieldCheck, label: t.trust.licensed },
     { icon: CalendarX2, label: t.trust.freeCancel },
-    { icon: PlaneLanding, label: t.trust.flightTracked },
     { icon: Wallet, label: t.trust.payOnArrival },
   ];
   return (
     <div className={cn("flex flex-wrap gap-2", className)}>
-      {pills.map(({ icon: Icon, label, star }) => (
+      {pills.map(({ icon: Icon, label }) => (
         <span
           key={label}
           className={cn(
@@ -24,14 +22,7 @@ export function TrustPills({ dark = false, className }: { dark?: boolean; classN
           )}
         >
           <Icon
-            className={cn(
-              "h-3.5 w-3.5",
-              star
-                ? "text-highlight fill-highlight"
-                : dark
-                  ? "text-primary-foreground/80"
-                  : "text-accent",
-            )}
+            className={cn("h-3.5 w-3.5", dark ? "text-primary-foreground/80" : "text-accent")}
           />
           {label}
         </span>

@@ -450,6 +450,8 @@ export default function BookScreen() {
               ? { lat: toPlace.lat, lng: toPlace.lng }
               : null
           }
+          routeGeometry={quote?.geometry?.map(([lat, lng]) => ({ lat, lng }))}
+          routeEstimated={quote?.routeSource === "estimated"}
           height={viewportHeight}
           bottomInset={sheetHeight}
           userPoint={devicePosition}
@@ -534,6 +536,20 @@ export default function BookScreen() {
               </Text>
             )}
           </View>
+          {quote?.distanceKm != null && quote.durationMin != null && (
+            <View
+              style={{ flexDirection: "row", alignItems: "center", gap: 8, paddingVertical: 7 }}
+            >
+              <Icon name="navigate-outline" size={17} color={colors.accent} />
+              <Text style={{ fontFamily: fonts.bodySemibold, fontSize: 13 }}>
+                {quote.routeSource === "estimated" ? "Approx. " : ""}
+                {quote.distanceKm.toFixed(1)} km · ~{quote.durationMin} min
+              </Text>
+              <Text variant="caption" color={colors.textMuted}>
+                Driving estimate
+              </Text>
+            </View>
+          )}
           {compact ? (
             <>
               <Pressable
@@ -727,6 +743,11 @@ export default function BookScreen() {
                 </View>
                 <Text style={styles.vehiclePrice}>{totalLabel}</Text>
               </View>
+              <RouteRail
+                from={fromPlace?.label || "Choose pickup"}
+                to={toPlace?.label || `${hours} hours with your driver`}
+                compact
+              />
               <Field
                 label="Pickup date & time"
                 icon="calendar-outline"

@@ -13,4 +13,6 @@ export type MapSurfaceProps = {
   driverPoint?: LiveMapPosition | null;
   followDriver?: boolean;
   bottomInset?: number;
+  routeGeometry?: LatLng[];
+  routeEstimated?: boolean;
 };

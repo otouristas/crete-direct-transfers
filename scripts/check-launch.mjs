@@ -36,12 +36,12 @@ if (env.VITE_DEMO_BOOKINGS !== "false")
   issues.push("Disable account sample bookings in production: VITE_DEMO_BOOKINGS=false.");
 if (env.DISPATCH_CRON_SECRET && env.DISPATCH_CRON_SECRET.length < 32)
   issues.push("Use a random cron secret of at least 32 characters.");
-for (const app of ["rider", "driver"]) {
-  const content = await readFile(`apps/${app}/.env`, "utf8").catch(() => "");
-  if (!content.includes("mlrgwkgiazmrsfjhfrnq.supabase.co"))
-    issues.push(`${app}: configure the same Supabase project.`);
-}
-console.log("TransferAround launch configuration (values are never printed)");
+const config = await readFile("apps/ios-native/Shared/PublicConfig.plist", "utf8");
+if (!config.includes("mlrgwkgiazmrsfjhfrnq.supabase.co"))
+  issues.push("Swift apps must use the verified TransferAround project.");
+console.log(
+  "TransferAround local launch configuration (values are never printed; deployed secrets are checked separately)",
+);
 for (const name of required) console.log(`${missing.includes(name) ? "MISSING" : "SET"} ${name}`);
 for (const issue of issues) console.log(`CHECK ${issue}`);
 console.log(
@@ -51,6 +51,8 @@ console.log(
   "Native Xcode builds use the configured Apple team and bundle IDs. Physical-device authentication and push delivery still require device verification.",
 );
 if (missing.length || issues.length) {
-  console.log("NOT CLEARED FOR LIVE PAYMENTS. Practice apps remain available.");
+  console.log(
+    "NOT CLEARED FOR LIVE PAYMENTS. Isolated test transfers remain separate from live payments.",
+  );
   process.exitCode = 1;
 } else console.log("Configuration present. Payment and deployment verification still required.");

@@ -26,6 +26,8 @@ import { getRoute } from "@/data/routes";
 import { formatEur } from "@/lib/pricing";
 import { CONTACT_EMAIL } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { bookingGroup } from "../../../packages/mobile-shared/src/trip-state";
+import { TestTransfers } from "@/components/dashboard/test-transfers";
 
 export const Route = createFileRoute("/{-$locale}/account/")({
   component: MyBookingsPage,
@@ -34,7 +36,6 @@ export const Route = createFileRoute("/{-$locale}/account/")({
 type StatusTab = "upcoming" | "completed" | "canceled";
 type SortKey = "upcoming" | "newest" | "oldest";
 
-const TERMINAL_DONE = new Set(["completed", "no_show"]);
 const PAGE_SIZES = [10, 20, 50] as const;
 
 function bookingLabel(b: Booking): string {
@@ -43,23 +44,6 @@ function bookingLabel(b: Booking): string {
   if (b.pickup_address && b.dropoff_address) return `${b.pickup_address} → ${b.dropoff_address}`;
   if (b.pickup_address) return b.pickup_address;
   return b.route_slug;
-}
-
-function isUpcoming(b: Booking, now: number): boolean {
-  return (
-    new Date(b.pickup_at).getTime() >= now &&
-    !TERMINAL_DONE.has(b.status) &&
-    b.status !== "cancelled"
-  );
-}
-
-function isCanceled(b: Booking): boolean {
-  return b.status === "cancelled";
-}
-
-function isCompleted(b: Booking, now: number): boolean {
-  if (isCanceled(b)) return false;
-  return TERMINAL_DONE.has(b.status) || new Date(b.pickup_at).getTime() < now;
 }
 
 function MyBookingsPage() {
@@ -83,12 +67,7 @@ function MyBookingsPage() {
 
   const filtered = useMemo(() => {
     const all = bookings.data ?? [];
-    const now = Date.now();
-    let list = all.filter((b) => {
-      if (statusTab === "upcoming") return isUpcoming(b, now);
-      if (statusTab === "canceled") return isCanceled(b);
-      return isCompleted(b, now);
-    });
+    let list = all.filter((b) => bookingGroup(b) === statusTab);
 
     const q = appliedQuery.trim().toLowerCase();
     if (q) {
@@ -155,6 +134,7 @@ function MyBookingsPage() {
 
   return (
     <div>
+      <TestTransfers />
       <nav className="mb-7 mt-1 flex gap-1 overflow-x-auto border-b border-border [scrollbar-width:none]">
         {statusTabs.map((tab) => {
           const Icon = tab.icon;

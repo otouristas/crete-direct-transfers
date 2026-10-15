@@ -1194,7 +1194,14 @@ export const POPULAR_PLACES: {
     countryCode: "GR",
     aliases: ["Iraklio"],
   },
-  { id: "place:chania", label: "Chania", lat: 35.5138, lng: 24.018, countryCode: "GR" },
+  {
+    id: "place:chania",
+    label: "Chania",
+    aliases: ["Chania Town", "Chania Town Centre", "Χανιά"],
+    lat: 35.5138,
+    lng: 24.018,
+    countryCode: "GR",
+  },
   { id: "place:rethymno", label: "Rethymno", lat: 35.3656, lng: 24.4823, countryCode: "GR" },
   {
     id: "place:agios-nikolaos",

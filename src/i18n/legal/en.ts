@@ -113,6 +113,13 @@ export const legalDocsEn: LegalDocs = {
       "This Privacy Policy explains how TransferAround Travel Services P.C., trading as TransferAround.com, registered at Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (the “Company”, “we”), collects, uses and protects personal data of Users, passengers, and Carriers (including their drivers) in connection with the transferaround.com platform (the “Service”). For the purposes of EU/Greek data protection law, the Company is the data controller.",
     sections: [
       {
+        title: "Ride with AI",
+        paragraphs: [
+          "Ride with AI sends the trip messages you choose to submit to Anthropic (Claude) to extract your transfer requirements. Review the proposal before payment; AI does not confirm a booking, verify flight schedules or guarantee driver availability.",
+          "GPS coordinates added with the location button stay with the mapping and booking services and are not sent to Claude. Anything you type into a message is sent to Anthropic, so avoid unnecessary sensitive information. Conversation text is not stored in our booking database; Anthropic handles API data under its applicable commercial data policies.",
+        ],
+      },
+      {
         title: "1. Who We Are",
         paragraphs: [
           "TransferAround Travel Services P.C. operates the Service. Contact for privacy matters: {email:privacy}. General support: {email:support}.",
@@ -490,7 +497,7 @@ export const legalDocsEn: LegalDocs = {
           "TransferAround Travel Services P.C., trading as TransferAround.com",
           "Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα",
           "Email: {email:support}",
-          "Phone: +30 28 1000 0000",
+          "Phone: +30 695 588 5718",
           "Registered company number, VAT ID and GEMI number to be added once the operating entity is finalised.",
         ],
       },

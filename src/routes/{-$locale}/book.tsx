@@ -78,6 +78,16 @@ const searchSchema = z.object({
   pickupLng: z.coerce.number().optional(),
   dropoffLat: z.coerce.number().optional(),
   dropoffLng: z.coerce.number().optional(),
+  pickupCountryCode: z
+    .string()
+    .regex(/^[A-Z]{2}$/)
+    .optional()
+    .or(z.literal("")),
+  dropoffCountryCode: z
+    .string()
+    .regex(/^[A-Z]{2}$/)
+    .optional()
+    .or(z.literal("")),
   ref: z.string().optional(),
   from: z.string().optional(),
   to: z.string().optional(),
@@ -212,8 +222,14 @@ function BookPage() {
   const [summaryOpen, setSummaryOpen] = useState(false);
   const summarySwipeY = useRef<number | null>(null);
 
-  const initialFrom = placeFromSearch(search.pickupAddress, search.pickupLat, search.pickupLng);
-  const initialTo = placeFromSearch(search.dropoffAddress, search.dropoffLat, search.dropoffLng);
+  const rawFrom = placeFromSearch(search.pickupAddress, search.pickupLat, search.pickupLng);
+  const rawTo = placeFromSearch(search.dropoffAddress, search.dropoffLat, search.dropoffLng);
+  const initialFrom = rawFrom
+    ? { ...rawFrom, countryCode: search.pickupCountryCode || rawFrom.countryCode }
+    : null;
+  const initialTo = rawTo
+    ? { ...rawTo, countryCode: search.dropoffCountryCode || rawTo.countryCode }
+    : null;
 
   const [fromQuery, setFromQuery] = useState(search.pickupAddress ?? initialFrom?.label ?? "");
   const [toQuery, setToQuery] = useState(search.dropoffAddress ?? initialTo?.label ?? "");

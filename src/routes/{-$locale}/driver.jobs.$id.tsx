@@ -5,7 +5,7 @@ import { ArrowLeft, MessageCircle, Navigation, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { getDict } from "@/i18n";
 import { bookingQuery } from "@/queries/bookings";
-import { reportUnableToComplete, updateJobStatus } from "@/queries/driver";
+import { advanceTrip, reportUnableToComplete, updateJobStatus } from "@/queries/driver";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -27,6 +27,10 @@ export const Route = createFileRoute("/{-$locale}/driver/jobs/$id")({
   component: DriverJobDetailPage,
 });
 
+import { LiveJourney } from "@/components/dashboard/live-journey";
+import { tripCopy } from "@/lib/trip-copy";
+import { nextDriverAction } from "../../../packages/mobile-shared/src/trip-state";
+
 type Point = { lat: number; lng: number };
 
 function mapsUrl(point: unknown, address: string | null): string | null {
@@ -43,6 +47,7 @@ function mapsUrl(point: unknown, address: string | null): string | null {
 function DriverJobDetailPage() {
   const { locale } = Route.useRouteContext();
   const t = getDict(locale);
+  const copy = tripCopy(locale, true);
   const { id } = Route.useParams();
   const queryClient = useQueryClient();
 
@@ -50,9 +55,15 @@ function DriverJobDetailPage() {
   const b = booking.data;
 
   const move = useMutation({
-    mutationFn: async (status: "en_route" | "completed" | "no_show") => {
-      await updateJobStatus(id, status);
-      if (status === "completed") {
+    mutationFn: async (action: "start" | "arrive" | "board" | "complete" | "no_show") => {
+      if (action === "arrive" || action === "board")
+        await advanceTrip(id, action === "arrive" ? "at_pickup" : "on_trip");
+      else
+        await updateJobStatus(
+          id,
+          action === "start" ? "en_route" : action === "complete" ? "completed" : "no_show",
+        );
+      if (action === "complete") {
         const { payoutCarrierForBooking } = await import("@/functions/stripe");
         await payoutCarrierForBooking({ data: { bookingId: id } }).catch(() => null);
       }
@@ -99,6 +110,7 @@ function DriverJobDetailPage() {
     );
   }
 
+  const action = nextDriverAction(b);
   const route = getRoute(b.route_slug);
   const vehicle = VEHICLE_CLASSES.find((v) => v.id === b.vehicle_class);
   const dateLocale = locale === "en" ? "en-GB" : locale;
@@ -125,11 +137,15 @@ function DriverJobDetailPage() {
         {t.driver.backToJobs}
       </Link>
 
+      <LiveJourney booking={b} />
+
       <div className="rounded-2xl border border-border bg-card p-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-2xl text-primary">
-              {route ? `${route.from} → ${route.to}` : b.route_slug}
+              {route
+                ? `${route.from} → ${route.to}`
+                : `${b.pickup_address || "Pickup"} → ${b.dropoff_address || "Drop-off"}`}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">{fmt(b.pickup_at)}</p>
           </div>
@@ -254,33 +270,34 @@ function DriverJobDetailPage() {
         <div className="rounded-2xl border border-border bg-card p-8">
           <h3 className="font-display text-lg text-primary">{t.driver.statusTitle}</h3>
           <div className="mt-4 flex flex-wrap gap-3">
-            {b.status === "claimed" && (
+            {action && action !== "complete" && (
               <button
-                onClick={() => move.mutate("en_route")}
+                type="button"
+                onClick={() => move.mutate(action)}
                 disabled={move.isPending}
-                className="rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-accent-foreground transition hover:opacity-90 disabled:opacity-50"
+                className="rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
               >
-                {t.driver.startTrip}
+                {copy[action]}
               </button>
             )}
-            {b.status === "en_route" && (
-              <>
-                <ConfirmAction
-                  trigger={t.driver.completeTrip}
-                  title={t.driver.confirmComplete}
-                  confirmLabel={t.driver.completeTrip}
-                  cancelLabel={t.account.cancelKeep}
-                  onConfirm={() => move.mutate("completed")}
-                  accent
-                />
-                <ConfirmAction
-                  trigger={t.driver.noShow}
-                  title={t.driver.confirmNoShow}
-                  confirmLabel={t.driver.noShow}
-                  cancelLabel={t.account.cancelKeep}
-                  onConfirm={() => move.mutate("no_show")}
-                />
-              </>
+            {action === "complete" && (
+              <ConfirmAction
+                trigger={copy.complete}
+                title={t.driver.confirmComplete}
+                confirmLabel={copy.complete}
+                cancelLabel={t.account.cancelKeep}
+                onConfirm={() => move.mutate("complete")}
+                accent
+              />
+            )}
+            {b.status === "en_route" && b.journey_stage !== "on_trip" && (
+              <ConfirmAction
+                trigger={t.driver.noShow}
+                title={t.driver.confirmNoShow}
+                confirmLabel={t.driver.noShow}
+                cancelLabel={t.account.cancelKeep}
+                onConfirm={() => move.mutate("no_show")}
+              />
             )}
             <ConfirmAction
               trigger={t.driver.unableToComplete}

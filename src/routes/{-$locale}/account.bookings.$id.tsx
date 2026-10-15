@@ -46,6 +46,10 @@ export const Route = createFileRoute("/{-$locale}/account/bookings/$id")({
   component: BookingDetailPage,
 });
 
+import { LiveJourney } from "@/components/dashboard/live-journey";
+import { tripCopy } from "@/lib/trip-copy";
+import { hasSettledPayment } from "../../../packages/mobile-shared/src/trip-state";
+
 const CANCELLABLE = new Set(["pending", "claimed"]);
 const HAS_DRIVER = new Set(["claimed", "en_route", "completed"]);
 const CAN_REPORT = new Set(["pending", "claimed", "en_route", "completed", "no_show"]);
@@ -69,6 +73,7 @@ const INCIDENT_TYPES: Exclude<IncidentType, "unable_to_complete">[] = [
 function BookingDetailPage() {
   const { locale } = Route.useRouteContext();
   const t = getDict(locale);
+  const copy = tripCopy(locale);
   const { id } = Route.useParams();
   const queryClient = useQueryClient();
 
@@ -172,11 +177,15 @@ function BookingDetailPage() {
         {t.account.backToBookings}
       </Link>
 
+      <LiveJourney booking={b} />
+
       <div className="rounded-2xl border border-border bg-card p-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-2xl text-primary">
-              {route ? `${route.from} → ${route.to}` : b.route_slug}
+              {route
+                ? `${route.from} → ${route.to}`
+                : `${b.pickup_address || "Pickup"} → ${b.dropoff_address || "Drop-off"}`}
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {t.account.bookingRef}: <span className="font-mono">{b.id.slice(0, 8)}</span>
@@ -238,14 +247,18 @@ function BookingDetailPage() {
           </span>
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          {b.payment_status === "paid" || b.payment_status === "deposit_paid"
-            ? t.account.paidOnline
-            : t.widget.payOnBoard}
+          {b.payment_status === "paid"
+            ? copy.paid
+            : b.payment_status === "deposit_paid"
+              ? copy.deposit
+              : b.payment_status === "refunded"
+                ? copy.refunded
+                : copy.unpaid}
         </p>
         <p className="mt-3 text-xs text-muted-foreground">{t.account.policyBlurb}</p>
       </div>
 
-      {b.status === "pending" && !b.driver_id && (
+      {b.status === "pending" && !b.driver_id && hasSettledPayment(b) && (
         <div className="rounded-2xl border border-border bg-card p-8">
           <h3 className="flex items-center gap-2 font-display text-lg text-primary">
             <CarFront className="h-5 w-5 text-accent" />

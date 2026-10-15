@@ -109,3 +109,8 @@ export async function reportUnableToComplete(bookingId: string, note?: string): 
   });
   if (error) throw error;
 }
+
+export async function advanceTrip(id: string, stage: "at_pickup" | "on_trip"): Promise<void> {
+  const { error } = await supabase.rpc("advance_trip", { p_booking_id: id, p_stage: stage });
+  if (error) throw error;
+}

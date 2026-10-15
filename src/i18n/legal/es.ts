@@ -111,6 +111,13 @@ export const legalDocsEs: LegalDocs = {
       'Esta Política de Privacidad explica cómo TransferAround Travel Services P.C., operando como TransferAround.com, registrado en Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la "Compañía", "nosotros"), recopila, utiliza y protege datos personales de Usuarios, pasajeros y Transportistas (incluidos sus conductores) en relación con la plataforma transferaround.com (el "Servicio"). A los efectos de EU/ley griega de protección de datos, la Compañía es el controlador de datos.',
     sections: [
       {
+        title: "Ride with AI",
+        paragraphs: [
+          "Ride with AI envía los mensajes de viaje que decides enviar a Anthropic (Claude) para entender tu traslado. Revisa la propuesta antes de pagar. La IA no confirma reservas ni comprueba horarios de vuelos o disponibilidad de conductores.",
+          "Las coordenadas añadidas con el botón GPS permanecen en los servicios de mapas y reservas y no se envían a Claude. Todo lo que escribas en un mensaje se enviará a Anthropic: evita información sensible innecesaria. Las conversaciones no se guardan en nuestra base de reservas. Anthropic trata los datos API conforme a sus políticas comerciales aplicables.",
+        ],
+      },
+      {
         title: "1. Quiénes somos",
         paragraphs: [
           "TransferAround Travel Services P.C. opera el Servicio. Contacto para cuestiones de privacidad: {email:privacy}. Soporte general: {email:support}.",
@@ -490,7 +497,7 @@ export const legalDocsEs: LegalDocs = {
           "TransferAround Travel Services P.C., operando como TransferAround.com",
           "Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα",
           "Correo electrónico: {email:support}",
-          "Teléfono: +30 28 1000 0000",
+          "Teléfono: +30 695 588 5718",
           "Número de empresa registrada, ID de IVA y número GEMI que se agregarán una vez finalizada la entidad operativa.",
         ],
       },

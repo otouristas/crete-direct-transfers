@@ -111,6 +111,13 @@ export const legalDocsDe: LegalDocs = {
       "In dieser Datenschutzrichtlinie wird erläutert, wie TransferAround Travel Services P.C., firmierend als TransferAround.com, mit Sitz in Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (das „Unternehmen“, „wir“), personenbezogene Daten von Nutzern, Passagieren und Carriern (einschließlich ihrer Fahrer) im Zusammenhang mit der Plattform transferaround.com (der „Service“) erhebt, verwendet und schützt. Für die Zwecke des EU-/griechischen Datenschutzrechts ist das Unternehmen der Verantwortliche.",
     sections: [
       {
+        title: "Ride with AI",
+        paragraphs: [
+          "Ride with AI sendet die von dir übermittelten Reisenachrichten an Anthropic (Claude), um deine Transferwünsche zu erfassen. Prüfe den Vorschlag vor der Zahlung. Die KI bestätigt keine Buchung und prüft weder Flugpläne noch Fahrerverfügbarkeit.",
+          "GPS-Koordinaten über die Standorttaste werden von Karten- und Buchungsdiensten verwendet und nicht an Claude gesendet. Alles, was du in eine Nachricht schreibst, wird an Anthropic gesendet. Vermeide unnötige sensible Angaben. Gesprächstexte werden nicht in unserer Buchungsdatenbank gespeichert. Für API-Daten gelten die kommerziellen Datenrichtlinien von Anthropic.",
+        ],
+      },
+      {
         title: "1. Wer wir sind",
         paragraphs: [
           "TransferAround Travel Services P.C. betreibt den Dienst. Kontakt für Datenschutzangelegenheiten: {email:privacy}. Allgemeine Unterstützung: {email:support}.",
@@ -492,7 +499,7 @@ export const legalDocsDe: LegalDocs = {
           "TransferAround Travel Services P.C., gehandelt als TransferAround.com",
           "Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα",
           "E-Mail: {email:support}",
-          "Telefon: +30 28 1000 0000",
+          "Telefon: +30 695 588 5718",
           "Registrierte Unternehmensnummer, Umsatzsteuer-Identifikationsnummer und GEMI-Nummer, die hinzugefügt werden, sobald die Betriebseinheit endgültig festgelegt ist.",
         ],
       },

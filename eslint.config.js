@@ -17,6 +17,7 @@ export default tseslint.config(
       ".cursor/**",
       ".tanstack/**",
       ".wrangler/**",
+      "release/**",
       "src/routeTree.gen.ts",
       "src/integrations/supabase/types.ts",
       "packages/mobile-shared/src/database.ts",

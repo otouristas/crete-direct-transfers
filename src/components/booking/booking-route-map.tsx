@@ -9,6 +9,8 @@ export type MapEndpoint = {
   kind: "pickup" | "dropoff";
 };
 
+export type MapDriver = { lat: number; lng: number; heading?: number | null; fresh: boolean };
+
 const BookingRouteMapInner = lazy(() => import("./booking-route-map-inner"));
 
 function MapSkeleton({ className }: { className?: string }) {
@@ -24,11 +26,15 @@ export function BookingRouteMap({
   pickup,
   dropoff,
   geometry,
+  driver,
+  followDriver,
   className,
 }: {
   pickup?: MapEndpoint | null;
   dropoff?: MapEndpoint | null;
   geometry?: TripGeometry;
+  driver?: MapDriver | null;
+  followDriver?: boolean;
   className?: string;
 }) {
   const [mounted, setMounted] = useState(false);
@@ -40,6 +46,8 @@ export function BookingRouteMap({
         pickup={pickup}
         dropoff={dropoff}
         geometry={geometry}
+        driver={driver}
+        followDriver={followDriver}
         className={className}
       />
     </Suspense>

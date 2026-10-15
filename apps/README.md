@@ -1,33 +1,18 @@
-# TransferAround mobile apps (Expo)
+# TransferAround iOS apps
 
-- **Driver** — `apps/driver` — online toggle, job offers, job lifecycle
-- **Rider** — `apps/rider` — book transfers, trips, account
+The canonical iOS apps are entirely Swift and SwiftUI in `ios-native/`.
 
-Shared API helpers live in `packages/mobile-shared` (`@transferaround/mobile-shared`).
+| App | Xcode scheme | Bundle ID |
+| --- | --- | --- |
+| Traveler | TransferAround | com.transferaround.rider |
+| Driver | TransferAroundDriver | com.transferaround.driver |
 
-```bash
-# from repo root
-npm run mobile:driver   # Expo on default port
-npm run mobile:rider
-```
+Open `ios-native/TransferAround.xcodeproj` in Xcode. Supabase Swift is pinned through Swift Package Manager. Maps, routing, GPS, authentication UI and remote notifications use Apple frameworks. There is no JavaScript runtime, Expo, Metro or CocoaPods in these iOS apps.
 
-## Design system
+From the repository root, `npm run ios:rider` / `npm run ios:driver` build and install the Swift apps on a booted iPhone simulator. Node only runs the build commands. Xcode signs simulator apps so Apple Keychain session storage works. Never manually re-sign simulator binaries.
 
-Both apps share one **light, Uber-style** UI kit that lives in
-`@transferaround/mobile-shared/ui` (tokens, `Button`/`Card`/`Field`/`StatusBadge`/`RouteRail`,
-a native Apple MapKit `RouteMap` (Leaflet fallback on web), a draggable `BottomSheetScaffold`, `useAppFonts`, and the
-brand `LogoMark`/`BrandHeader`). Screens import primitives from there instead of hand-rolling
-`StyleSheet` per screen; each app's `lib/theme.ts` re-exports the tokens for back-compat.
+The `rider/`, `driver/` and `native-plugins/` directories contain the retained pre-rewrite implementation and web prototypes. They are not the iOS release source.
 
-Brand: TransferAround — the approved abstract Interchange mark, cobalt #245BEB, white and charcoal;
-Plus Jakarta Sans (display) + Inter (body) via `@expo-google-fonts/*`. Logos
-use the exact `identity-{rider,driver}-v3.png` shared assets and role app icons.
+Shared protected Supabase tables and server checkout APIs connect the native apps and website. Test transfers use separate tables, explicitly marked demo payment, approved test membership, atomic acceptance and no financial side effects.
 
-Both roles have persisted onboarding, original transparent vehicle artwork, reduced-motion
-support and native haptics. Traveler exposes device GPS, address search and pickup-pin selection.
-Active trips receive driver GPS and journey-stage updates through participant-protected Supabase
-Realtime subscriptions. Driver sharing requires an assigned active trip and an approved driver;
-background updates additionally require iOS Always location permission.
-
-See [native iOS delivery and testing](../docs/release/IOS.md) for bundled Release builds,
-the isolated practice journey and the remaining live-payment dependencies.
+See [iOS release notes](../docs/release/IOS.md) for validation and distribution status.

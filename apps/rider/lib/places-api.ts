@@ -28,6 +28,8 @@ export type PlaceQuote = {
   source: "fixed" | "distance" | "hourly" | null;
   market: string;
   countryCode: string | null;
+  geometry?: [number, number][] | null;
+  routeSource?: "road" | "estimated" | null;
 };
 
 export async function searchPlacesMobile(

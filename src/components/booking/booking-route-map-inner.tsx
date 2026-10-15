@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from "react-
 import { divIcon, latLngBounds, type Marker as LMarker } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import type { TripGeometry } from "@/lib/trip-route";
-import type { MapEndpoint } from "./booking-route-map";
+import type { MapEndpoint, MapDriver } from "./booking-route-map";
 import { cn } from "@/lib/utils";
 
 const PICKUP_ICON = divIcon({
@@ -24,13 +24,16 @@ function FitBounds({
   pickup,
   dropoff,
   geometry,
+  followDriver,
 }: {
   pickup?: MapEndpoint | null;
   dropoff?: MapEndpoint | null;
   geometry?: TripGeometry;
+  followDriver?: boolean;
 }) {
   const map = useMap();
   useEffect(() => {
+    if (followDriver) return;
     const pts: [number, number][] = [];
     if (geometry && geometry.length > 1) pts.push(...geometry);
     if (pickup) pts.push([pickup.lat, pickup.lng]);
@@ -44,7 +47,7 @@ function FitBounds({
       return;
     }
     map.fitBounds(latLngBounds(pts), { padding: [48, 48], maxZoom: 13 });
-  }, [map, pickup, dropoff, geometry]);
+  }, [map, pickup, dropoff, geometry, followDriver]);
   return null;
 }
 
@@ -97,11 +100,15 @@ export default function BookingRouteMapInner({
   pickup,
   dropoff,
   geometry,
+  driver,
+  followDriver,
   className,
 }: {
   pickup?: MapEndpoint | null;
   dropoff?: MapEndpoint | null;
   geometry?: TripGeometry;
+  driver?: MapDriver | null;
+  followDriver?: boolean;
   className?: string;
 }) {
   return (
@@ -125,11 +132,17 @@ export default function BookingRouteMapInner({
             import.meta.env.VITE_MAP_TILE_URL || "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           }
         />
-        <FitBounds pickup={pickup} dropoff={dropoff} geometry={geometry} />
+        <FitBounds
+          pickup={pickup}
+          dropoff={dropoff}
+          geometry={geometry}
+          followDriver={followDriver}
+        />
+        {driver && <DriverMarker position={driver} follow={Boolean(followDriver)} />}
         {geometry && geometry.length > 1 && (
           <Polyline
             positions={geometry}
-            pathOptions={{ color: "#101114", weight: 4, opacity: 0.75 }}
+            pathOptions={{ color: "#245BEB", weight: 5, opacity: 0.9 }}
           />
         )}
         {pickup && (
@@ -159,4 +172,38 @@ export default function BookingRouteMapInner({
       </MapContainer>
     </div>
   );
+}
+
+function DriverMarker({ position, follow }: { position: MapDriver; follow: boolean }) {
+  const map = useMap();
+  const marker = useRef<LMarker | null>(null);
+  const last = useRef<[number, number]>([position.lat, position.lng]);
+  const heading = Number.isFinite(position.heading) ? (position.heading ?? 0) : 0;
+  const icon = divIcon({
+    className: "",
+    iconSize: [72, 72],
+    iconAnchor: [36, 36],
+    html: `<img src="/vehicles/car-marker-v2.png" alt="" style="width:72px;height:72px;object-fit:contain;transform:rotate(${heading}deg);opacity:${position.fresh ? 1 : 0.45};filter:drop-shadow(0 2px 3px #10111455)" />`,
+  });
+  useEffect(() => {
+    const from = last.current;
+    const to: [number, number] = [position.lat, position.lng];
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const started = performance.now();
+    let frame = 0;
+    const tick = (time: number) => {
+      const t = reduce ? 1 : Math.min(1, (time - started) / 900);
+      const point: [number, number] = [
+        from[0] + (to[0] - from[0]) * t,
+        from[1] + (to[1] - from[1]) * t,
+      ];
+      last.current = point;
+      marker.current?.setLatLng(point);
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    if (follow) map.panTo(to, { animate: !reduce, duration: 0.8 });
+    return () => cancelAnimationFrame(frame);
+  }, [map, position.lat, position.lng, follow]);
+  return <Marker ref={marker} position={last.current} icon={icon} keyboard={false} />;
 }

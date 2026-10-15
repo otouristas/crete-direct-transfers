@@ -113,6 +113,13 @@ export const legalDocsFr: LegalDocs = {
       "Cette politique de confidentialité explique comment TransferAround Travel Services P.C., opérant sous le nom de TransferAround.com, enregistré auprès de Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la « Société », « nous »), collecte, utilise et protège les données personnelles des utilisateurs, des passagers et des transporteurs (y compris leurs chauffeurs) en relation avec la plateforme transferaround.com (le « Service »). Aux fins de la loi EU/grecque sur la protection des données, la Société est le responsable du traitement des données.",
     sections: [
       {
+        title: "Ride with AI",
+        paragraphs: [
+          "Ride with AI transmet les messages de voyage que vous soumettez à Anthropic (Claude) pour comprendre vos besoins de transfert. Vérifiez la proposition avant de payer. L’IA ne confirme aucune réservation et ne vérifie ni les horaires de vol ni la disponibilité des chauffeurs.",
+          "Les coordonnées du bouton GPS restent auprès des services de cartographie et de réservation et ne sont pas envoyées à Claude. Tout texte saisi dans un message est envoyé à Anthropic : évitez les informations sensibles inutiles. Les conversations ne sont pas stockées dans notre base de réservations. Les politiques commerciales applicables d’Anthropic régissent les données API.",
+        ],
+      },
+      {
         title: "1. Qui nous sommes",
         paragraphs: [
           "TransferAround Travel Services P.C. exploite le Service. Contact pour les questions de confidentialité : {email:privacy}. Prise en charge générale : {email:support}.",
@@ -492,7 +499,7 @@ export const legalDocsFr: LegalDocs = {
           "TransferAround Travel Services P.C., négocié sous le nom de TransferAround.com",
           "Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα",
           "E-mail : {email:support}",
-          "Téléphone : +30 28 1000 0000",
+          "Téléphone : +30 695 588 5718",
           "Numéro d'entreprise enregistré, numéro de TVA et numéro GEMI à ajouter une fois l'entité opérationnelle finalisée.",
         ],
       },

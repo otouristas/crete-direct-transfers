@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports -- Metro bundles the map marker asset. */
 import { useEffect, useRef, useState } from "react";
 import { Animated, Image, Pressable, StyleSheet, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import { CRETE_CENTER } from "./coords";
 import type { MapSurfaceProps } from "./map-surface-types";
 import { colors } from "./tokens";
@@ -20,6 +20,8 @@ export function MapSurface({
   driverPoint,
   followDriver = false,
   bottomInset = 0,
+  routeGeometry,
+  routeEstimated,
 }: MapSurfaceProps) {
   const map = useRef<MapView>(null);
   const [ready, setReady] = useState(false);
@@ -33,10 +35,15 @@ export function MapSurface({
   const following = useRef(followDriver);
   const latest = useRef({ points, driverPoint, bottomInset });
   latest.current = { points, driverPoint, bottomInset };
-  const geometry = points.map((p) => `${p.lat},${p.lng}`).join(";");
+  const geometry =
+    points.map((p) => `${p.lat},${p.lng}`).join(";") +
+    (routeGeometry?.map((p) => `${p.lat},${p.lng}`).join(";") ?? "");
   useEffect(() => {
     if (!ready) return;
-    const locations = points.map((p) => ({ latitude: p.lat, longitude: p.lng }));
+    const locations = [...points, ...(routeGeometry ?? [])].map((p) => ({
+      latitude: p.lat,
+      longitude: p.lng,
+    }));
     if (latest.current.driverPoint)
       locations.push({
         latitude: latest.current.driverPoint.lat,
@@ -164,6 +171,14 @@ export function MapSurface({
             : undefined
         }
       >
+        {routeGeometry && routeGeometry.length > 1 && (
+          <Polyline
+            coordinates={routeGeometry.map((p) => ({ latitude: p.lat, longitude: p.lng }))}
+            strokeColor={colors.accent}
+            strokeWidth={5}
+            lineDashPattern={routeEstimated ? [8, 8] : undefined}
+          />
+        )}
         {points.map((p, i) => (
           <Marker
             key={p.type || i}

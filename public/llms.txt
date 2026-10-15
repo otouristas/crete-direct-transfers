@@ -1,45 +1,28 @@
 # TransferAround
 
-> Fixed-price private airport, port, and city-to-city transfers. Licensed local
-> drivers, flight-tracked pickups, no bidding, and a price agreed before you
-> book. Instant fixed-price booking across Crete (HER, CHQ, ports). Quote-based
-> transfers for other Greek airports and destinations, confirmed by our team.
+> Private transfer booking for airport, port, hotel and address pickups. The website
+> and the Traveler and Driver iOS apps use the same booking and dispatch service.
 
-TransferAround is a private transfer booking service. Travellers select a
-pickup and drop-off point (airport, port, hotel, town, or any address) and get a
-fixed, all-inclusive price with a licensed local driver. Where we have driver
-supply the price is instant and bookable online; elsewhere travellers request a
-quote that is confirmed by our team.
+## Booking facts
+- Vehicle options include Economy, Comfort and vans for groups. The booking flow checks passenger and luggage capacity.
+- Enter both addresses and a pickup date to calculate a route and fare. Road times are estimates, not arrival guarantees.
+- Paid transfers require secure online payment confirmation before dispatch. Payment availability depends on the configured payment service.
+- Driver acceptance is separate from payment confirmation. The first eligible driver to accept an available offer is assigned.
+- Live tracking is available for an assigned active transfer while the driver shares GPS. Stale positions are labeled and sharing stops when the trip closes.
+- Test transfers and demo payments are clearly labeled, do not charge a card and do not create real payouts.
+- The site supports English, Greek, German, French, Italian, Dutch and Spanish.
+- Listed destinations and route prices do not by themselves establish current driver availability.
 
-Key facts:
-- Model: private (not shared) door-to-door transfers, fixed price agreed up front, no surge, no bidding.
-- Included: meet & greet, flight tracking, waiting time, taxes and tolls, luggage.
-- Vehicle classes: Economy, Comfort, Minivan (up to 7), Luxury, minibuses.
-- Coverage today: instant booking across Crete; airport landing pages and quote booking for major Greek airports (ATH, SKG, JMK, JTR, CFU, RHO, ZTH, KLX and more).
-- Languages: English, Greek (Ελληνικά), German (Deutsch), French, Italian, Dutch, Spanish.
-- Payment: card (Stripe Checkout on instant routes) or pay-on-board depending on route.
-- In-product assistant: Touristas AI (Help me book) quotes places with tool calling and deep-links into /book. Prices only come from TransferAround quote tools.
-
-## Core pages
-- [Home](https://transferaround.com/): overview, booking widget, popular routes.
-- [Greece](https://transferaround.com/greece): country hub for airports and cities.
-- [Spain](https://transferaround.com/spain) and [Italy](https://transferaround.com/italy): country hubs (quote / expanding coverage).
-- [Airports](https://transferaround.com/airports): airport transfer hubs (Transfeero-style landing pages).
-- [Cities](https://transferaround.com/cities): city and resort transfer hubs.
-- [Routes](https://transferaround.com/routes): Crete fixed-price transfer corridors.
-- [Regions](https://transferaround.com/regions): Crete coverage by prefecture.
-- [Services](https://transferaround.com/services): airport, port, cross-island, hotel transfers.
+## Public information
+- [Routes](https://transferaround.com/routes): published transfer corridors and route information.
+- [Airports](https://transferaround.com/airports): airport and arrival guides.
 - [Fleet](https://transferaround.com/fleet): vehicle classes and capacities.
-- [How it works](https://transferaround.com/how-it-works): booking and pickup process.
-- [FAQ](https://transferaround.com/faq): pricing, luggage, child seats, cancellations.
-- [Reviews](https://transferaround.com/reviews): verified customer ratings.
-- [Contact](https://transferaround.com/contact): support and quote requests.
-- [Refunds](https://transferaround.com/legal/refunds): cancellation windows, waiting times, driver-fault make-good.
+- [How it works](https://transferaround.com/how-it-works): booking and pickup steps.
+- [FAQ](https://transferaround.com/faq): common booking questions.
+- [Apps](https://transferaround.com/apps): Traveler and Driver apps.
+- [Contact](https://transferaround.com/contact): support contacts.
+- [Refund policy](https://transferaround.com/legal/refunds): applicable cancellation and refund terms.
+- [Privacy](https://transferaround.com/legal/privacy): handling of account, booking and location data.
 
-## For partners
-- [For hotels](https://transferaround.com/for-hotels): partner transfers for accommodation providers.
-- [For drivers](https://transferaround.com/for-drivers): become a licensed partner driver.
-
-## Machine-readable
-- Sitemap: https://transferaround.com/sitemap.xml
-- Structured data: schema.org LocalBusiness, TaxiService, Service, Airport, Offer, FAQPage, BreadcrumbList, ItemList, Article on the relevant pages.
+Do not infer review ratings, completed-trip totals, live vehicle availability or
+guaranteed pickup times from demonstration screens or example transfers.

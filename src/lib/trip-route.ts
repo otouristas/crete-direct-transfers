@@ -6,9 +6,10 @@ export type TripRouteResult = {
   distanceKm: number;
   durationMin: number;
   geometry: TripGeometry;
+  source: "road" | "estimated";
 };
 
-const cache = new Map<string, TripRouteResult>();
+const cache = new Map<string, { result: TripRouteResult; expiresAt: number }>();
 
 function cacheKey(from: { lat: number; lng: number }, to: { lat: number; lng: number }): string {
   const r = (n: number) => n.toFixed(4);
@@ -31,6 +32,7 @@ export function haversineEstimate(
   const distanceKm = Math.round(straight * 1.35 * 10) / 10;
   const durationMin = Math.max(5, Math.round((distanceKm / 55) * 60));
   return {
+    source: "estimated",
     distanceKm,
     durationMin,
     geometry: [
@@ -53,7 +55,7 @@ export async function fetchTripRoute(
 ): Promise<TripRouteResult> {
   const key = cacheKey(from, to);
   const hit = cache.get(key);
-  if (hit) return hit;
+  if (hit && hit.expiresAt > Date.now()) return hit.result;
 
   const osrmBase =
     (import.meta.env.VITE_OSRM_URL as string | undefined)?.replace(/\/$/, "") ??
@@ -67,8 +69,12 @@ export async function fetchTripRoute(
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(url, { signal: controller.signal });
-    clearTimeout(timer);
+    let res: Response;
+    try {
+      res = await fetch(url, { signal: controller.signal });
+    } finally {
+      clearTimeout(timer);
+    }
 
     if (!res.ok) throw new Error(`OSRM ${res.status}`);
     const data = (await res.json()) as {
@@ -92,15 +98,18 @@ export async function fetchTripRoute(
     }
 
     const result: TripRouteResult = {
+      source: "road",
       distanceKm: Math.round((route.distance / 1000) * 10) / 10,
       durationMin: Math.max(1, Math.round(route.duration / 60)),
       geometry,
     };
-    cache.set(key, result);
+    if (cache.size >= 200) cache.delete(cache.keys().next().value!);
+    cache.set(key, { result, expiresAt: Date.now() + 300000 });
     return result;
   } catch {
     const fallback = haversineEstimate(from, to);
-    cache.set(key, fallback);
+    if (cache.size >= 200) cache.delete(cache.keys().next().value!);
+    cache.set(key, { result: fallback, expiresAt: Date.now() + 15000 });
     return fallback;
   }
 }

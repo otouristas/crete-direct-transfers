@@ -244,6 +244,8 @@ export function RouteMap({
   driverPoint,
   followDriver,
   bottomInset,
+  routeGeometry,
+  routeEstimated,
 }: {
   from?: string | null;
   to?: string | null;
@@ -259,6 +261,8 @@ export function RouteMap({
   driverPoint?: LiveMapPosition | null;
   followDriver?: boolean;
   bottomInset?: number;
+  routeGeometry?: LatLng[];
+  routeEstimated?: boolean;
 }) {
   // Prefer explicit lat/lng selections; only fall back to label geocode when points are set.
   const points = useMemo<MapPoint[]>(() => {
@@ -291,6 +295,8 @@ export function RouteMap({
       driverPoint={driverPoint}
       followDriver={followDriver}
       bottomInset={bottomInset}
+      routeGeometry={routeGeometry}
+      routeEstimated={routeEstimated}
     />
   );
 }

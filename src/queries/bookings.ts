@@ -95,12 +95,13 @@ export const bookingQuery = (id: string) =>
   queryOptions({
     queryKey: ["booking", id],
     refetchInterval: 5000,
-    queryFn: async (): Promise<Booking | null> => {
-      if (isDemoBookingId(id)) return getDemoBooking(id);
+    queryFn: async ({ signal }): Promise<Booking | null> => {
+      if (isDemoBookingId(id)) return isDemoBookingsEnabled() ? getDemoBooking(id) : null;
       const { data, error } = await supabase
         .from("bookings")
         .select("*")
         .eq("id", id)
+        .abortSignal(signal)
         .maybeSingle();
       if (error) throw error;
       return data as Booking | null;
@@ -127,7 +128,7 @@ export const bookingDriverQuery = (id: string) =>
   queryOptions({
     queryKey: ["booking-driver", id],
     queryFn: async (): Promise<DriverInfo | null> => {
-      if (isDemoBookingId(id)) return getDemoDriver(id);
+      if (isDemoBookingId(id)) return isDemoBookingsEnabled() ? getDemoDriver(id) : null;
       const { data, error } = await supabase.rpc("booking_driver_info", { p_booking_id: id });
       if (error) throw error;
       return (data?.[0] as DriverInfo | undefined) ?? null;

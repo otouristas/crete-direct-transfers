@@ -111,6 +111,13 @@ export const legalDocsIt: LegalDocs = {
       "La presente Informativa sulla privacy spiega come TransferAround Travel Services P.C., operante come TransferAround.com, registrata presso Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα (la “Società”, “noi”), raccoglie, utilizza e protegge i dati personali di Utenti, passeggeri e Trasportatori (inclusi i loro autisti) in relazione alla piattaforma transferaround.com (il “Servizio”). Ai fini della legge greca sulla protezione dei dati EU, la Società è il titolare del trattamento dei dati.",
     sections: [
       {
+        title: "Ride with AI",
+        paragraphs: [
+          "Ride with AI invia i messaggi di viaggio che scegli di inoltrare ad Anthropic (Claude) per comprendere le tue esigenze di trasferimento. Controlla la proposta prima di pagare. L’AI non conferma prenotazioni e non verifica orari dei voli o disponibilità degli autisti.",
+          "Le coordinate aggiunte con il pulsante GPS sono usate dai servizi di mappe e prenotazione e non vengono inviate a Claude. Tutto ciò che scrivi nel messaggio viene inviato ad Anthropic: evita informazioni sensibili non necessarie. Le conversazioni non sono salvate nel nostro database di prenotazioni. Anthropic gestisce i dati API secondo le proprie politiche commerciali applicabili.",
+        ],
+      },
+      {
         title: "1. Chi siamo",
         paragraphs: [
           "TransferAround Travel Services P.C. gestisce il Servizio. Contatto per questioni di privacy: {email:privacy}. Supporto generale: {email:support}.",
@@ -490,7 +497,7 @@ export const legalDocsIt: LegalDocs = {
           "TransferAround Travel Services P.C., operante come TransferAround.com",
           "Οδός Ρεθύμνου 12, Ρέθυμνο, Κρήτη, Τ.Κ. 74100, Ελλάδα",
           "E-mail: {email:support}",
-          "Telefono: +30 28 1000 0000",
+          "Telefono: +30 695 588 5718",
           "Matricola della società, partita IVA e numero GEMI da aggiungere una volta definita l'entità operativa.",
         ],
       },

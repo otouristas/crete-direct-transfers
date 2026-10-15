@@ -312,12 +312,10 @@ export function searchLocalPlaces(
 
   const local = buildLocalCatalog();
   const localHits = local
-    .map((p) => ({
-      p,
-      score:
-        scoreMatch(p.label, q, [...getAliases(p.id), ...(p.iata ? [p.iata] : [])]) +
-        (cc && p.countryCode === cc ? 12 : 0),
-    }))
+    .map((p) => {
+      const match = scoreMatch(p.label, q, [...getAliases(p.id), ...(p.iata ? [p.iata] : [])]);
+      return { p, score: match > 0 ? match + (cc && p.countryCode === cc ? 12 : 0) : 0 };
+    })
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
     .map((x) => x.p);

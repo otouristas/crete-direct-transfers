@@ -51,11 +51,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
     { label: t.nav.reviews, to: "/{-$locale}/reviews" },
   ];
 
-  const stats = [
-    { value: t.stats.transfersValue, label: t.stats.transfers },
-    { value: t.stats.ratingValue, label: t.stats.rating, highlight: true },
-    { value: t.stats.supportValue, label: t.stats.support },
-  ];
+  const stats = [{ value: t.stats.routesValue, label: t.stats.routes, highlight: false }];
 
   useEffect(() => {
     if (!open) {

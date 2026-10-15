@@ -63,6 +63,8 @@ export async function runPlacesQuote(input: {
   source: "fixed" | "distance" | "hourly" | null;
   market: string;
   countryCode: string | null;
+  geometry: [number, number][] | null;
+  routeSource: "road" | "estimated" | null;
 }> {
   const service = input.service ?? "transfer";
   const vehicleClass = (input.vehicleClass ?? "economy") as VehicleClass;
@@ -95,12 +97,16 @@ export async function runPlacesQuote(input: {
       source: q ? "hourly" : null,
       market,
       countryCode,
+      geometry: null,
+      routeSource: null,
     };
   }
 
   const matched = matchRouteSlug(input.from ?? null, input.to ?? null) ?? null;
   let distanceKm: number | undefined;
   let durationMin: number | undefined;
+  let geometry: [number, number][] | null = null;
+  let routeSource: "road" | "estimated" | null = null;
 
   if (
     input.from?.lat != null &&
@@ -114,6 +120,8 @@ export async function runPlacesQuote(input: {
     );
     distanceKm = est.distanceKm;
     durationMin = est.durationMin;
+    geometry = est.geometry;
+    routeSource = est.source;
   }
 
   const q = quoteTrip({
@@ -133,6 +141,8 @@ export async function runPlacesQuote(input: {
     source: q?.source ?? null,
     market,
     countryCode,
+    geometry,
+    routeSource,
   };
 }
 

@@ -44,7 +44,7 @@ export const Route = createFileRoute("/{-$locale}/apps")({
       path: "/apps",
       title: "Meet your next smooth arrival | TransferAround",
       description:
-        "Explore TransferAround for travelers and drivers. Try a connected practice trip, from booking to arrival.",
+        "TransferAround for iPhone travelers and drivers. Learn how invited TestFlight testing works, or explore the separate browser practice studio.",
       noindex: true,
     }),
   component: AppsPage,
@@ -232,6 +232,36 @@ function AppsPage() {
           <span />
           <Navigation size={60} />
         </div>
+      </section>
+
+      <section className="mx-auto max-w-4xl px-6 py-12 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#245BEB]">
+          iPhone beta · invitation required
+        </p>
+        <h2 className="mt-3 text-2xl font-bold tracking-tight">Testing the iPhone apps?</h2>
+        <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Install your invited TestFlight builds. In Traveler, enable “Test this transfer” and
+          confirm Demo payment. In Driver, open Test transfers and go online. Your connected test
+          journey also appears in your website dashboard.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Link
+            to="/{-$locale}/account"
+            className="rounded-full bg-[#245BEB] px-6 py-3 text-sm font-semibold text-white"
+          >
+            Traveler dashboard
+          </Link>
+          <Link
+            to="/{-$locale}/driver"
+            className="rounded-full border border-black/15 px-6 py-3 text-sm font-semibold"
+          >
+            Driver dashboard
+          </Link>
+        </div>
+        <p className="mt-5 text-xs text-muted-foreground">
+          The browser studio below is a separate illustration. It does not create iPhone test offers
+          or send Driver notifications.
+        </p>
       </section>
 
       <section id="practice" className="practice-stage">

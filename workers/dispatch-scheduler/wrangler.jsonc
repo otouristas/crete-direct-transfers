@@ -1,0 +1,13 @@
+{
+  "name": "transferaround-dispatch",
+  "account_id": "3ae246eded35e99220b461c2ca5ff158",
+  "main": "index.ts",
+  "compatibility_date": "2026-07-10",
+  "workers_dev": false,
+  "triggers": { "crons": ["* * * * *"] },
+  "vars": {
+    "SUPABASE_URL": "https://mlrgwkgiazmrsfjhfrnq.supabase.co",
+    "WEBSITE_URL": "https://crete-direct-transfers.gk-3ae.workers.dev"
+  },
+  "observability": { "enabled": true }
+}

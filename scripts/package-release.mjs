@@ -12,13 +12,13 @@ const entries = [
   [".output", "website"],
   ["docs/release", "documentation"],
   [".env.example", "server.env.example"],
-  ["apps/rider/.env.example", "traveler.env.example"],
-  ["apps/driver/.env.example", "driver.env.example"],
+  ["apps/ios-native", "native-swift-source"],
 ];
 for (const [source, target] of entries) {
   await cp(path.join(root, source), path.join(destination, target), {
     recursive: true,
-    filter: (file) => !/\/(?:\.env(?:\.local)?|node_modules|\.DS_Store)$/.test(file),
+    filter: (file) =>
+      !/\/(?:\.env(?:\.local)?|node_modules|\.DS_Store|xcuserdata)(?:\/|$)/.test(file),
   });
 }
 // Deploy this compiled Worker directly; its source build is already complete.

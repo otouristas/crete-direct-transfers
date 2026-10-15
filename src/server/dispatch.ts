@@ -11,6 +11,7 @@ import {
   sendEmailDirect,
 } from "@/functions/email";
 import { pushToUsers } from "@/server/push";
+import { processNativePush } from "@/server/native-push";
 
 export type DispatchNewBookingInput = {
   bookingId: string;
@@ -37,21 +38,29 @@ async function notifyDriverOffers(input: {
 
   const driverIds = [...new Set(input.offers.map((o) => o.driver_id))];
   if (driverIds.length > 0) {
-    const first = input.offers[0];
-    const expiresInSec = first
-      ? Math.max(30, Math.round((new Date(first.expires_at).getTime() - Date.now()) / 1000))
-      : 90;
-    await pushToUsers({
-      userIds: driverIds,
-      title: "New transfer offer",
-      body: `${input.routeLabel} · ${input.priceLabel} · ${expiresInSec}s to respond`,
-      data: {
-        type: "job_offer",
-        bookingId: input.bookingId,
-        offerId: first?.id,
-      },
-      priority: "high",
-    });
+    await Promise.allSettled(
+      input.offers.map((offer) => {
+        const expiresInSec = Math.max(
+          0,
+          Math.round((Date.parse(offer.expires_at) - Date.now()) / 1000),
+        );
+        return pushToUsers({
+          userIds: [offer.driver_id],
+          title: "New transfer offer",
+          body: `${input.routeLabel} · ${input.priceLabel} · ${expiresInSec}s to respond`,
+          data: {
+            type: "job_offer",
+            bookingId: input.bookingId,
+            offerId: offer.id,
+            expiresAt: offer.expires_at,
+          },
+          priority: "high",
+        });
+      }),
+    );
+    // Inserts already queued one durable native delivery per recipient/device.
+    // The scheduler keeps retrying independently of this request's lifecycle.
+    await processNativePush().catch(() => console.warn("Native offer delivery queued for retry"));
   }
 
   for (const offer of input.offers) {

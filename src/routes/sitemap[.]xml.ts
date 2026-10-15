@@ -10,6 +10,7 @@ import { listCityDestinations } from "@/data/destinations";
 import { listLiveMarkets } from "@/data/markets";
 import { SITE_URL } from "@/lib/site";
 import { LOCALES, localePath } from "@/i18n";
+import { REVIEWS } from "@/data/reviews";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           "/how-it-works",
           "/faq",
           "/contact",
-          "/reviews",
+          ...(REVIEWS.length ? ["/reviews"] : []),
           "/for-hotels",
           "/for-drivers",
           "/legal/terms",

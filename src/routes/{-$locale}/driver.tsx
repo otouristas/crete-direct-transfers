@@ -6,6 +6,7 @@ import { useProfile } from "@/queries/profile";
 import { getDict, type Locale } from "@/i18n";
 import { buildHead } from "@/lib/seo";
 import { CONTACT_PHONE, CONTACT_PHONE_HREF } from "@/lib/site";
+import { TestTransfers } from "@/components/dashboard/test-transfers";
 
 export const Route = createFileRoute("/{-$locale}/driver")({
   head: (ctx) => {
@@ -40,6 +41,7 @@ function DriverGate() {
     const suspended = approval === "suspended";
     return (
       <div className="mx-auto max-w-2xl px-6 py-24 text-center">
+        {!suspended && <TestTransfers driver />}
         {suspended ? (
           <ShieldAlert className="mx-auto h-12 w-12 text-destructive" strokeWidth={1.5} />
         ) : (

@@ -1,0 +1,660 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D1CA4286CDC548E26D74648 /* AppleServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED28D1BEE4BBDAD08D9A07 /* AppleServices.swift */; };
+		11B9029F324ED059A906F5B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B83C61B8A3C357019F445737 /* Assets.xcassets */; };
+		153EE9308F95E5067590ADA7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D5F5000047902BB5A822BCFB /* PrivacyInfo.xcprivacy */; };
+		160DD818EB7E3A5B2B7F05E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB2E37BD8091F69AA0C8CF59 /* Assets.xcassets */; };
+		1BBD3F9057EBCB238DA164CA /* PublicConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A01CBF4BBA1DC267F8EE4F7 /* PublicConfig.plist */; };
+		1D5DF6A0230827E1ECF1851C /* JourneyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC79CB9DB68A77A5B5B39A58 /* JourneyStore.swift */; };
+		2574CDFE98D9A91F52C76658 /* TripViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F98E95333AD372B041FFEB6 /* TripViews.swift */; };
+		30458DC979C86A5611F49317 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 10F570245714DF56FF61D44C /* Supabase */; };
+		33A45550FB9AD8D3164D932A /* TripViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F98E95333AD372B041FFEB6 /* TripViews.swift */; };
+		37929DA5A9E341454988E67D /* AppleServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ED28D1BEE4BBDAD08D9A07 /* AppleServices.swift */; };
+		3B9BD84203624F588363FE85 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D2163B3685227144C43EC /* Backend.swift */; };
+		80010EA2ADDDB59BD6CE7903 /* JourneyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC79CB9DB68A77A5B5B39A58 /* JourneyStore.swift */; };
+		878C8E136670F72A8A4F7851 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D5F5000047902BB5A822BCFB /* PrivacyInfo.xcprivacy */; };
+		893CA1E294BF0477B7F4C66F /* PublicConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A01CBF4BBA1DC267F8EE4F7 /* PublicConfig.plist */; };
+		8C4C4330852C651AC2018A14 /* TravelerHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BB7C3FF015ACA7AB572BDB /* TravelerHomeView.swift */; };
+		8D56F2B8E14A69B00C5B3D31 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57C4A158444E688BC3CFBA3 /* AuthView.swift */; };
+		9099C54330CC5DF99EADD251 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB2E37BD8091F69AA0C8CF59 /* Assets.xcassets */; };
+		91F5DCFF4060EE4B6B0AA4F7 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = D254E6C6063E4974EE5598D8 /* Supabase */; };
+		9FC9CA6A993F5D7F00585158 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482D87DE6F9A55B78FD6E96 /* Models.swift */; };
+		A5145B2629787ACB2AF7341F /* DriverHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C34FD9AFE0CE95815DDF2D6F /* DriverHomeView.swift */; };
+		A781040089575D8F889D0CC5 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57C4A158444E688BC3CFBA3 /* AuthView.swift */; };
+		AF01BB7AA56BD2458E08E055 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = F184E1AF7A685CDF38FEBB09 /* Design.swift */; };
+		C92D7864A9883C1F96C5F708 /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D2163B3685227144C43EC /* Backend.swift */; };
+		CB44C90D14BEB4B032B8E348 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = F184E1AF7A685CDF38FEBB09 /* Design.swift */; };
+		CC35C366F853B0D3C862B2C1 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9AC53BB5C68411D50052E3 /* Entry.swift */; };
+		CC5117B41F822DDD574D4917 /* RideAIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA91EBAF37BEB71588CEF09 /* RideAIView.swift */; };
+		E0D2B78D669D4868DAE43B43 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC9AC53BB5C68411D50052E3 /* Entry.swift */; };
+		E5067A35D69D30292DFD6AEB /* JourneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5CB4C6D1B54C6248CCE871 /* JourneyTests.swift */; };
+		F4D1DE6306B4C341B4EBABE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C08DEF3FD70E7A59DD5CF93F /* Assets.xcassets */; };
+		F6A15690A39F6ED55366A8EF /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B482D87DE6F9A55B78FD6E96 /* Models.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8D0BA5AFE434B6E63303640E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BA5A652B4B6F6EF0AE7E1D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6408B58B279E6ADE9FE01903;
+			remoteInfo = TransferAround;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		08ED28D1BEE4BBDAD08D9A07 /* AppleServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleServices.swift; sourceTree = "<group>"; };
+		244E3CE8A1D554D543F608B8 /* TransferAroundDriver.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TransferAroundDriver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E369B9D39D3DAD6FCACB502 /* TransferAround.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TransferAround.entitlements; sourceTree = "<group>"; };
+		3A5CB4C6D1B54C6248CCE871 /* JourneyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyTests.swift; sourceTree = "<group>"; };
+		3E42FD47AE581D99E642E68B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		54470C53A032A42029622F32 /* TransferAroundTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TransferAroundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		54ABA11D9C99FCC94E788B3D /* TransferAround.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TransferAround.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		56BB7C3FF015ACA7AB572BDB /* TravelerHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelerHomeView.swift; sourceTree = "<group>"; };
+		5A01CBF4BBA1DC267F8EE4F7 /* PublicConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = PublicConfig.plist; sourceTree = "<group>"; };
+		6F98E95333AD372B041FFEB6 /* TripViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripViews.swift; sourceTree = "<group>"; };
+		7AA91EBAF37BEB71588CEF09 /* RideAIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideAIView.swift; sourceTree = "<group>"; };
+		812D2163B3685227144C43EC /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
+		AC79CB9DB68A77A5B5B39A58 /* JourneyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyStore.swift; sourceTree = "<group>"; };
+		B482D87DE6F9A55B78FD6E96 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		B536C3ACE6AA77FCFF1FF887 /* TransferAroundDriver.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TransferAroundDriver.entitlements; sourceTree = "<group>"; };
+		B83C61B8A3C357019F445737 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB2E37BD8091F69AA0C8CF59 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BE77BEDCB5EA3A69DC40B3BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C08DEF3FD70E7A59DD5CF93F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C34FD9AFE0CE95815DDF2D6F /* DriverHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DriverHomeView.swift; sourceTree = "<group>"; };
+		C57C4A158444E688BC3CFBA3 /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		D5F5000047902BB5A822BCFB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		DC9AC53BB5C68411D50052E3 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		F184E1AF7A685CDF38FEBB09 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		32FA53A797FF840263D829E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				30458DC979C86A5611F49317 /* Supabase in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8D670E61F8276CCB62BC331 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				91F5DCFF4060EE4B6B0AA4F7 /* Supabase in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		28CD51127C6D0F97302679A7 = {
+			isa = PBXGroup;
+			children = (
+				757311400BC2BC503FEB8CFE /* Driver */,
+				F3E6E494E9A0864ECCF71C06 /* Shared */,
+				7163D44ECE9104A31D0F08B1 /* Tests */,
+				9DB939105F302FB26FD60601 /* Traveler */,
+				CB4FEEA0ABA023B400B11792 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7163D44ECE9104A31D0F08B1 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				3A5CB4C6D1B54C6248CCE871 /* JourneyTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		757311400BC2BC503FEB8CFE /* Driver */ = {
+			isa = PBXGroup;
+			children = (
+				C08DEF3FD70E7A59DD5CF93F /* Assets.xcassets */,
+				C34FD9AFE0CE95815DDF2D6F /* DriverHomeView.swift */,
+				BE77BEDCB5EA3A69DC40B3BE /* Info.plist */,
+				B536C3ACE6AA77FCFF1FF887 /* TransferAroundDriver.entitlements */,
+			);
+			path = Driver;
+			sourceTree = "<group>";
+		};
+		9DB939105F302FB26FD60601 /* Traveler */ = {
+			isa = PBXGroup;
+			children = (
+				B83C61B8A3C357019F445737 /* Assets.xcassets */,
+				3E42FD47AE581D99E642E68B /* Info.plist */,
+				7AA91EBAF37BEB71588CEF09 /* RideAIView.swift */,
+				2E369B9D39D3DAD6FCACB502 /* TransferAround.entitlements */,
+				56BB7C3FF015ACA7AB572BDB /* TravelerHomeView.swift */,
+			);
+			path = Traveler;
+			sourceTree = "<group>";
+		};
+		CB4FEEA0ABA023B400B11792 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54ABA11D9C99FCC94E788B3D /* TransferAround.app */,
+				244E3CE8A1D554D543F608B8 /* TransferAroundDriver.app */,
+				54470C53A032A42029622F32 /* TransferAroundTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F3E6E494E9A0864ECCF71C06 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				08ED28D1BEE4BBDAD08D9A07 /* AppleServices.swift */,
+				BB2E37BD8091F69AA0C8CF59 /* Assets.xcassets */,
+				C57C4A158444E688BC3CFBA3 /* AuthView.swift */,
+				812D2163B3685227144C43EC /* Backend.swift */,
+				F184E1AF7A685CDF38FEBB09 /* Design.swift */,
+				DC9AC53BB5C68411D50052E3 /* Entry.swift */,
+				AC79CB9DB68A77A5B5B39A58 /* JourneyStore.swift */,
+				B482D87DE6F9A55B78FD6E96 /* Models.swift */,
+				D5F5000047902BB5A822BCFB /* PrivacyInfo.xcprivacy */,
+				5A01CBF4BBA1DC267F8EE4F7 /* PublicConfig.plist */,
+				6F98E95333AD372B041FFEB6 /* TripViews.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		05CF604A07C9AEB319ACE752 /* TransferAroundDriver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 721495D6B96AA411DA074B47 /* Build configuration list for PBXNativeTarget "TransferAroundDriver" */;
+			buildPhases = (
+				41D83CBB6E8809A387B3C0B8 /* Sources */,
+				853CA607FAFA8CE94980F04E /* Resources */,
+				32FA53A797FF840263D829E0 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TransferAroundDriver;
+			packageProductDependencies = (
+				10F570245714DF56FF61D44C /* Supabase */,
+			);
+			productName = TransferAroundDriver;
+			productReference = 244E3CE8A1D554D543F608B8 /* TransferAroundDriver.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6408B58B279E6ADE9FE01903 /* TransferAround */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 728F9BC192DFD62DB4438020 /* Build configuration list for PBXNativeTarget "TransferAround" */;
+			buildPhases = (
+				5FCBC05589881369C01C1CB1 /* Sources */,
+				FC290F8D773DEC407231E63B /* Resources */,
+				E8D670E61F8276CCB62BC331 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TransferAround;
+			packageProductDependencies = (
+				D254E6C6063E4974EE5598D8 /* Supabase */,
+			);
+			productName = TransferAround;
+			productReference = 54ABA11D9C99FCC94E788B3D /* TransferAround.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8B327FD77D27BBB091F8C39C /* TransferAroundTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9D79E7409F0B8AA0CFB33D5F /* Build configuration list for PBXNativeTarget "TransferAroundTests" */;
+			buildPhases = (
+				45AFA2934B2012DE9F0E2888 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A17F93A43A7461AEF520C10 /* PBXTargetDependency */,
+			);
+			name = TransferAroundTests;
+			packageProductDependencies = (
+			);
+			productName = TransferAroundTests;
+			productReference = 54470C53A032A42029622F32 /* TransferAroundTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0BA5A652B4B6F6EF0AE7E1D0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					05CF604A07C9AEB319ACE752 = {
+						DevelopmentTeam = S768Y6EZW8;
+						ProvisioningStyle = Automatic;
+					};
+					6408B58B279E6ADE9FE01903 = {
+						DevelopmentTeam = S768Y6EZW8;
+						ProvisioningStyle = Automatic;
+					};
+					8B327FD77D27BBB091F8C39C = {
+						DevelopmentTeam = S768Y6EZW8;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B7B256CE74EDF935A556A1DF /* Build configuration list for PBXProject "TransferAround" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 28CD51127C6D0F97302679A7;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1B5BC059E0F69C6F1EA320F2 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CB4FEEA0ABA023B400B11792 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6408B58B279E6ADE9FE01903 /* TransferAround */,
+				05CF604A07C9AEB319ACE752 /* TransferAroundDriver */,
+				8B327FD77D27BBB091F8C39C /* TransferAroundTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		853CA607FAFA8CE94980F04E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9099C54330CC5DF99EADD251 /* Assets.xcassets in Resources */,
+				F4D1DE6306B4C341B4EBABE1 /* Assets.xcassets in Resources */,
+				153EE9308F95E5067590ADA7 /* PrivacyInfo.xcprivacy in Resources */,
+				1BBD3F9057EBCB238DA164CA /* PublicConfig.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC290F8D773DEC407231E63B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				160DD818EB7E3A5B2B7F05E9 /* Assets.xcassets in Resources */,
+				11B9029F324ED059A906F5B5 /* Assets.xcassets in Resources */,
+				878C8E136670F72A8A4F7851 /* PrivacyInfo.xcprivacy in Resources */,
+				893CA1E294BF0477B7F4C66F /* PublicConfig.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		41D83CBB6E8809A387B3C0B8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37929DA5A9E341454988E67D /* AppleServices.swift in Sources */,
+				8D56F2B8E14A69B00C5B3D31 /* AuthView.swift in Sources */,
+				3B9BD84203624F588363FE85 /* Backend.swift in Sources */,
+				CB44C90D14BEB4B032B8E348 /* Design.swift in Sources */,
+				A5145B2629787ACB2AF7341F /* DriverHomeView.swift in Sources */,
+				CC35C366F853B0D3C862B2C1 /* Entry.swift in Sources */,
+				1D5DF6A0230827E1ECF1851C /* JourneyStore.swift in Sources */,
+				9FC9CA6A993F5D7F00585158 /* Models.swift in Sources */,
+				33A45550FB9AD8D3164D932A /* TripViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45AFA2934B2012DE9F0E2888 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5067A35D69D30292DFD6AEB /* JourneyTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FCBC05589881369C01C1CB1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0D1CA4286CDC548E26D74648 /* AppleServices.swift in Sources */,
+				A781040089575D8F889D0CC5 /* AuthView.swift in Sources */,
+				C92D7864A9883C1F96C5F708 /* Backend.swift in Sources */,
+				AF01BB7AA56BD2458E08E055 /* Design.swift in Sources */,
+				E0D2B78D669D4868DAE43B43 /* Entry.swift in Sources */,
+				80010EA2ADDDB59BD6CE7903 /* JourneyStore.swift in Sources */,
+				F6A15690A39F6ED55366A8EF /* Models.swift in Sources */,
+				CC5117B41F822DDD574D4917 /* RideAIView.swift in Sources */,
+				8C4C4330852C651AC2018A14 /* TravelerHomeView.swift in Sources */,
+				2574CDFE98D9A91F52C76658 /* TripViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9A17F93A43A7461AEF520C10 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6408B58B279E6ADE9FE01903 /* TransferAround */;
+			targetProxy = 8D0BA5AFE434B6E63303640E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		013BF9575020CCEB78DA4264 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 5;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = S768Y6EZW8;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		683E7F995B00D545502A8F44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Traveler/TransferAround.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Traveler/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.transferaround.rider;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		6AC62A83AE372B6C60E145BB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.transferaround.TransferAroundTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TransferAround.app/TransferAround";
+			};
+			name = Debug;
+		};
+		6F7B18A6C536907AB4B5B3AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Driver/TransferAroundDriver.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Driver/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.transferaround.driver;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DRIVER";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		87E73B3B85DB85755A61D84B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Driver/TransferAroundDriver.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Driver/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.transferaround.driver;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DRIVER";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		9AB8A5231AF5A8AC25E78FE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.transferaround.TransferAroundTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TransferAround.app/TransferAround";
+			};
+			name = Release;
+		};
+		A0B8360F36FA740D5DCBBAD2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Traveler/TransferAround.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Traveler/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.transferaround.rider;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		CDFB379D556DADBD14F9E4F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 5;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = S768Y6EZW8;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		721495D6B96AA411DA074B47 /* Build configuration list for PBXNativeTarget "TransferAroundDriver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F7B18A6C536907AB4B5B3AC /* Debug */,
+				87E73B3B85DB85755A61D84B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		728F9BC192DFD62DB4438020 /* Build configuration list for PBXNativeTarget "TransferAround" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				683E7F995B00D545502A8F44 /* Debug */,
+				A0B8360F36FA740D5DCBBAD2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9D79E7409F0B8AA0CFB33D5F /* Build configuration list for PBXNativeTarget "TransferAroundTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6AC62A83AE372B6C60E145BB /* Debug */,
+				9AB8A5231AF5A8AC25E78FE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B7B256CE74EDF935A556A1DF /* Build configuration list for PBXProject "TransferAround" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDFB379D556DADBD14F9E4F7 /* Debug */,
+				013BF9575020CCEB78DA4264 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1B5BC059E0F69C6F1EA320F2 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.55.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		10F570245714DF56FF61D44C /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B5BC059E0F69C6F1EA320F2 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		D254E6C6063E4974EE5598D8 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1B5BC059E0F69C6F1EA320F2 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 0BA5A652B4B6F6EF0AE7E1D0 /* Project object */;
+}

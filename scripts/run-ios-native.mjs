@@ -7,92 +7,49 @@ import { fileURLToPath } from "node:url";
 const role = process.argv[2];
 if (role === "--help") {
   console.log(
-    "Usage: node scripts/run-ios-native.mjs rider|driver\nBuilds and installs a bundled Release iOS app. Optional: TA_IOS_WORKSPACE, TA_SIMULATOR_UDID.",
+    "Usage: node scripts/run-ios-native.mjs rider|driver\nBuilds the Swift/SwiftUI app with Xcode and installs it on a booted iPhone simulator. Optional: TA_SIMULATOR_UDID, TA_IOS_DERIVED_DATA.",
   );
   process.exit(0);
 }
 if (!["rider", "driver"].includes(role)) throw new Error("Choose rider or driver.");
-const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const workspace = process.env.TA_IOS_WORKSPACE || repository;
-const appRoot = path.join(workspace, "apps", role);
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const native = path.join(root, "apps/ios-native");
 const app = role === "rider" ? "TransferAround" : "TransferAroundDriver";
-const config = JSON.parse(fs.readFileSync(path.join(appRoot, "app.json"), "utf8")).expo;
-const env = { ...process.env, EXTRA_PACKAGER_ARGS: "--max-workers 2" };
-if (!env.SSL_CERT_FILE && fs.existsSync("/etc/ssl/cert.pem"))
-  env.SSL_CERT_FILE = "/etc/ssl/cert.pem";
-const run = (command, args, cwd = appRoot) =>
-  execFileSync(command, args, { cwd, env, stdio: "inherit" });
-const read = (args) =>
-  JSON.parse(execFileSync("xcrun", ["simctl", ...args, "--json"], { encoding: "utf8" }));
-if (!fs.existsSync(path.join(appRoot, "node_modules/expo/bin/cli"))) {
-  throw new Error(`Install dependencies first: npm --prefix apps/${role} ci`);
-}
-run(process.execPath, [
-  "node_modules/expo/bin/cli",
-  "prebuild",
-  "--platform",
-  "ios",
-  "--no-install",
-]);
-run("pod", ["install", "--project-directory=ios"]);
-const devices = Object.values(read(["list", "devices", "available"]).devices).flat();
-let udid =
-  process.env.TA_SIMULATOR_UDID || devices.find((d) => d.name === "TransferAround iPhone")?.udid;
-if (!udid) {
-  const runtime = read(["list", "runtimes"])
-    .runtimes.filter((r) => r.isAvailable && r.identifier.includes(".iOS-"))
-    .sort((a, b) => b.version.localeCompare(a.version, undefined, { numeric: true }))[0];
-  if (!runtime) throw new Error("Install an iOS runtime in Xcode first.");
-  const types = read(["list", "devicetypes"]).devicetypes;
-  const type =
-    types.find((d) => d.identifier.endsWith(".iPhone-17-Pro")) ||
-    types.filter((d) => d.productFamily === "iPhone").at(-1);
-  if (!type) throw new Error("No iPhone simulator device type is installed.");
-  udid = execFileSync(
-    "xcrun",
-    ["simctl", "create", "TransferAround iPhone", type.identifier, runtime.identifier],
-    { encoding: "utf8" },
-  ).trim();
-}
-if (!devices.some((d) => d.udid === udid && d.state === "Booted")) {
-  try {
-    run("xcrun", ["simctl", "boot", udid]);
-  } catch (error) {
-    // Another app build can finish booting the same shared simulator first.
-    const current = Object.values(read(["list", "devices", "available"]).devices).flat();
-    if (!current.some((d) => d.udid === udid && d.state === "Booted")) throw error;
-  }
-}
+const run = (command, args) => execFileSync(command, args, { cwd: root, stdio: "inherit" });
+if (!fs.existsSync(path.join(native, "TransferAround.xcodeproj")))
+  run("xcodegen", ["generate", "--spec", "apps/ios-native/project.yml"]);
+const available = JSON.parse(
+  execFileSync("xcrun", ["simctl", "list", "devices", "available", "--json"], { encoding: "utf8" }),
+);
+const devices = Object.values(available.devices).flat();
+const udid =
+  process.env.TA_SIMULATOR_UDID ||
+  devices.find((d) => d.state === "Booted" && d.name.includes("TransferAround"))?.udid;
+if (!udid)
+  throw new Error("Boot the TransferAround iPhone simulator, or explicitly set TA_SIMULATOR_UDID.");
 run("xcrun", ["simctl", "bootstatus", udid, "-b"]);
-const derived =
-  process.env.TA_IOS_DERIVED_DATA || path.join(os.tmpdir(), "transferaround-native-build", role);
+const derived = process.env.TA_IOS_DERIVED_DATA || path.join(os.tmpdir(), "transferaround-swift");
 run("xcodebuild", [
-  "-workspace",
-  `ios/${app}.xcworkspace`,
+  "-jobs",
+  "2",
+  "-project",
+  path.join(native, "TransferAround.xcodeproj"),
   "-scheme",
   app,
   "-configuration",
-  "Release",
+  "Debug",
+  "-sdk",
+  "iphonesimulator",
   "-destination",
-  `id=${udid}`,
+  `platform=iOS Simulator,id=${udid}`,
   "-derivedDataPath",
   derived,
-  "-jobs",
-  "2",
-  "CODE_SIGNING_ALLOWED=NO",
-  "ONLY_ACTIVE_ARCH=YES",
-  "IPHONEOS_DEPLOYMENT_TARGET=15.1",
+  "CODE_SIGNING_ALLOWED=YES",
+  "CODE_SIGN_IDENTITY=-",
+  "OTHER_SWIFT_FLAGS=$(inherited) -j2 -num-threads 2",
   "build",
 ]);
-const binary = path.join(derived, "Build/Products/Release-iphonesimulator", `${app}.app`);
-run("python3", [
-  path.join(repository, "scripts/prepare-ios-archive.py"),
-  binary,
-  path.join(appRoot, "ios", app, `${app}.entitlements`),
-  config.ios.appleTeamId,
-]);
+const binary = path.join(derived, "Build/Products/Debug-iphonesimulator", `${app}.app`);
 run("xcrun", ["simctl", "install", udid, binary]);
-run("xcrun", ["simctl", "launch", udid, config.ios.bundleIdentifier]);
-console.log(
-  `Native app installed. Open Xcode Device Hub and select TransferAround iPhone.\n${binary}`,
-);
+run("xcrun", ["simctl", "launch", udid, `com.transferaround.${role}`]);
+console.log(`${app}: Swift/SwiftUI app installed. ${binary}`);

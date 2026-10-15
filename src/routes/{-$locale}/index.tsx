@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { REVIEWS, AVG_RATING } from "@/data/reviews";
+import { REVIEWS } from "@/data/reviews";
 import { BookingWidget } from "@/components/booking-widget";
 import { TrustPills } from "@/components/sections/trust-pills";
 import { Steps } from "@/components/sections/steps";
@@ -42,11 +42,6 @@ export const Route = createFileRoute("/{-$locale}/")({
         areaServed: { "@type": "Place", name: "Crete, Greece" },
         telephone: CONTACT_PHONE,
         priceRange: "€€",
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: AVG_RATING,
-          reviewCount: REVIEWS.length,
-        },
       },
     });
   },
@@ -65,7 +60,7 @@ function HomePage() {
     { id: "manifesto", label: t.inpageNav.howItWorks },
     { id: "routes", label: t.inpageNav.routes },
     { id: "fleet", label: t.inpageNav.fleet },
-    { id: "reviews", label: t.inpageNav.reviews },
+    ...(REVIEWS.length ? [{ id: "reviews", label: t.inpageNav.reviews }] : []),
     { id: "regions", label: t.inpageNav.regions },
   ];
 
@@ -188,31 +183,32 @@ function HomePage() {
       </section>
 
       {/* 5. Proof — reviews + region ribbon */}
-      <section id="reviews" className="scroll-mt-32 bg-background">
-        <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
-          <Reveal>
-            <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              {t.nav.reviews}
-            </p>
-            <h2 className="mt-3 text-3xl font-display text-primary md:text-5xl">
-              {t.home.proofTitle}
-            </h2>
-            <p className="mt-4 max-w-xl text-muted-foreground">{t.home.proofSubtitle}</p>
-          </Reveal>
-          <div className="mt-12">
-            <ReviewsGrid reviews={REVIEWS.slice(0, 3)} />
+      {REVIEWS.length > 0 && (
+        <section id="reviews" className="scroll-mt-32 bg-background">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+            <Reveal>
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                {t.nav.reviews}
+              </p>
+              <h2 className="mt-3 text-3xl font-display text-primary md:text-5xl">
+                {t.home.proofTitle}
+              </h2>
+              <p className="mt-4 max-w-xl text-muted-foreground">{t.home.proofSubtitle}</p>
+            </Reveal>
+            <div className="mt-12">
+              <ReviewsGrid reviews={REVIEWS.slice(0, 3)} />
+            </div>
+            <div className="mt-8 text-center">
+              <Link
+                to="/{-$locale}/reviews"
+                className="text-sm font-semibold text-accent-deep hover:underline"
+              >
+                {t.common.viewAll} →
+              </Link>
+            </div>
           </div>
-          <div className="mt-8 text-center">
-            <Link
-              to="/{-$locale}/reviews"
-              className="text-sm font-semibold text-accent-deep hover:underline"
-            >
-              {t.common.viewAll} →
-            </Link>
-          </div>
-        </div>
-      </section>
-
+        </section>
+      )}
       <section id="regions" className="scroll-mt-32 bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-6 py-16 md:py-20">
           <Reveal>

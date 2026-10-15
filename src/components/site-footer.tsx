@@ -14,7 +14,7 @@ import {
   SOCIAL_INSTAGRAM,
   SOCIAL_X,
 } from "@/lib/site";
-import { AVG_RATING } from "@/data/reviews";
+import { AVG_RATING, REVIEWS } from "@/data/reviews";
 import { Logo } from "@/components/logo";
 import { LanguageSwitcher } from "@/components/language-switcher";
 
@@ -160,16 +160,15 @@ export function SiteFooter() {
       <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 gap-12 px-6 pb-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-16 lg:px-10">
         {/* Support */}
         <div>
-          <p className="text-lg font-semibold">{t.footer.supportTitle}</p>
+          <p className="text-lg font-semibold">{t.footer.contactTitle}</p>
           <div className="mt-5 space-y-4 text-sm">
             <div>
-              <p className="font-light text-primary-foreground/50">{t.footer.dispatch}</p>
               <a href={CONTACT_PHONE_HREF} className={`mt-1 block ${linkClass}`}>
                 {CONTACT_PHONE}
               </a>
             </div>
             <div>
-              <p className="font-light text-primary-foreground/50">{t.footer.whatsappSupport}</p>
+              <p className="font-light text-primary-foreground/50">WhatsApp</p>
               <a
                 href={CONTACT_WHATSAPP_HREF}
                 target="_blank"
@@ -185,7 +184,6 @@ export function SiteFooter() {
                 {CONTACT_EMAIL}
               </a>
             </div>
-            <p className="text-primary-foreground/50">{t.footer.office}</p>
           </div>
         </div>
 
@@ -319,10 +317,12 @@ export function SiteFooter() {
               </Link>
             </li>
           </ul>
-          <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1.5 text-xs font-medium">
-            <Star className="h-3.5 w-3.5 fill-highlight text-highlight" />
-            {AVG_RATING} · Google
-          </div>
+          {REVIEWS.length > 0 && (
+            <div className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1.5 text-xs font-medium">
+              <Star className="h-3.5 w-3.5 fill-highlight text-highlight" />
+              {AVG_RATING}
+            </div>
+          )}
         </div>
       </div>
 
@@ -370,22 +370,24 @@ export function SiteFooter() {
             </p>
             <p className="mt-1 text-primary-foreground/50">{t.footer.regions}</p>
           </div>
-          <div
-            className="flex flex-wrap items-center justify-start gap-3 lg:justify-end"
-            role="group"
-            aria-label={t.footer.paymentsAria}
-          >
-            {PAYMENT_LOGOS.map((logo) => (
-              <img
-                key={logo.src}
-                src={logo.src}
-                alt={logo.alt}
-                className={`${logo.className} opacity-90 brightness-0 invert`}
-                loading="lazy"
-                decoding="async"
-              />
-            ))}
-          </div>
+          {import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY && (
+            <div
+              className="flex flex-wrap items-center justify-start gap-3 lg:justify-end"
+              role="group"
+              aria-label={t.footer.paymentsAria}
+            >
+              {PAYMENT_LOGOS.map((logo) => (
+                <img
+                  key={logo.src}
+                  src={logo.src}
+                  alt={logo.alt}
+                  className={`${logo.className} opacity-90 brightness-0 invert`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </footer>

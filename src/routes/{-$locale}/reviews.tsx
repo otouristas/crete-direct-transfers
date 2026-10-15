@@ -16,6 +16,7 @@ export const Route = createFileRoute("/{-$locale}/reviews")({
       path: "/reviews",
       title: t.reviewsPage.metaTitle,
       description: t.reviewsPage.metaDescription,
+      noindex: REVIEWS.length === 0,
     });
   },
   component: ReviewsPage,
@@ -31,16 +32,18 @@ function ReviewsPage() {
         subtitle={t.reviewsPage.subtitle}
         crumbs={[{ label: t.nav.reviews }]}
       >
-        <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-border bg-card px-5 py-2.5">
-          <span className="flex gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className="h-5 w-5 fill-highlight text-highlight" />
-            ))}
-          </span>
-          <span className="text-sm font-semibold text-primary">
-            {AVG_RATING} · {REVIEWS.length}+ {t.nav.reviews.toLowerCase()}
-          </span>
-        </div>
+        {REVIEWS.length > 0 && (
+          <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-border bg-card px-5 py-2.5">
+            <span className="flex gap-0.5">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-5 w-5 fill-highlight text-highlight" />
+              ))}
+            </span>
+            <span className="text-sm font-semibold text-primary">
+              {AVG_RATING} · {REVIEWS.length}+ {t.nav.reviews.toLowerCase()}
+            </span>
+          </div>
+        )}
       </PageHero>
       <section className="mx-auto grid max-w-7xl gap-5 px-6 py-14 md:grid-cols-2 lg:grid-cols-3">
         {REVIEWS.map((r, i) => (
