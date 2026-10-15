@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DemoApplePay } from "./demo-apple-pay";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AppState, Share, StyleSheet, Switch, View } from "react-native";
+import { AppState, Platform, Pressable, Share, StyleSheet, Switch, View } from "react-native";
 
 import {
   EMPTY_PRACTICE,
@@ -14,6 +15,7 @@ import {
 } from "./practice";
 import {
   Avatar,
+  BrandWordmark,
   Button,
   Card,
   Field,
@@ -42,9 +44,11 @@ const labels = {
 export function PracticeScreen({
   client,
   role,
+  initialSession,
 }: {
   client: PracticeClient;
   role: "rider" | "driver";
+  initialSession?: string;
 }) {
   const [token, setToken] = useState<string | null>(null);
   const [joinCode, setJoinCode] = useState("");
@@ -53,6 +57,8 @@ export function PracticeScreen({
   const [error, setError] = useState<string | null>(null);
   const [routeId, setRouteId] = useState<string>(PRACTICE_ROUTES[0].id);
   const [vehicleId, setVehicleId] = useState<string>("comfort");
+  const [payVisible, setPayVisible] = useState(false);
+  const [showConnection, setShowConnection] = useState(false);
   const requestSerial = useRef(0);
   const driver = role === "driver";
   const trip = state.trip;
@@ -87,6 +93,10 @@ export function PracticeScreen({
 
   useEffect(() => {
     let active = true;
+    if (initialSession) {
+      void connect(initialSession);
+      return;
+    }
     void AsyncStorage.getItem(`transferaround-practice-${role}`)
       .then((saved) => {
         if (active && saved) void connect(saved);
@@ -95,7 +105,7 @@ export function PracticeScreen({
     return () => {
       active = false;
     };
-  }, [connect, role]);
+  }, [connect, role, initialSession]);
 
   useEffect(() => {
     if (!token) return;
@@ -129,24 +139,89 @@ export function PracticeScreen({
     try {
       const r = await runPractice(client, token, action, { route: routeId, vehicle: vehicleId });
       setState(r.state);
+      return true;
     } catch (e) {
       setError(e instanceof Error ? e.message : "Please try again.");
+      return false;
     } finally {
       setBusy(false);
     }
   }
 
+  const driverAction =
+    driver && trip && active && (state.online || trip.status !== "pending")
+      ? trip.status === "pending"
+        ? "accept"
+        : trip.status === "claimed"
+          ? "start"
+          : "complete"
+      : null;
+  const canRequest = !driver && !active && trip?.status !== "completed";
+  const footer =
+    token && (canRequest || driverAction) ? (
+      <View style={s.actionBar}>
+        <View>
+          <Text variant="caption" color={colors.textMuted}>
+            {driver ? "Demo earnings" : "Demo total"}
+          </Text>
+          <Text style={s.footerFare}>
+            {euro(
+              driver && trip
+                ? Math.round(trip.priceCents * 0.85)
+                : practiceFare(route.baseCents, vehicle.multiplier),
+            )}
+          </Text>
+        </View>
+        <Button
+          title={
+            driverAction === "accept"
+              ? "Accept practice ride"
+              : driverAction === "start"
+                ? "Start to pickup"
+                : driverAction === "complete"
+                  ? "Complete trip"
+                  : "Demo Apple Pay"
+          }
+          icon={driver ? "arrow-forward" : "logo-apple"}
+          onPress={() => (driverAction ? void act(driverAction) : setPayVisible(true))}
+          loading={busy}
+          style={{ flex: 1 }}
+        />
+      </View>
+    ) : undefined;
+
   return (
-    <Screen scroll>
-      <View style={s.hero}>
+    <Screen scroll background="#F6F4EC" footer={footer}>
+      <DemoApplePay
+        visible={payVisible}
+        amountCents={practiceFare(route.baseCents, vehicle.multiplier)}
+        destination={route.to}
+        onClose={() => setPayVisible(false)}
+        onAuthorize={async () => Boolean(await act("request"))}
+      />
+      <View style={s.brandBar}>
+        <BrandWordmark size={21} />
+        <Text style={s.roleLabel}>{driver ? "DRIVER" : "TRAVELER"}</Text>
+      </View>
+      <View style={[s.hero, !driver && s.travelerHero, token && s.compactHero]}>
         <View style={s.tag}>
           <Icon name="sparkles-outline" size={14} color="#D4F078" />
-          <Text style={s.tagText}>THE PRACTICE STUDIO</Text>
+          <Text style={[s.tagText, !driver && s.travelerInk]}>YOUR CONNECTED PRACTICE JOURNEY</Text>
         </View>
-        <Heading variant="h1" style={s.title}>
-          {driver ? "Your road.\nYour rhythm." : "A little less planning.\nA beautiful arrival."}
+        <Heading variant="h1" style={[s.title, !driver && s.travelerInk, token && s.compactTitle]}>
+          {token
+            ? driver
+              ? "Your day, in motion."
+              : "Hello, sunshine."
+            : driver
+              ? "A great day,\none journey at a time."
+              : "Leave the planning.\nKeep the feeling."}
         </Heading>
-        <Text style={s.sub}>A connected practice trip. No real bookings or charges.</Text>
+        {!token && (
+          <Text style={[s.sub, !driver && { color: "#788773" }]}>
+            Two apps. One smooth arrival. No real charges.
+          </Text>
+        )}
       </View>
       {error && (
         <Card padded>
@@ -246,26 +321,6 @@ export function PracticeScreen({
                       </Text>
                     </View>
                   </View>
-                  <Button
-                    title={
-                      trip.status === "pending"
-                        ? "Accept practice ride"
-                        : trip.status === "claimed"
-                          ? "Start driving to pickup"
-                          : "Complete practice trip"
-                    }
-                    onPress={() =>
-                      void act(
-                        trip.status === "pending"
-                          ? "accept"
-                          : trip.status === "claimed"
-                            ? "start"
-                            : "complete",
-                      )
-                    }
-                    loading={busy}
-                    fullWidth
-                  />
                 </>
               ) : trip?.status === "completed" ? (
                 <>
@@ -338,67 +393,98 @@ export function PracticeScreen({
               <Heading variant="h2">Where are we taking you?</Heading>
               <View style={s.options}>
                 {PRACTICE_ROUTES.map((r) => (
-                  <Button
+                  <Pressable
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: routeId === r.id }}
                     key={r.id}
-                    title={`${r.from} → ${r.to}`}
-                    variant={routeId === r.id ? "primary" : "outline"}
-                    size="md"
+                    accessibilityLabel={`${r.from} to ${r.to}`}
                     onPress={() => setRouteId(r.id)}
-                    fullWidth
-                  />
+                    style={[s.routeOption, routeId === r.id && s.selectedOption]}
+                  >
+                    <View style={s.optionIcon}>
+                      <Icon name="airplane-outline" size={20} color="#365F45" />
+                    </View>
+                    <View style={{ flex: 1, gap: 4 }}>
+                      <Text style={s.optionTitle}>{r.to}</Text>
+                      <Text style={s.optionSubtitle}>From {r.from}</Text>
+                    </View>
+                    <Icon
+                      name={routeId === r.id ? "checkmark-circle" : "ellipse-outline"}
+                      size={21}
+                      color={routeId === r.id ? "#365F45" : "#BBC8AD"}
+                    />
+                  </Pressable>
                 ))}
               </View>
               <Text variant="caption" color={colors.textMuted}>
                 Choose your ride · 2 travelers
               </Text>
-              <View style={s.options}>
+              <View style={s.vehicleOptions}>
                 {PRACTICE_VEHICLES.map((v) => (
-                  <Button
+                  <Pressable
+                    accessibilityRole="radio"
+                    accessibilityState={{ checked: vehicleId === v.id }}
                     key={v.id}
-                    title={`${v.name} · ${euro(practiceFare(route.baseCents, v.multiplier))}`}
-                    variant={vehicleId === v.id ? "primary" : "outline"}
+                    accessibilityLabel={`${v.name} ${euro(practiceFare(route.baseCents, v.multiplier))}`}
                     onPress={() => setVehicleId(v.id)}
-                    fullWidth
-                  />
+                    style={[s.vehicleOption, vehicleId === v.id && s.selectedOption]}
+                  >
+                    <Icon
+                      name={v.id === "minivan" ? "bus-outline" : "car-sport-outline"}
+                      size={28}
+                      color="#365F45"
+                    />
+                    <Text style={s.vehicleName}>{v.name}</Text>
+                    <Text style={s.vehiclePrice}>
+                      {euro(practiceFare(route.baseCents, v.multiplier))}
+                    </Text>
+                    {vehicleId === v.id && (
+                      <View style={s.vehicleCheck}>
+                        <Icon name="checkmark" size={11} color="#F6F4EC" />
+                      </View>
+                    )}
+                  </Pressable>
                 ))}
               </View>
+            </Card>
+          )}
+          <Button
+            title={showConnection ? "Hide connection details" : "Connect the other app"}
+            icon="share-outline"
+            variant="outline"
+            fullWidth
+            onPress={() => setShowConnection(!showConnection)}
+          />
+          {showConnection && (
+            <Card padded>
+              <Text variant="subtitle">Connect the other app</Text>
+              <Text style={s.copy} variant="caption" color={colors.textMuted}>
+                Paste this code into the other mobile app, or open the shared link on any screen.
+              </Text>
+              <Text selectable style={s.code}>
+                {token}
+              </Text>
+              <View style={{ height: 12 }} />
               <Button
-                title={`Request practice ride · ${euro(practiceFare(route.baseCents, vehicle.multiplier))}`}
-                icon="arrow-forward"
-                onPress={() => void act("request")}
-                loading={busy}
+                title="Share practice session"
+                icon="share-outline"
+                variant="outline"
+                onPress={() =>
+                  void Share.share({
+                    message: `Join my TransferAround practice journey in the ${driver ? "Traveler" : "Driver"} iPhone app:\n${driver ? "transferaround" : "transferaround-driver"}://practice?session=${token}\n\nSession code: ${token}`,
+                  }).catch(() => setError("Could not open sharing. Copy the session code above."))
+                }
                 fullWidth
+              />
+              <View style={{ height: 8 }} />
+              <Button
+                title="Reset this practice journey"
+                variant="ghost"
+                onPress={() => void act("reset")}
+                disabled={busy}
               />
             </Card>
           )}
-          <Card padded>
-            <Text variant="subtitle">Connect the other app</Text>
-            <Text style={s.copy} variant="caption" color={colors.textMuted}>
-              Paste this code into the other mobile app, or open the shared link on any screen.
-            </Text>
-            <Text selectable style={s.code}>
-              {token}
-            </Text>
-            <View style={{ height: 12 }} />
-            <Button
-              title="Share practice session"
-              icon="share-outline"
-              variant="outline"
-              onPress={() =>
-                void Share.share({
-                  message: `Try our connected TransferAround practice journey: https://transferaround.com/apps?session=${token}\n\nMobile session code: ${token}`,
-                }).catch(() => setError("Could not open sharing. Copy the session code above."))
-              }
-              fullWidth
-            />
-            <View style={{ height: 8 }} />
-            <Button
-              title="Reset this practice journey"
-              variant="ghost"
-              onPress={() => void act("reset")}
-              disabled={busy}
-            />
-          </Card>
           {state.events.length > 0 && (
             <Card padded>
               <Text variant="caption" color={colors.accentDeep}>
@@ -420,10 +506,35 @@ export function PracticeScreen({
   );
 }
 const s = StyleSheet.create({
-  hero: { backgroundColor: "#102D32", padding: 24, borderRadius: 24, gap: 15 },
+  actionBar: { flexDirection: "row", alignItems: "center", gap: 22 },
+  footerFare: {
+    fontFamily: fonts.bold,
+    fontSize: 28,
+    lineHeight: 36,
+    letterSpacing: -1,
+    color: colors.primary,
+  },
+  compactHero: { paddingVertical: 15, gap: 8 },
+  compactTitle: { fontSize: 27, lineHeight: 34 },
+  brandBar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  roleLabel: { fontFamily: fonts.bodySemibold, fontSize: 8, letterSpacing: 2, color: "#788773" },
+  hero: { backgroundColor: "#103F3A", padding: 24, borderRadius: 24, gap: 15 },
+  travelerHero: { backgroundColor: "#F6F4EC", paddingHorizontal: 0, paddingVertical: 12 },
+  travelerInk: { color: "#103F3A" },
   tag: { flexDirection: "row", gap: 8, alignItems: "center" },
   tagText: { fontSize: 9, letterSpacing: 2, color: "#D4F078", fontFamily: fonts.bold },
-  title: { color: "#F7F8F2", fontSize: 29, lineHeight: 36, letterSpacing: -1 },
+  title: {
+    fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
+    color: "#F7F8F2",
+    fontSize: 32,
+    lineHeight: 38,
+    letterSpacing: -1,
+  },
   sub: { color: "#ADC6B6", fontSize: 12, lineHeight: 20 },
   copy: { marginVertical: 15, lineHeight: 21 },
   or: { marginVertical: 18, fontSize: 11 },
@@ -437,6 +548,7 @@ const s = StyleSheet.create({
   fare: {
     fontFamily: fonts.display,
     fontSize: 38,
+    lineHeight: 48,
     letterSpacing: -1.7,
     color: "#102D32",
     marginVertical: 12,
@@ -444,6 +556,55 @@ const s = StyleSheet.create({
   rail: { marginVertical: 20 },
   person: { flexDirection: "row", alignItems: "center", gap: 12, marginVertical: 18 },
   options: { gap: 8, marginVertical: 18 },
+  routeOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    padding: 14,
+    borderRadius: 17,
+    borderWidth: 1,
+    borderColor: "#E0E4D5",
+    backgroundColor: "#FFFEFA",
+  },
+  selectedOption: { backgroundColor: "#EDF3DC", borderColor: "#7F9D66" },
+  optionIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    backgroundColor: "#E7EDDC",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  optionTitle: { fontFamily: fonts.semibold, fontSize: 13, color: "#153C35" },
+  optionSubtitle: { fontFamily: fonts.body, fontSize: 10, color: "#788773" },
+  vehicleOptions: { flexDirection: "row", gap: 8, marginVertical: 18 },
+  vehicleOption: {
+    flex: 1,
+    alignItems: "center",
+    gap: 9,
+    paddingVertical: 17,
+    borderWidth: 1,
+    borderColor: "#E0E4D5",
+    borderRadius: 19,
+    backgroundColor: "#FFFEFA",
+  },
+  vehicleName: { fontSize: 10, fontFamily: fonts.semibold, color: "#153C35" },
+  vehiclePrice: {
+    fontFamily: Platform.OS === "ios" ? "Georgia" : "serif",
+    fontSize: 24,
+    color: "#103F3A",
+  },
+  vehicleCheck: {
+    position: "absolute",
+    top: 7,
+    right: 7,
+    backgroundColor: "#365F45",
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   code: {
     fontSize: 11,
     color: colors.accentDeep,

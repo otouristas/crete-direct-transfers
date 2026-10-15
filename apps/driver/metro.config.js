@@ -10,7 +10,8 @@ const installedRoots = [projectRoot, workspaceRoot]
   .map((root) => path.resolve(root, "node_modules"))
   .filter((p) => fs.existsSync(p))
   .map((p) => fs.realpathSync(p));
-config.watchFolders = [workspaceRoot, ...installedRoots];
+const sharedRoot = fs.realpathSync(path.resolve(workspaceRoot, "packages/mobile-shared"));
+config.watchFolders = [workspaceRoot, sharedRoot, ...installedRoots];
 config.resolver.nodeModulesPaths = installedRoots;
 config.resolver.disableHierarchicalLookup = true;
 

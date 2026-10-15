@@ -21,8 +21,12 @@
           "remote-notification"
         ],
         "NSLocationWhenInUseUsageDescription": "TransferAround uses your location to set pickup and drop-off for private transfers.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "TransferAround uses your location to set pickup and drop-off for private transfers."
-      }
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "TransferAround uses your location to set pickup and drop-off for private transfers.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "appleTeamId": "S768Y6EZW8",
+      "buildNumber": "1",
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -52,7 +56,10 @@
           "icon": "./assets/icon.png",
           "color": "#0B2545"
         }
-      ]
+      ],
+      "expo-apple-authentication",
+      "../native-plugins/with-ios-minimum-version.cjs",
+      "../native-plugins/with-ios-scenes.cjs"
     ],
     "extra": {
       "router": {}

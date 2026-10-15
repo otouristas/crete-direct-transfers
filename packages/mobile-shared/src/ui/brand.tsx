@@ -63,7 +63,7 @@ export function BrandWordmark({
       }}
     >
       Transfer
-      <Text style={{ fontFamily: fonts.display, fontSize: size, color: colors.accent }}>
+      <Text style={{ fontFamily: fonts.display, fontSize: size, color: tone === "dark" ? "#D8ED98" : colors.accentDeep }}>
         Around
       </Text>
     </Text>

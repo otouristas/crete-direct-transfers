@@ -1,4 +1,4 @@
-import { Redirect, Stack, useRouter, useSegments } from "expo-router";
+import { Slot, useRootNavigationState, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
@@ -20,50 +20,46 @@ function AuthGate({ children }: { children: React.ReactNode }) {
   const { session, loading } = useAuth();
   const segments = useSegments();
   const router = useRouter();
+  const navigationState = useRootNavigationState();
   const root = segments[0];
   const onPracticeScreen = root === "practice";
-  const onAuthScreen = root === "login" || root === "signup";
+  const onAuthScreen = root === "login" || root === "signup" || root === "auth";
 
   useEffect(() => {
-    if (SKIP_AUTH || loading || onPracticeScreen) return;
+    if (!navigationState?.key || SKIP_AUTH || loading || onPracticeScreen) return;
     if (!session && !onAuthScreen) {
       router.replace("/login");
     } else if (session && onAuthScreen) {
       router.replace("/(tabs)");
     }
-  }, [loading, session, onAuthScreen, onPracticeScreen, router]);
+  }, [loading, session, onAuthScreen, onPracticeScreen, router, navigationState?.key]);
 
-  if (SKIP_AUTH || onPracticeScreen) return <>{children}</>;
-
-  if (loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: colors.bg,
-        }}
-      >
-        <ActivityIndicator color={colors.accent} />
-      </View>
-    );
-  }
-
-  if (!session && !onAuthScreen) {
-    return <Redirect href="/login" />;
-  }
-
-  if (session && onAuthScreen) {
-    return <Redirect href="/(tabs)" />;
-  }
-
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      {loading && !onPracticeScreen && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: colors.bg,
+          }}
+        >
+          <ActivityIndicator color={colors.accentDeep} />
+        </View>
+      )}
+    </>
+  );
 }
 
 export default function RootLayout() {
   const fontsLoaded = useAppFonts();
-  const ready = useBrandSplashGate(fontsLoaded, 2400);
+  const ready = useBrandSplashGate(fontsLoaded, 600);
 
   if (!ready) {
     return (
@@ -79,12 +75,7 @@ export default function RootLayout() {
       <StatusBar style="dark" />
       <AuthProvider>
         <AuthGate>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-              contentStyle: { backgroundColor: colors.bg },
-            }}
-          />
+          <Slot />
         </AuthGate>
       </AuthProvider>
     </SafeAreaProvider>

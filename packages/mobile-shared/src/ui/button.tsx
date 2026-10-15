@@ -18,7 +18,7 @@ const VARIANTS: Record<
   { bg: string; bgPressed: string; fg: string; border?: string }
 > = {
   primary: { bg: colors.primary, bgPressed: colors.primaryPressed, fg: colors.inverse },
-  accent: { bg: colors.accent, bgPressed: colors.accentPressed, fg: colors.primary },
+  accent: { bg: colors.accent, bgPressed: colors.accentPressed, fg: colors.inverse },
   outline: {
     bg: colors.surface,
     bgPressed: colors.surfaceMuted,

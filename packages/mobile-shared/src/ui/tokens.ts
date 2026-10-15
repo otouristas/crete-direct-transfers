@@ -1,35 +1,35 @@
 /**
  * TransferAround mobile design tokens — light, Uber-authentic system.
  * Mirrors the web brand truth in `src/styles.css`:
- *   navy #0B2545 (primary action), turquoise #14B8A6 (accent),
+ *   navy #103F3A (primary action), turquoise #4D7C61 (accent),
  *   cool-white surfaces, slate ink, Plus Jakarta Sans + Inter.
  */
 
 export const colors = {
   /** App backdrop — soft cool gray behind white surfaces (Uber-style). */
-  bg: "#F5F7FA",
-  surface: "#FFFFFF",
-  surfaceMuted: "#F1F5F9",
-  surfaceSunken: "#EEF2F7",
-  border: "#E2E8F0",
-  borderStrong: "#CBD5E1",
+  bg: "#F6F4EC",
+  surface: "#FFFEFA",
+  surfaceMuted: "#EEF0E5",
+  surfaceSunken: "#E7EBDF",
+  border: "#E0E4D5",
+  borderStrong: "#CDD6C1",
 
-  text: "#0F172A",
-  textMuted: "#64748B",
-  textFaint: "#94A3B8",
+  text: "#153C35",
+  textMuted: "#75846F",
+  textFaint: "#91A087",
   /** Text/icons on dark (navy/accent) surfaces. */
   inverse: "#F8FAFC",
 
   /** Navy — the bold "black" primary action colour. */
-  primary: "#0B2545",
-  primaryPressed: "#0A1E3A",
-  primarySoft: "#E8EDF5",
+  primary: "#103F3A",
+  primaryPressed: "#0A302B",
+  primarySoft: "#E4ECDC",
 
   /** Turquoise — selection, highlights, focus ring, "on the way". */
-  accent: "#14B8A6",
-  accentPressed: "#0F9E8E",
-  accentDeep: "#0F766E",
-  accentSoft: "#E6FBF8",
+  accent: "#4D7C61",
+  accentPressed: "#3D6651",
+  accentDeep: "#365F45",
+  accentSoft: "#EDF4D8",
 
   highlight: "#F59E0B",
   highlightSoft: "#FEF3C7",
@@ -83,14 +83,14 @@ export type TypeVariant = keyof typeof type;
 /** Elevation presets (iOS shadow* + Android elevation), ported from web card shadows. */
 export const shadow = {
   card: {
-    shadowColor: "#0B2545",
+    shadowColor: "#103F3A",
     shadowOpacity: 0.06,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 4 },
     elevation: 2,
   },
   raised: {
-    shadowColor: "#0B2545",
+    shadowColor: "#103F3A",
     shadowOpacity: 0.1,
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 8 },

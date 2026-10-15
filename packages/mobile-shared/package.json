@@ -9,7 +9,9 @@
     "./ui": "./src/ui/index.ts",
     "./practice": "./src/practice.ts",
     "./practice-screen": "./src/practice-screen.tsx",
-    "./pickup-time": "./src/pickup-time.ts"
+    "./pickup-time": "./src/pickup-time.ts",
+    "./social-auth": "./src/social-auth.tsx",
+    "./auth-screen": "./src/auth-screen.tsx"
   },
   "peerDependencies": {
     "@expo-google-fonts/inter": "*",
@@ -24,7 +26,10 @@
     "react-native-safe-area-context": "*",
     "react-native-svg": "*",
     "react-native-webview": "*",
-    "@react-native-async-storage/async-storage": "2.2.0"
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "expo-apple-authentication": "~8.0.8",
+    "expo-web-browser": "~15.0.11",
+    "expo-crypto": "~15.0.9"
   },
   "peerDependenciesMeta": {
     "@expo-google-fonts/inter": {
@@ -55,6 +60,15 @@
       "optional": true
     },
     "@react-native-async-storage/async-storage": {
+      "optional": true
+    },
+    "expo-apple-authentication": {
+      "optional": true
+    },
+    "expo-web-browser": {
+      "optional": true
+    },
+    "expo-crypto": {
       "optional": true
     }
   },

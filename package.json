@@ -21,7 +21,9 @@
     "preview:driver": "node scripts/serve-spa.mjs apps/driver/dist 8083",
     "build:apps": "npm --prefix apps/rider run build:web && npm --prefix apps/driver run build:web",
     "check:launch": "node scripts/check-launch.mjs",
-    "package:release": "node scripts/package-release.mjs"
+    "package:release": "node scripts/package-release.mjs",
+    "ios:rider": "npm --prefix apps/rider run ios:release",
+    "ios:driver": "npm --prefix apps/driver run ios:release"
   },
   "dependencies": {
     "@fontsource/instrument-serif": "^5.3.0",

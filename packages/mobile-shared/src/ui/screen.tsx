@@ -20,6 +20,7 @@ export function Screen({
   edges = ["top"],
   contentStyle,
   background = colors.bg,
+  footer,
 }: {
   children: React.ReactNode;
   scroll?: boolean;
@@ -29,6 +30,7 @@ export function Screen({
   edges?: Edge[];
   contentStyle?: StyleProp<ViewStyle>;
   background?: string;
+  footer?: React.ReactNode;
 }) {
   const pad = padded ? styles.padded : null;
   return (
@@ -54,6 +56,11 @@ export function Screen({
       ) : (
         <View style={[styles.flex, pad, contentStyle]}>{children}</View>
       )}
+      {footer ? (
+        <SafeAreaView edges={["bottom"]} style={styles.footer}>
+          {footer}
+        </SafeAreaView>
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -70,6 +77,14 @@ export function SectionLabel({ children }: { children: string }) {
 const styles = StyleSheet.create({
   safe: { flex: 1 },
   flex: { flex: 1 },
+  footer: {
+    backgroundColor: colors.surface,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: colors.border,
+    paddingHorizontal: space.lg,
+    paddingTop: space.md,
+    paddingBottom: space.sm,
+  },
   scrollContent: { gap: space.lg, paddingBottom: space.xxxl + space.lg },
   padded: { paddingHorizontal: space.lg, paddingTop: space.lg },
   section: { marginBottom: space.xs, marginTop: space.xs, letterSpacing: 0.6 },

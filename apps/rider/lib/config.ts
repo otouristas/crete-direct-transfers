@@ -9,7 +9,9 @@ export const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? ""
 export function getApiUrl() {
   const fromEnv = process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, "");
   const onLocalWeb =
+    Platform.OS === "web" &&
     typeof window !== "undefined" &&
+    typeof window.location !== "undefined" &&
     (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
   if (onLocalWeb) {
     if (fromEnv && /localhost|127\.0\.0\.1/.test(fromEnv)) return fromEnv;
@@ -26,3 +28,4 @@ export const API_URL = (process.env.EXPO_PUBLIC_API_URL ?? "https://transferarou
 
 /** Temporary: browse UI without signing in. Set false to restore auth gate. */
 export const SKIP_AUTH = false;
+import { Platform } from "react-native";

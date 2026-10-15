@@ -1,5 +1,5 @@
 {
-  "verified_at": "2026-10-15T15:04:02+00:00",
+  "verified_at": "2026-10-15T16:25:23.586886+00:00",
   "supabase_project": "mlrgwkgiazmrsfjhfrnq",
   "checks": {
     "unit_tests": {
@@ -28,14 +28,33 @@
     "practice_rpc_and_write_guards": "passed",
     "payment_integrity_sql": "passed in rolled-back transactions",
     "portable_lockfile_validation": [
-      "website",
+      "website (prior verification)",
       "traveler",
       "driver"
     ],
-    "secret_scan_of_browser_and_worker_artifacts": "passed"
+    "secret_scan_of_browser_and_worker_artifacts": "passed",
+    "native_ios": {
+      "sdk": "iOS 27 / Xcode 27",
+      "configuration": "Release",
+      "apps": [
+        "com.transferaround.rider",
+        "com.transferaround.driver"
+      ],
+      "version": "1.0.0",
+      "build": "1",
+      "device_archives": "passed",
+      "distribution_export": "passed",
+      "code_signatures": "verified with codesign --deep --strict",
+      "artifact_matches_simulator_bundle": true,
+      "server_secret_scan": "passed",
+      "native_practice_lifecycle": "passed: demo payment, online, accept, start, complete, rider updates, reset, cancel payment, change vehicle",
+      "testflight": "both Ready to Test; internal account invited",
+      "apple_sign_in": "enabled in Supabase and Apple Developer; signed entitlements verified; account authentication unverified",
+      "google_sign_in": "PKCE implementation complete; Google project created and branding prepared; Google User Data Policy approval pending; provider remains disabled",
+      "demo_apple_pay": "explicit native simulation; no Wallet authorization or charge"
+    }
   },
   "missing_server_settings": [
-    "SUPABASE_SERVICE_ROLE_KEY",
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET"
   ],
@@ -43,9 +62,17 @@
     "real Stripe Checkout and webhook delivery",
     "refund and payout provider execution",
     "production deployment",
-    "signed native binaries",
-    "native push delivery"
+    "native push delivery",
+    "physical-device Apple/Google account login",
+    "on-device TestFlight installation"
   ],
-  "real_customer_accounts_created": 0,
-  "real_payments_executed": 0
+  "real_customer_accounts_created": 1,
+  "real_payments_executed": 0,
+  "production_accounts_created": {
+    "customer": 1,
+    "driver": 1,
+    "emails_auto_confirmed": false,
+    "shared_password_chosen": false,
+    "driver_onboarding_status": "draft"
+  }
 }

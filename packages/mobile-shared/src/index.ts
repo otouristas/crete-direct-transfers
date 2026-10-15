@@ -20,6 +20,7 @@ export function createMobileSupabase(env: MobileEnv): SupabaseClient<Database> {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: false,
+      flowType: "pkce",
     },
   });
 }
