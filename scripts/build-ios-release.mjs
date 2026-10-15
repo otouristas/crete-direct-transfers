@@ -25,6 +25,11 @@ for (const scheme of ["TransferAround", "TransferAroundDriver"]) {
     "OTHER_SWIFT_FLAGS=$(inherited) -j2 -num-threads 2",
     "archive",
   ]);
+  execFileSync(
+    process.execPath,
+    ["scripts/prepare-ios-archive.mjs", path.join(output, `${scheme}.xcarchive`)],
+    { cwd: root, stdio: "inherit" },
+  );
 }
 console.log(
   `Swift iOS archives: ${output}. Export with Xcode automatic distribution signing. No upload was requested.`,

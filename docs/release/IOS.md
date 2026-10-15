@@ -15,7 +15,9 @@ Open `apps/ios-native/TransferAround.xcodeproj` in Xcode. Regenerate after addin
 
 `npm run ios:rider` / `npm run ios:driver` install correctly signed Debug Swift apps on a booted iPhone simulator. Node only invokes Xcode commands. Simulator signing must remain enabled (`CODE_SIGN_IDENTITY=-`) for Keychain session storage. Do not manually re-sign simulator apps.
 
-`npm run build:apps` archives both real iOS targets using Xcode. Export for distribution with the committed ExportOptions.plist and Xcode automatic signing. Only the separate UploadOptions.plist explicitly requests an App Store Connect upload. Keep the system rsync first in PATH during export/upload.
+`npm run build:apps` archives both real iOS targets using Xcode, with two compiler jobs. The archive preparation script preserves the targets' declared Apple sign-in and APNs capabilities before Xcode applies automatic distribution signing. A bare unsigned archive export can silently omit those capabilities even when its provisioning profile supports them. If archiving directly with CODE_SIGNING_ALLOWED=NO, run `node scripts/prepare-ios-archive.mjs /path/to/App.xcarchive` before exporting. This script rejects simulator apps.
+
+Export for distribution with the committed ExportOptions.plist and Xcode automatic signing. Verify the **actual exported app signature**, not just its profile: production APNs, Apple sign-in Default, the correct team/app identifier, get-task-allow false, and UIDeviceFamily [1]. Only the separate UploadOptions.plist explicitly requests an App Store Connect upload. Keep the system rsync first in PATH during export/upload.
 
 ## End-to-end testing
 

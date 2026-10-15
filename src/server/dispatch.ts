@@ -38,6 +38,9 @@ async function notifyDriverOffers(input: {
 
   const driverIds = [...new Set(input.offers.map((o) => o.driver_id))];
   if (driverIds.length > 0) {
+    // Wake the native outbox before compatibility transports or email can delay it.
+    // The scheduler retries independently if this request ends early.
+    await processNativePush().catch(() => console.warn("Native offer delivery queued for retry"));
     await Promise.allSettled(
       input.offers.map((offer) => {
         const expiresInSec = Math.max(
@@ -58,9 +61,6 @@ async function notifyDriverOffers(input: {
         });
       }),
     );
-    // Inserts already queued one durable native delivery per recipient/device.
-    // The scheduler keeps retrying independently of this request's lifecycle.
-    await processNativePush().catch(() => console.warn("Native offer delivery queued for retry"));
   }
 
   for (const offer of input.offers) {
